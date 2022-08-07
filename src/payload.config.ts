@@ -2,6 +2,7 @@ import { buildConfig } from 'payload/config';
 import path from 'path';
 // import Examples from './collections/Examples';
 import Users from './collections/Users';
+import Articles from "./collections/Articles";
 
 export default buildConfig({
   serverURL: 'http://localhost:3000',
@@ -10,8 +11,7 @@ export default buildConfig({
   },
   collections: [
     Users,
-    // Add Collections here
-    // Examples,
+    Articles,
   ],
   typescript: {
     outputFile: path.resolve(__dirname, 'payload-types.ts'),
