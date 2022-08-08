@@ -10,6 +10,13 @@ const Articles: CollectionConfig = {
   slug: 'articles',
   admin: {
     useAsTitle: 'contentTitle',
+    defaultColumns: [
+      // Some columns name are based on JSON response properties
+      'contentTitle',
+      'createdAt',
+      'updatedAt',
+      '_status',
+    ]
   },
   access: {
     read: () => true,
