@@ -31,7 +31,7 @@ const Articles: CollectionConfig = {
               // Value is undefined during admin UI navigation
               // This crashes the validation process and causes unexpected behavior
               // Turn value into an empty string instead as a workaround
-              value = value ?? ''; 
+              value = value ?? '';
               const re = /^[a-z0-9-]+$/;
               return value.match(re)
                 ? true
@@ -46,19 +46,28 @@ const Articles: CollectionConfig = {
           required: true,
           unique: true,
           index: true,
+          minLength: 1,
           maxLength: 60,
         },
         {
           name: 'metaDescription',
           label: 'SEO Description',
-          type: 'text',
+          type: 'textarea',
           required: true,
+          minLength: 1,
           maxLength: 160,
         },
         {
           name: 'metaScheduledReleaseDate',
           label: 'Scheduled Release Date',
           type: 'date',
+          admin: {
+            date: {
+              // Relax the restriction here because it cannot keep up in real time
+              // Min date is rather sufficient
+              minDate: new Date(),
+            },
+          },
         },
       ],
     },
@@ -70,16 +79,25 @@ const Articles: CollectionConfig = {
           name: 'contentTitle',
           label: 'Article Title',
           type: 'text',
+          required: true,
+          index: true,
+          unique: true,
+          minLength: 1,
         },
         {
           name: 'contentSubTitle',
           label: 'Article Subtitle',
-          type: 'text',
+          type: 'textarea',
+          required: true,
+          minLength: 1,
+          maxLength: 300,
         },
         {
           name: 'contentBody',
           label: 'Article Body',
           type: 'richText',
+          // Min length is not applicable to richText
+          required: true,
         },
       ],
     },
