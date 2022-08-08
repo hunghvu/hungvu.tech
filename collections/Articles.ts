@@ -43,11 +43,17 @@ const Articles: CollectionConfig = {
           name: 'metaTitle',
           label: 'SEO Title',
           type: 'text',
+          required: true,
+          unique: true,
+          index: true,
+          maxLength: 60,
         },
         {
           name: 'metaDescription',
           label: 'SEO Description',
           type: 'text',
+          required: true,
+          maxLength: 160,
         },
         {
           name: 'metaScheduledReleaseDate',
