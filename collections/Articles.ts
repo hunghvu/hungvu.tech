@@ -16,10 +16,21 @@ const Articles: CollectionConfig = {
       'createdAt',
       'updatedAt',
       '_status',
-    ]
+    ],
   },
   access: {
-    read: () => true,
+    // By default, other actions require user login to perform
+    // Therefore, no need to implement
+    read: ({ req: { user } }) => {
+      if (user) {
+        return true;
+      }
+      return {
+        _status: {
+          equals: 'published',
+        },
+      };
+    },
   },
   fields: [
     {
