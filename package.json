@@ -17,7 +17,7 @@
   "dependencies": {
     "dotenv": "^16.0.1",
     "express": "^4.17.1",
-    "payload": "^1.0.21"
+    "payload": "^1.0.25"
   },
   "devDependencies": {
     "@types/express": "^4.17.9",
