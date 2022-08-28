@@ -6,6 +6,21 @@
 
 import { CollectionConfig } from 'payload/types';
 
+const readQuery = {
+  and: [
+    {
+      _status: {
+        equals: 'published',
+      },
+    },
+    {
+      metaScheduledReleaseDate: {
+        less_than_equal: new Date(),
+      },
+    },
+  ],
+};
+
 const Articles: CollectionConfig = {
   slug: 'articles',
   admin: {
@@ -25,11 +40,7 @@ const Articles: CollectionConfig = {
       if (user) {
         return true;
       }
-      return {
-        _status: {
-          equals: 'published',
-        },
-      };
+      return readQuery;
     },
   },
   fields: [
