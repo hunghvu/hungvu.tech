@@ -25,13 +25,19 @@ const Media: CollectionConfig = {
         name: 'cover',
         width: 1600,
         height: 840,
-        crop: 'centre'
+        crop: 'centre',
       },
       {
         name: 'og',
         width: 1200,
         height: 630,
-        crop: 'centre'
+        crop: 'centre',
+      },
+      {
+        name: 'body',
+        width: 800,
+        height: null,
+        crop: 'centre',
       },
     ],
     adminThumbnail: 'thumbnail',
@@ -46,9 +52,6 @@ const Media: CollectionConfig = {
     },
   ],
   timestamps: true,
-  versions: {
-    drafts: true,
-  },
 };
 
 export default Media;
