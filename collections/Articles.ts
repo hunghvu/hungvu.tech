@@ -49,6 +49,19 @@ const Articles: CollectionConfig = {
       type: 'collapsible',
       fields: [
         {
+          name: 'metaCoverImage',
+          label: 'Cover Image',
+          type: 'upload',
+          relationTo: 'media',
+          required: true,
+        },
+        {
+          name: 'metaCustomOgImage',
+          label: 'Custom OG Image (front-end will fallback to cover image if not presented)',
+          type: 'upload',
+          relationTo: 'media',
+        },
+        {
           name: 'metaUrlSlug',
           label: 'URL Slug',
           type: 'text',
