@@ -167,3 +167,7 @@ dist
 
 # Don't upload media
 media/*
+
+# Ignore files/folders intended for experiment
+*Test*
+*test*
