@@ -146,7 +146,7 @@ const Articles: CollectionConfig = {
   ],
   timestamps: true,
   versions: {
-    drafts: true,
+    drafts: true
   },
 };
 
