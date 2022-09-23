@@ -119,6 +119,13 @@ const Articles: CollectionConfig = {
           required: true,
         },
         {
+          name: 'settingsSeries',
+          label: 'Series',
+          type: 'relationship',
+          relationTo: 'series',
+          hasMany: false,
+        },
+        {
           name: 'settingsCoverImage',
           label: 'Cover Image',
           type: 'upload',
