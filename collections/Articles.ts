@@ -49,11 +49,22 @@ const Articles: CollectionConfig = {
       type: 'collapsible',
       fields: [
         {
-          name: 'metaCoverImage',
-          label: 'Cover Image',
-          type: 'upload',
-          relationTo: 'media',
+          name: 'metaTitle',
+          label: 'SEO Title',
+          type: 'text',
           required: true,
+          unique: true,
+          index: true,
+          minLength: 1,
+          maxLength: 60,
+        },
+        {
+          name: 'metaDescription',
+          label: 'SEO Description',
+          type: 'textarea',
+          required: true,
+          minLength: 1,
+          maxLength: 160,
         },
         {
           name: 'metaCustomOgImage',
@@ -61,8 +72,14 @@ const Articles: CollectionConfig = {
           type: 'upload',
           relationTo: 'media',
         },
+      ],
+    },
+    {
+      label: 'Page Settings',
+      type: 'collapsible',
+      fields: [
         {
-          name: 'metaUrlSlug',
+          name: 'settingsUrlSlug',
           label: 'URL Slug',
           type: 'text',
           required: true, // Show red * in the field, but its validation is overridden by "validate"
@@ -82,25 +99,7 @@ const Articles: CollectionConfig = {
           },
         },
         {
-          name: 'metaTitle',
-          label: 'SEO Title',
-          type: 'text',
-          required: true,
-          unique: true,
-          index: true,
-          minLength: 1,
-          maxLength: 60,
-        },
-        {
-          name: 'metaDescription',
-          label: 'SEO Description',
-          type: 'textarea',
-          required: true,
-          minLength: 1,
-          maxLength: 160,
-        },
-        {
-          name: 'metaScheduledReleaseDate',
+          name: 'settingsScheduledReleaseDate',
           label: 'Scheduled Release Date',
           type: 'date',
           admin: {
@@ -110,6 +109,21 @@ const Articles: CollectionConfig = {
               minDate: new Date(),
             },
           },
+        },
+        {
+          name: 'settingsTags',
+          label: 'Tags',
+          type: 'relationship',
+          relationTo: 'tags',
+          hasMany: true,
+          required: true,
+        },
+        {
+          name: 'settingsCoverImage',
+          label: 'Cover Image',
+          type: 'upload',
+          relationTo: 'media',
+          required: true,
         },
       ],
     },
@@ -146,7 +160,7 @@ const Articles: CollectionConfig = {
   ],
   timestamps: true,
   versions: {
-    drafts: true
+    drafts: true,
   },
 };
 
