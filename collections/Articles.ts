@@ -14,8 +14,9 @@ const readQuery = {
       },
     },
     {
-      metaScheduledReleaseDate: {
-        less_than_equal: new Date(),
+      // Implementation reference: https://github.com/payloadcms/public-demo/blob/501e2e1bf73501fbfd9e140f81b28601ab9ff01e/src/collections/Posts.ts#L34
+      settingsScheduledReleaseDate: {
+        less_than: new Date().toJSON(),
       },
     },
   ],
@@ -102,13 +103,12 @@ const Articles: CollectionConfig = {
           name: 'settingsScheduledReleaseDate',
           label: 'Scheduled Release Date',
           type: 'date',
-          admin: {
-            date: {
-              // Relax the restriction here because it cannot keep up in real time
-              // Min date is rather sufficient
-              minDate: new Date(),
-            },
-          },
+          // admin: {
+
+          // },
+          required: true,
+          // Implementation reference: https://github.com/payloadcms/public-demo/blob/501e2e1bf73501fbfd9e140f81b28601ab9ff01e/src/collections/Posts.ts#L70
+          defaultValue: () => new Date(),
         },
         {
           name: 'settingsTags',
