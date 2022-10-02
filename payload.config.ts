@@ -5,13 +5,14 @@ import Articles from './collections/Articles';
 import Media from './collections/Media';
 import Tags from './collections/Tags';
 import Series from './collections/Series';
+import Categories from './collections/Categories';
 
 export default buildConfig({
   serverURL: 'http://localhost:3000',
   admin: {
     user: Users.slug,
   },
-  collections: [Users, Articles, Media, Tags, Series],
+  collections: [Users, Articles, Media, Tags, Series, Categories],
   typescript: {
     outputFile: path.resolve(__dirname, 'payload-types.ts'),
   },

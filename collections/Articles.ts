@@ -115,6 +115,17 @@ const Articles: CollectionConfig = {
       defaultValue: () => new Date(),
     },
     {
+      name: 'settingsCategories',
+      label: 'Categories',
+      type: 'relationship',
+      relationTo: 'categories',
+      hasMany: false,
+      required: true,
+      admin: {
+        position: 'sidebar',
+      },
+    },
+    {
       name: 'settingsTags',
       label: 'Tags',
       type: 'relationship',
