@@ -128,6 +128,7 @@ const Articles: CollectionConfig = {
             }
           ],
           defaultValue: 'no',
+          required: true,
         },
       ],
     },
