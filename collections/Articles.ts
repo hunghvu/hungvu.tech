@@ -46,6 +46,76 @@ const Articles: CollectionConfig = {
   },
   fields: [
     {
+      name: 'pageSettings',
+      type: 'group',
+      admin: {
+        position: 'sidebar',
+      },
+      fields: [
+        {
+          name: 'settingsUrlSlug',
+          label: 'URL Slug',
+          type: 'text',
+          required: true, // Show red * in the field, but its validation is overridden by "validate"
+          unique: true,
+          index: true,
+          admin: {
+            description: 'Every article must have a unique URL slug.',
+          },
+          validate: async (value, { operation }) => {
+            if (operation === 'create' || operation === 'update') {
+              // Value is undefined during admin UI navigation
+              // This crashes the validation process and causes unexpected behavior
+              // Turn value into an empty string instead as a workaround
+              value = value ?? '';
+              const re = /^[a-z0-9-]+$/;
+              return value.match(re)
+                ? true
+                : 'URL slug must contain only lower case characters from a to z, 0 to 9, or hyphen.';
+            }
+          },
+        },
+        {
+          name: 'settingsScheduledReleaseDate',
+          label: 'Scheduled Release Date',
+          type: 'date',
+          required: true,
+          // Implementation reference: https://github.com/payloadcms/public-demo/blob/501e2e1bf73501fbfd9e140f81b28601ab9ff01e/src/collections/Posts.ts#L70
+          defaultValue: () => new Date(),
+        },
+        {
+          name: 'settingsCategories',
+          label: 'Categories',
+          type: 'relationship',
+          relationTo: 'categories',
+          hasMany: false,
+          required: true,
+        },
+        {
+          name: 'settingsTags',
+          label: 'Tags',
+          type: 'relationship',
+          relationTo: 'tags',
+          hasMany: true,
+          required: true,
+        },
+        {
+          name: 'settingsSeries',
+          label: 'Series',
+          type: 'relationship',
+          relationTo: 'series',
+          hasMany: false,
+        },
+        {
+          name: 'settingsCoverImage',
+          label: 'Cover Image',
+          type: 'upload',
+          relationTo: 'media',
+          required: true,
+        },
+      ],
+    },
+    {
       label: 'Page Meta',
       type: 'collapsible',
       fields: [
@@ -78,84 +148,7 @@ const Articles: CollectionConfig = {
         },
       ],
     },
-    {
-      name: 'settingsUrlSlug',
-      label: 'URL Slug',
-      type: 'text',
-      required: true, // Show red * in the field, but its validation is overridden by "validate"
-      unique: true,
-      index: true,
-      admin: {
-        position: 'sidebar',
-        description: 'Articles must have unique URL slugs.',
-      },
-      validate: async (value, { operation }) => {
-        if (operation === 'create' || operation === 'update') {
-          // Value is undefined during admin UI navigation
-          // This crashes the validation process and causes unexpected behavior
-          // Turn value into an empty string instead as a workaround
-          value = value ?? '';
-          const re = /^[a-z0-9-]+$/;
-          return value.match(re)
-            ? true
-            : 'URL slug must contain only lower case characters from a to z, 0 to 9, or hyphen.';
-        }
-      },
-    },
-    {
-      name: 'settingsScheduledReleaseDate',
-      label: 'Scheduled Release Date',
-      type: 'date',
-      admin: {
-        position: 'sidebar',
-        description: 'Articles will not be public until this date',
-      },
-      required: true,
-      // Implementation reference: https://github.com/payloadcms/public-demo/blob/501e2e1bf73501fbfd9e140f81b28601ab9ff01e/src/collections/Posts.ts#L70
-      defaultValue: () => new Date(),
-    },
-    {
-      name: 'settingsCategories',
-      label: 'Categories',
-      type: 'relationship',
-      relationTo: 'categories',
-      hasMany: false,
-      required: true,
-      admin: {
-        position: 'sidebar',
-      },
-    },
-    {
-      name: 'settingsTags',
-      label: 'Tags',
-      type: 'relationship',
-      relationTo: 'tags',
-      hasMany: true,
-      required: true,
-      admin: {
-        position: 'sidebar',
-      },
-    },
-    {
-      name: 'settingsSeries',
-      label: 'Series',
-      type: 'relationship',
-      relationTo: 'series',
-      hasMany: false,
-      admin: {
-        position: 'sidebar',
-      },
-    },
-    {
-      name: 'settingsCoverImage',
-      label: 'Cover Image',
-      type: 'upload',
-      relationTo: 'media',
-      required: true,
-      admin: {
-        position: 'sidebar',
-      },
-    },
+
     {
       label: 'Page Content',
       type: 'collapsible',
