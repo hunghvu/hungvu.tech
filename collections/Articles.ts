@@ -113,6 +113,22 @@ const Articles: CollectionConfig = {
           relationTo: 'media',
           required: true,
         },
+        {
+          name: 'settingsHideFromHome',
+          label: 'Hide From Home Page?',
+          type: 'radio',
+          options: [
+            {
+              label: 'Yes',
+              value: 'yes',
+            },
+            {
+              label: 'No',
+              value: 'no',
+            }
+          ],
+          defaultValue: 'no',
+        },
       ],
     },
     {
