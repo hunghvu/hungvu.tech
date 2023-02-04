@@ -1,5 +1,10 @@
 import { Button } from "ui";
 
 export default function HomePage() {
-  return <Button/>
+  return (
+    <>
+      <h1 className="text-4xl">dev</h1>
+      <Button />
+    </>
+  );
 }
