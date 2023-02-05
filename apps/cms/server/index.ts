@@ -2,6 +2,7 @@ import express from 'express';
 import payload from 'payload';
 
 require('dotenv').config();
+const PORT = process.env.PORT ?? "3000"
 const app = express();
 
 // Redirect root to Admin panel
@@ -21,4 +22,4 @@ payload.init({
 
 // Add your own express routes here
 
-app.listen(3000);
+app.listen(PORT);
