@@ -13,6 +13,8 @@ import linkedin from "../../../public/images/linkedin.svg";
 import rss from "../../../public/images/rss.svg";
 import twitter from "../../../public/images/twitter.svg";
 
+import { fredoka } from "../../fonts";
+
 type NavItem = {
   label: string;
   href: string;
@@ -30,17 +32,17 @@ const navItems: NavItem[] = [
 ];
 
 const socialItems: SocialItem[] = [
-  { icon: github, href: "https://github.com/hunghvu", alt: "GitHub profile of Hung Vu" },
   { icon: linkedin, href: "https://www.linkedin.com/in/hunghvu/", alt: "LinkedIn profile of Hung Vu" },
+  { icon: github, href: "https://github.com/hunghvu", alt: "GitHub profile of Hung Vu" },
   { icon: twitter, href: "https://twitter.com/hunghvu_dev", alt: "Twitter profile of Hung Vu" },
   { icon: rss, href: "/rss.xml", alt: "RSS feed of hungvu.tech" },
 ];
 
 const Navbar: React.FC = () => {
   return (
-    <nav className="flex flex-row justify-between">
+    <nav className={`py-12 px-64 grid grid-cols-3 ${fredoka.className} text-2xl font-bold`}>
       <Link href="/">Hung Vu</Link>
-      <div className="flex flex-row justify-around">
+      <div className="flex flex-row justify-center gap-32">
         {navItems.map(({ label, href }, index) => (
           // Static values for navbar, index as key is fine
           <Link href={href} key={index}>
@@ -48,7 +50,7 @@ const Navbar: React.FC = () => {
           </Link>
         ))}
       </div>
-      <div className="flex flex-row justify-around">
+      <div className="flex flex-row justify-end gap-8">
         {socialItems.map(({ icon, href, alt }, index) => (
           // Static values for navbar, index as key is fine
           <Link href={href} key={index}>
