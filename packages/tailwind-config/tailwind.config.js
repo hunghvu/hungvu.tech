@@ -5,7 +5,15 @@ module.exports = {
     "./components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        "nebula": "#e8eddf",
+        "green-white": "cfdbd5",
+        "mango": "#f5cb5c",
+        "dune": "#513d46",
+        "dune-emphasized": "#3e2d32",
+      }
+    },
   },
   plugins: [],
 }
