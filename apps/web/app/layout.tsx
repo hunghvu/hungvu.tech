@@ -1,4 +1,5 @@
 import React from "react";
+import Navbar from "./components/navbar";
 import "./global.css";
 
 export default function RootLayout({
@@ -10,7 +11,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <Navbar />
+        <main>{children}</main>
+      </body>
     </html>
   );
 }
