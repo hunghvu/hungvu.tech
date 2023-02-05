@@ -40,9 +40,9 @@ const socialItems: SocialItem[] = [
 
 const Navbar: React.FC = () => {
   return (
-    <nav className={`py-12 px-64 grid grid-cols-3 ${fredoka.className} text-2xl font-bold`}>
+    <nav className={`sm:py-12 py-6 lg:px-32 md:px-16 sm:px-8 px-4 grid sm:grid-cols-3 grid-cols-2 gap-2 ${fredoka.className} text-2xl font-bold`}>
       <Link href="/">Hung Vu</Link>
-      <div className="flex flex-row justify-center gap-32">
+      <div className="flex flex-row justify-center lg:gap-32 md:gap-16 sm:gap-8 gap-4">
         {navItems.map(({ label, href }, index) => (
           // Static values for navbar, index as key is fine
           <Link href={href} key={index}>
@@ -50,11 +50,11 @@ const Navbar: React.FC = () => {
           </Link>
         ))}
       </div>
-      <div className="flex flex-row justify-end gap-8">
+      <div className="flex flex-row sm:justify-end md:gap-6 sm:gap-4 gap-2">
         {socialItems.map(({ icon, href, alt }, index) => (
           // Static values for navbar, index as key is fine
           <Link href={href} key={index}>
-            <Image src={icon} alt={alt} width={24} height={24} />
+            <Image src={icon} alt={alt} className="sm:w-6 sm:h-6 w-4 h-4" />
           </Link>
         ))}
       </div>
