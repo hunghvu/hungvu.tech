@@ -1,9 +1,17 @@
+/**
+ * @author Hung Vu 
+ * 
+ * Hero section (well, but it is the latest article to be exact).
+ */
+
 import React from "react";
 
 import Link from "next/link";
 import Image from "next/image";
 
 import CardContent from "../shared/card-content";
+
+import testCoverImage from "../../../public/images/test/cover-image.png";
 
 // Temporary value for testing purpose
 const category = {
@@ -28,7 +36,11 @@ const tags = [
 
 const Hero: React.FC = () => {
   return (
-    <section>
+    <section className="flex lg:flex-row-reverse flex-col justify-center items-center xl:gap-32 gap-4 sm:p-16 p-4 bg-nebula">
+      {/* TODO: Implement dynamic content after CMS is finalized. */}
+      <Link href={"/"}>
+        <Image src={testCoverImage} alt="test" className="max-w-[39.375rem] w-full rounded-3xl" />
+      </Link>
       <CardContent
         isHero={true}
         slug="cloudflare-turnstile-and-wordfence-2fa-break-wordpress-login-flow-how-to-fix-it"
