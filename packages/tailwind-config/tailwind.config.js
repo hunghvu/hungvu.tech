@@ -12,6 +12,9 @@ module.exports = {
         "mango": "#f5cb5c",
         "dune": "#513d46",
         "dune-emphasized": "#3e2d32",
+      },
+      fontSize: {
+        "32px": ["2rem", "2.25rem"],
       }
     },
   },
