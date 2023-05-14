@@ -47,9 +47,6 @@ importers:
 
   apps/web:
     dependencies:
-      '@next/font':
-        specifier: ^13.4.2
-        version: 13.4.2
       next:
         specifier: ^13.4.2
         version: 13.4.2(@babel/core@7.21.8)(react-dom@18.2.0)(react@18.2.0)
@@ -784,10 +781,6 @@ packages:
     resolution: {integrity: sha512-z+gnX4Zizatqatc6f4CQrcC9oN8Us3Vrq/OLyc98h7K/eWctrnV91zFZodmJHUjx0cITY8uYM7LXD7IdYkg3kg==}
     dependencies:
       glob: 7.1.7
-    dev: false
-
-  /@next/font@13.4.2:
-    resolution: {integrity: sha512-II7hThMnn7Hf2xCGBB8DLD+QLScZVCNr6775l/aQVqeN3x89Yw/r3l5UHZ7PSOfQAMxoYuwm8t/wW0I/yYd/GQ==}
     dev: false
 
   /@next/swc-darwin-arm64@13.4.2:

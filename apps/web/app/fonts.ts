@@ -3,7 +3,7 @@
  * 
  * This file provides local fonts to be used across the application
  */
-import localfont from "@next/font/local"
+import localfont from "next/font/local"
 
 export const fredoka = localfont({
   src: "../public/fonts/Fredoka-Variable.ttf"
