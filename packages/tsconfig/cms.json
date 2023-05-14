@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "cms",
+  "extends": "./base.json",
+  "compilerOptions": {
+    "jsx": "react",
+    "outDir": "./dist",
+    "rootDir": "./",
+    "strict": false
+  },
+  "ts-node": {
+    "transpileOnly": true
+  }
+}
