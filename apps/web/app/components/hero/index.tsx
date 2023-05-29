@@ -36,7 +36,7 @@ const tags = [
 
 const Hero: React.FC = () => {
   return (
-    <section className="flex lg:flex-row-reverse flex-col justify-center items-center xl:gap-32 gap-4 sm:p-16 p-4 bg-nebula">
+    <section className="flex lg:flex-row-reverse flex-col justify-center items-center xl:gap-32 gap-4 sm:p-16 p-4 bg-light-orange-200">
       {/* TODO: Implement dynamic content after CMS is finalized. */}
       <Link href={"/"}>
         <Image src={testCoverImage} alt="test" className="max-w-[39.375rem] w-full rounded-3xl" />
