@@ -8,12 +8,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-import github from "../../../public/images/github.svg";
-import linkedin from "../../../public/images/linkedin.svg";
-import rss from "../../../public/images/rss.svg";
-import twitter from "../../../public/images/twitter.svg";
-
-import { fredoka } from "../../fonts";
+import { fredoka } from "../fonts";
 
 type NavItem = {
   label: string;
@@ -32,10 +27,10 @@ const navItems: NavItem[] = [
 ];
 
 const socialItems: SocialItem[] = [
-  { icon: linkedin, href: "https://www.linkedin.com/in/hunghvu/", alt: "LinkedIn profile of Hung Vu" },
-  { icon: github, href: "https://github.com/hunghvu", alt: "GitHub profile of Hung Vu" },
-  { icon: twitter, href: "https://twitter.com/hunghvu_dev", alt: "Twitter profile of Hung Vu" },
-  { icon: rss, href: "/rss.xml", alt: "RSS feed of hungvu.tech" },
+  { icon: "/images/linkedin.svg", href: "https://www.linkedin.com/in/hunghvu/", alt: "LinkedIn profile of Hung Vu" },
+  { icon: "/images/github.svg", href: "https://github.com/hunghvu", alt: "GitHub profile of Hung Vu" },
+  { icon: "/images/twitter.svg", href: "https://twitter.com/hunghvu_dev", alt: "Twitter profile of Hung Vu" },
+  { icon: "/images/rss.svg", href: "/rss.xml", alt: "RSS feed of hungvu.tech" },
 ];
 
 const Navbar: React.FC = () => {
@@ -64,7 +59,7 @@ const Navbar: React.FC = () => {
         {socialItems.map(({ icon, href, alt }, index) => (
           // Static values for navbar, index as key is fine
           <Link href={href} key={index}>
-            <Image src={icon} alt={alt} className="sm:w-6 sm:h-6 w-4 h-4 hover:animate-pulse" />
+            <Image src={icon} alt={alt} width="0" height="0" sizes="100vw" className="sm:w-6 sm:h-6 w-4 h-4 hover:animate-pulse" />
           </Link>
         ))}
       </div>

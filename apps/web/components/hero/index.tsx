@@ -11,8 +11,6 @@ import Image from "next/image";
 
 import CardContent from "../shared/card-content";
 
-import testCoverImage from "../../../public/images/test/cover-image.png";
-
 // Temporary value for testing purpose
 const category = {
   name: "Tutorial",
@@ -39,7 +37,7 @@ const Hero: React.FC = () => {
     <section className="flex lg:flex-row-reverse flex-col justify-center items-center xl:gap-32 gap-4 sm:p-16 p-4 bg-light-orange-200 dark:bg-dark-cyan-800">
       {/* TODO: Implement dynamic content after CMS is finalized. */}
       <Link href={"/"}>
-        <Image src={testCoverImage} alt="test" className="max-w-[39.375rem] w-full rounded-3xl" />
+        <Image src="/images/test/cover-image.png" alt="test" width="0" height="0" sizes="100vw" className="max-w-[39.375rem] w-full rounded-3xl" />
       </Link>
       <CardContent
         isHero={true}
