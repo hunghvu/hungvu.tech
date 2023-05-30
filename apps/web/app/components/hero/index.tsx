@@ -1,6 +1,6 @@
 /**
- * @author Hung Vu 
- * 
+ * @author Hung Vu
+ *
  * Hero section (well, but it is the latest article to be exact).
  */
 
@@ -36,7 +36,7 @@ const tags = [
 
 const Hero: React.FC = () => {
   return (
-    <section className="flex lg:flex-row-reverse flex-col justify-center items-center xl:gap-32 gap-4 sm:p-16 p-4 bg-light-orange-200">
+    <section className="flex lg:flex-row-reverse flex-col justify-center items-center xl:gap-32 gap-4 sm:p-16 p-4 bg-light-orange-200 dark:bg-dark-cyan-800">
       {/* TODO: Implement dynamic content after CMS is finalized. */}
       <Link href={"/"}>
         <Image src={testCoverImage} alt="test" className="max-w-[39.375rem] w-full rounded-3xl" />

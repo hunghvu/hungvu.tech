@@ -38,23 +38,23 @@ type CardDetail = {
 };
 
 const cardMetaContent = `flex flex-row justify-start items-center gap-2 ${fredoka.className} not-italic text-xs font-light`;
-const buttonHoverEffect = `px-1 border-2 rounded-3xl border-transparent hover:border-light-orange-300 hover:transition-colors hover:duration-1000`;
+const buttonHoverEffect = `px-1 border-2 rounded-3xl border-transparent hover:border-light-orange-300 dark:hover:border-dark-cyan-700 hover:transition-colors hover:duration-1000`;
 
 const CardContent: React.FC<CardDetail> = ({ isHero, slug, category, title, subtitle, authorName, date, tags }) => {
   return (
     <article className="flex flex-col justify-start sm:gap-4 gap-2 p-4 max-w-[39.375rem]">
       <header className="flex flex-col justify-start gap-4">
-        <Link href={category.url} className={`${fredoka.className} font-semibold sm:text-xl text-lg text-light-black-900`}>
+        <Link href={category.url} className={`${fredoka.className} font-semibold sm:text-xl text-lg text-light-black-900 dark:text-dark-white-200`}>
           {category.name}
         </Link>
-        <Link href={slug} className={`${robotoSerif.className} text-light-black-900 font-bold ${isHero ? "sm:text-32px text-xl" : "text-2xl"}`}>
+        <Link href={slug} className={`${robotoSerif.className} text-light-black-900 dark:text-dark-white-200 font-bold ${isHero ? "sm:text-32px text-xl" : "text-2xl"}`}>
           <h2>{title}</h2>
         </Link>
       </header>
-      <Link href={slug} className={`${interTight.className} sm:text-lg text-base text-light-black-800`}>
+      <Link href={slug} className={`${interTight.className} sm:text-lg text-base text-light-black-800 dark:text-dark-white-100`}>
         <p>{subtitle}</p>
       </Link>
-      <footer className="flex flex-row flex-wrap gap-x-4 text-light-black-900">
+      <footer className="flex flex-row flex-wrap gap-x-4 text-light-black-900 dark:text-dark-white-200">
         <address className={cardMetaContent}>
           <Image src={author} alt={`Author of ${title} is ${authorName}`} className="w-3 h-3" />
           {/* Keep it as fixed link for now. */}
