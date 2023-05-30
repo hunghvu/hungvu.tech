@@ -3,11 +3,10 @@
  *
  * This component is a navigation bar.
  */
-import { FC } from "react";
 
 import Link from "next/link";
 
-import { LinkedIn, GitHub, Rss, Twitter, SvgProps } from "../svg";
+import { LinkedIn, GitHub, Rss, Twitter } from "../svg";
 
 import { fredoka } from "../fonts";
 
@@ -32,7 +31,12 @@ const socialItems: SocialItem[] = [
     href: "https://www.linkedin.com/in/hunghvu/",
   },
   {
-    Icon: <GitHub alt="GitHub profile of Hung Vu" className="sm:w-6 sm:h-6 w-4 h-4 hover:animate-pulse fill-current text-light-black-900 dark:text-dark-white-200" />,
+    Icon: (
+      <GitHub
+        alt="GitHub profile of Hung Vu"
+        className="sm:w-6 sm:h-6 w-4 h-4 hover:animate-pulse fill-current text-light-black-900 dark:text-dark-white-200"
+      />
+    ),
     href: "https://github.com/hunghvu",
   },
   {
@@ -47,12 +51,13 @@ const Navbar: React.FC = () => {
     <nav
       className={`sm:py-12 py-6 lg:px-32 md:px-16 sm:px-8 px-4 grid sm:grid-cols-3 grid-cols-2 gap-2 ${fredoka.className} text-2xl font-bold text-light-black-900 dark:text-dark-white-200 bg-light-orange-100 dark:bg-dark-cyan-900`}
     >
-      <Link href="/" className="pl-2">
-        Hung Vu
-      </Link>
+      <div className="flex flex-row items-center pl-2">
+        <Link href="/">Hung Vu</Link>
+      </div>
+
       {/* TODO: After finishing core functionalities of the page. Come back here and create hover animation for navitems (e.g., colored border run clockwise) */}
       {/* TODO: After page are long enough to scroll, add the following navbar effect: sticky navbar, but at certain point when will hide when idle, and reappear when scrolling */}
-      <div className="flex flex-row sm:justify-center justify-end lg:gap-32 md:gap-16 gap-4 ">
+      <div className="flex flex-row sm:justify-center justify-end items-center lg:gap-32 md:gap-16 gap-4 ">
         {navItems.map(({ label, href }, index) => (
           // Static values for navbar, index as key is fine
           <Link
