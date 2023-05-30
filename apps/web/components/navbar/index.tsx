@@ -3,10 +3,11 @@
  *
  * This component is a navigation bar.
  */
-import React from "react";
+import { FC } from "react";
 
-import Image from "next/image";
 import Link from "next/link";
+
+import { LinkedIn, GitHub, Rss, Twitter, SvgProps } from "../svg";
 
 import { fredoka } from "../fonts";
 
@@ -16,9 +17,8 @@ type NavItem = {
 };
 
 type SocialItem = {
-  icon: any;
+  Icon: JSX.Element;
   href: string;
-  alt: string;
 };
 
 const navItems: NavItem[] = [
@@ -27,10 +27,19 @@ const navItems: NavItem[] = [
 ];
 
 const socialItems: SocialItem[] = [
-  { icon: "/images/linkedin.svg", href: "https://www.linkedin.com/in/hunghvu/", alt: "LinkedIn profile of Hung Vu" },
-  { icon: "/images/github.svg", href: "https://github.com/hunghvu", alt: "GitHub profile of Hung Vu" },
-  { icon: "/images/twitter.svg", href: "https://twitter.com/hunghvu_dev", alt: "Twitter profile of Hung Vu" },
-  { icon: "/images/rss.svg", href: "/rss.xml", alt: "RSS feed of hungvu.tech" },
+  {
+    Icon: <LinkedIn alt="LinkedIn profile of Hung Vu" className="sm:w-6 sm:h-6 w-4 h-4 hover:animate-pulse fill-current text-[#0e76a8]" />,
+    href: "https://www.linkedin.com/in/hunghvu/",
+  },
+  {
+    Icon: <GitHub alt="GitHub profile of Hung Vu" className="sm:w-6 sm:h-6 w-4 h-4 hover:animate-pulse fill-current text-light-black-900 dark:text-dark-white-200" />,
+    href: "https://github.com/hunghvu",
+  },
+  {
+    Icon: <Twitter alt="Twitter profile of Hung Vu" className="sm:w-6 sm:h-6 w-4 h-4 hover:animate-pulse fill-current text-[#1da1f2]" />,
+    href: "https://twitter.com/hunghvu_dev",
+  },
+  { Icon: <Rss alt="RSS feed of hungvu.tech" className="sm:w-6 sm:h-6 w-4 h-4 hover:animate-pulse fill-current text-[#ee802f]" />, href: "/rss.xml" },
 ];
 
 const Navbar: React.FC = () => {
@@ -56,10 +65,10 @@ const Navbar: React.FC = () => {
         ))}
       </div>
       <div className="flex flex-row sm:justify-end items-center pl-2 md:gap-6 sm:gap-4 gap-2 ">
-        {socialItems.map(({ icon, href, alt }, index) => (
+        {socialItems.map(({ Icon, href }, index) => (
           // Static values for navbar, index as key is fine
           <Link href={href} key={index}>
-            <Image src={icon} alt={alt} width="0" height="0" sizes="100vw" className="sm:w-6 sm:h-6 w-4 h-4 hover:animate-pulse" />
+            {Icon}
           </Link>
         ))}
       </div>

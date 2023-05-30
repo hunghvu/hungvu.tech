@@ -12,9 +12,7 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 
-import author from "../../../../public/images/author.svg";
-import calendar from "../../../../public/images/calendar.svg";
-import tag from "../../../../public/images/tag.svg";
+import { Author, Calendar, Tag } from "../../svg";
 
 import { fredoka } from "../../fonts";
 import { robotoSerif } from "../../fonts";
@@ -61,28 +59,21 @@ const CardContent: React.FC<CardDetail> = ({ isHero, slug, category, title, subt
       </Link>
       <footer className="flex flex-row flex-wrap gap-x-4 text-light-black-900 dark:text-dark-white-200">
         <address className={cardMetaContent}>
-          <Image src="/images/author.svg" alt={`Author of ${title} is ${authorName}`} width="0" height="0" sizes="100vw" className="w-3 h-3" />
+          <Author alt={`Author of ${title} is ${authorName}`} className="w-3 h-3 fill-current text-light-black-900 dark:text-dark-white-200" />
           {/* Keep it as fixed link for now. */}
           <Link href="/about" rel="author" className={buttonHoverEffect}>
             {authorName}
           </Link>
         </address>
         <div className={`${cardMetaContent}`}>
-          <Image
-            src="/images/calendar.svg"
-            alt={`The article: ${title} was released on ${date}`}
-            width="0"
-            height="0"
-            sizes="100vw"
-            className="w-3 h-3"
-          />
+          <Calendar alt={`The article: ${title} was released on ${date}`} className="w-3 h-3 fill-current text-light-black-900 dark:text-dark-white-200" />
           <time dateTime={date} className="px-1 border-2 rounded-3xl border-transparent">
             {date}
           </time>
         </div>
 
         <div className={cardMetaContent}>
-          <Image src="/images/tag.svg" alt={"Article topics"} width="0" height="0" sizes="100vw" className="w-3 h-3" />
+          <Tag alt={"Article topics"} className="w-3 h-3 fill-current text-light-black-900 dark:text-dark-white-200" />
           {tags.map((tag, index) => (
             <Link href={tag.url} className={buttonHoverEffect} key={index}>{`#${tag.name}`}</Link>
           ))}
