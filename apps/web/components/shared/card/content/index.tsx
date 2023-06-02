@@ -10,13 +10,12 @@
 import React from "react";
 
 import Link from "next/link";
-import Image from "next/image";
 
 import { Author, Calendar, Tag } from "../../svg";
 
-import { fredoka } from "../../fonts";
-import { robotoSerif } from "../../fonts";
-import { interTight } from "../../fonts";
+import { fredoka } from "../../../fonts";
+import { robotoSerif } from "../../../fonts";
+import { interTight } from "../../../fonts";
 
 type CardDetail = {
   isHero: boolean;
@@ -40,21 +39,26 @@ const buttonHoverEffect = `px-1 border-2 rounded-3xl border-transparent hover:bo
 
 const CardContent: React.FC<CardDetail> = ({ isHero, slug, category, title, subtitle, authorName, date, tags }) => {
   return (
-    <article className="flex flex-col justify-start sm:gap-4 gap-2 p-4 max-w-[39.375rem]">
+    <article className="flex flex-col justify-start sm:gap-4 gap-2 p-4 w-full">
       <header className="flex flex-col justify-start gap-4">
-        <Link href={category.url} className={`${fredoka.className} font-semibold sm:text-xl text-lg text-light-black-900 dark:text-dark-white-200`}>
-          {category.name}
-        </Link>
+        {isHero ? (
+          <Link href={category.url} className={`${fredoka.className} font-semibold sm:text-xl text-lg text-light-black-900 dark:text-dark-white-200`}>
+            {category.name}
+          </Link>
+        ) : (
+          false
+        )}
+
         <Link
           href={slug}
           className={`${robotoSerif.className} text-light-black-900 dark:text-dark-white-200 font-bold ${
-            isHero ? "sm:text-32px text-xl" : "text-2xl"
+            isHero ? "md:text-32px text-xl" : "text-xl"
           }`}
         >
           <h2>{title}</h2>
         </Link>
       </header>
-      <Link href={slug} className={`${interTight.className} sm:text-lg text-base text-light-black-800 dark:text-dark-white-100`}>
+      <Link href={slug} className={`${interTight.className} ${isHero ? "md:text-lg" : null} text-base text-light-black-800 dark:text-dark-white-100`}>
         <p>{subtitle}</p>
       </Link>
       <footer className="flex flex-row flex-wrap gap-x-4 text-light-black-900 dark:text-dark-white-200">
@@ -66,7 +70,10 @@ const CardContent: React.FC<CardDetail> = ({ isHero, slug, category, title, subt
           </Link>
         </address>
         <div className={`${cardMetaContent}`}>
-          <Calendar alt={`The article: ${title} was released on ${date}`} className="w-3 h-3 fill-current text-light-black-900 dark:text-dark-white-200" />
+          <Calendar
+            alt={`The article: ${title} was released on ${date}`}
+            className="w-3 h-3 fill-current text-light-black-900 dark:text-dark-white-200"
+          />
           <time dateTime={date} className="px-1 border-2 rounded-3xl border-transparent">
             {date}
           </time>

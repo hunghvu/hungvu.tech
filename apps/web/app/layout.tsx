@@ -1,5 +1,5 @@
 import React from "react";
-import Navbar from "../components/navbar";
+import Navbar from "../components/shared/navbar";
 
 import "./global.css";
 
@@ -14,7 +14,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <Navbar />
-        <main>{children}</main>
+        <main className="flex flex-col gap-16 bg-light-orange-200 dark:bg-dark-cyan-900">{children}</main>
       </body>
     </html>
   );

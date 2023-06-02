@@ -8,7 +8,7 @@ import Link from "next/link";
 
 import { LinkedIn, GitHub, Rss, Twitter } from "../svg";
 
-import { fredoka } from "../fonts";
+import { fredoka } from "../../fonts";
 
 type NavItem = {
   label: string;
