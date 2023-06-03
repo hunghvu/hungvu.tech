@@ -2,7 +2,7 @@ import express from 'express';
 import payload from 'payload';
 
 require('dotenv').config();
-const PORT = process.env.PORT ?? "3000"
+const PORT = process.env.PORT
 const app = express();
 
 // Redirect root to Admin panel
