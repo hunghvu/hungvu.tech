@@ -125,7 +125,7 @@ const Articles: CollectionConfig = {
             {
               label: 'No',
               value: 'no',
-            }
+            },
           ],
           defaultValue: 'no',
           required: true,
@@ -202,7 +202,9 @@ const Articles: CollectionConfig = {
   ],
   timestamps: true,
   versions: {
-    drafts: true,
+    drafts: {
+      autosave: true,
+    },
   },
 };
 
