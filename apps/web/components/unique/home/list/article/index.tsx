@@ -32,8 +32,10 @@ const ArticleList = async () => {
   return list && list.length > 0 ? (
     <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 sm:p-16 p-4 gap-8 justify-items-center items-center">
       {list.map((article) => (
-        <div className="flex flex-col justify-center items-center gap-4 rounded-3xl bg-light-orange-200 dark:bg-dark-cyan-800 max-w-[26.5rem]">
-          {/* TODO: Implement dynamic content after CMS is finalized. */}
+        <article
+          className="flex flex-col justify-center items-center gap-4 rounded-3xl bg-light-orange-200 dark:bg-dark-cyan-800 max-w-[26.5rem]"
+          key={article.id}
+        >
           <Link href={article.pageSettings.settingsUrlSlug}>
             <Image
               src={(article.pageSettings.settingsCoverImage as Media).sizes!.thumbnail!.url!}
@@ -54,7 +56,7 @@ const ArticleList = async () => {
             publishedDate={article.pageSettings.settingsScheduledReleaseDate}
             tags={(article.pageSettings.settingsTags as Tag[]).map((tag) => tag.tagTitle)}
           />
-        </div>
+        </article>
       ))}
     </section>
   ) : (
