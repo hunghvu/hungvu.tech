@@ -11,6 +11,7 @@
     "update": "pnpm update"
   },
   "dependencies": {
+    "dayjs": "^1.11.8",
     "next": "^13.4.4",
     "react": "18.2.0",
     "react-dom": "18.2.0"
@@ -24,6 +25,7 @@
     "eslint-config-custom": "workspace:*",
     "tailwind-config": "workspace:*",
     "tsconfig": "workspace:*",
+    "types": "workspace:*",
     "typescript": "^4.9.5"
   }
 }

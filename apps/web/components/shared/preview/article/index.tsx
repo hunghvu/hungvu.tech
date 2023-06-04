@@ -11,40 +11,38 @@ import React from "react";
 
 import Link from "next/link";
 
-import { Author, Calendar, Tag } from "../../svg";
+import dayjs from "dayjs";
+
+import CardContentTime from "./Time";
+
+import { Author, Tag } from "../../svg";
 
 import { fredoka } from "../../../fonts";
 import { robotoSerif } from "../../../fonts";
 import { interTight } from "../../../fonts";
 
-type CardDetail = {
+type PreviewArticleProps = {
   isHero: boolean;
   slug: string;
-  category: {
-    name: string;
-    url: string;
-  };
+  category: string;
   title: string;
   subtitle: string;
   authorName: string;
-  date: string;
-  tags: {
-    name: string;
-    url: string;
-  }[]; // Up to 3 tags, enforce on the back end
+  publishedDate: string;
+  tags: string[]; // Up to 3 tags, enforce on the back end
 };
 
 const cardMetaContent = `flex flex-row justify-start items-center gap-2 ${fredoka.className} not-italic text-xs font-light`;
 const buttonHoverEffect = `px-1 border-2 rounded-3xl border-transparent hover:border-light-orange-300 dark:hover:border-dark-cyan-700 hover:transition-colors hover:duration-1000`;
 
-const CardContent: React.FC<CardDetail> = ({ isHero, slug, category, title, subtitle, authorName, date, tags }) => {
+const PreviewArticle: React.FC<PreviewArticleProps> = ({ isHero, slug, category, title, subtitle, authorName, publishedDate, tags }) => {
+  const utc = require("dayjs/plugin/utc");
+  const tz = dayjs.extend(utc);
   return (
     <article className="flex flex-col justify-start sm:gap-4 gap-2 p-4 w-full">
       <header className="flex flex-col justify-start gap-4">
         {isHero ? (
-          <Link href={category.url} className={`${fredoka.className} font-semibold sm:text-xl text-lg text-light-black-900 dark:text-dark-white-200`}>
-            {category.name}
-          </Link>
+          <div className={`${fredoka.className} font-semibold sm:text-xl text-lg text-light-black-900 dark:text-dark-white-200`}>{category}</div>
         ) : (
           false
         )}
@@ -70,19 +68,15 @@ const CardContent: React.FC<CardDetail> = ({ isHero, slug, category, title, subt
           </Link>
         </address>
         <div className={`${cardMetaContent}`}>
-          <Calendar
-            alt={`The article: ${title} was released on ${date}`}
-            className="w-3 h-3 fill-current text-light-black-900 dark:text-dark-white-200"
-          />
-          <time dateTime={date} className="px-1 border-2 rounded-3xl border-transparent">
-            {date}
-          </time>
+          <CardContentTime publishedDate={publishedDate} />
         </div>
 
         <div className={cardMetaContent}>
           <Tag alt={"Article topics"} className="w-3 h-3 fill-current text-light-black-900 dark:text-dark-white-200" />
           {tags.map((tag, index) => (
-            <Link href={tag.url} className={buttonHoverEffect} key={index}>{`#${tag.name}`}</Link>
+            <div className={buttonHoverEffect} key={index}>
+              {tag}
+            </div>
           ))}
         </div>
       </footer>
@@ -90,4 +84,4 @@ const CardContent: React.FC<CardDetail> = ({ isHero, slug, category, title, subt
   );
 };
 
-export default CardContent;
+export default PreviewArticle;
