@@ -4,7 +4,7 @@
  * ACL to check if the user logged int to back end.
  */
 
-import { User } from '../../payload-types';
+import { User } from 'types/payload-types';
 import { Access, AccessArgs } from 'payload/types';
 
 const isLoggedIn: Access<any, User> = (req: AccessArgs<any, User>) => {

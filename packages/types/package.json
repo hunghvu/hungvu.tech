@@ -1,0 +1,6 @@
+{
+  "name": "types",
+  "files": [
+    "payload-types.ts"
+  ]
+}

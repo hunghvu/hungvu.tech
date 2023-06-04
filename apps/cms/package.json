@@ -27,6 +27,7 @@
     "nodemon": "^2.0.22",
     "ts-node": "^10.9.1",
     "tsconfig": "workspace:*",
+    "types": "workspace:*",
     "typescript": "^4.9.5"
   }
 }

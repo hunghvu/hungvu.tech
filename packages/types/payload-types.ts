@@ -79,6 +79,7 @@ export interface Media {
   alt: string;
   updatedAt: string;
   createdAt: string;
+  _status?: 'draft' | 'published';
   url?: string;
   filename?: string;
   mimeType?: string;
