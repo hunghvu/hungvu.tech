@@ -5,22 +5,8 @@
  */
 
 import { CollectionConfig } from 'payload/types';
-
-const readQuery = {
-  and: [
-    {
-      _status: {
-        equals: 'published',
-      },
-    },
-    {
-      // Implementation reference: https://github.com/payloadcms/public-demo/blob/501e2e1bf73501fbfd9e140f81b28601ab9ff01e/src/collections/Posts.ts#L34
-      settingsScheduledReleaseDate: {
-        less_than: new Date().toJSON(),
-      },
-    },
-  ],
-};
+import isLoggedIn from '../access/validator/isLoggedIn';
+import isPublished from '../access/query/isPublished';
 
 const Articles: CollectionConfig = {
   slug: 'articles',
@@ -35,13 +21,20 @@ const Articles: CollectionConfig = {
     ],
   },
   access: {
-    // By default, other actions require user login to perform
-    // Therefore, no need to implement
-    read: ({ req: { user } }) => {
-      if (user) {
-        return true;
-      }
-      return readQuery;
+    read: (req) => {
+      // return isLoggedIn(req)
+      if (isLoggedIn(req)) return true;
+
+      return {
+        and: [
+          isPublished(),
+          {
+            'pageSettings.settingsScheduledReleaseDate': {
+              less_than: new Date().toJSON(),
+            },
+          },
+        ],
+      };
     },
   },
   fields: [
@@ -90,6 +83,11 @@ const Articles: CollectionConfig = {
           relationTo: 'categories',
           hasMany: false,
           required: true,
+          filterOptions: {
+            _status: {
+              equals: 'published',
+            },
+          },
         },
         {
           name: 'settingsTags',
@@ -98,6 +96,11 @@ const Articles: CollectionConfig = {
           relationTo: 'tags',
           hasMany: true,
           required: true,
+          filterOptions: {
+            _status: {
+              equals: 'published',
+            },
+          },
         },
         {
           name: 'settingsSeries',
@@ -105,6 +108,11 @@ const Articles: CollectionConfig = {
           type: 'relationship',
           relationTo: 'series',
           hasMany: false,
+          filterOptions: {
+            _status: {
+              equals: 'published',
+            },
+          },
         },
         {
           name: 'settingsCoverImage',
@@ -112,6 +120,11 @@ const Articles: CollectionConfig = {
           type: 'upload',
           relationTo: 'media',
           required: true,
+          filterOptions: {
+            _status: {
+              equals: 'published',
+            },
+          },
         },
         {
           name: 'settingsHideFromHome',
@@ -162,6 +175,11 @@ const Articles: CollectionConfig = {
           label: 'Custom OG Image (front-end will fallback to cover image if not presented)',
           type: 'upload',
           relationTo: 'media',
+          filterOptions: {
+            _status: {
+              equals: 'published',
+            },
+          },
         },
       ],
     },

@@ -5,16 +5,8 @@
  */
 
 import { CollectionConfig } from 'payload/types';
-
-const readQuery = {
-  and: [
-    {
-      _status: {
-        equals: 'published',
-      },
-    },
-  ],
-};
+import isLoggedIn from '../access/validator/isLoggedIn';
+import isPublished from '../access/query/isPublished';
 
 const Tags: CollectionConfig = {
   slug: 'tags',
@@ -23,12 +15,7 @@ const Tags: CollectionConfig = {
     defaultColumns: ['tagTitle', 'tagDescription', 'createdAt', 'updatedAt', '_status'],
   },
   access: {
-    read: ({ req: { user } }) => {
-      if (user) {
-        return true;
-      }
-      return readQuery;
-    },
+    read: (req) => isLoggedIn(req) || isPublished(),
   },
   fields: [
     {

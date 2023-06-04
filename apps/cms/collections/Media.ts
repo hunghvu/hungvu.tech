@@ -5,11 +5,13 @@
  */
 
 import { CollectionConfig } from 'payload/types';
+import isLoggedIn from '../access/validator/isLoggedIn';
+import isPublished from '../access/query/isPublished';
 
 const Media: CollectionConfig = {
   slug: 'media',
   access: {
-    read: (): boolean => true,
+    read: (req) => isLoggedIn(req) || isPublished(),
   },
   upload: {
     staticURL: '/media',
@@ -52,6 +54,9 @@ const Media: CollectionConfig = {
     },
   ],
   timestamps: true,
+  versions: {
+    drafts: true,
+  },
 };
 
 export default Media;

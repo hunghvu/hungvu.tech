@@ -193,3 +193,5 @@ media/*
 # Ignore files/folders intended for experiment
 *Test*
 *test*
+
+media
