@@ -18,12 +18,6 @@ const Media: CollectionConfig = {
     staticDir: 'media',
     imageSizes: [
       {
-        name: 'thumbnail',
-        width: 400,
-        height: 300,
-        crop: 'centre',
-      },
-      {
         name: 'cover',
         width: 1600,
         height: 840,
@@ -35,14 +29,8 @@ const Media: CollectionConfig = {
         height: 630,
         crop: 'centre',
       },
-      {
-        name: 'body',
-        width: 800,
-        height: null,
-        crop: 'centre',
-      },
     ],
-    adminThumbnail: 'thumbnail',
+    adminThumbnail: 'cover',
     mimeTypes: ['image/*', 'video/*'],
   },
   fields: [
