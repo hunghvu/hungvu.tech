@@ -23,8 +23,8 @@ const getLatestArticle = async (): Promise<any> => {
     const data = await res.json();
     return data;
   } catch (error) {
-    // TODO: implement error notification
     console.error(error);
+    return undefined;
   }
 };
 
