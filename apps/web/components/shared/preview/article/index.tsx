@@ -35,7 +35,7 @@ const buttonHoverEffect = `px-1 border-2 rounded-3xl border-transparent hover:bo
 
 const PreviewArticle: React.FC<PreviewArticleProps> = ({ isHero, slug, category, title, subtitle, authorName, publishedDate, tags }) => {
   return (
-    <article className="flex flex-col justify-start sm:gap-4 gap-2 p-4 w-full">
+    <article className="flex flex-col justify-start sm:gap-4 gap-2 p-4 w-full max-w-[39.375rem]">
       <header className="flex flex-col justify-start gap-4">
         {isHero ? (
           <div className={`${fredoka.className} font-semibold text-base text-light-black-900 dark:text-dark-white-200`}>{category}</div>

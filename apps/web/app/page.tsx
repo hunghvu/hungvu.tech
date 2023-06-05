@@ -45,7 +45,7 @@ export default async function HomePage() {
   const latestArticle = list && data.totalDocs > 0 ? (list[0] as Article) : null;
   return latestArticle ? (
     <section className="flex flex-col justify-center items-center">
-      <article className="flex lg:flex-row-reverse flex-col w-full justify-center items-center xl:gap-32 gap-4 sm:p-16 p-4 bg-light-orange-200 dark:bg-dark-cyan-800">
+      <article className="flex md:flex-row-reverse flex-col w-full justify-center items-center xl:gap-32 gap-4 sm:p-16 p-4 bg-light-orange-200 dark:bg-dark-cyan-800">
         <Link href={latestArticle.pageSettings.settingsUrlSlug}>
           <Image
             src={(latestArticle.pageSettings.settingsCoverImage as Media).sizes!.cover!.url!}
@@ -53,21 +53,19 @@ export default async function HomePage() {
             width="0"
             height="0"
             sizes="100vw"
-            className="max-w-[39.375rem] w-full rounded-3xl"
+            className="min-w-[23rem] max-w-[50rem] w-full rounded-3xl"
           />
         </Link>
-        <div className="max-w-[39.375rem] w-full">
-          <PreviewArticle
-            isHero={true}
-            slug={latestArticle.pageSettings.settingsUrlSlug}
-            category={(latestArticle.pageSettings.settingsCategories as Category).categoriesTitle}
-            title={latestArticle.contentTitle}
-            subtitle={latestArticle.contentSubTitle}
-            authorName={"Hung Vu"} // TODO: Consider adding author name on the CMS?
-            publishedDate={latestArticle.pageSettings.settingsScheduledReleaseDate}
-            tags={(latestArticle.pageSettings.settingsTags as Tag[]).map((tag) => tag.tagTitle)}
-          />
-        </div>
+        <PreviewArticle
+          isHero={true}
+          slug={latestArticle.pageSettings.settingsUrlSlug}
+          category={(latestArticle.pageSettings.settingsCategories as Category).categoriesTitle}
+          title={latestArticle.contentTitle}
+          subtitle={latestArticle.contentSubTitle}
+          authorName={"Hung Vu"} // TODO: Consider adding author name on the CMS?
+          publishedDate={latestArticle.pageSettings.settingsScheduledReleaseDate}
+          tags={(latestArticle.pageSettings.settingsTags as Tag[]).map((tag) => tag.tagTitle)}
+        />
       </article>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full sm:p-16 p-4 gap-8 justify-items-center items-center">
         {list.map((article) => (
