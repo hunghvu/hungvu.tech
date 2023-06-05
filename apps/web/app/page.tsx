@@ -31,11 +31,8 @@ let queryLimit = 9;
 let pageNumber = 1;
 
 export default async function HomePage() {
-  // TODO: exclude the latest article
   // TODO: implement pagination
   // TODO: implement queries when clicking on meta information
-  // TODO: adjust image size on the cms, thumbnail must be bigger than the card itself
-  // TODO: CTA to footer?
   // TODO: implement per page limit
 
   const data = await getArticles(queryLimit, pageNumber);
@@ -44,7 +41,7 @@ export default async function HomePage() {
   const list = data.docs as Article[];
   const latestArticle = list && data.totalDocs > 0 ? (list[0] as Article) : null;
   return latestArticle ? (
-    <section className="flex flex-col justify-center items-center">
+    <section className="flex flex-col justify-center items-center gap-16">
       <article className="flex md:flex-row-reverse flex-col w-full justify-center items-center xl:gap-32 gap-4 sm:p-16 p-4 bg-light-orange-200 dark:bg-dark-cyan-800">
         <Link href={latestArticle.pageSettings.settingsUrlSlug}>
           <Image
@@ -68,33 +65,36 @@ export default async function HomePage() {
         />
       </article>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full sm:p-16 p-4 gap-8 justify-items-center items-center">
-        {list.map((article) => (
-          <article
-            className="flex flex-col justify-center items-center gap-4 rounded-3xl bg-light-orange-200 dark:bg-dark-cyan-800 max-w-[26.5rem]"
-            key={article.id}
-          >
-            <Link href={article.pageSettings.settingsUrlSlug}>
-              <Image
-                src={(article.pageSettings.settingsCoverImage as Media).sizes!.thumbnail!.url!}
-                alt={(article.pageSettings.settingsCoverImage as Media).alt!}
-                width="0"
-                height="0"
-                sizes="100vw"
-                className="w-full rounded-t-3xl"
+        {list.map((article, index) => {
+          if (pageNumber === 1 && index === 0) return null;
+          return (
+            <article
+              className="flex flex-col justify-center items-center gap-4 rounded-3xl bg-light-orange-200 dark:bg-dark-cyan-800 max-w-[26.5rem]"
+              key={article.id}
+            >
+              <Link href={article.pageSettings.settingsUrlSlug}>
+                <Image
+                  src={(article.pageSettings.settingsCoverImage as Media).sizes!.cover!.url!}
+                  alt={(article.pageSettings.settingsCoverImage as Media).alt!}
+                  width="0"
+                  height="0"
+                  sizes="100vw"
+                  className="w-full rounded-t-3xl"
+                />
+              </Link>
+              <PreviewArticle
+                isHero={false}
+                slug={article.pageSettings.settingsUrlSlug}
+                category={(article.pageSettings.settingsCategories as Category).categoriesTitle}
+                title={article.contentTitle}
+                subtitle={article.contentSubTitle}
+                authorName={"Hung Vu"} // TODO: Consider adding author name on the CMS?
+                publishedDate={article.pageSettings.settingsScheduledReleaseDate}
+                tags={(article.pageSettings.settingsTags as Tag[]).map((tag) => tag.tagTitle)}
               />
-            </Link>
-            <PreviewArticle
-              isHero={false}
-              slug={article.pageSettings.settingsUrlSlug}
-              category={(article.pageSettings.settingsCategories as Category).categoriesTitle}
-              title={article.contentTitle}
-              subtitle={article.contentSubTitle}
-              authorName={"Hung Vu"} // TODO: Consider adding author name on the CMS?
-              publishedDate={article.pageSettings.settingsScheduledReleaseDate}
-              tags={(article.pageSettings.settingsTags as Tag[]).map((tag) => tag.tagTitle)}
-            />
-          </article>
-        ))}
+            </article>
+          );
+        })}
       </div>
       {hasNextPage ? null : (
         <div className={`${fredoka.className} text-light-black-900 dark:text-dark-white-200 font-bold text-base`}>

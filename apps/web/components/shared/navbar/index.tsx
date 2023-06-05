@@ -49,7 +49,7 @@ const socialItems: SocialItem[] = [
 const Navbar: React.FC = () => {
   return (
     <nav
-      className={`sm:py-12 py-6 lg:px-32 md:px-16 sm:px-8 px-4 grid sm:grid-cols-3 grid-cols-2 gap-2 ${fredoka.className} text-2xl font-bold text-light-black-900 dark:text-dark-white-200 bg-light-orange-100 dark:bg-dark-cyan-900`}
+      className={`sm:py-12 py-6 lg:px-32 md:px-16 sm:px-8 px-4 grid sm:grid-cols-3 grid-cols-2 gap-2 ${fredoka.className} text-2xl font-bold text-light-black-900 dark:text-dark-white-200`}
     >
       <div className="flex flex-row items-center pl-2">
         <Link href="/">Hung Vu</Link>

@@ -11,10 +11,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body>
+    <html lang="en" className="w-full h-full ">
+      <body className="w-full h-full bg-light-orange-200 dark:bg-dark-cyan-900">
         <Navbar />
-        <main className="flex flex-col gap-16 bg-light-orange-200 dark:bg-dark-cyan-900">{children}</main>
+        <main className="flex flex-col gap-16">{children}</main>
       </body>
     </html>
   );
