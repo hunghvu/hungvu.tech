@@ -11,8 +11,6 @@ import React from "react";
 
 import Link from "next/link";
 
-import dayjs from "dayjs";
-
 import CardContentTime from "./Time";
 
 import { Author, Tag } from "../../svg";
@@ -36,16 +34,12 @@ const cardMetaContent = `flex flex-row justify-start items-center gap-2 ${fredok
 const buttonHoverEffect = `px-1 border-2 rounded-3xl border-transparent hover:border-light-orange-300 dark:hover:border-dark-cyan-700 hover:transition-colors hover:duration-1000`;
 
 const PreviewArticle: React.FC<PreviewArticleProps> = ({ isHero, slug, category, title, subtitle, authorName, publishedDate, tags }) => {
-  const utc = require("dayjs/plugin/utc");
-  const tz = dayjs.extend(utc);
   return (
     <article className="flex flex-col justify-start sm:gap-4 gap-2 p-4 w-full">
       <header className="flex flex-col justify-start gap-4">
         {isHero ? (
-          <div className={`${fredoka.className} font-semibold sm:text-xl text-lg text-light-black-900 dark:text-dark-white-200`}>{category}</div>
-        ) : (
-          false
-        )}
+          <div className={`${fredoka.className} font-semibold text-base text-light-black-900 dark:text-dark-white-200`}>{category}</div>
+        ) : null}
 
         <Link
           href={slug}
@@ -56,7 +50,7 @@ const PreviewArticle: React.FC<PreviewArticleProps> = ({ isHero, slug, category,
           <h2>{title}</h2>
         </Link>
       </header>
-      <Link href={slug} className={`${interTight.className} ${isHero ? "md:text-lg" : null} text-base text-light-black-800 dark:text-dark-white-100`}>
+      <Link href={slug} className={`${interTight.className} ${isHero ? "md:text-xl" : null} text-base text-light-black-800 dark:text-dark-white-100`}>
         <p>{subtitle}</p>
       </Link>
       <footer className="flex flex-row flex-wrap gap-x-4 text-light-black-900 dark:text-dark-white-200">
