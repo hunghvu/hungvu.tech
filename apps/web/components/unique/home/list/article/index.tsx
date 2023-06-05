@@ -15,7 +15,10 @@ import { fredoka } from "../../../../fonts";
 
 const getArticles = async (limit: number, page: number): Promise<any> => {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_ARTICLES_URL!}?limit=${limit}&page=${page}`);
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_ARTICLES_URL!}?limit=${limit}&page=${page}&where[pageSettings.settingsHideFromHome][equals]=no`,
+      { next: { revalidate: 60 } }
+    );
     const data = await res.json();
     return data;
   } catch (error) {
@@ -30,8 +33,7 @@ const ArticleList = async () => {
   // TODO: exclude the latest article
   // TODO: implement pagination
   // TODO: implement queries when clicking on meta information
-  // TODO: adjust image size on the cms, thumnail must be bigger than the card itself
-  // TODO: respect "hide from home"
+  // TODO: adjust image size on the cms, thumbnail must be bigger than the card itself
   // TODO: CTA to footer?
   // TODO: implement per page limit
   const data = await getArticles(limit, page);

@@ -17,7 +17,9 @@ import { fredoka } from "../../../fonts";
 // Temporary value for testing purpose
 const getLatestArticle = async (): Promise<any> => {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_ARTICLES_URL!}?limit=${1}`, { next: { revalidate: 60 } });
+    const res = await fetch(`${process.env.NEXT_PUBLIC_ARTICLES_URL!}?limit=${1}&where[pageSettings.settingsHideFromHome][equals]=no`, {
+      next: { revalidate: 60 },
+    });
     const data = await res.json();
     return data;
   } catch (error) {
@@ -28,7 +30,6 @@ const getLatestArticle = async (): Promise<any> => {
 
 const Hero = async () => {
   // TODO: implement queries when clicking on meta information
-  // TODO: respect "hide from home"
   const data = await getLatestArticle();
   const latestArticle = data.docs && data.totalDocs > 0 ? (data.docs[0] as Article) : null;
   return latestArticle ? (
