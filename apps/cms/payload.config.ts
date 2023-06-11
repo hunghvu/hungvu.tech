@@ -8,7 +8,7 @@ import Series from './collections/Series';
 import Categories from './collections/Categories';
 
 export default buildConfig({
-  serverURL: process.env.SERVER_URL,
+  serverURL: process.env.PAYLOAD_PUBLIC_SERVER_URL! ?? 'http://localhost:3001',
   admin: {
     user: Users.slug,
   },
@@ -19,4 +19,6 @@ export default buildConfig({
   graphQL: {
     schemaOutputFile: path.resolve(__dirname, 'generated-schema.graphql'),
   },
+  csrf: [`${process.env.FRONT_END_DOMAIN! ?? 'http://localhost:3000'}`],
+  cors: [`${process.env.FRONT_END_DOMAIN! ?? 'http://localhost:3000'}`],
 });
