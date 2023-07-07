@@ -22,7 +22,7 @@ const CardContentTime: FC<CardContentTimeProps> = ({ publishedDate }) => {
         alt={`The article: was released on ${userLocalDate}`}
         className="w-3 h-3 fill-current text-light-black-900 dark:text-dark-white-200"
       />
-      <time dateTime={userLocalDate} className="px-1 border-2 rounded-3xl border-transparent">
+      <time dateTime={userLocalDate} className="px-1 border-2 rounded-xl border-transparent">
         {userLocalDate}
       </time>
     </>

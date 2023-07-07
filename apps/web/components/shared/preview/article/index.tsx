@@ -15,9 +15,7 @@ import CardContentTime from "./Time";
 
 import { Author, Tag } from "../../svg";
 
-import { fredoka } from "../../../fonts";
-import { robotoSerif } from "../../../fonts";
-import { interTight } from "../../../fonts";
+import { intelOneMono } from "../../../fonts";
 
 type PreviewArticleProps = {
   isHero: boolean;
@@ -30,27 +28,27 @@ type PreviewArticleProps = {
   tags: string[]; // Up to 3 tags, enforce on the back end
 };
 
-const cardMetaContent = `flex flex-row justify-start items-center gap-2 ${fredoka.className} not-italic text-xs font-light`;
-const buttonHoverEffect = `px-1 border-2 rounded-3xl border-transparent hover:border-light-orange-300 dark:hover:border-dark-cyan-700 hover:transition-colors hover:duration-1000`;
+const cardMetaContent = `flex flex-row justify-start items-center gap-2 ${intelOneMono.className} not-italic text-xs font-light`;
+const buttonHoverEffect = `px-1 border-2 rounded-xl border-transparent hover:border-light-orange-300 dark:hover:border-dark-cyan-700 hover:transition-colors hover:duration-1000`;
 
 const PreviewArticle: React.FC<PreviewArticleProps> = ({ isHero, slug, category, title, subtitle, authorName, publishedDate, tags }) => {
   return (
     <article className="flex flex-col justify-start sm:gap-4 gap-2 p-4 w-full max-w-[39.375rem]">
       <header className="flex flex-col justify-start gap-4">
         {isHero ? (
-          <div className={`${fredoka.className} font-semibold text-base text-light-black-900 dark:text-dark-white-200`}>{category}</div>
+          <div className={`${intelOneMono.className} font-semibold text-base text-light-black-900 dark:text-dark-white-200`}>{category}</div>
         ) : null}
 
         <Link
           href={slug}
-          className={`${robotoSerif.className} text-light-black-900 dark:text-dark-white-200 font-bold ${
+          className={`${intelOneMono.className} text-light-black-900 dark:text-dark-white-200 font-bold ${
             isHero ? "md:text-32px text-xl" : "text-xl"
           }`}
         >
           <h2>{title}</h2>
         </Link>
       </header>
-      <Link href={slug} className={`${interTight.className} ${isHero ? "md:text-xl" : null} text-base text-light-black-800 dark:text-dark-white-100`}>
+      <Link href={slug} className={`${intelOneMono.className} ${isHero ? "md:text-xl" : null} text-base text-light-black-800 dark:text-dark-white-100`}>
         <p>{subtitle}</p>
       </Link>
       <footer className="flex flex-row flex-wrap gap-x-4 text-light-black-900 dark:text-dark-white-200">

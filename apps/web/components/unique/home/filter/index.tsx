@@ -5,7 +5,7 @@ import { FC } from "react";
  * Filter bar to search for articles
  */
 
-import { fredoka } from "../../../fonts";
+import { intelOneMono } from "../../../fonts";
 
 // Depends on how filter is implemented, might need to change to params
 type FilterProps = {
@@ -22,7 +22,7 @@ const Filter: FC<FilterProps> = ({ categories, tags, series }) => {
     >
       <div className="flex flex-row justify-start items-center`  text-xl p-4 gap-8">
         {categories.map((category) => (
-          <p className={`${fredoka.className} font-semibold`}>{category}</p>
+          <p className={`${intelOneMono.className} font-semibold`}>{category}</p>
         ))}
       </div>
     </section>

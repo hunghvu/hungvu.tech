@@ -8,7 +8,7 @@ import Link from "next/link";
 
 import { LinkedIn, GitHub, Rss, Twitter } from "../svg";
 
-import { fredoka } from "../../fonts";
+import { intelOneMono } from "../../fonts";
 
 type NavItem = {
   label: string;
@@ -49,7 +49,7 @@ const socialItems: SocialItem[] = [
 const Navbar: React.FC = () => {
   return (
     <nav
-      className={`sm:py-12 py-6 lg:px-32 md:px-16 sm:px-8 px-4 grid sm:grid-cols-3 grid-cols-2 gap-2 ${fredoka.className} text-2xl font-bold text-light-black-900 dark:text-dark-white-200`}
+      className={`sm:py-12 py-6 lg:px-32 md:px-16 sm:px-8 px-4 grid sm:grid-cols-3 grid-cols-2 gap-2 ${intelOneMono.className} text-2xl font-bold text-light-black-900 dark:text-dark-white-200`}
     >
       <div className="flex flex-row items-center pl-2">
         <Link href="/">Hung Vu</Link>
@@ -63,7 +63,7 @@ const Navbar: React.FC = () => {
           <Link
             href={href}
             key={index}
-            className="px-2 border-2 rounded-3xl border-transparent hover:border-light-orange-300 dark:hover:border-dark-cyan-700 hover:transition-colors hover:duration-1000"
+            className="px-2 border-2 rounded-xl border-transparent hover:border-light-orange-300 dark:hover:border-dark-cyan-700 hover:transition-colors hover:duration-1000"
           >
             {label}
           </Link>

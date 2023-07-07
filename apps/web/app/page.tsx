@@ -8,7 +8,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 import { Article, Media, Category, Tag } from "types/payload-types";
-import { fredoka } from "../components/fonts";
+import { intelOneMono } from "../components/fonts";
 import PreviewArticle from "../components/shared/preview/article";
 
 const getArticles = async (limit: number, page: number): Promise<any> => {
@@ -43,7 +43,7 @@ export default async function HomePage() {
   const latestArticle = list && data.totalDocs > 0 ? (list[0] as Article) : null;
   return latestArticle ? (
     <section className="flex flex-col justify-center items-center gap-16">
-      <article className="flex md:flex-row-reverse flex-col w-full justify-center items-center xl:gap-32 gap-4 sm:p-16 p-4 bg-light-orange-200 dark:bg-dark-cyan-800">
+      <article className="flex md:flex-row-reverse flex-col w-full justify-center items-center xl:gap-32 gap-4 sm:p-16 p-4 bg-light-orange-200 dark:bg-dark-cyan-800 shadow-xl">
         <Link href={latestArticle.pageSettings.settingsUrlSlug}>
           <Image
             src={(latestArticle.pageSettings.settingsCoverImage as Media).sizes!.cover!.url!}
@@ -51,7 +51,7 @@ export default async function HomePage() {
             width="0"
             height="0"
             sizes="100vw"
-            className="min-w-[23rem] max-w-[50rem] w-full rounded-3xl"
+            className="min-w-[23rem] max-w-[50rem] w-full rounded-xl"
           />
         </Link>
         <PreviewArticle
@@ -70,7 +70,7 @@ export default async function HomePage() {
           if (pageNumber === 1 && index === 0) return null;
           return (
             <article
-              className="flex flex-col justify-center items-center gap-4 rounded-3xl bg-light-orange-200 dark:bg-dark-cyan-800 max-w-[26.5rem]"
+              className="flex flex-col justify-center items-center gap-4 rounded-xl bg-light-orange-200 dark:bg-dark-cyan-800 max-w-[26.5rem]"
               key={article.id}
             >
               <Link href={article.pageSettings.settingsUrlSlug}>
@@ -80,7 +80,7 @@ export default async function HomePage() {
                   width="0"
                   height="0"
                   sizes="100vw"
-                  className="w-full rounded-t-3xl"
+                  className="w-full rounded-t-xl"
                 />
               </Link>
               <PreviewArticle
@@ -98,7 +98,7 @@ export default async function HomePage() {
         })}
       </div>
       {hasNextPage ? null : (
-        <div className={`${fredoka.className} text-light-black-900 dark:text-dark-white-200 font-bold text-base`}>
+        <div className={`${intelOneMono.className} text-light-black-900 dark:text-dark-white-200 font-bold text-base`}>
           The end! Subscribe to get notified when new article arrives.
         </div>
       )}
@@ -107,7 +107,7 @@ export default async function HomePage() {
     // TODO: Adjust height so it only fills the range between header and footer
     // TODO: More creative? like a CTA?
     <div
-      className={`${fredoka.className} flex flex-col min-h-screen justify-center items-center text-light-black-900 dark:text-dark-white-200 bg-light-orange-200 dark:bg-dark-cyan-800 text-32px`}
+      className={`${intelOneMono.className} flex flex-col min-h-screen justify-center items-center text-light-black-900 dark:text-dark-white-200 bg-light-orange-200 dark:bg-dark-cyan-800 text-32px`}
     >
       Articles are not available at the moment.
     </div>
