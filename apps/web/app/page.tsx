@@ -34,6 +34,7 @@ export default async function HomePage() {
   // TODO: implement pagination
   // TODO: implement queries when clicking on meta information
   // TODO: implement per page limit
+  // TODO: implement filters
 
   const data = await getArticles(queryLimit, pageNumber);
 
