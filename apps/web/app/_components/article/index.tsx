@@ -13,7 +13,7 @@ import Link from "next/link";
 
 import CardContentTime from "./Time";
 
-import { Author, Tag } from "../../svg";
+import { Author, Tag } from "../svg";
 
 type PreviewArticleProps = {
   isHero: boolean;

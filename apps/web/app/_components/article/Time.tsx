@@ -5,9 +5,9 @@
  */
 "use client";
 import { FC } from "react";
-import { utcToLocal } from "../../../../utilities/parseDate";
+import { utcToLocal } from "../../_utilities/parseDate";
 
-import { Calendar } from "../../svg";
+import { Calendar } from "../svg";
 
 type CardContentTimeProps = {
   publishedDate: string;

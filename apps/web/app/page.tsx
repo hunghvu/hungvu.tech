@@ -8,7 +8,8 @@ import Link from "next/link";
 import Image from "next/image";
 
 import { Article, Media, Category, Tag } from "types/payload-types";
-import PreviewArticle from "../components/shared/preview/article";
+import PreviewArticle from "./_components/article";
+import Filter from "./_components/filter";
 
 const getArticles = async (limit: number, page: number): Promise<any> => {
   try {
@@ -64,6 +65,7 @@ export default async function HomePage() {
           tags={(latestArticle.pageSettings.settingsTags as Tag[]).map((tag) => tag.tagTitle)}
         />
       </article>
+      <Filter categories={[]} tags={[]} series={[]}/>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full sm:p-16 p-4 gap-8 justify-items-center items-center">
         {list.map((article, index) => {
           if (pageNumber === 1 && index === 0) return null;

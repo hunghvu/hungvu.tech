@@ -1,8 +1,8 @@
 import React from "react";
-import Navbar from "../components/shared/navbar";
+import Navbar from "./_components/navbar";
 
 import "./global.css";
-import { intelOneMono } from "../components/fonts";
+import { intelOneMono } from "./_components/fonts";
 
 export default function RootLayout({
   // Layouts must accept a children prop.
