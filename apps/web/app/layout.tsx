@@ -2,6 +2,7 @@ import React from "react";
 import Navbar from "../components/shared/navbar";
 
 import "./global.css";
+import { intelOneMono } from "../components/fonts";
 
 export default function RootLayout({
   // Layouts must accept a children prop.
@@ -12,7 +13,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="w-full h-full ">
-      <body className="w-full h-full bg-light-orange-200 dark:bg-dark-cyan-900">
+      <body className={`${intelOneMono.className} w-full h-full bg-light-orange-200 dark:bg-dark-cyan-900`}>
         <Navbar />
         <main className="flex flex-col gap-16">{children}</main>
       </body>

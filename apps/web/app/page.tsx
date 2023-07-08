@@ -8,7 +8,6 @@ import Link from "next/link";
 import Image from "next/image";
 
 import { Article, Media, Category, Tag } from "types/payload-types";
-import { intelOneMono } from "../components/fonts";
 import PreviewArticle from "../components/shared/preview/article";
 
 const getArticles = async (limit: number, page: number): Promise<any> => {
@@ -98,7 +97,7 @@ export default async function HomePage() {
         })}
       </div>
       {hasNextPage ? null : (
-        <div className={`${intelOneMono.className} text-light-black-900 dark:text-dark-white-200 font-bold text-base`}>
+        <div className="text-light-black-900 dark:text-dark-white-200 font-bold text-base">
           The end! Subscribe to get notified when new article arrives.
         </div>
       )}
@@ -106,9 +105,7 @@ export default async function HomePage() {
   ) : (
     // TODO: Adjust height so it only fills the range between header and footer
     // TODO: More creative? like a CTA?
-    <div
-      className={`${intelOneMono.className} flex flex-col min-h-screen justify-center items-center text-light-black-900 dark:text-dark-white-200 bg-light-orange-200 dark:bg-dark-cyan-800 text-32px`}
-    >
+    <div className="flex flex-col min-h-screen justify-center items-center text-light-black-900 dark:text-dark-white-200 bg-light-orange-200 dark:bg-dark-cyan-800 text-32px">
       Articles are not available at the moment.
     </div>
   );
