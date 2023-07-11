@@ -17,6 +17,8 @@ const getArticles = async (limit: number, page: number): Promise<any> => {
       `${process.env.NEXT_PUBLIC_ARTICLES_URL!}?limit=${limit}&page=${page}&where[pageSettings.settingsHideFromHome][equals]=no`,
       { next: { revalidate: 60 } }
     );
+    // When server is down
+    if (res.status === 404) return undefined
     const data = await res.json();
     return data;
   } catch (error) {
@@ -38,8 +40,8 @@ export default async function HomePage() {
 
   const data = await getArticles(queryLimit, pageNumber);
 
-  const hasNextPage = data.hasNextPage;
-  const list = data.docs as Article[];
+  const hasNextPage = data?.hasNextPage;
+  const list = data?.docs as Article[];
   const latestArticle = list && data.totalDocs > 0 ? (list[0] as Article) : null;
   return latestArticle ? (
     <section className="flex flex-col justify-center items-center gap-16">
