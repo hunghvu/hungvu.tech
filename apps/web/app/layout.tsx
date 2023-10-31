@@ -1,8 +1,8 @@
 import React from "react";
-import Navbar from "./_components/navbar";
-
-import "./global.css";
 import { intelOneMono } from "./_components/fonts";
+import RootProvider from "./RootProvider";
+import "primereact/resources/themes/tailwind-light/theme.css"
+import "./global.css";
 
 export default function RootLayout({
   // Layouts must accept a children prop.
@@ -13,10 +13,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="w-full h-full ">
-      <body className={`${intelOneMono.className} w-full h-full bg-light-orange-200 dark:bg-dark-cyan-900`}>
-        <Navbar />
-        <main className="flex flex-col gap-16">{children}</main>
-      </body>
+      <RootProvider font={intelOneMono} children />
     </html>
   );
 }
