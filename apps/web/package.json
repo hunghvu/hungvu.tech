@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbo",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
@@ -13,6 +13,7 @@
   "dependencies": {
     "dayjs": "^1.11.10",
     "next": "^14.0.1",
+    "primeicons": "^6.0.1",
     "primereact": "^10.0.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

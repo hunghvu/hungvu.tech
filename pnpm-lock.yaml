@@ -78,6 +78,9 @@ importers:
       next:
         specifier: ^14.0.1
         version: 14.0.1(@babel/core@7.23.2)(react-dom@18.2.0)(react@18.2.0)
+      primeicons:
+        specifier: ^6.0.1
+        version: 6.0.1
       primereact:
         specifier: ^10.0.7
         version: 10.0.7(@types/react@18.2.33)(react-dom@18.2.0)(react@18.2.0)
@@ -7248,6 +7251,10 @@ packages:
     dependencies:
       lodash: 4.17.21
       renderkid: 3.0.0
+    dev: false
+
+  /primeicons@6.0.1:
+    resolution: {integrity: sha512-KDeO94CbWI4pKsPnYpA1FPjo79EsY9I+M8ywoPBSf9XMXoe/0crjbUK7jcQEDHuc0ZMRIZsxH3TYLv4TUtHmAA==}
     dev: false
 
   /primereact@10.0.7(@types/react@18.2.33)(react-dom@18.2.0)(react@18.2.0):

@@ -1,8 +1,11 @@
 import React from "react";
-import { intelOneMono } from "./_components/fonts";
+
 import RootProvider from "./RootProvider";
-import "primereact/resources/themes/tailwind-light/theme.css"
+
 import "./global.css";
+import "primereact/resources/themes/mdc-dark-indigo/theme.css";
+import "primeicons/primeicons.css";
+
 
 export default function RootLayout({
   // Layouts must accept a children prop.
@@ -13,7 +16,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="w-full h-full ">
-      <RootProvider font={intelOneMono} children />
+      <RootProvider children />
     </html>
   );
 }
