@@ -13,12 +13,12 @@ const Header: React.FunctionComponent = () => {
   const items = [
     {
       label: "Blog",
-      icon: "pi pi-home text-2xl",
+      icon: "pi pi-home",
       url: "/",
     },
     {
       label: "Homelab",
-      icon: "pi pi-server text-2xl",
+      icon: "pi pi-server",
       url: "/homelab"
     }
   ]
@@ -37,6 +37,15 @@ const Header: React.FunctionComponent = () => {
     pt={{
       root: {
         className: `${intelOneMono.className} flex flex-row justify-around text-2xl font-bold`
+      },
+      menu: {
+        className: "gap-4"
+      },
+      icon: {
+        className: "text-2xl"
+      },
+      popupIcon: {
+        className: "w-[1.5rem] h-[1.5rem]"
       },
       start: {
         className: "pb-1"
