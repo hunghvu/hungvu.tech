@@ -16,7 +16,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="w-full h-full ">
-      <RootProvider children />
+      <RootProvider children={children} />
     </html>
   );
 }
