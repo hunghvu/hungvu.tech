@@ -8,12 +8,16 @@
 import Link from "next/link";
 import { Button } from "primereact/button";
 import { Card } from "primereact/card";
+import { ScrollPanel } from "primereact/scrollpanel";
 import { Tag } from "primereact/tag";
 import { Timeline } from "primereact/timeline";
 
 const BlogPage: React.FunctionComponent = () => {
   const data = [
-    { title: "Homelab", description: "This is my homelab", date: "2021-10-15", url: "/homelab", tags: ["homelab", "personal", "hobbies"] },
+    {
+      title: "Homelab", description: `This is my homelab This is my homelab This is my homelab This is my homelab This is my homelab This is my homelab This is my homelab This is my homelab
+    This is my homelab This is my homelab This is my homelab This is my homelab This is my homelab This is my homelab This is my homelab This is my homelab`, date: "2021-10-15", url: "/homelab", tags: ["homelab", "personal", "hobbies"]
+    },
     { title: "Blog", description: "This is my blog", date: "2021-10-15", url: "/blog", tags: ["blogging", "writing", "personal"] },
     { title: "About", description: "This is my about page", date: "2021-10-15", url: "/about", tags: ["about", "personal", "bio"] },
     { title: "Contact", description: "This is my contact page", date: "2021-10-15", url: "/contact", tags: ["contact", "personal", "email"] },
@@ -40,16 +44,16 @@ const BlogPage: React.FunctionComponent = () => {
             <Button
               link
               size="small"
-              role="contentinfo"
-              aria-label={`Read the article ${item.title} now.`}
+              aria-label={`View blog article ${item.title} now.`}
               pt={{
                 root: { className: "p-0" }
               }}
-            >Read more</Button>}
+            >View blog article</Button>}
           pt={{
-            root: { className: "-mt-4 mb-12 bg-transparent shadow-none hover:bg-dark-cyan-800/20 hover:shadow-sm hover:rounded-2xl" },
+            root: { className: "-mt-4 mb-12 pb-6 bg-transparent shadow-none hover:bg-dark-cyan-800/20 hover:shadow-sm hover:rounded-2xl" },
             body: { className: "px-4 py-4" },
-            content: { className: "text-lg" },
+            title: { className: "text-lg md:text-xl lg:text-2xl" },
+            content: { className: "text-sm md:text-base lg:text-lg" },
             footer: { className: "pt-0" }
           }}>
           <p>{item.description}</p>
@@ -63,7 +67,7 @@ const BlogPage: React.FunctionComponent = () => {
     return (
       <aside className="flex flex-col items-end gap-2">
         {/* TODO: Use proper time format from the API */}
-        <time dateTime={item.date}>{item.date}</time>
+        <time className="text-sm md:text-base lg:text-lg" dateTime={item.date}>{item.date}</time>
 
         {/* TODO: Use db id as key instead */}
         {item.tags.map((tag: string) => <Tag key={tag} value={tag}
@@ -75,18 +79,26 @@ const BlogPage: React.FunctionComponent = () => {
     )
   }
   return (
-    <section className="p-40">
-      <Timeline value={data} opposite={customizedOpposite} content={customizedContent} pt={{
-        root: {
-          className: "text-lg",
-        },
-        marker: {
-          className: "bg-[#bdbdbd]/40"
-        },
-        connector: {
-          className: "bg-[#bdbdbd]/20"
-        },
-      }} />
+    <section className="flex flex-row">
+      <ScrollPanel pt={{
+        root: { className: "max-w-[1024px] lg:w-[1024px] h-[80vh]" }
+      }}>
+        <Timeline value={data} opposite={customizedOpposite} content={customizedContent} pt={{
+          marker: {
+            className: "bg-[#bdbdbd]/40"
+          },
+          connector: {
+            className: "bg-[#bdbdbd]/20"
+          },
+          opposite: {
+            className: "flex grow-0 sm:text-sm md:text-base lg:text-lg",
+          },
+          content: {
+            className: "flex grow",
+          }
+        }} />
+      </ScrollPanel>
+
     </section>
   )
 }

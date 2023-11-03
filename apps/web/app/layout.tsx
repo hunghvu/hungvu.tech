@@ -15,8 +15,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="w-full h-full ">
-      <RootProvider children={children} />
+    <html lang="en">
+      <head>
+        <title>Hung's blog</title>
+      </head>
+      <body>
+        <RootProvider children={children} />
+      </body>
     </html>
   );
 }

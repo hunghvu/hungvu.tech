@@ -9,10 +9,8 @@ type RootProviderProps = {
 const RootProvider: React.FunctionComponent<RootProviderProps> = ({ children }) => {
   return (
     <PrimeReactProvider>
-      <body className={"w-full h-full"}>
         <Navbar />
-        <main className="flex flex-col gap-16">{children}</main>
-      </body>
+        <main className="flex flex-row items-center justify-center gap-16 pt-16 w-full">{children}</main>
     </PrimeReactProvider>
   )
 }
