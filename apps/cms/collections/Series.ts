@@ -11,8 +11,8 @@ import isPublished from '../access/query/isPublished';
 const Series: CollectionConfig = {
   slug: 'series',
   admin: {
-    useAsTitle: 'seriesTitle',
-    defaultColumns: ['seriesTitle', 'seriesDescription', 'createdAt', 'updatedAt', '_status'],
+    useAsTitle: 'title',
+    defaultColumns: ['title', 'description', 'createdAt', 'updatedAt', '_status'],
   },
   access: {
     read: (req) => isLoggedIn(req) || isPublished(),
