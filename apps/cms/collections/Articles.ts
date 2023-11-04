@@ -30,7 +30,7 @@ const Articles: CollectionConfig = {
         and: [
           isPublished(),
           {
-            'pageSettings.settingsScheduledReleaseDate': {
+            'settings.scheduledReleaseDate': {
               less_than: new Date().toJSON(),
             },
           },
