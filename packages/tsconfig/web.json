@@ -11,8 +11,6 @@
     "inlineSources": false,
     "isolatedModules": true,
     "jsx": "preserve",
-    "module": "esnext",
-    "moduleResolution": "node",
     "noEmit": true,
     "noUnusedLocals": false,
     "noUnusedParameters": false,

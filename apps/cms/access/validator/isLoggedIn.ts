@@ -1,7 +1,7 @@
 /**
  * @author Hung Vu
  *
- * ACL to check if the user logged int to back end.
+ * ACL to check if the user is logged in to to back end.
  */
 
 import { User } from 'types/payload-types';

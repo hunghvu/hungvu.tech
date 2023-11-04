@@ -11,10 +11,11 @@ import isPublished from '../access/query/isPublished';
 const Articles: CollectionConfig = {
   slug: 'articles',
   admin: {
-    useAsTitle: 'contentTitle',
+    useAsTitle: 'title',
     defaultColumns: [
-      // Some columns name are based on JSON response properties
-      'contentTitle',
+      // Some columns name are implicitly created by Payload.
+      'title',
+      'series',
       'createdAt',
       'updatedAt',
       '_status',
@@ -39,14 +40,15 @@ const Articles: CollectionConfig = {
   },
   fields: [
     {
-      name: 'pageSettings',
+      name: 'settings',
       type: 'group',
       admin: {
         position: 'sidebar',
       },
       fields: [
+        // Inspired by Hashnode's article editor.
         {
-          name: 'settingsUrlSlug',
+          name: 'urlSlug',
           label: 'URL Slug',
           type: 'text',
           required: true, // Show red * in the field, but its validation is overridden by "validate"
@@ -69,28 +71,7 @@ const Articles: CollectionConfig = {
           },
         },
         {
-          name: 'settingsScheduledReleaseDate',
-          label: 'Scheduled Release Date',
-          type: 'date',
-          required: true,
-          // Implementation reference: https://github.com/payloadcms/public-demo/blob/501e2e1bf73501fbfd9e140f81b28601ab9ff01e/src/collections/Posts.ts#L70
-          defaultValue: () => new Date(),
-        },
-        {
-          name: 'settingsCategories',
-          label: 'Categories',
-          type: 'relationship',
-          relationTo: 'categories',
-          hasMany: false,
-          required: true,
-          filterOptions: {
-            _status: {
-              equals: 'published',
-            },
-          },
-        },
-        {
-          name: 'settingsTags',
+          name: 'tags',
           label: 'Tags',
           type: 'relationship',
           relationTo: 'tags',
@@ -103,19 +84,7 @@ const Articles: CollectionConfig = {
           },
         },
         {
-          name: 'settingsSeries',
-          label: 'Series',
-          type: 'relationship',
-          relationTo: 'series',
-          hasMany: false,
-          filterOptions: {
-            _status: {
-              equals: 'published',
-            },
-          },
-        },
-        {
-          name: 'settingsCoverImage',
+          name: 'coverImage',
           label: 'Cover Image',
           type: 'upload',
           relationTo: 'media',
@@ -127,7 +96,52 @@ const Articles: CollectionConfig = {
           },
         },
         {
-          name: 'settingsHideFromHome',
+          name: 'series',
+          label: 'Series',
+          type: 'relationship',
+          relationTo: 'series',
+          filterOptions: {
+            _status: {
+              equals: 'published',
+            },
+          },
+        },
+        {
+          name: 'seoTitle',
+          label: 'SEO Title',
+          type: 'text',
+          required: true,
+          unique: true,
+          index: true,
+          minLength: 1,
+          maxLength: 60,
+          admin: {
+            description: 'An article must have a unique SEO title.',
+          },
+        },
+        {
+          name: 'seoDescription',
+          label: 'SEO Description',
+          type: 'textarea',
+          required: true,
+          minLength: 1,
+          maxLength: 160,
+        },
+        {
+          name: 'scheduledReleaseDate',
+          label: 'Scheduled Release Date',
+          type: 'date',
+          required: true,
+          // Implementation reference: https://github.com/payloadcms/public-demo/blob/501e2e1bf73501fbfd9e140f81b28601ab9ff01e/src/collections/Posts.ts#L70
+          defaultValue: () => new Date(),
+          admin: {
+            date: {
+              pickerAppearance: 'dayAndTime',
+            },
+          }
+        },
+        {
+          name: 'hideFromHome',
           label: 'Hide From Home Page?',
           type: 'radio',
           options: [
@@ -146,77 +160,32 @@ const Articles: CollectionConfig = {
       ],
     },
     {
-      label: 'Page Meta',
-      type: 'collapsible',
-      fields: [
-        {
-          name: 'metaTitle',
-          label: 'SEO Title',
-          type: 'text',
-          required: true,
-          unique: true,
-          index: true,
-          minLength: 1,
-          maxLength: 60,
-          admin: {
-            description: 'Articles must have unique meta titles.',
-          },
-        },
-        {
-          name: 'metaDescription',
-          label: 'SEO Description',
-          type: 'textarea',
-          required: true,
-          minLength: 1,
-          maxLength: 160,
-        },
-        {
-          name: 'metaCustomOgImage',
-          label: 'Custom OG Image (front-end will fallback to cover image if not presented)',
-          type: 'upload',
-          relationTo: 'media',
-          filterOptions: {
-            _status: {
-              equals: 'published',
-            },
-          },
-        },
-      ],
+      name: 'title',
+      label: 'Article Title',
+      type: 'text',
+      required: true,
+      index: true,
+      unique: true,
+      minLength: 1,
+      admin: {
+        description: 'Articles must have unique content titles',
+      },
+    },
+    {
+      name: 'subTitle',
+      label: 'Article Subtitle',
+      type: 'textarea',
+      required: true,
+      minLength: 1,
+      maxLength: 300,
+    },
+    {
+      name: 'body',
+      label: 'Article Body',
+      type: 'richText',
+      required: true,
     },
 
-    {
-      label: 'Page Content',
-      type: 'collapsible',
-      fields: [
-        {
-          name: 'contentTitle',
-          label: 'Article Title',
-          type: 'text',
-          required: true,
-          index: true,
-          unique: true,
-          minLength: 1,
-          admin: {
-            description: 'Articles must have unique content titles',
-          },
-        },
-        {
-          name: 'contentSubTitle',
-          label: 'Article Subtitle',
-          type: 'textarea',
-          required: true,
-          minLength: 1,
-          maxLength: 300,
-        },
-        {
-          name: 'contentBody',
-          label: 'Article Body',
-          type: 'richText',
-          // Min length is not applicable to richText
-          required: true,
-        },
-      ],
-    },
   ],
   timestamps: true,
   versions: {

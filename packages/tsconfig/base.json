@@ -2,14 +2,16 @@
   "$schema": "https://json.schemastore.org/tsconfig",
   "display": "Default",
   "compilerOptions": {
-    "allowJs": true,
-    "esModuleInterop": true,
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "target": "es2021",
     "lib": [
       "dom",
       "dom.iterable",
       "esnext"
     ],
-    "skipLibCheck": true,
-    "target": "es2021"
+    "allowJs": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true
   }
 }
