@@ -9,7 +9,6 @@ import Articles from './collections/Articles';
 import Media from './collections/Media';
 import Tags from './collections/Tags';
 import Series from './collections/Series';
-import Categories from './collections/Categories';
 
 export default buildConfig({
   serverURL: process.env.PAYLOAD_PUBLIC_SERVER_URL ?? 'http://localhost:3001',
@@ -18,7 +17,7 @@ export default buildConfig({
     bundler: viteBundler(),
   },
   editor: lexicalEditor({}),
-  collections: [Users, Articles, Media, Tags, Series, Categories],
+  collections: [Users, Articles, Media, Tags, Series],
   typescript: {
     outputFile: path.resolve(__dirname, 'payload-types.ts'),
   },
