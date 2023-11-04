@@ -29,8 +29,14 @@ const Media: CollectionConfig = {
         height: 630,
         crop: 'centre',
       },
+      {
+        name: 'thumbnail',
+        width: 400,
+        height: 210,
+        crop: 'centre',
+      }
     ],
-    adminThumbnail: 'cover',
+    adminThumbnail: 'thumbnail',
     mimeTypes: ['image/*', 'video/*'],
   },
   fields: [
