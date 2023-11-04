@@ -1,7 +1,7 @@
 /**
  * @author Hung Vu
  *
- * This collection represents articles tags.
+ * This collection represents an article tag.
  */
 
 import { CollectionConfig } from 'payload/types';
@@ -19,7 +19,7 @@ const Tags: CollectionConfig = {
   },
   fields: [
     {
-      name: 'tagTitle',
+      name: 'title',
       label: 'Tag Title',
       type: 'text',
       required: true,
@@ -32,15 +32,15 @@ const Tags: CollectionConfig = {
           // This crashes the validation process and causes unexpected behavior
           // Turn value into an empty string instead as a workaround
           value = value ?? '';
-          const re = /^[#][a-z0-9-]+$/;
+          const re = /^[a-zA-Z0-9- ]+$/;
           return value.match(re)
             ? true
-            : 'Tag title must start with # and followed by only lower case characters from a to z, 0 to 9, or hyphen. E.g., #google-search-123';
+            : 'Tag title can only contains alphanumerical characters, hyphen, and space. E.g., #Google-search-123 456';
         }
       },
     },
     {
-      name: 'tagDescription',
+      name: 'description',
       label: 'Tag Description',
       type: 'textarea',
       required: true,

@@ -1,7 +1,7 @@
 /**
  * @author Hung Vu
  *
- * This collection represents articles series.
+ * This collection represents an article series.
  */
 
 import { CollectionConfig } from 'payload/types';
@@ -19,7 +19,7 @@ const Series: CollectionConfig = {
   },
   fields: [
     {
-      name: 'seriesTitle',
+      name: 'title',
       label: 'Series Title',
       type: 'text',
       required: true,
@@ -29,7 +29,7 @@ const Series: CollectionConfig = {
       maxLength: 60,
     },
     {
-      name: 'seriesDescription',
+      name: 'description',
       label: 'Series Description',
       type: 'textarea',
       required: true,
