@@ -95,15 +95,16 @@ export function LexicalToHtml({ nodes }: Props): JSX.Element {
             return <li key={index} value={node?.value} className="pb-2">{serializedChildren}</li>
           }
           case 'quote': {
-            return <blockquote key={index} className='sm:text-sm md:text-base lg:text-lg p-4 my-4 border-l-4 border-dark-cyan-600 bg-dark-cyan-800 rounded-sm italic'>{serializedChildren}</blockquote>;
+            return <blockquote key={index} className='sm:text-sm md:text-base lg:text-lg p-4 my-4 border-l-4 border-dark-cyan-600 bg-dark-cyan-800/50 rounded-sm italic'>{serializedChildren}</blockquote>;
           }
-          case 'link': {
+          case 'link':
+          case 'autolink': {
             if (node.fields.linkType === 'custom') {
               return (
                 <Link
                   key={index}
-                  href={node.url ?? '/'}
-                  target={node.newTab ? 'target="_blank"' : undefined}
+                  href={node.fields.url ?? '/'}
+                  target={node.fields.newTab ? '_blank' : undefined}
                   rel='nofollow noopener noreferrer'
                   prefetch={false}
                   className='sm:text-sm md:text-base lg:text-lg text-[#9fa8da] underline underline-offset-4 decoration-2 font-semibold hover:decoration-4'
@@ -115,7 +116,7 @@ export function LexicalToHtml({ nodes }: Props): JSX.Element {
               return (
                 <Link
                   key={index}
-                  href={node.url ?? '/'}
+                  href={node.fields.doc.value.settings.urlSlug ?? '/'}
                   target={node.newTab ? 'target="_blank"' : undefined}
                   rel='dofollow'
                   className='sm:text-sm md:text-base lg:text-lg text-[#9fa8da] underline underline-offset-4 decoration-2 font-semibold hover:decoration-4'
