@@ -1,0 +1,6 @@
+# Resource
+
+The implementation is based on the referenced from:
+
+- https://github.com/AlessioGr/payload-plugin-lexical/tree/develop/serialize-example
+- https://github.com/payloadcms/website/blob/main/src/components/RichText/Serialize/index.tsx

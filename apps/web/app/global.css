@@ -8,3 +8,34 @@
   @tailwind components;
   @tailwind utilities;
 }
+
+/*
+  The way nested list structures is <ul><li><ul>, and <ol><li><ol>.
+  Because the <li> has no text, but still visible, it shows a marker on screen.
+  That is odd for the UI/UX, so we hide the marker for the <li> elements
+    that are the parent of <ul> or <ol> elements.
+  Note: Not all major browsers support the :has() pseudo-class at the moment
+    such as Firefox, but it is working on Chrome now, so should be reasonable.
+*/
+/* https://stackoverflow.com/questions/1014861/is-there-a-css-parent-selector */
+li:has(> ul),
+li:has(> ol) {
+  list-style-type: none;
+}
+
+/* https://github.com/tailwindlabs/tailwindcss/discussions/7032 */
+/* https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Counter_Styles/Using_CSS_counters#example_of_a_nested_counter */
+ol {
+  counter-reset: section; /* Creates a new instance of the
+                             section counter with each ol
+                             element */
+  list-style-type: none;
+}
+
+ol > li::before {
+  counter-increment: section; /* Increments only this instance
+                                            of the section counter */
+  content: counters(section, ".") " "; /* Combines the values of all instances
+                                          of the section counter, separated
+                                          by a period */
+}

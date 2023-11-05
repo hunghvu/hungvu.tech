@@ -1,7 +1,24 @@
 import { buildConfig } from 'payload/config';
-import { mongooseAdapter } from "@payloadcms/db-mongodb";
-import { lexicalEditor } from "@payloadcms/richtext-lexical";
-import { viteBundler } from "@payloadcms/bundler-vite";
+import { mongooseAdapter } from '@payloadcms/db-mongodb';
+import {
+  BlockQuoteFeature,
+  BoldTextFeature,
+  HeadingFeature,
+  InlineCodeTextFeature,
+  ItalicTextFeature,
+  LinkFeature,
+  OrderedListFeature,
+  ParagraphFeature,
+  StrikethroughTextFeature,
+  SubscriptTextFeature,
+  SuperscriptTextFeature,
+  TreeviewFeature,
+  UnderlineTextFeature,
+  UnoderedListFeature,
+  UploadFeature,
+  lexicalEditor,
+} from '@payloadcms/richtext-lexical';
+import { viteBundler } from '@payloadcms/bundler-vite';
 
 import path from 'path';
 import Users from './collections/Users';
@@ -16,7 +33,27 @@ export default buildConfig({
     user: Users.slug,
     bundler: viteBundler(),
   },
-  editor: lexicalEditor({}),
+  editor: lexicalEditor({
+    features: () => [
+      BoldTextFeature(),
+      ItalicTextFeature(),
+      UnderlineTextFeature(),
+      StrikethroughTextFeature(),
+      SubscriptTextFeature(),
+      SuperscriptTextFeature(),
+      InlineCodeTextFeature(),
+      ParagraphFeature(),
+      HeadingFeature({
+        enabledHeadingSizes: ['h1', 'h2', 'h3'],
+      }),
+      UnoderedListFeature(),
+      OrderedListFeature(),
+      LinkFeature({}),
+      BlockQuoteFeature(),
+      UploadFeature(),
+      TreeviewFeature(),
+    ],
+  }),
   collections: [Users, Articles, Media, Tags, Series],
   typescript: {
     outputFile: path.resolve(__dirname, 'payload-types.ts'),
@@ -27,6 +64,6 @@ export default buildConfig({
   csrf: [process.env.FRONT_END_DOMAIN ?? 'http://localhost:3000'],
   cors: [process.env.FRONT_END_DOMAIN ?? 'http://localhost:3000'],
   db: mongooseAdapter({
-    url: process.env.MONGODB_URI ?? 'mongodb://127.0.0.1:27017'
-  })
+    url: process.env.MONGODB_URI ?? 'mongodb://127.0.0.1:27017',
+  }),
 });
