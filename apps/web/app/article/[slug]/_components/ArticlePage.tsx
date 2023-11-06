@@ -1,4 +1,4 @@
-import { LexicalToHtml } from "../../../_utilities/lexicalSerializer/LexicalToHtml";
+import { RichText } from "../../../_components/richtext";
 const getData = async () => {
   const res = await fetch(`http://localhost:3001/api/articles`, {cache: "no-cache"})
   if (!res.ok) {
@@ -12,7 +12,7 @@ const ArticlePage: React.FunctionComponent = async () => {
   const data = await getData();
   return <section>
     <article className="flex flex-col gap-4 max-w-[800px]">
-      <LexicalToHtml nodes={(data.docs[0].body.root.children as any)} />
+      <RichText nodes={(data.docs[0].body.root.children as any)} />
     </article>
   </section>
 }

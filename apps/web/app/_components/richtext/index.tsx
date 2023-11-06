@@ -17,7 +17,7 @@ import {
   IS_CODE,
   IS_SUBSCRIPT,
   IS_SUPERSCRIPT,
-} from './RichTextNodeFormat';
+} from './format';
 
 import type { SerializedLexicalNode } from './types';
 
@@ -26,7 +26,7 @@ type Props = {
   nodes: SerializedLexicalNode[];
 }
 
-export function LexicalToHtml({ nodes }: Props): JSX.Element {
+export function RichText({ nodes }: Props): JSX.Element {
   return (
     <Fragment>
       {nodes?.map((node, index): JSX.Element | null => {
@@ -67,7 +67,7 @@ export function LexicalToHtml({ nodes }: Props): JSX.Element {
           if (node?.children === null || node?.children === undefined) {
             return null;
           } else {
-            return LexicalToHtml({ nodes: node?.children });
+            return RichText({ nodes: node?.children });
           }
         };
 
