@@ -5,7 +5,8 @@
  */
 
 import React, { Fragment } from 'react';
-
+import Link from 'next/link';
+import Image from "next/image";
 import escapeHTML from 'escape-html';
 
 import {
@@ -19,7 +20,7 @@ import {
 } from './RichTextNodeFormat';
 
 import type { SerializedLexicalNode } from './types';
-import Link from 'next/link';
+
 
 type Props = {
   nodes: SerializedLexicalNode[];
@@ -29,29 +30,29 @@ export function LexicalToHtml({ nodes }: Props): JSX.Element {
   return (
     <Fragment>
       {nodes?.map((node, index): JSX.Element | null => {
-        if (node.type === 'text') {
+        if (node?.type === 'text') {
           let text = (
-            <span key={index} dangerouslySetInnerHTML={{ __html: escapeHTML(node.text) }} />
+            <span key={index} dangerouslySetInnerHTML={{ __html: escapeHTML(node?.text) }} />
           );
-          if (node.format & IS_BOLD) {
+          if (node?.format & IS_BOLD) {
             text = <strong key={index}>{text}</strong>;
           }
-          if (node.format & IS_ITALIC) {
+          if (node?.format & IS_ITALIC) {
             text = <em key={index}>{text}</em>;
           }
-          if (node.format & IS_STRIKETHROUGH) {
+          if (node?.format & IS_STRIKETHROUGH) {
             text = <s key={index}>{text}</s>
           }
-          if (node.format & IS_UNDERLINE) {
+          if (node?.format & IS_UNDERLINE) {
             text = <u key={index}>{text}</u>
           }
-          if (node.format & IS_CODE) {
+          if (node?.format & IS_CODE) {
             text = <code key={index} className="p-1 bg-dark-cyan-800 rounded-lg">{text}</code>;
           }
-          if (node.format & IS_SUBSCRIPT) {
+          if (node?.format & IS_SUBSCRIPT) {
             text = <sub key={index}>{text}</sub>;
           }
-          if (node.format & IS_SUPERSCRIPT) {
+          if (node?.format & IS_SUPERSCRIPT) {
             text = <sup key={index}>{text}</sup>;
           }
 
@@ -63,15 +64,15 @@ export function LexicalToHtml({ nodes }: Props): JSX.Element {
         }
 
         const serializedChildrenFn = (node: SerializedLexicalNode): JSX.Element | null => {
-          if (node.children === null || node.children === undefined) {
+          if (node?.children === null || node?.children === undefined) {
             return null;
           } else {
-            return LexicalToHtml({ nodes: node.children });
+            return LexicalToHtml({ nodes: node?.children });
           }
         };
 
         const serializedChildren = serializedChildrenFn(node);
-        switch (node.type) {
+        switch (node?.type) {
           case 'paragraph': {
             return <p key={index} className='sm:text-sm md:text-base lg:text-lg'>{serializedChildren}</p>;
           }
@@ -99,12 +100,12 @@ export function LexicalToHtml({ nodes }: Props): JSX.Element {
           }
           case 'link':
           case 'autolink': {
-            if (node.fields.linkType === 'custom') {
+            if (node?.fields.linkType === 'custom') {
               return (
                 <Link
                   key={index}
-                  href={node.fields.url ?? '/'}
-                  target={node.fields.newTab ? '_blank' : undefined}
+                  href={node?.fields.url ?? '/'}
+                  target={node?.fields.newTab ? '_blank' : undefined}
                   rel='nofollow noopener noreferrer'
                   prefetch={false}
                   className='sm:text-sm md:text-base lg:text-lg text-[#9fa8da] underline underline-offset-4 decoration-2 font-semibold hover:decoration-4'
@@ -116,14 +117,47 @@ export function LexicalToHtml({ nodes }: Props): JSX.Element {
               return (
                 <Link
                   key={index}
-                  href={node.fields.doc.value.settings.urlSlug ?? '/'}
-                  target={node.newTab ? 'target="_blank"' : undefined}
+                  href={node?.fields.doc.value.settings.urlSlug ?? '/'}
+                  target={node?.newTab ? 'target="_blank"' : undefined}
                   rel='dofollow'
                   className='sm:text-sm md:text-base lg:text-lg text-[#9fa8da] underline underline-offset-4 decoration-2 font-semibold hover:decoration-4'
                 >
                   {serializedChildren}
                 </Link>
               )
+            }
+          }
+          case 'upload': {
+            const mimeType = node?.value.mimeType
+            const altText = node?.value.alt
+            if (mimeType?.startsWith('image')) {
+              return (
+                <figure key={index} className="flex flex-col justify-center items-center">
+                  <Image
+                    key={index}
+                    src={node?.value.sizes.embed?.url ?? node?.value.url}
+                    alt={altText ?? ''}
+                    width={node?.value.sizes.embed?.width ?? node?.value.width}
+                    height={node?.value.sizes.embed?.height ?? node?.value.height}
+                    className="rounded-sm"
+                  />
+                  <figcaption className="sm:text-sm md:text-base lg:text-lg p-2 rounded-sm italic text-[#ffffffde]/70">{altText ?? ''}</figcaption>
+                </figure>
+              );
+            } else if (mimeType?.startsWith('video')) {
+              return (
+                <figure key={index} className="flex flex-col justify-center items-center">
+                  <video
+                    key={index}
+                    src={node?.value.url}
+                    itemType={mimeType}
+                    controls
+                    className="rounded-sm"
+                  />
+                  <figcaption className="sm:text-sm md:text-base lg:text-lg p-2 rounded-sm italic text-[#ffffffde]/70">{altText ?? ''}</figcaption>
+                </figure>
+              );
+
             }
           }
           default:

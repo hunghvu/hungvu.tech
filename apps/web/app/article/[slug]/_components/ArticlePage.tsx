@@ -11,7 +11,7 @@ const getData = async () => {
 const ArticlePage: React.FunctionComponent = async () => {
   const data = await getData();
   return <section>
-    <article className="flex flex-col gap-4">
+    <article className="flex flex-col gap-4 max-w-[800px]">
       <LexicalToHtml nodes={(data.docs[0].body.root.children as any)} />
     </article>
   </section>

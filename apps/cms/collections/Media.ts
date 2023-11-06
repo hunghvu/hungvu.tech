@@ -30,6 +30,12 @@ const Media: CollectionConfig = {
         crop: 'centre',
       },
       {
+        name: 'embed',
+        width: 800,
+        height: 420,
+        crop: 'centre',
+      },
+      {
         name: 'thumbnail',
         width: 400,
         height: 210,
