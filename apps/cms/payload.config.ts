@@ -2,6 +2,7 @@ import { buildConfig } from 'payload/config';
 import { mongooseAdapter } from '@payloadcms/db-mongodb';
 import {
   BlockQuoteFeature,
+  BlocksFeature,
   BoldTextFeature,
   HeadingFeature,
   InlineCodeTextFeature,
@@ -26,6 +27,7 @@ import Articles from './collections/Articles';
 import Media from './collections/Media';
 import Tags from './collections/Tags';
 import Series from './collections/Series';
+import CodeEditor from './blocks/CodeSnippet';
 
 export default buildConfig({
   serverURL: process.env.PAYLOAD_PUBLIC_SERVER_URL ?? 'http://localhost:3001',
@@ -52,6 +54,9 @@ export default buildConfig({
       BlockQuoteFeature(),
       UploadFeature(),
       TreeviewFeature(),
+      BlocksFeature({
+        blocks: [CodeEditor]
+      }),
     ],
   }),
   collections: [Users, Articles, Media, Tags, Series],

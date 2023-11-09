@@ -11,7 +11,7 @@
     "update": "pnpm update"
   },
   "dependencies": {
-    "@types/escape-html": "^1.0.3",
+    "@types/escape-html": "^1.0.4",
     "dayjs": "^1.11.10",
     "escape-html": "^1.0.3",
     "lexical": "^0.12.2",
@@ -24,9 +24,9 @@
   },
   "devDependencies": {
     "@babel/core": "^7.23.2",
-    "@types/node": "^20.8.10",
-    "@types/react": "^18.2.35",
-    "@types/react-dom": "^18.2.14",
+    "@types/node": "^20.9.0",
+    "@types/react": "^18.2.37",
+    "@types/react-dom": "^18.2.15",
     "eslint": "^8.53.0",
     "eslint-config-custom": "workspace:*",
     "tailwind-config": "workspace:*",
