@@ -11,7 +11,7 @@ import { Card } from "primereact/card";
 import { ScrollPanel } from "primereact/scrollpanel";
 import { Tag } from "primereact/tag";
 import { Timeline } from "primereact/timeline";
-import { geistMono } from "./fonts";
+import { geistMono } from "app/_components/fonts";
 
 const BlogPage: React.FunctionComponent = () => {
   const data = [
@@ -75,7 +75,7 @@ const BlogPage: React.FunctionComponent = () => {
           severity="info" role="tag" aria-label={`The article ${item.title} belongs to the topic ${tag}.`}
           pt={{
             root: { className: "max-w-[20vw]" },
-            value: { className: `text-xs md:text-sm lg:text-base ${geistMono.className}`}
+            value: { className: `text-xs md:text-sm lg:text-base ${geistMono.className}` }
           }}></Tag>)}
       </aside>
     )

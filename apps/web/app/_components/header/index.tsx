@@ -7,7 +7,7 @@
 import Link from "next/link";
 import { Menubar } from "primereact/menubar"
 
-import { geistMono } from "../fonts";
+import { geistMono } from "app/_components/fonts";
 
 const Header: React.FunctionComponent = () => {
   const items = [

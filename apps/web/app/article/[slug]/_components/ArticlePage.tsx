@@ -1,4 +1,4 @@
-import { RichText } from "../../../_components/richtext";
+import { RichText } from "app/_components/richtext";
 const getData = async () => {
   const res = await fetch(`http://localhost:3001/api/articles`, {cache: "no-cache"})
   if (!res.ok) {

@@ -1,5 +1,5 @@
 import { PrimeReactProvider } from 'primereact/api';
-import Navbar from "./_components/header/index"
+import Header from 'app/_components/header';
 
 type RootProviderProps = {
   children: React.ReactNode
@@ -8,8 +8,8 @@ type RootProviderProps = {
 const RootProvider: React.FunctionComponent<RootProviderProps> = ({ children }) => {
   return (
     <PrimeReactProvider>
-        <Navbar />
-        <main className="flex flex-row items-center justify-center gap-16 pt-16 w-full">{children}</main>
+      <Header />
+      <main className='flex flex-row items-center justify-center gap-16 pt-16 w-full'>{children}</main>
     </PrimeReactProvider>
   )
 }

@@ -14,5 +14,5 @@
 import localfont from "next/font/local";
 
 export const geistMono = localfont({
-  src: "../../../public/fonts/GeistMonoVariableVF.woff2"
+  src: "./GeistMonoVariableVF.woff2"
 });
