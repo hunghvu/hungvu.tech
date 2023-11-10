@@ -11,7 +11,7 @@ import { Card } from "primereact/card";
 import { ScrollPanel } from "primereact/scrollpanel";
 import { Tag } from "primereact/tag";
 import { Timeline } from "primereact/timeline";
-import { intelOneMono } from "./fonts";
+import { geistMono } from "./fonts";
 
 const BlogPage: React.FunctionComponent = () => {
   const data = [
@@ -47,11 +47,11 @@ const BlogPage: React.FunctionComponent = () => {
               size="small"
               aria-label={`View blog article ${item.title} now.`}
               pt={{
-                root: { className: `p-0 ${intelOneMono.className}` }
+                root: { className: `p-0 ${geistMono.className}` }
               }}
             >View blog article</Button>}
           pt={{
-            root: { className: `-mt-4 mb-12 pb-6 bg-transparent shadow-none hover:bg-dark-cyan-800/20 hover:shadow-sm hover:rounded-2xl ${intelOneMono.className}` },
+            root: { className: `-mt-4 mb-12 pb-6 bg-transparent shadow-none hover:bg-dark-cyan-800/20 hover:shadow-sm hover:rounded-2xl ${geistMono.className}` },
             body: { className: "px-4 py-4" },
             title: { className: "text-lg md:text-xl lg:text-2xl" },
             content: { className: "text-sm md:text-base lg:text-lg" },
@@ -75,7 +75,7 @@ const BlogPage: React.FunctionComponent = () => {
           severity="info" role="tag" aria-label={`The article ${item.title} belongs to the topic ${tag}.`}
           pt={{
             root: { className: "max-w-[20vw]" },
-            value: { className: `text-xs md:text-sm lg:text-base ${intelOneMono.className}`}
+            value: { className: `text-xs md:text-sm lg:text-base ${geistMono.className}`}
           }}></Tag>)}
       </aside>
     )
@@ -87,7 +87,7 @@ const BlogPage: React.FunctionComponent = () => {
       }}>
         <Timeline value={data} opposite={customizedOpposite} content={customizedContent} pt={{
           root: {
-            className: intelOneMono.className
+            className: geistMono.className
           },
           marker: {
             className: "bg-[#bdbdbd]/40"

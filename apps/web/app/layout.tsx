@@ -3,10 +3,12 @@ import React from "react";
 import RootProvider from "./RootProvider";
 
 import "./global.css";
-import "primereact/resources/themes/mdc-dark-indigo/theme.css";
-import "primeicons/primeicons.css";
 
-import { intelOneMono } from "./_components/fonts";
+import "primeicons/primeicons.css";
+import "primereact/resources/primereact.min.css";
+import "primereact/resources/themes/mdc-dark-indigo/theme.css";
+
+import { geistMono } from "./_components/fonts";
 
 
 export default function RootLayout({
@@ -23,7 +25,7 @@ export default function RootLayout({
       </head>
       {/* Font family is applied to native HTML elmenets. */}
       {/* For PrimeReact components, we need to specify at root component level. */}
-      <body className={intelOneMono.className}>
+      <body className={geistMono.className}>
         <RootProvider children={children} />
       </body>
     </html>

@@ -13,47 +13,6 @@
  */
 import localfont from "next/font/local";
 
-export const intelOneMono = localfont({
-  src: [
-    {
-      path: "../../../public/fonts/intelone-mono-font-family-bold.ttf",
-      weight: "700",
-      style: "normal",
-    },
-    {
-      path: "../../../public/fonts/intelone-mono-font-family-bolditalic.ttf",
-      weight: "700",
-      style: "italic",
-    },
-    {
-      path: "../../../public/fonts/intelone-mono-font-family-italic.ttf",
-      weight: "400",
-      style: "italic",
-    },
-    {
-      path: "../../../public/fonts/intelone-mono-font-family-light.ttf",
-      weight: "300",
-      style: "normal",
-    },
-    {
-      path: "../../../public/fonts/intelone-mono-font-family-lightitalic.ttf",
-      weight: "300",
-      style: "italic",
-    },
-    {
-      path: "../../../public/fonts/intelone-mono-font-family-medium.ttf",
-      weight: "500",
-      style: "normal",
-    },
-    {
-      path: "../../../public/fonts/intelone-mono-font-family-mediumitalic.ttf",
-      weight: "500",
-      style: "italic",
-    },
-    {
-      path: "../../../public/fonts/intelone-mono-font-family-regular.ttf",
-      weight: "400",
-      style: "normal",
-    },
-  ],
+export const geistMono = localfont({
+  src: "../../../public/fonts/GeistMonoVariableVF.woff2"
 });

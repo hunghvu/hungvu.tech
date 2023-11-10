@@ -1,6 +1,5 @@
 import { PrimeReactProvider } from 'primereact/api';
 import Navbar from "./_components/header/index"
-import { NextFont } from "next/dist/compiled/@next/font";
 
 type RootProviderProps = {
   children: React.ReactNode
