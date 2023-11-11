@@ -6,6 +6,8 @@ import './global.css';
 
 import 'highlight.js/styles/github-dark-dimmed.css';
 
+// Temporary fix for FOUC: https://github.com/primefaces/primereact/issues/5188
+import './components.css';
 import 'primeicons/primeicons.css';
 import 'primereact/resources/primereact.min.css';
 import 'primereact/resources/themes/mdc-dark-indigo/theme.css';
