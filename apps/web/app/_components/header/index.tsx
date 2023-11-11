@@ -7,7 +7,7 @@
 import Link from "next/link";
 import { Menubar } from "primereact/menubar"
 
-import { geistMono } from "app/_components/fonts";
+import { geist } from "app/_components/fonts";
 
 const Header: React.FunctionComponent = () => {
   const items = [
@@ -36,7 +36,7 @@ const Header: React.FunctionComponent = () => {
     }
     pt={{
       root: {
-        className: `${geistMono.className} flex flex-row justify-around text-2xl font-bold`
+        className: `${geist.className} flex flex-row justify-around text-2xl font-bold`
       },
       menu: {
         className: "gap-4"

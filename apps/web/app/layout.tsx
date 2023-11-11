@@ -1,14 +1,16 @@
-import React from "react";
+import React from 'react';
 
-import RootProvider from "./RootProvider";
+import RootProvider from './RootProvider';
 
-import "./global.css";
+import './global.css';
 
-import "primeicons/primeicons.css";
-import "primereact/resources/primereact.min.css";
-import "primereact/resources/themes/mdc-dark-indigo/theme.css";
+import 'highlight.js/styles/github-dark-dimmed.css';
 
-import { geistMono } from "./_components/fonts";
+import 'primeicons/primeicons.css';
+import 'primereact/resources/primereact.min.css';
+import 'primereact/resources/themes/mdc-dark-indigo/theme.css';
+
+import { geist } from './_components/fonts';
 
 
 export default function RootLayout({
@@ -19,13 +21,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang='en'>
       <head>
         <title>Hung's blog</title>
       </head>
       {/* Font family is applied to native HTML elmenets. */}
       {/* For PrimeReact components, we need to specify at root component level. */}
-      <body className={geistMono.className}>
+      <body className={geist.className}>
         <RootProvider children={children} />
       </body>
     </html>

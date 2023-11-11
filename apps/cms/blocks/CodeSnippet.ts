@@ -34,7 +34,7 @@ const CodeEditor: Block = {
         'vb', 'wgsl', 'xml', 'yaml']
     },
     {
-      name: 'code-snippet',
+      name: 'codeSnippet',
       type: 'code',
       required: true,
       admin: {
@@ -49,8 +49,8 @@ const CodeEditor: Block = {
               admin: {
                 language: value,
               },
-              name: 'code-snippet',
-              path: 'code-snippet',
+              name: 'codeSnippet',
+              path: 'codeSnippet',
             })
           },
         },

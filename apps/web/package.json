@@ -14,6 +14,7 @@
     "@types/escape-html": "^1.0.4",
     "dayjs": "^1.11.10",
     "escape-html": "^1.0.3",
+    "highlight.js": "^11.9.0",
     "lexical": "^0.12.2",
     "next": "^14.0.1",
     "primeicons": "^6.0.1",
