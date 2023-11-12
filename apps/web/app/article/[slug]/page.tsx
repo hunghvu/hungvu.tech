@@ -69,7 +69,7 @@ export default async function Page({ params }: Props) {
     <>
       <ArticleJsonLd
         useAppDir={true}
-        url={`https://${process.env.NEXT_PUBLIC_BASE_URL!}/article/${content.settings.urlSlug}`}
+        url={`${process.env.NEXT_PUBLIC_BASE_URL!}/article/${content.settings.urlSlug}`}
         title={content.settings.seoTitle}
         images={[
           `${content.settings.images.sizes.cover.url}`,
