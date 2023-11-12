@@ -17,8 +17,8 @@ const ArticlePage: React.FunctionComponent<{ content: any }> = async ({ content 
         <time dateTime={content.updatedAt}>Updated at: {utcToLocal(content.updatedAt, 'MMMM DD, YYYY')}</time>
       </div>
       <hgroup className='flex flex-col gap-6 w-full'>
-        <h1 className='text-2xl md::text-3xl font-extrabold'>{content.title}</h1>
-        <p className='text-xl md::text-2xl font-bold text-[#ffffffde]/70 italic'>{content.subTitle}</p>
+        <h1 className='text-2xl md:text-3xl font-extrabold'>{content.title}</h1>
+        <p className='text-xl md:text-2xl font-bold text-[#ffffffde]/70 italic'>{content.subTitle}</p>
       </hgroup>
       <Divider />
       <RichText nodes={content.body.root.children} />

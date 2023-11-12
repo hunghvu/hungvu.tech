@@ -80,9 +80,9 @@ export function RichText({ nodes }: Props): JSX.Element {
           }
           case 'heading': {
             if (node?.tag === 'h2') {
-              return <h2 key={index} className='text-xl md::text-2xl font-bold'>{serializedChildren}</h2>;
+              return <h2 key={index} className='text-xl md:text-2xl font-bold'>{serializedChildren}</h2>;
             } else if (node?.tag === 'h3') {
-              return <h3 key={index} className='text-lg md::text-xl font-semibold'>{serializedChildren}</h3>;
+              return <h3 key={index} className='text-lg md:text-xl font-semibold'>{serializedChildren}</h3>;
             }
           }
           case 'list': {

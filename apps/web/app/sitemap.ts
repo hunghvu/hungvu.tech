@@ -2,6 +2,12 @@ import { MetadataRoute } from 'next'
 
 
 
+/**
+ * @author Hung Vu
+ * 
+ * Sitemap generator: https://nextjs.org/docs/app/api-reference/file-conventions/metadata/sitemap
+ */
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const sites: MetadataRoute.Sitemap = [
     {
