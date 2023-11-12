@@ -79,9 +79,7 @@ export function RichText({ nodes }: Props): JSX.Element {
             return <p key={index} className='text-sm md:text-base lg:text-lg'>{serializedChildren}</p>;
           }
           case 'heading': {
-            if (node?.tag === 'h1') {
-              return <h1 key={index} className='text-2xl md::text-3xl font-extrabold'>{serializedChildren}</h1>;
-            } else if (node?.tag === 'h2') {
+            if (node?.tag === 'h2') {
               return <h2 key={index} className='text-xl md::text-2xl font-bold'>{serializedChildren}</h2>;
             } else if (node?.tag === 'h3') {
               return <h3 key={index} className='text-lg md::text-xl font-semibold'>{serializedChildren}</h3>;

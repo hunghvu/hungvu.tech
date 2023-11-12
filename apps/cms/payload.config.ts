@@ -46,7 +46,7 @@ export default buildConfig({
       InlineCodeTextFeature(),
       ParagraphFeature(),
       HeadingFeature({
-        enabledHeadingSizes: ['h1', 'h2', 'h3'],
+        enabledHeadingSizes: ['h2', 'h3'],
       }),
       UnoderedListFeature(),
       OrderedListFeature(),
