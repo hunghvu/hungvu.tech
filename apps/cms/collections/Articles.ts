@@ -84,7 +84,7 @@ const Articles: CollectionConfig = {
           },
         },
         {
-          name: 'coverImage',
+          name: 'images',
           label: 'Cover Image',
           type: 'upload',
           relationTo: 'media',

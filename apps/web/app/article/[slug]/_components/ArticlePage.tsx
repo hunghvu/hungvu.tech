@@ -3,13 +3,13 @@
  *
  * Article page.
  */
-import { RichText } from 'app/_components/richtext';
-import { utcToLocal } from 'app/_utilities/parseDate';
+
 import { Divider } from 'primereact/divider';
 
-const ArticlePage: React.FunctionComponent<{ article: any }> = async ({ article }) => {
-  const content = article.docs[0];
-  console.log(content);
+import { RichText } from 'app/_components/richtext';
+import { utcToLocal } from 'app/_utilities/parseDate';
+
+const ArticlePage: React.FunctionComponent<{ content: any }> = async ({ content }) => {
   return (
     <article className='flex flex-col gap-4 w-full md:w-[768px] m-4'>
       <div className='flex flex-row gap-16 text-xs md:text-sm lg:text-base text-[#ffffffde]/60'>
