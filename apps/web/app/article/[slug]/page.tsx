@@ -1,17 +1,41 @@
 import { Metadata, Viewport } from 'next';
-import ArticlePage from './_components/ArticlePage';
+import { notFound } from 'next/navigation';
+
 import { ArticleJsonLd } from 'next-seo';
 
+import ArticlePage from './_components/ArticlePage';
+
 const getArticle = async (slug: string) => {
-  const res = await fetch(`${process.env.PAYLOAD_SERVER_ARTICLES_URL!}?where[settings.urlSlug][equals]=${slug}`, {
-    cache: process.env.NODE_ENV === 'production' ? 'force-cache' : 'no-store',
-  });
-  if (!res.ok) {
-    // This will activate the closest `error.js` Error Boundary
-    throw new Error('Failed to fetch data');
+  let res;
+  try {
+    res = await fetch(`${process.env.PAYLOAD_SERVER_ARTICLES_URL!}?where[settings.urlSlug][equals]=${slug}`, {
+      cache: process.env.NODE_ENV === 'production' ? 'force-cache' : 'no-store',
+    });
+  } catch (err) {
+    throw new Error('Connection Error');
   }
 
-  return res.json();
+  // Catch errors first, or else json conversion may fail.
+  if (res.status === 401) {
+    throw new Error('Unauthorized');
+  }
+
+  if (res.status === 404) {
+    notFound();
+  }
+
+  if (res.status > 500) {
+    throw new Error('Server Error');
+  }
+
+  const content = await res.json();
+
+  // Payload CMS can returns status 200, but with an empty array.
+  if (content.docs.length < 1 || !('settings' in content.docs[0])) {
+    notFound();
+  }
+
+  return content.docs[0];
 };
 
 type Props = {
@@ -26,8 +50,7 @@ export const viewport: Viewport = {
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const article = await getArticle(params.slug);
-  const content = article.docs[0];
+  const content = await getArticle(params.slug);
   return {
     title: `${content.settings.seoTitle} - hungvu.tech`,
     description: `${content.settings.seoDescription}`,
@@ -63,8 +86,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function Page({ params }: Props) {
-  const article = await getArticle(params.slug);
-  const content = article.docs[0];
+  const content = await getArticle(params.slug);
   return (
     <>
       <ArticleJsonLd
