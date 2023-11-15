@@ -16,6 +16,9 @@ import { geist } from './_components/fonts';
 
 export const metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL!),
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION!,
+  },
 };
 
 export default function RootLayout({

@@ -79,9 +79,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       },
       creator: '@hunghvu_dev',
     },
-    verification: {
-      google: 'EGTdZytY_C05esF562wX0i-fpIShKgfypgbhQV3bPzU',
-    },
   };
 }
 

@@ -4,7 +4,20 @@
  * Global 404 page generator: https://nextjs.org/docs/app/api-reference/file-conventions/not-found
  */
 
+import { Metadata, Viewport } from 'next';
+
 import Link from 'next/link';
+
+export const metadata: Metadata = {
+  title: 'Content not found - hungvu.tech',
+  description: `The requested content is not available. That's all we know.`,
+};
+
+export const viewport: Viewport = {
+  themeColor: '#072321',
+  width: 'device-width',
+  initialScale: 1,
+};
 
 export default function NotFound() {
   return (

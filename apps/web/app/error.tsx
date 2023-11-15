@@ -1,14 +1,27 @@
+/**
+ * @author Hung Vu
+ *
+ * Global error boundary: https://nextjs.org/docs/app/api-reference/file-conventions/error.
+ */
+
 'use client'; // Error components must be Client Components
 
+import { Metadata, Viewport } from 'next';
+
 import Link from 'next/link';
-import { useEffect } from 'react';
 
-export default function Error({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
-  useEffect(() => {
-    // Log the error to an error reporting service
-    console.error(error);
-  }, [error]);
+export const metadata: Metadata = {
+  title: 'Error - hungvu.tech',
+  description: 'Something went wrong.',
+};
 
+export const viewport: Viewport = {
+  themeColor: '#072321',
+  width: 'device-width',
+  initialScale: 1,
+};
+
+export default function Error({ error }: { error: Error & { digest?: string }; reset: () => void }) {
   return (
     <section className='flex flex-col justify-center items-center gap-4 w-full md:w-[768px] m-4'>
       <hgroup className='flex flex-col justify-center items-center gap-6 w-full'>
