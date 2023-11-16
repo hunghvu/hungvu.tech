@@ -55,14 +55,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: `${content.settings.seoTitle} - hungvu.tech`,
     description: `${content.settings.seoDescription}`,
     alternates: {
-      canonical: `/article/${content.settings.urlSlug}`,
+      canonical: `/${content.settings.urlSlug}`,
     },
     openGraph: {
       siteName: 'hungvu.tech',
       title: `${content.settings.seoTitle} - hungvu.tech`,
       description: `${content.settings.seoDescription}`,
       type: 'article',
-      url: `/article/${content.settings.urlSlug}`,
+      url: `/${content.settings.urlSlug}`,
       images: {
         url: `${content.settings.images.sizes.og.url}`,
         alt: `${content.settings.seoTitle} - hungvu.tech`,
@@ -88,7 +88,7 @@ export default async function Page({ params }: Props) {
     <>
       <ArticleJsonLd
         useAppDir={true}
-        url={`${process.env.NEXT_PUBLIC_BASE_URL!}/article/${content.settings.urlSlug}`}
+        url={`${process.env.NEXT_PUBLIC_BASE_URL!}/${content.settings.urlSlug}`}
         title={content.settings.seoTitle}
         images={[
           `${content.settings.images.sizes.cover.url}`,

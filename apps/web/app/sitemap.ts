@@ -29,7 +29,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   });
   (await articles.json()).docs.map((article: any) => {
     sites.push({
-      url: `${process.env.NEXT_PUBLIC_BASE_URL!}/article/${article.settings.urlSlug}`,
+      url: `${process.env.NEXT_PUBLIC_BASE_URL!}/${article.settings.urlSlug}`,
       lastModified: new Date(article.updatedAt),
       changeFrequency: 'daily',
       priority: 0.8,
