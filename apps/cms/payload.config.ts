@@ -1,3 +1,9 @@
+/**
+ * @author Hung Vu
+ * 
+ * Metadata for a static route.
+ */
+
 import { buildConfig } from 'payload/config';
 import { mongooseAdapter } from '@payloadcms/db-mongodb';
 import {
@@ -28,6 +34,7 @@ import Media from './collections/Media';
 import Tags from './collections/Tags';
 import Series from './collections/Series';
 import CodeEditor from './blocks/CodeSnippet';
+import StaticRouteMetadata from './collections/StaticRouteMetadata';
 
 export default buildConfig({
   serverURL: process.env.PAYLOAD_PUBLIC_SERVER_URL ?? 'http://localhost:3001',
@@ -59,7 +66,7 @@ export default buildConfig({
       }),
     ],
   }),
-  collections: [Users, Articles, Media, Tags, Series],
+  collections: [Users, Articles, Media, Tags, Series, StaticRouteMetadata],
   typescript: {
     outputFile: path.resolve(__dirname, 'payload-types.ts'),
   },
