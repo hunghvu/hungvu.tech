@@ -1,6 +1,6 @@
 /**
- * @author Hung Vu 
- * 
+ * @author Hung Vu
+ *
  * Blog (home) page.
  */
 
@@ -8,6 +8,8 @@ import { Metadata, Viewport } from 'next';
 import { notFound } from 'next/navigation';
 
 import { ArticleJsonLd } from 'next-seo';
+
+import BlogPage from './BlogPage';
 
 const handleError = (res: Response) => {
   if (res.status === 401) {
@@ -42,7 +44,7 @@ const getAllArticles = async () => {
     notFound();
   }
 
-  return content.docs[0];
+  return content.docs;
 };
 
 const getMetadata = async () => {
@@ -108,20 +110,21 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function Page() {
   const content = await getAllArticles();
+  const metadata = await getMetadata();
   return (
     <>
       <ArticleJsonLd
         useAppDir={true}
-        url={`${process.env.NEXT_PUBLIC_BASE_URL!}/${content.settings.slug}`}
-        title={content.settings.seoTitle}
+        url={process.env.NEXT_PUBLIC_BASE_URL!}
+        title={metadata.seoTitle}
         images={[
-          `${content.settings.images.sizes.cover.url}`,
-          `${content.settings.images.sizes.og.url}`,
-          `${content.settings.images.sizes.embed.url}`,
-          `${content.settings.images.sizes.thumbnail.url}`,
+          `${metadata.images.sizes.cover.url}`,
+          `${metadata.images.sizes.og.url}`,
+          `${metadata.images.sizes.embed.url}`,
+          `${metadata.images.sizes.thumbnail.url}`,
         ]}
-        datePublished={content.createdAt}
-        dateModified={content.updatedAt}
+        datePublished={new Date().toISOString()}
+        dateModified={new Date().toISOString()}
         authorName={[
           {
             name: 'Hung Vu',
@@ -130,10 +133,10 @@ export default async function Page() {
         ]}
         publisherName='Hung Vu - hungvu.tech'
         publisherLogo={`${process.env.NEXT_PUBLIC_BASE_URL!}/favicon.ico`}
-        description={content.settings.seoDescription}
+        description={metadata.seoDescription}
         isAccessibleForFree={true}
       />
-      {/* <BlogPage />; */}
+      <BlogPage content={content} />
     </>
   );
 }

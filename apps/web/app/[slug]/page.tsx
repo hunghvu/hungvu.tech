@@ -109,7 +109,7 @@ export default async function Page({ params }: Props) {
         description={content.settings.seoDescription}
         isAccessibleForFree={true}
       />
-      <ArticlePage content={content} />;
+      <ArticlePage content={content} />
     </>
   );
 }
