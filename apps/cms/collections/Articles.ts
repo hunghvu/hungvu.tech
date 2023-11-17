@@ -143,19 +143,8 @@ const Articles: CollectionConfig = {
         {
           name: 'hideFromHome',
           label: 'Hide From Home Page?',
-          type: 'radio',
-          options: [
-            {
-              label: 'Yes',
-              value: 'yes',
-            },
-            {
-              label: 'No',
-              value: 'no',
-            },
-          ],
-          defaultValue: 'no',
-          required: true,
+          type: 'checkbox',
+          defaultValue: false,
         },
       ],
     },
