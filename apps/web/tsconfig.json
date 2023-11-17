@@ -4,7 +4,7 @@
     "plugins": [{ "name": "next" }],
     "baseUrl": ".",
     "paths": {
-      "@/public/*": ["public/*"],
+      "@utils/*": ["app/_utilities/*"]
     }
   },
   "exclude": ["node_modules"],
