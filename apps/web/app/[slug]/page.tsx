@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 
 import { ArticleJsonLd } from 'next-seo';
 
-import ArticlePage from './_components/ArticlePage';
+import ArticlePage from './ArticlePage';
 
 const getArticle = async (slug: string) => {
   let res;
