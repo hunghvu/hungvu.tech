@@ -117,7 +117,7 @@ export function RichText({ nodes }: Props): JSX.Element {
               return (
                 <Link
                   key={index}
-                  href={node?.fields.doc.value.settings.urlSlug ?? '/'}
+                  href={node?.fields.doc.value.settings.slug ?? '/'}
                   target={node?.newTab ? 'target="_blank"' : undefined}
                   rel='dofollow'
                   className='text-sm md:text-base lg:text-lg text-[#9fa8da] underline underline-offset-4 decoration-2 font-semibold hover:decoration-4'

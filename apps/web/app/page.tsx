@@ -112,7 +112,7 @@ export default async function Page() {
     <>
       <ArticleJsonLd
         useAppDir={true}
-        url={`${process.env.NEXT_PUBLIC_BASE_URL!}/${content.settings.urlSlug}`}
+        url={`${process.env.NEXT_PUBLIC_BASE_URL!}/${content.settings.slug}`}
         title={content.settings.seoTitle}
         images={[
           `${content.settings.images.sizes.cover.url}`,

@@ -48,7 +48,7 @@ const Articles: CollectionConfig = {
       fields: [
         // Inspired by Hashnode's article editor.
         {
-          name: 'urlSlug',
+          name: 'slug',
           label: 'URL Slug',
           type: 'text',
           required: true, // Show red * in the field, but its validation is overridden by "validate"

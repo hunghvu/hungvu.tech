@@ -9,7 +9,7 @@ import { CollectionConfig } from 'payload/types';
 const StaticRouteMetadata: CollectionConfig = {
   slug: 'static-route-metadata',
   admin: {
-    useAsTitle: 'urlSlug',
+    useAsTitle: 'slug',
     defaultColumns: [
       'title',
       'createdAt',
@@ -28,7 +28,7 @@ const StaticRouteMetadata: CollectionConfig = {
       defaultValue: false,
     },
     {
-      name: 'urlSlug',
+      name: 'slug',
       label: 'URL Slug',
       type: 'text',
       required: true, // Show red * in the field, but its validation is overridden by "validate"

@@ -8,7 +8,7 @@ import ArticlePage from './ArticlePage';
 const getArticle = async (slug: string) => {
   let res;
   try {
-    res = await fetch(`${process.env.PAYLOAD_SERVER_ARTICLES_URL!}?where[settings.urlSlug][equals]=${slug}`, {
+    res = await fetch(`${process.env.PAYLOAD_SERVER_ARTICLES_URL!}?where[settings.slug][equals]=${slug}`, {
       cache: process.env.NODE_ENV === 'production' ? 'force-cache' : 'no-store',
     });
   } catch (err) {
@@ -55,14 +55,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: `${content.settings.seoTitle} - hungvu.tech`,
     description: `${content.settings.seoDescription}`,
     alternates: {
-      canonical: `/${content.settings.urlSlug}`,
+      canonical: `/${content.settings.slug}`,
     },
     openGraph: {
       siteName: 'hungvu.tech',
       title: `${content.settings.seoTitle} - hungvu.tech`,
       description: `${content.settings.seoDescription}`,
       type: 'article',
-      url: `/${content.settings.urlSlug}`,
+      url: `/${content.settings.slug}`,
       images: {
         url: `${content.settings.images.sizes.og.url}`,
         alt: `${content.settings.seoTitle} - hungvu.tech`,
@@ -88,7 +88,7 @@ export default async function Page({ params }: Props) {
     <>
       <ArticleJsonLd
         useAppDir={true}
-        url={`${process.env.NEXT_PUBLIC_BASE_URL!}/${content.settings.urlSlug}`}
+        url={`${process.env.NEXT_PUBLIC_BASE_URL!}/${content.settings.slug}`}
         title={content.settings.seoTitle}
         images={[
           `${content.settings.images.sizes.cover.url}`,
