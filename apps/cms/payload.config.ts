@@ -74,5 +74,8 @@ export default buildConfig({
   cors: [process.env.PAYLOAD_FRONT_END_DOMAIN!, process.env.PAYLOAD_PUBLIC_SERVER_URL!],
   db: mongooseAdapter({
     url: process.env.PAYLOAD_MONGODB_URI!,
+    connectOptions: {
+      dbName: process.env.PAYLOAD_MONGODB_DBNAME!,
+    }
   }),
 });
