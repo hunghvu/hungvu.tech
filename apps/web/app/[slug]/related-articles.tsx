@@ -1,5 +1,5 @@
 /**
- * @author Hung Vu
+ * Author Hung Vu
  *
  * Related articles (in the same series) component.
  */
@@ -8,16 +8,16 @@
 
 import { useEffect, useRef } from 'react';
 import Link from 'next/link';
-
 import { Divider } from 'primereact/divider';
 import { Tag } from 'primereact/tag';
-import { VirtualScroller, VirtualScrollerTemplateOptions } from 'primereact/virtualscroller';
+import type { VirtualScrollerTemplateOptions } from 'primereact/virtualscroller';
+import { VirtualScroller } from 'primereact/virtualscroller';
 
-type RelatedArticlesProps = {
+interface RelatedArticlesProps {
   currentArticleSlug: string;
   currentSeriesTitle: string;
   relatedArticles: any;
-};
+}
 
 const RelatedArticles: React.FunctionComponent<RelatedArticlesProps> = ({ currentArticleSlug, currentSeriesTitle, relatedArticles }) => {
   const virtualscroller = useRef<VirtualScroller>(null);
@@ -56,8 +56,6 @@ const RelatedArticles: React.FunctionComponent<RelatedArticlesProps> = ({ curren
     return (
       <Link className={`flex flex-row items-center gap-4 py-4 h-[${options.props.itemSize}px] hover:font-bold`} href={`/${item.slug}`}>
         <Tag
-          severity='info'
-          value={item.index}
           pt={{
             root: {
               className: `text-[#ffffffde]/70 w-[32px] h-[32px] text-base md:text-lg lg:text-xl rounded-full ${
@@ -67,7 +65,9 @@ const RelatedArticles: React.FunctionComponent<RelatedArticlesProps> = ({ curren
               }`,
             },
           }}
-        ></Tag>
+          severity='info'
+          value={item.index}
+         />
         <p
           className={`block text-[#ffffffde]/70 max-w-[15rem] xs:max-w-[23rem] md:max-w-[40rem] truncate text-sm md:text-base lg:text-lg ${
             currentArticleSlug == item.slug ? 'font-bold' : ''
@@ -84,14 +84,14 @@ const RelatedArticles: React.FunctionComponent<RelatedArticlesProps> = ({ curren
       <h2 className='text-xl md:text-2xl font-bold text-[#ffffffde]/85'>Series: {currentSeriesTitle}</h2>
       <Divider />
       <VirtualScroller
-        ref={virtualscroller}
         itemSize={50}
-        items={items}
         itemTemplate={itemTemplate}
-        showLoader={true}
+        items={items}
         pt={{
           root: { className: 'bg-dark-cyan-900 w-full h-full' },
         }}
+        ref={virtualscroller}
+        showLoader
       />
     </nav>
   );

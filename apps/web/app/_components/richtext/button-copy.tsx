@@ -1,10 +1,13 @@
+/**
+ * Author: Hung Vu
+ * 
+ * A button to copy code snippet to clipboard.
+ */
 'use client';
 
 import { useRef } from 'react';
-
 import { Button } from 'primereact/button';
 import { Toast } from 'primereact/toast';
-
 import { geist } from '../fonts';
 
 const ButtonCopy: React.FunctionComponent<{ language: string; codeSnippet: string }> = ({ language, codeSnippet }) => {
@@ -20,14 +23,14 @@ const ButtonCopy: React.FunctionComponent<{ language: string; codeSnippet: strin
       <Toast ref={toast} />
       <Button
         aria-label={`Copy ${language} code snippet to clipboard.`}
-        icon='pi pi-copy' iconPos='right' onClick={() => {
+        className={geist.className} icon='pi pi-copy' iconPos='right' onClick={() => {
           try {
             navigator.clipboard.writeText(codeSnippet)
             showToastSuccess()
           } catch {
             showToastError()
           }
-        }} className={geist.className} pt={{
+        }} pt={{
           root: { className: 'bg-transparent hover:bg-dark-cyan-800 text-[#ffffffde] text-sm md:text-base lg:text-lg' },
         }} />
     </>

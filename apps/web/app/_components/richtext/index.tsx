@@ -1,5 +1,5 @@
 /**
- * @author Hung Vu
+ * Author: Hung Vu
  * 
  * Convert Lexical to HTML.
  */
@@ -9,7 +9,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import escapeHTML from 'escape-html';
 import hljs from 'highlight.js';
-
+import { geistMono } from "../fonts";
 import {
   IS_BOLD,
   IS_ITALIC,
@@ -19,42 +19,40 @@ import {
   IS_SUBSCRIPT,
   IS_SUPERSCRIPT,
 } from './format';
-
 import type { SerializedLexicalNode } from './types';
-import { geistMono } from "../fonts";
-import ButtonCopy from "./ButtonCopy";
+import ButtonCopy from "./button-copy";
 
-type Props = {
+interface Props {
   nodes: SerializedLexicalNode[];
 }
 
 export function RichText({ nodes }: Props): JSX.Element {
   return (
-    <Fragment>
-      {nodes?.map((node, index): JSX.Element | null => {
-        if (node?.type === 'text') {
+    <>
+      {nodes.map((node, index): JSX.Element | null => {
+        if (node.type === 'text') {
           let text = (
-            <span key={index} dangerouslySetInnerHTML={{ __html: escapeHTML(node?.text) }} />
+            <span dangerouslySetInnerHTML={{ __html: escapeHTML(node.text) }} key={index} />
           );
-          if (node?.format & IS_BOLD) {
+          if (node.format & IS_BOLD) {
             text = <strong key={index}>{text}</strong>;
           }
-          if (node?.format & IS_ITALIC) {
+          if (node.format & IS_ITALIC) {
             text = <em key={index}>{text}</em>;
           }
-          if (node?.format & IS_STRIKETHROUGH) {
+          if (node.format & IS_STRIKETHROUGH) {
             text = <s key={index}>{text}</s>
           }
-          if (node?.format & IS_UNDERLINE) {
+          if (node.format & IS_UNDERLINE) {
             text = <u key={index}>{text}</u>
           }
-          if (node?.format & IS_CODE) {
-            text = <code key={index} className={`${geistMono.className} p-1 bg-dark-cyan-800/50 rounded-md`}>{text}</code>;
+          if (node.format & IS_CODE) {
+            text = <code className={`${geistMono.className} p-1 bg-dark-cyan-800/50 rounded-md`} key={index}>{text}</code>;
           }
-          if (node?.format & IS_SUBSCRIPT) {
+          if (node.format & IS_SUBSCRIPT) {
             text = <sub key={index}>{text}</sub>;
           }
-          if (node?.format & IS_SUPERSCRIPT) {
+          if (node.format & IS_SUPERSCRIPT) {
             text = <sup key={index}>{text}</sup>;
           }
 
@@ -66,93 +64,93 @@ export function RichText({ nodes }: Props): JSX.Element {
         }
 
         const serializedChildrenFn = (node: SerializedLexicalNode): JSX.Element | null => {
-          if (node?.children === null || node?.children === undefined) {
+          if (node.children === null || node.children === undefined) {
             return null;
-          } else {
-            return RichText({ nodes: node?.children });
-          }
+          } 
+            return RichText({ nodes: node.children });
+          
         };
 
         const serializedChildren = serializedChildrenFn(node);
-        switch (node?.type) {
+        switch (node.type) {
           case 'paragraph': {
-            return <p key={index} className='text-sm md:text-base lg:text-lg'>{serializedChildren}</p>;
+            return <p className='text-sm md:text-base lg:text-lg' key={index}>{serializedChildren}</p>;
           }
           case 'heading': {
-            if (node?.tag === 'h2') {
-              return <h2 key={index} className='text-xl md:text-2xl font-bold'>{serializedChildren}</h2>;
-            } else if (node?.tag === 'h3') {
-              return <h3 key={index} className='text-lg md:text-xl font-semibold'>{serializedChildren}</h3>;
+            if (node.tag === 'h2') {
+              return <h2 className='text-xl md:text-2xl font-bold' key={index}>{serializedChildren}</h2>;
+            } else if (node.tag === 'h3') {
+              return <h3 className='text-lg md:text-xl font-semibold' key={index}>{serializedChildren}</h3>;
             }
           }
           case 'list': {
-            if (node?.tag === 'ol') {
-              return <ol key={index} className='pl-4 pt-2 list-decimal list-outside text-sm md:text-base lg:text-lg'>{serializedChildren}</ol>
-            } else if (node?.tag === 'ul') {
-              return <ul key={index} className='pl-4 pt-2 list-disc list-outside text-sm md:text-base lg:text-lg'>{serializedChildren}</ul>
+            if (node.tag === 'ol') {
+              return <ol className='pl-4 pt-2 list-decimal list-outside text-sm md:text-base lg:text-lg' key={index}>{serializedChildren}</ol>
+            } else if (node.tag === 'ul') {
+              return <ul className='pl-4 pt-2 list-disc list-outside text-sm md:text-base lg:text-lg' key={index}>{serializedChildren}</ul>
             }
           }
           case 'listitem': {
-            return <li key={index} value={node?.value} className='pb-2'>{serializedChildren}</li>
+            return <li className='pb-2' key={index} value={node.value}>{serializedChildren}</li>
           }
           case 'quote': {
-            return <blockquote key={index} className='text-sm md:text-base lg:text-lg p-4 my-4 border-l-4 border-dark-cyan-600 bg-dark-cyan-800/50 rounded-md italic'>{serializedChildren}</blockquote>;
+            return <blockquote className='text-sm md:text-base lg:text-lg p-4 my-4 border-l-4 border-dark-cyan-600 bg-dark-cyan-800/50 rounded-md italic' key={index}>{serializedChildren}</blockquote>;
           }
           case 'link':
           case 'autolink': {
-            if (node?.fields.linkType === 'custom') {
+            if (node.fields.linkType === 'custom') {
               return (
                 <Link
-                  key={index}
-                  href={node?.fields.url ?? '/'}
-                  target={node?.fields.newTab ? '_blank' : undefined}
-                  rel='nofollow noopener noreferrer'
-                  prefetch={false}
                   className='text-sm md:text-base lg:text-lg text-[#9fa8da] underline underline-offset-4 decoration-2 font-semibold hover:decoration-4'
+                  href={node.fields.url ?? '/'}
+                  key={index}
+                  prefetch={false}
+                  rel='nofollow noopener noreferrer'
+                  target={node.fields.newTab ? '_blank' : undefined}
                 >
                   {serializedChildren}
                 </Link>
               );
-            } else {
+            } 
               return (
                 <Link
-                  key={index}
-                  href={node?.fields.doc.value.settings.slug ?? '/'}
-                  target={node?.newTab ? 'target="_blank"' : undefined}
-                  rel='dofollow'
                   className='text-sm md:text-base lg:text-lg text-[#9fa8da] underline underline-offset-4 decoration-2 font-semibold hover:decoration-4'
+                  href={node.fields.doc.value.settings.slug ?? '/'}
+                  key={index}
+                  rel='dofollow'
+                  target={node.newTab ? 'target="_blank"' : undefined}
                 >
                   {serializedChildren}
                 </Link>
               )
-            }
+            
           }
           case 'upload': {
-            const mimeType = node?.value.mimeType
-            const altText = node?.value.alt
+            const mimeType = node.value.mimeType
+            const altText = node.value.alt
             if (mimeType?.startsWith('image')) {
               return (
-                <figure key={index} className='flex flex-col justify-center items-center'>
+                <figure className='flex flex-col justify-center items-center' key={index}>
                   <Image
-                    key={index}
-                    src={node?.value.sizes.embed?.url ?? node?.value.url}
                     alt={altText ?? ''}
-                    width={node?.value.sizes.embed?.width ?? node?.value.width}
-                    height={node?.value.sizes.embed?.height ?? node?.value.height}
                     className='rounded-md'
+                    height={node.value.sizes.embed?.height ?? node.value.height}
+                    key={index}
+                    src={node.value.sizes.embed?.url ?? node.value.url}
+                    width={node.value.sizes.embed?.width ?? node.value.width}
                   />
                   <figcaption className='text-sm md:text-base lg:text-lg p-2 rounded-md italic text-[#ffffffde]/70'>{altText ?? ''}</figcaption>
                 </figure>
               );
             } else if (mimeType?.startsWith('video')) {
               return (
-                <figure key={index} className='flex flex-col justify-center items-center'>
+                <figure className='flex flex-col justify-center items-center' key={index}>
                   <video
-                    key={index}
-                    src={node?.value.url}
-                    itemType={mimeType}
-                    controls
                     className='rounded-md'
+                    controls
+                    itemType={mimeType}
+                    key={index}
+                    src={node.value.url}
                   />
                   <figcaption className='text-sm md:text-base lg:text-lg p-2 rounded-md italic text-[#ffffffde]/70'>{altText ?? ''}</figcaption>
                 </figure>
@@ -161,21 +159,21 @@ export function RichText({ nodes }: Props): JSX.Element {
             }
           }
           case 'block': {
-            if (node?.fields.data.blockType === 'code-editor') {
+            if (node.fields.data.blockType === 'code-editor') {
               return (
                 <div
-                  key={index}
-                  className={`${geistMono.className} text-sm md:text-base lg:text-lg whitespace-pre-wrap bg-dark-cyan-800/50 rounded-md p-4`}>
+                  className={`${geistMono.className} text-sm md:text-base lg:text-lg whitespace-pre-wrap bg-dark-cyan-800/50 rounded-md p-4`}
+                  key={index}>
                   <div className="flex flex-row justify-end items-center pb-4">
-                    <ButtonCopy language={node?.fields.data.language} codeSnippet={node?.fields.data.codeSnippet} />
+                    <ButtonCopy codeSnippet={node.fields.data.codeSnippet} language={node.fields.data.language} />
                   </div>
                   <code
                     dangerouslySetInnerHTML={{
                       __html: hljs.highlight(
-                        node?.fields.data.codeSnippet,
-                        { language: node?.fields.data.language }
+                        node.fields.data.codeSnippet,
+                        { language: node.fields.data.language }
                       ).value
-                    }}></code>
+                    }} />
                 </div>)
             }
           }
@@ -183,6 +181,6 @@ export function RichText({ nodes }: Props): JSX.Element {
             return null;
         }
       })}
-    </Fragment>
+    </>
   );
 }

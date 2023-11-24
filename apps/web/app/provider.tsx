@@ -1,9 +1,15 @@
+/**
+ * Author: Hung Vu
+ * 
+ * A wrapper component for all pages.
+ */
+
 import { PrimeReactProvider } from 'primereact/api';
 import Header from 'app/_components/header';
 
-type RootProviderProps = {
+interface RootProviderProps {
   children: React.ReactNode;
-};
+}
 
 const RootProvider: React.FunctionComponent<RootProviderProps> = ({ children }) => {
   return (

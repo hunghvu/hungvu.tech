@@ -1,12 +1,11 @@
 /**
- * @author Hung Vu
+ * Author: Hung Vu
  * 
  * Header component
  */
 
 import Link from 'next/link';
 import { Menubar } from 'primereact/menubar'
-
 import { geist } from 'app/_components/fonts';
 
 const Header: React.FunctionComponent = () => {
@@ -24,18 +23,17 @@ const Header: React.FunctionComponent = () => {
   ]
   return (
     <Menubar
-      model={items}
-      start={<Link href='/'>Hung Vu</Link>}
       end={
         <nav className='flex flex-row gap-4'>
-          <Link href='https://www.linkedin.com/in/hunghvu/' className='flex flex-row items-center'>
-            <span className='pi pi-linkedin text-2xl'></span>
+          <Link className='flex flex-row items-center' href='https://www.linkedin.com/in/hunghvu/'>
+            <span className='pi pi-linkedin text-2xl' />
           </Link>
-          <Link href='https://github.com/hunghvu' className='flex flex-row items-center'>
-            <span className='pi pi-github text-2xl'></span>
+          <Link className='flex flex-row items-center' href='https://github.com/hunghvu'>
+            <span className='pi pi-github text-2xl' />
           </Link>
         </nav>
       }
+      model={items}
       pt={{
         root: {
           className: `${geist.className} flex flex-row justify-around font-bold sticky py-1
@@ -54,7 +52,8 @@ const Header: React.FunctionComponent = () => {
         end: {
           className: 'ml-0'
         }
-      }} />
+      }}
+      start={<Link href='/'>Hung Vu</Link>} />
   )
 }
 

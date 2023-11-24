@@ -8,6 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
+    "lint:fix": "eslint --fix --ext .ts,.tsx .",
     "update": "pnpm update"
   },
   "dependencies": {

@@ -1,15 +1,13 @@
 /**
- * @author Hung Vu
+ * Author: Hung Vu
  *
  * Article page.
  */
 
 import { Divider } from 'primereact/divider';
-
 import { RichText } from 'app/_components/richtext';
 import { utcToLocal } from 'app/_utilities/parseDate';
-
-import RelatedArticles from './RelatedArticles';
+import RelatedArticles from './related-articles';
 
 const ArticlePage: React.FunctionComponent<{ content: any; relatedArticles: any }> = async ({ content, relatedArticles }) => {
   return (

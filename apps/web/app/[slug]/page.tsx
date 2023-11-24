@@ -1,9 +1,13 @@
-import { Metadata, Viewport } from 'next';
+/**
+ * Author: Hung Vu
+ * 
+ * An entry point for the article page.
+ */
+
+import type { Metadata, Viewport } from 'next';
 import { notFound } from 'next/navigation';
-
 import { ArticleJsonLd } from 'next-seo';
-
-import ArticlePage from './ArticlePage';
+import ArticlePage from './article-page';
 
 const getArticle = async (slug: string) => {
   let res;
@@ -71,10 +75,10 @@ const getAllArticlesInTheSameSeries = async (seriesTitle: string) => {
   return content.docs;
 };
 
-type Props = {
+interface Props {
   params: { slug: string };
-  searchParams: { [key: string]: string | string[] | undefined };
-};
+  searchParams: Record<string, string | string[] | undefined>;
+}
 
 export const viewport: Viewport = {
   themeColor: '#072321',
@@ -124,27 +128,27 @@ export default async function Page({ params }: Props) {
   return (
     <>
       <ArticleJsonLd
-        useAppDir={true}
-        url={`${process.env.NEXT_PUBLIC_BASE_URL!}/${content.settings.slug}`}
-        title={content.settings.seoTitle}
-        images={[
-          `${content.settings.images.sizes.cover.url}`,
-          `${content.settings.images.sizes.og.url}`,
-          `${content.settings.images.sizes.embed.url}`,
-          `${content.settings.images.sizes.thumbnail.url}`,
-        ]}
-        datePublished={content.createdAt}
-        dateModified={content.updatedAt}
         authorName={[
           {
             name: 'Hung Vu',
             url: process.env.NEXT_PUBLIC_BASE_URL!,
           },
         ]}
-        publisherName='Hung Vu - hungvu.tech'
-        publisherLogo={`${process.env.NEXT_PUBLIC_BASE_URL!}/favicon.ico`}
+        dateModified={content.updatedAt}
+        datePublished={content.createdAt}
         description={content.settings.seoDescription}
-        isAccessibleForFree={true}
+        images={[
+          `${content.settings.images.sizes.cover.url}`,
+          `${content.settings.images.sizes.og.url}`,
+          `${content.settings.images.sizes.embed.url}`,
+          `${content.settings.images.sizes.thumbnail.url}`,
+        ]}
+        isAccessibleForFree
+        publisherLogo={`${process.env.NEXT_PUBLIC_BASE_URL!}/favicon.ico`}
+        publisherName='Hung Vu - hungvu.tech'
+        title={content.settings.seoTitle}
+        url={`${process.env.NEXT_PUBLIC_BASE_URL!}/${content.settings.slug}`}
+        useAppDir
       />
       <ArticlePage content={content} relatedArticles={relatedArticles}/>
     </>

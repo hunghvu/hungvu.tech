@@ -1,6 +1,11 @@
-import React from 'react';
+/**
+ * Author: Hung Vu
+ * 
+ * Root layout.
+ */
 
-import RootProvider from './RootProvider';
+import React from 'react';
+import RootProvider from './provider';
 
 import './global.css';
 

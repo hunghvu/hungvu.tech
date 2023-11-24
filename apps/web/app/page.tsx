@@ -1,15 +1,13 @@
 /**
- * @author Hung Vu
+ * Author: Hung Vu
  *
- * Blog (home) page.
+ * An entry point for blog (home) page.
  */
 
-import { Metadata, Viewport } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { notFound } from 'next/navigation';
-
 import { ArticleJsonLd } from 'next-seo';
-
-import BlogPage from './BlogPage';
+import BlogPage from './blog-page';
 
 const handleError = (res: Response) => {
   if (res.status === 401) {
@@ -114,27 +112,27 @@ export default async function Page() {
   return (
     <>
       <ArticleJsonLd
-        useAppDir={true}
-        url={process.env.NEXT_PUBLIC_BASE_URL!}
-        title={metadata.seoTitle}
-        images={[
-          `${metadata.images.sizes.cover.url}`,
-          `${metadata.images.sizes.og.url}`,
-          `${metadata.images.sizes.embed.url}`,
-          `${metadata.images.sizes.thumbnail.url}`,
-        ]}
-        datePublished={new Date().toISOString()}
-        dateModified={new Date().toISOString()}
         authorName={[
           {
             name: 'Hung Vu',
             url: process.env.NEXT_PUBLIC_BASE_URL!,
           },
         ]}
-        publisherName='Hung Vu - hungvu.tech'
-        publisherLogo={`${process.env.NEXT_PUBLIC_BASE_URL!}/favicon.ico`}
+        dateModified={new Date().toISOString()}
+        datePublished={new Date().toISOString()}
         description={metadata.seoDescription}
-        isAccessibleForFree={true}
+        images={[
+          `${metadata.images.sizes.cover.url}`,
+          `${metadata.images.sizes.og.url}`,
+          `${metadata.images.sizes.embed.url}`,
+          `${metadata.images.sizes.thumbnail.url}`,
+        ]}
+        isAccessibleForFree
+        publisherLogo={`${process.env.NEXT_PUBLIC_BASE_URL!}/favicon.ico`}
+        publisherName='Hung Vu - hungvu.tech'
+        title={metadata.seoTitle}
+        url={process.env.NEXT_PUBLIC_BASE_URL!}
+        useAppDir
       />
       <BlogPage content={content} />
     </>
