@@ -57,6 +57,9 @@ importers:
       cross-env:
         specifier: ^7.0.3
         version: 7.0.3
+      eslint-config-custom:
+        specifier: workspace:*
+        version: link:../../packages/eslint-config-custom
       nodemon:
         specifier: ^3.0.1
         version: 3.0.1

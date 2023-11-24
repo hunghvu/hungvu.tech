@@ -7,10 +7,14 @@
   "exclude": [
     "node_modules",
     "dist",
-    "build"
+    "build",
+    ".eslintrc.js",
   ],
   "include": [
-    "server",
-    "collections"
-, "access"  ]
+    "access",
+    "blocks",
+    "collections",
+    "index.ts",
+    "server.ts",
+  ]
 }

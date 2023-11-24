@@ -4,7 +4,7 @@
  * This collection represents a blog article.
  */
 
-import { CollectionConfig } from 'payload/types';
+import type { CollectionConfig } from 'payload/types';
 import isLoggedIn from '../access/validator/isLoggedIn';
 import isPublished from '../access/query/isPublished';
 

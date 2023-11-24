@@ -4,7 +4,7 @@
  * This collection represents a metadata for a static route.
  */
 
-import { CollectionConfig } from 'payload/types';
+import type { CollectionConfig } from 'payload/types';
 
 const StaticRouteMetadata: CollectionConfig = {
   slug: 'static-route-metadata',

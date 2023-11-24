@@ -1,5 +1,5 @@
 import { useFormFields } from 'payload/components/forms'
-import { Block } from 'payload/types';
+import type { Block } from 'payload/types';
 import CodeField from 'payload/dist/admin/components/forms/field-types/Code'
 import { createElement } from 'react'
 

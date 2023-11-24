@@ -2,6 +2,7 @@ import express from 'express';
 import payload from 'payload';
 
 require('dotenv').config();
+
 const PORT = process.env.PORT ?? '3001';
 const app = express();
 
