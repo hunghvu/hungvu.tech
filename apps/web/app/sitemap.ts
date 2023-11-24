@@ -14,12 +14,12 @@ const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
       changeFrequency: 'always',
       priority: 1,
     },
-    {
-      url: `${process.env.NEXT_PUBLIC_BASE_URL!}/homelab`,
-      lastModified: new Date(),
-      changeFrequency: 'always',
-      priority: 1,
-    },
+    // {
+    //   url: `${process.env.NEXT_PUBLIC_BASE_URL!}/homelab`,
+    //   lastModified: new Date(),
+    //   changeFrequency: 'always',
+    //   priority: 1,
+    // },
   ]
 
   const articles = await fetch(process.env.NEXT_REQUEST_CMS_ARTICLES_URL!, {

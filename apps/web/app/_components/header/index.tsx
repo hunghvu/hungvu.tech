@@ -15,11 +15,11 @@ const Header: React.FunctionComponent = () => {
       icon: 'pi pi-home',
       url: '/',
     },
-    {
-      label: 'Homelab',
-      icon: 'pi pi-server',
-      url: '/homelab',
-    },
+    // {
+    //   label: 'Homelab',
+    //   icon: 'pi pi-server',
+    //   url: '/homelab',
+    // },
   ];
   return (
     <Menubar
