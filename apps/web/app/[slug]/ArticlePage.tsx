@@ -9,7 +9,9 @@ import { Divider } from 'primereact/divider';
 import { RichText } from 'app/_components/richtext';
 import { utcToLocal } from 'app/_utilities/parseDate';
 
-const ArticlePage: React.FunctionComponent<{ content: any }> = async ({ content }) => {
+import RelatedArticles from './RelatedArticles';
+
+const ArticlePage: React.FunctionComponent<{ content: any; relatedArticles: any }> = async ({ content, relatedArticles }) => {
   return (
     <article className='flex flex-col gap-4 w-full md:w-[768px] m-4'>
       <div className='flex flex-row gap-16 text-xs md:text-sm lg:text-base text-[#ffffffde]/60'>
@@ -22,6 +24,14 @@ const ArticlePage: React.FunctionComponent<{ content: any }> = async ({ content 
       </hgroup>
       <Divider />
       <RichText nodes={content.body.root.children} />
+      <Divider />
+      {relatedArticles ? (
+        <RelatedArticles
+          currentArticleSlug={content.settings.slug}
+          currentSeriesTitle={content.settings.series.title}
+          relatedArticles={relatedArticles}
+        />
+      ) : null}
     </article>
   );
 };

@@ -38,6 +38,39 @@ const getArticle = async (slug: string) => {
   return content.docs[0];
 };
 
+const getAllArticlesInTheSameSeries = async (seriesTitle: string) => {
+  let res;
+  try {
+    res = await fetch(`${process.env.PAYLOAD_SERVER_ARTICLES_URL!}?where[settings.series.title][equals]=${seriesTitle}`, {
+      cache: process.env.NODE_ENV === 'production' ? 'force-cache' : 'no-store',
+    });
+  } catch (err) {
+    throw new Error('Connection Error');
+  }
+
+  // Catch errors first, or else json conversion may fail.
+  if (res.status === 401) {
+    throw new Error('Unauthorized');
+  }
+
+  if (res.status === 404) {
+    notFound();
+  }
+
+  if (res.status > 500) {
+    throw new Error('Server Error');
+  }
+
+  const content = await res.json();
+
+  // Payload CMS can returns status 200, but with an empty array.
+  if (content.docs.length < 1 || !('settings' in content.docs[0])) {
+    notFound();
+  }
+
+  return content.docs;
+};
+
 type Props = {
   params: { slug: string };
   searchParams: { [key: string]: string | string[] | undefined };
@@ -84,6 +117,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function Page({ params }: Props) {
   const content = await getArticle(params.slug);
+  let relatedArticles;
+  if (content.settings.series) {
+    relatedArticles = await getAllArticlesInTheSameSeries(content.settings.series.title);
+  }
   return (
     <>
       <ArticleJsonLd
@@ -109,7 +146,7 @@ export default async function Page({ params }: Props) {
         description={content.settings.seoDescription}
         isAccessibleForFree={true}
       />
-      <ArticlePage content={content} />
+      <ArticlePage content={content} relatedArticles={relatedArticles}/>
     </>
   );
 }
