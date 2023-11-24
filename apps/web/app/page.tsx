@@ -26,7 +26,7 @@ const handleError = (res: Response): void => {
 const getAllArticles = async (): Promise<any> => {
   let res;
   try {
-    res = await fetch(process.env.PAYLOAD_SERVER_ARTICLES_URL!, {
+    res = await fetch(process.env.NEXT_REQUEST_CMS_ARTICLES_URL!, {
       cache: process.env.NODE_ENV === 'production' ? 'force-cache' : 'no-store',
     });
   } catch (err) {
@@ -48,7 +48,7 @@ const getAllArticles = async (): Promise<any> => {
 const getMetadata = async (): Promise<any> => {
   let res;
   try {
-    res = await fetch(`${process.env.PAYLOAD_SERVER_STATIC_ROUTE_METADATA_URL!}?where[isRoot][equals]=${true}`, {
+    res = await fetch(`${process.env.NEXT_REQUEST_CMS_STATIC_ROUTE_METADATA_URL!}?where[isRoot][equals]=${true}`, {
       cache: process.env.NODE_ENV === 'production' ? 'force-cache' : 'no-store',
     });
   } catch (err) {

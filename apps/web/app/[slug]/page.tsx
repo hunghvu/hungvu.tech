@@ -12,7 +12,7 @@ import ArticlePage from './page-article';
 const getArticle = async (slug: string): Promise<any> => {
   let res;
   try {
-    res = await fetch(`${process.env.PAYLOAD_SERVER_ARTICLES_URL!}?where[settings.slug][equals]=${slug}`, {
+    res = await fetch(`${process.env.NEXT_REQUEST_CMS_ARTICLES_URL!}?where[settings.slug][equals]=${slug}`, {
       cache: process.env.NODE_ENV === 'production' ? 'force-cache' : 'no-store',
     });
   } catch (err) {
@@ -45,7 +45,7 @@ const getArticle = async (slug: string): Promise<any> => {
 const getAllArticlesInTheSameSeries = async (seriesTitle: string): Promise<any> => {
   let res;
   try {
-    res = await fetch(`${process.env.PAYLOAD_SERVER_ARTICLES_URL!}?where[settings.series.title][equals]=${seriesTitle}`, {
+    res = await fetch(`${process.env.NEXT_REQUEST_CMS_ARTICLES_URL!}?where[settings.series.title][equals]=${seriesTitle}`, {
       cache: process.env.NODE_ENV === 'production' ? 'force-cache' : 'no-store',
     });
   } catch (err) {

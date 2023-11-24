@@ -37,7 +37,7 @@ import CodeEditor from './blocks/CodeSnippet';
 import StaticRouteMetadata from './collections/StaticRouteMetadata';
 
 export default buildConfig({
-  serverURL: process.env.PAYLOAD_PUBLIC_SERVER_URL ?? 'http://localhost:3001',
+  serverURL: process.env.PAYLOAD_PUBLIC_SERVER_URL!,
   admin: {
     user: Users.slug,
     bundler: viteBundler(),
@@ -71,11 +71,11 @@ export default buildConfig({
     outputFile: path.resolve(__dirname, 'payload-types.ts'),
   },
   graphQL: {
-    schemaOutputFile: path.resolve(__dirname, 'generated-schema.graphql'),
+    disable: true,
   },
-  csrf: [process.env.FRONT_END_DOMAIN ?? 'http://localhost:3000'],
-  cors: [process.env.FRONT_END_DOMAIN ?? 'http://localhost:3000'],
+  csrf: [process.env.PAYLOAD_FRONT_END_DOMAIN!],
+  cors: [process.env.PAYLOAD_FRONT_END_DOMAIN!],
   db: mongooseAdapter({
-    url: process.env.MONGODB_URI ?? 'mongodb://127.0.0.1:27017',
+    url: process.env.PAYLOAD_MONGODB_URI!,
   }),
 });

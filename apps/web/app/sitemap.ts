@@ -22,7 +22,7 @@ const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
     },
   ]
 
-  const articles = await fetch(process.env.PAYLOAD_SERVER_ARTICLES_URL!, {
+  const articles = await fetch(process.env.NEXT_REQUEST_CMS_ARTICLES_URL!, {
     cache: process.env.NODE_ENV === 'production' ? 'force-cache' : 'no-store',
   });
   (await articles.json()).docs.foreach((article: any) => {
