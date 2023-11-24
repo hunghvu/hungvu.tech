@@ -44,9 +44,9 @@ const BlogPage: React.FunctionComponent<{ content: any }> = ({ content }) => {
             content: { className: 'text-sm md:text-base lg:text-lg' },
           }}
           role='article'
-          title={<h2>{item.title}</h2>}
+          title={<h2 className='line-clamp-2 break-all'>{item.title}</h2>}
         >
-          <p className='text-[#ffffffde]/80 line-clamp-2'>{item.description}</p>
+          <p className='text-[#ffffffde]/80 line-clamp-2 break-all'>{item.description}</p>
           <Divider className='hidden lg:flex' />
         </Card>
       </Link>
@@ -90,17 +90,17 @@ const BlogPage: React.FunctionComponent<{ content: any }> = ({ content }) => {
           event: {
             className: 'w-full lg:w-[1024px]',
           },
-          marker: {
-            className: 'bg-[#bdbdbd]/40',
+          opposite: {
+            className: 'hidden lg:flex lg:flex-grow-0',
           },
           separator: {
             className: 'hidden lg:flex',
           },
+          marker: {
+            className: 'bg-[#bdbdbd]/40',
+          },
           connector: {
             className: 'bg-[#bdbdbd]/20',
-          },
-          opposite: {
-            className: 'hidden lg:flex lg:flex-grow-0',
           },
         }}
         value={data}
