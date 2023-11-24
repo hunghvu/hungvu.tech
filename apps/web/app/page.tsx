@@ -7,9 +7,9 @@
 import type { Metadata, Viewport } from 'next';
 import { notFound } from 'next/navigation';
 import { ArticleJsonLd } from 'next-seo';
-import BlogPage from './blog-page';
+import BlogPage from './page-blog';
 
-const handleError = (res: Response) => {
+const handleError = (res: Response): void => {
   if (res.status === 401) {
     throw new Error('Unauthorized');
   }
@@ -23,7 +23,7 @@ const handleError = (res: Response) => {
   }
 };
 
-const getAllArticles = async () => {
+const getAllArticles = async (): Promise<any> => {
   let res;
   try {
     res = await fetch(process.env.PAYLOAD_SERVER_ARTICLES_URL!, {
@@ -45,7 +45,7 @@ const getAllArticles = async () => {
   return content.docs;
 };
 
-const getMetadata = async () => {
+const getMetadata = async (): Promise<any> => {
   let res;
   try {
     res = await fetch(`${process.env.PAYLOAD_SERVER_STATIC_ROUTE_METADATA_URL!}?where[isRoot][equals]=${true}`, {
@@ -73,7 +73,7 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-export async function generateMetadata(): Promise<Metadata> {
+export const generateMetadata = async (): Promise<Metadata> => {
   const metadata = await getMetadata();
   return {
     title: `${metadata.seoTitle} - hungvu.tech`,
@@ -104,9 +104,9 @@ export async function generateMetadata(): Promise<Metadata> {
       creator: '@hunghvu_dev',
     },
   };
-}
+};
 
-export default async function Page() {
+const Page = async (): Promise<any> => {
   const content = await getAllArticles();
   const metadata = await getMetadata();
   return (
@@ -137,4 +137,6 @@ export default async function Page() {
       <BlogPage content={content} />
     </>
   );
-}
+};
+
+export default Page;

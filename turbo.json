@@ -8,6 +8,17 @@
       "dependsOn": [
         "^build"
       ],
+      "env": [
+        "NEXT_PUBLIC_REMOTE_IMAGE_PROTOCOL",
+        "NEXT_PUBLIC_REMOTE_IMAGE_HOSTNAME",
+        "NEXT_PUBLIC_REMOTE_IMAGE_PORT",
+        "NEXT_PUBLIC_REMOTE_IMAGE_PATH",
+        "NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION",
+        "NEXT_PUBLIC_BASE_URL",
+        "PAYLOAD_SERVER_ARTICLES_URL",
+        "PAYLOAD_SERVER_STATIC_ROUTE_METADATA_URL",
+        "NODE_ENV"
+      ],
       "outputs": [
         "dist/**",
         ".next/**"

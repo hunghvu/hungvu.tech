@@ -1,6 +1,6 @@
 /**
  * Author: Hung Vu
- * 
+ *
  * A wrapper component for all pages.
  */
 
@@ -11,7 +11,7 @@ interface RootProviderProps {
   children: React.ReactNode;
 }
 
-const RootProvider: React.FunctionComponent<RootProviderProps> = ({ children }) => {
+const Provider: React.FunctionComponent<RootProviderProps> = ({ children }) => {
   return (
     <PrimeReactProvider>
       <Header />
@@ -20,4 +20,4 @@ const RootProvider: React.FunctionComponent<RootProviderProps> = ({ children }) 
   );
 };
 
-export default RootProvider;
+export default Provider;

@@ -20,7 +20,7 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-export default function Error({ error }: { error: Error & { digest?: string }; reset: () => void }) {
+const Error = ({ error }: { error: Error & { digest?: string }; reset: () => void }): React.ReactNode => {
   return (
     <section className='flex flex-col justify-center items-center gap-4 w-full md:w-[768px] m-4'>
       <hgroup className='flex flex-col justify-center items-center gap-6 w-full'>
@@ -40,4 +40,6 @@ export default function Error({ error }: { error: Error & { digest?: string }; r
       </hgroup>
     </section>
   );
-}
+};
+
+export default Error;

@@ -1,11 +1,11 @@
 /**
  * Author: Hung Vu
- * 
+ *
  * Header component
  */
 
 import Link from 'next/link';
-import { Menubar } from 'primereact/menubar'
+import { Menubar } from 'primereact/menubar';
 import { geist } from 'app/_components/fonts';
 
 const Header: React.FunctionComponent = () => {
@@ -18,9 +18,9 @@ const Header: React.FunctionComponent = () => {
     {
       label: 'Homelab',
       icon: 'pi pi-server',
-      url: '/homelab'
-    }
-  ]
+      url: '/homelab',
+    },
+  ];
   return (
     <Menubar
       end={
@@ -38,23 +38,24 @@ const Header: React.FunctionComponent = () => {
         root: {
           className: `${geist.className} flex flex-row justify-around font-bold sticky py-1
                       top-0 z-10 bg-gradient-to-b from-dark-cyan-800/50 via-[#1e1e1e] to-transparent
-                      text-lg md:text-xl lg:text-2xl `
+                      text-lg md:text-xl lg:text-2xl `,
         },
         menu: {
-          className: 'lg:gap-4 bg-transparent backdrop-blur'
+          className: 'lg:gap-4 bg-transparent backdrop-blur',
         },
         icon: {
-          className: 'text-2xl'
+          className: 'text-2xl',
         },
         popupIcon: {
-          className: 'w-[1.5rem] h-[1.5rem]'
+          className: 'w-[1.5rem] h-[1.5rem]',
         },
         end: {
-          className: 'ml-0'
-        }
+          className: 'ml-0',
+        },
       }}
-      start={<Link href='/'>Hung Vu</Link>} />
-  )
-}
+      start={<Link href='/'>Hung Vu</Link>}
+    />
+  );
+};
 
-export default Header
+export default Header;

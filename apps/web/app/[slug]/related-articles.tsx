@@ -24,7 +24,7 @@ const RelatedArticles: React.FunctionComponent<RelatedArticlesProps> = ({ curren
 
   let currentArticleIndex = 0;
   const items = relatedArticles.map((item: any, index: any) => {
-    if (item.settings.slug == currentArticleSlug) currentArticleIndex = index;
+    if (item.settings.slug === currentArticleSlug) currentArticleIndex = index;
     return {
       title: item.title,
       slug: item.settings.slug,
@@ -50,16 +50,17 @@ const RelatedArticles: React.FunctionComponent<RelatedArticlesProps> = ({ curren
     setTimeout(() => {
       virtualscroller.current?.scrollToIndex(currentArticleIndex, 'smooth');
     }, 200);
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- This is intentional, see above.
   }, []);
 
-  const itemTemplate = (item: any, options: VirtualScrollerTemplateOptions) => {
+  const itemTemplate = (item: any, options: VirtualScrollerTemplateOptions): React.ReactNode => {
     return (
-      <Link className={`flex flex-row items-center gap-4 py-4 h-[${options.props.itemSize}px] hover:font-bold`} href={`/${item.slug}`}>
+      <Link className={`flex flex-row items-center gap-4 py-4 h-[${options.props.itemSize as number}px] hover:font-bold`} href={`/${item.slug}`}>
         <Tag
           pt={{
             root: {
               className: `text-[#ffffffde]/70 w-[32px] h-[32px] text-base md:text-lg lg:text-xl rounded-full ${
-                currentArticleSlug == item.slug
+                currentArticleSlug === item.slug
                   ? 'bg-dark-cyan-700/70 border border-solid border-2 border-dark-cyan-700/70'
                   : 'bg-transparent border border-solid border-2 border-dark-cyan-700/70'
               }`,
@@ -67,10 +68,10 @@ const RelatedArticles: React.FunctionComponent<RelatedArticlesProps> = ({ curren
           }}
           severity='info'
           value={item.index}
-         />
+        />
         <p
           className={`block text-[#ffffffde]/70 max-w-[15rem] xs:max-w-[23rem] md:max-w-[40rem] truncate text-sm md:text-base lg:text-lg ${
-            currentArticleSlug == item.slug ? 'font-bold' : ''
+            currentArticleSlug === item.slug ? 'font-bold' : ''
           }`}
         >
           {item.title}

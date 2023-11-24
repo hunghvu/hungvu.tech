@@ -1,39 +1,32 @@
+
+
 /**
  * Author: Hung Vu
- * 
+ *
  * Convert Lexical to HTML.
  */
 
-import React, { Fragment } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import escapeHTML from 'escape-html';
 import hljs from 'highlight.js';
-import { geistMono } from "../fonts";
-import {
-  IS_BOLD,
-  IS_ITALIC,
-  IS_STRIKETHROUGH,
-  IS_UNDERLINE,
-  IS_CODE,
-  IS_SUBSCRIPT,
-  IS_SUPERSCRIPT,
-} from './format';
+import { geistMono } from '../fonts';
+import { IS_BOLD, IS_ITALIC, IS_STRIKETHROUGH, IS_UNDERLINE, IS_CODE, IS_SUBSCRIPT, IS_SUPERSCRIPT } from './format';
 import type { SerializedLexicalNode } from './types';
-import ButtonCopy from "./button-copy";
+import ButtonCopy from './button-copy';
 
-interface Props {
+/* eslint-disable -- Following reference implementation*/
+interface RichTextProps {
   nodes: SerializedLexicalNode[];
 }
 
-export function RichText({ nodes }: Props): JSX.Element {
+export const RichText = ({ nodes }: RichTextProps): JSX.Element => {
   return (
     <>
-      {nodes.map((node, index): JSX.Element | null => {
+      {nodes.map((node, index): JSX.Element | null | undefined => {
         if (node.type === 'text') {
-          let text = (
-            <span dangerouslySetInnerHTML={{ __html: escapeHTML(node.text) }} key={index} />
-          );
+          let text = <span dangerouslySetInnerHTML={{ __html: escapeHTML(node.text) }} key={index} />;
           if (node.format & IS_BOLD) {
             text = <strong key={index}>{text}</strong>;
           }
@@ -41,13 +34,17 @@ export function RichText({ nodes }: Props): JSX.Element {
             text = <em key={index}>{text}</em>;
           }
           if (node.format & IS_STRIKETHROUGH) {
-            text = <s key={index}>{text}</s>
+            text = <s key={index}>{text}</s>;
           }
           if (node.format & IS_UNDERLINE) {
-            text = <u key={index}>{text}</u>
+            text = <u key={index}>{text}</u>;
           }
           if (node.format & IS_CODE) {
-            text = <code className={`${geistMono.className} p-1 bg-dark-cyan-800/50 rounded-md`} key={index}>{text}</code>;
+            text = (
+              <code className={`${geistMono.className} p-1 bg-dark-cyan-800/50 rounded-md`} key={index}>
+                {text}
+              </code>
+            );
           }
           if (node.format & IS_SUBSCRIPT) {
             text = <sub key={index}>{text}</sub>;
@@ -66,35 +63,67 @@ export function RichText({ nodes }: Props): JSX.Element {
         const serializedChildrenFn = (node: SerializedLexicalNode): JSX.Element | null => {
           if (node.children === null || node.children === undefined) {
             return null;
-          } 
-            return RichText({ nodes: node.children });
-          
+          }
+          return RichText({ nodes: node.children });
         };
 
         const serializedChildren = serializedChildrenFn(node);
         switch (node.type) {
           case 'paragraph': {
-            return <p className='text-sm md:text-base lg:text-lg' key={index}>{serializedChildren}</p>;
+            return (
+              <p className='text-sm md:text-base lg:text-lg' key={index}>
+                {serializedChildren}
+              </p>
+            );
           }
           case 'heading': {
             if (node.tag === 'h2') {
-              return <h2 className='text-xl md:text-2xl font-bold' key={index}>{serializedChildren}</h2>;
+              return (
+                <h2 className='text-xl md:text-2xl font-bold' key={index}>
+                  {serializedChildren}
+                </h2>
+              );
             } else if (node.tag === 'h3') {
-              return <h3 className='text-lg md:text-xl font-semibold' key={index}>{serializedChildren}</h3>;
+              return (
+                <h3 className='text-lg md:text-xl font-semibold' key={index}>
+                  {serializedChildren}
+                </h3>
+              );
             }
+            break
           }
           case 'list': {
             if (node.tag === 'ol') {
-              return <ol className='pl-4 pt-2 list-decimal list-outside text-sm md:text-base lg:text-lg' key={index}>{serializedChildren}</ol>
+              return (
+                <ol className='pl-4 pt-2 list-decimal list-outside text-sm md:text-base lg:text-lg' key={index}>
+                  {serializedChildren}
+                </ol>
+              );
             } else if (node.tag === 'ul') {
-              return <ul className='pl-4 pt-2 list-disc list-outside text-sm md:text-base lg:text-lg' key={index}>{serializedChildren}</ul>
+              return (
+                <ul className='pl-4 pt-2 list-disc list-outside text-sm md:text-base lg:text-lg' key={index}>
+                  {serializedChildren}
+                </ul>
+              );
             }
+            break
           }
           case 'listitem': {
-            return <li className='pb-2' key={index} value={node.value}>{serializedChildren}</li>
+            return (
+              <li className='pb-2' key={index} value={node.value}>
+                {serializedChildren}
+              </li>
+            );
           }
           case 'quote': {
-            return <blockquote className='text-sm md:text-base lg:text-lg p-4 my-4 border-l-4 border-dark-cyan-600 bg-dark-cyan-800/50 rounded-md italic' key={index}>{serializedChildren}</blockquote>;
+            return (
+              <blockquote
+                className='text-sm md:text-base lg:text-lg p-4 my-4 border-l-4 border-dark-cyan-600 bg-dark-cyan-800/50 rounded-md italic'
+                key={index}
+              >
+                {serializedChildren}
+              </blockquote>
+            );
           }
           case 'link':
           case 'autolink': {
@@ -111,23 +140,22 @@ export function RichText({ nodes }: Props): JSX.Element {
                   {serializedChildren}
                 </Link>
               );
-            } 
-              return (
-                <Link
-                  className='text-sm md:text-base lg:text-lg text-[#9fa8da] underline underline-offset-4 decoration-2 font-semibold hover:decoration-4'
-                  href={node.fields.doc.value.settings.slug ?? '/'}
-                  key={index}
-                  rel='dofollow'
-                  target={node.newTab ? 'target="_blank"' : undefined}
-                >
-                  {serializedChildren}
-                </Link>
-              )
-            
+            }
+            return (
+              <Link
+                className='text-sm md:text-base lg:text-lg text-[#9fa8da] underline underline-offset-4 decoration-2 font-semibold hover:decoration-4'
+                href={node.fields.doc.value.settings.slug ?? '/'}
+                key={index}
+                rel='dofollow'
+                target={node.newTab ? 'target="_blank"' : undefined}
+              >
+                {serializedChildren}
+              </Link>
+            );
           }
           case 'upload': {
-            const mimeType = node.value.mimeType
-            const altText = node.value.alt
+            const mimeType = node.value.mimeType;
+            const altText = node.value.alt;
             if (mimeType?.startsWith('image')) {
               return (
                 <figure className='flex flex-col justify-center items-center' key={index}>
@@ -145,37 +173,32 @@ export function RichText({ nodes }: Props): JSX.Element {
             } else if (mimeType?.startsWith('video')) {
               return (
                 <figure className='flex flex-col justify-center items-center' key={index}>
-                  <video
-                    className='rounded-md'
-                    controls
-                    itemType={mimeType}
-                    key={index}
-                    src={node.value.url}
-                  />
+                  <video className='rounded-md' controls itemType={mimeType} key={index} src={node.value.url} />
                   <figcaption className='text-sm md:text-base lg:text-lg p-2 rounded-md italic text-[#ffffffde]/70'>{altText ?? ''}</figcaption>
                 </figure>
               );
-
             }
+            break
           }
           case 'block': {
             if (node.fields.data.blockType === 'code-editor') {
               return (
                 <div
                   className={`${geistMono.className} text-sm md:text-base lg:text-lg whitespace-pre-wrap bg-dark-cyan-800/50 rounded-md p-4`}
-                  key={index}>
-                  <div className="flex flex-row justify-end items-center pb-4">
+                  key={index}
+                >
+                  <div className='flex flex-row justify-end items-center pb-4'>
                     <ButtonCopy codeSnippet={node.fields.data.codeSnippet} language={node.fields.data.language} />
                   </div>
                   <code
                     dangerouslySetInnerHTML={{
-                      __html: hljs.highlight(
-                        node.fields.data.codeSnippet,
-                        { language: node.fields.data.language }
-                      ).value
-                    }} />
-                </div>)
+                      __html: hljs.highlight(node.fields.data.codeSnippet, { language: node.fields.data.language }).value,
+                    }}
+                  />
+                </div>
+              );
             }
+            break
           }
           default:
             return null;
@@ -183,4 +206,4 @@ export function RichText({ nodes }: Props): JSX.Element {
       })}
     </>
   );
-}
+};

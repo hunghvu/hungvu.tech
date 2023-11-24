@@ -1,8 +1,10 @@
+
 /**
- * @author Hung Vu
+ * Author: Hung Vu
  * 
  * Lexical format code
  */
+
 export const IS_BOLD = 1;
 export const IS_ITALIC = 1 << 1;
 export const IS_STRIKETHROUGH = 1 << 2;

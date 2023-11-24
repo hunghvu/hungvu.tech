@@ -1,7 +1,7 @@
 const { resolve } = require("node:path");
- 
+
 const project = resolve(process.cwd(), "tsconfig.json");
- 
+
 /*
  * This is a custom ESLint configuration for use with
  * Next.js apps.
@@ -10,7 +10,7 @@ const project = resolve(process.cwd(), "tsconfig.json");
  * For more information, see https://github.com/vercel/style-guide
  *
  */
- 
+
 module.exports = {
   extends: [
     "@vercel/style-guide/eslint/node",
@@ -37,9 +37,28 @@ module.exports = {
     },
   },
   ignorePatterns: ["node_modules/", "dist/"],
-  // add rules configurations here
   rules: {
+    // Unnecessary rules.
     "@next/next/no-html-link-for-pages": "off",
+    "@typescript-eslint/no-redundant-type-constituents": "off",
     "import/no-default-export": "off",
+    "import/no-named-as-default-member": "off",
+    "import/no-unresolved": "off",
+    "no-bitwise": "off",
+
+    // Enforce arrow function component definitions.
+    "react/function-component-definition": [2, {
+      "namedComponents": "arrow-function",
+    }],
+
+    // Disable these core TypeScript rules until the product
+    // is mature enough to enforce strict type checking.
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/no-unsafe-assignment": "off",
+    "@typescript-eslint/no-unsafe-call": "off",
+    "@typescript-eslint/no-unsafe-member-access": "off",
+    "@typescript-eslint/no-unsafe-return": "off",
+
   },
 };

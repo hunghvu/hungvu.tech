@@ -1,15 +1,15 @@
 /**
  * Author: Hung Vu
- * 
+ *
  * An entry point for the article page.
  */
 
 import type { Metadata, Viewport } from 'next';
 import { notFound } from 'next/navigation';
 import { ArticleJsonLd } from 'next-seo';
-import ArticlePage from './article-page';
+import ArticlePage from './page-article';
 
-const getArticle = async (slug: string) => {
+const getArticle = async (slug: string): Promise<any> => {
   let res;
   try {
     res = await fetch(`${process.env.PAYLOAD_SERVER_ARTICLES_URL!}?where[settings.slug][equals]=${slug}`, {
@@ -42,7 +42,7 @@ const getArticle = async (slug: string) => {
   return content.docs[0];
 };
 
-const getAllArticlesInTheSameSeries = async (seriesTitle: string) => {
+const getAllArticlesInTheSameSeries = async (seriesTitle: string): Promise<any> => {
   let res;
   try {
     res = await fetch(`${process.env.PAYLOAD_SERVER_ARTICLES_URL!}?where[settings.series.title][equals]=${seriesTitle}`, {
@@ -75,7 +75,7 @@ const getAllArticlesInTheSameSeries = async (seriesTitle: string) => {
   return content.docs;
 };
 
-interface Props {
+interface MetadataProps {
   params: { slug: string };
   searchParams: Record<string, string | string[] | undefined>;
 }
@@ -86,7 +86,7 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export const generateMetadata = async ({ params }: MetadataProps): Promise<Metadata> => {
   const content = await getArticle(params.slug);
   return {
     title: `${content.settings.seoTitle} - hungvu.tech`,
@@ -117,13 +117,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       creator: '@hunghvu_dev',
     },
   };
-}
+};
 
-export default async function Page({ params }: Props) {
+const Page = async ({ params }: MetadataProps): Promise<any> => {
   const content = await getArticle(params.slug);
   let relatedArticles;
   if (content.settings.series) {
-    relatedArticles = await getAllArticlesInTheSameSeries(content.settings.series.title);
+    relatedArticles = await getAllArticlesInTheSameSeries(content.settings.series.title as string);
   }
   return (
     <>
@@ -150,7 +150,9 @@ export default async function Page({ params }: Props) {
         url={`${process.env.NEXT_PUBLIC_BASE_URL!}/${content.settings.slug}`}
         useAppDir
       />
-      <ArticlePage content={content} relatedArticles={relatedArticles}/>
+      <ArticlePage content={content} relatedArticles={relatedArticles} />
     </>
   );
-}
+};
+
+export default Page;

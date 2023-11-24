@@ -1,5 +1,7 @@
+
+
 /**
- * @author Hung Vu
+ * Author: Hung Vu
  *
  * Parse a UTC timestamp to local date.
  * The format is based on Day JS rules.
@@ -14,7 +16,7 @@ import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 
 // TODO: handle errors
-const utcToLocal = (date: string, dayjsFormat: string) => {
+const utcToLocal = (date: string, dayjsFormat: string): string => {
   dayjs.extend(utc);
   dayjs.extend(timezone);
 

@@ -10,8 +10,8 @@ import { Card } from 'primereact/card';
 import { Tag } from 'primereact/tag';
 import { Timeline } from 'primereact/timeline';
 import { Divider } from 'primereact/divider';
+import { utcToLocal } from '@utils/parse-date';
 import { geist } from 'app/_components/fonts';
-import { utcToLocal } from '@utils/parseDate';
 
 const BlogPage: React.FunctionComponent<{ content: any }> = ({ content }) => {
   const data = content
@@ -26,14 +26,14 @@ const BlogPage: React.FunctionComponent<{ content: any }> = ({ content }) => {
       };
     });
 
-  const customizedContent = (item: any) => {
+  const customizedContent = (item: any): React.ReactNode => {
     return (
       <Link href={item.slug}>
         <Card
           footer={<div className='lg:hidden'>{customizedOpposite(item)}</div>}
           header={
             <time className='flex lg:hidden text-[#ffffffde]/60 text-xs md:text-sm lg:text-base' dateTime={item.date}>
-              {utcToLocal(item.date, 'MMMM DD, YYYY')}
+              {utcToLocal(item.date as string, 'MMMM DD, YYYY')}
             </time>
           }
           pt={{
@@ -53,11 +53,11 @@ const BlogPage: React.FunctionComponent<{ content: any }> = ({ content }) => {
     );
   };
 
-  const customizedOpposite = (item: any) => {
+  const customizedOpposite = (item: any): React.ReactNode => {
     return (
       <aside className='flex flex-col lg:items-end gap-4 text-[#ffffffde]/60'>
         <time className='hidden lg:flex text-xs md:text-sm lg:text-base min-w-[120px] lg:min-w-[10rem]' dateTime={item.date}>
-          {utcToLocal(item.date, 'MMMM DD, YYYY')}
+          {utcToLocal(item.date as string, 'MMMM DD, YYYY')}
         </time>
 
         <div className='flex flex-row lg:flex-row-reverse flex-wrap gap-2'>
