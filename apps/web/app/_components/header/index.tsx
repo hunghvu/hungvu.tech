@@ -28,7 +28,7 @@ const Header: React.FunctionComponent = () => {
           <Link className='flex flex-row items-center' href='https://www.linkedin.com/in/hunghvu/'>
             <span className='pi pi-linkedin text-2xl' />
           </Link>
-          <Link className='flex flex-row items-center' href='https://github.com/hunghvu'>
+          <Link className='flex flex-row items-center' href='https://github.com/hunghvu/hungvu.tech'>
             <span className='pi pi-github text-2xl' />
           </Link>
         </nav>
