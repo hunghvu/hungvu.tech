@@ -1,5 +1,5 @@
 /**
- * @author Hung Vu
+ * Author: Hung Vu
  *
  * This collection represents a metadata for a static route.
  */
@@ -40,7 +40,7 @@ const StaticRouteMetadata: CollectionConfig = {
           return !data.isRoot;
         },
       },
-      validate: async (value, { operation }) => {
+      validate: (value, { operation }) => {
         if (operation === 'create' || operation === 'update') {
           // Value is undefined during admin UI navigation
           // This crashes the validation process and causes unexpected behavior

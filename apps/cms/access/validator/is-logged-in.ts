@@ -1,5 +1,5 @@
 /**
- * @author Hung Vu
+ * Author: Hung Vu
  *
  * ACL to check if the user is logged in to to back end.
  */

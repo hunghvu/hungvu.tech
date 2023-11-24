@@ -1,4 +1,4 @@
 {
   "ext": "ts",
-  "exec": "ts-node server/index.ts"
+  "exec": "ts-node server.ts"
 }

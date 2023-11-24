@@ -9,14 +9,19 @@
         "^build"
       ],
       "env": [
+        "NEXT_PUBLIC_BASE_URL",
         "NEXT_PUBLIC_REMOTE_IMAGE_PROTOCOL",
         "NEXT_PUBLIC_REMOTE_IMAGE_HOSTNAME",
         "NEXT_PUBLIC_REMOTE_IMAGE_PORT",
         "NEXT_PUBLIC_REMOTE_IMAGE_PATH",
         "NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION",
-        "NEXT_PUBLIC_BASE_URL",
-        "PAYLOAD_SERVER_ARTICLES_URL",
-        "PAYLOAD_SERVER_STATIC_ROUTE_METADATA_URL",
+        "NEXT_REQUEST_CMS_ARTICLES_URL",
+        "NEXT_REQUEST_CMS_STATIC_ROUTE_METADATA_URL",
+        "PAYLOAD_FRONT_END_DOMAIN",
+        "PAYLOAD_MONGODB_URI",
+        "PAYLOAD_PORT",
+        "PAYLOAD_PUBLIC_SERVER_URL",
+        "PAYLOAD_SECRET",
         "NODE_ENV"
       ],
       "outputs": [
@@ -29,7 +34,7 @@
       "persistent": true
     },
     "lint": {},
-    "lint:fix":{},
+    "lint:fix": {},
     "update": {}
   }
 }

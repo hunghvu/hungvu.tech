@@ -14,7 +14,6 @@
     "lint": "eslint .",
     "lint:fix": "eslint --fix --ext .ts,.tsx .",
     "generate:types": "cross-env PAYLOAD_CONFIG_PATH=./payload.config.ts payload generate:types",
-    "generate:graphQLSchema": "PAYLOAD_CONFIG_PATH=./payload.config.ts payload generate:graphQLSchema",
     "update": "pnpm update"
   },
   "dependencies": {

@@ -1,12 +1,12 @@
 /**
- * @author Hung Vu
+ * Author: Hung Vu
  *
  * This collection represents a blog article.
  */
 
 import type { CollectionConfig } from 'payload/types';
-import isLoggedIn from '../access/validator/isLoggedIn';
-import isPublished from '../access/query/isPublished';
+import isLoggedIn from '../access/validator/is-logged-in';
+import isPublished from '../access/query/is-published';
 
 const Articles: CollectionConfig = {
   slug: 'articles',
@@ -57,7 +57,7 @@ const Articles: CollectionConfig = {
           admin: {
             description: 'Every article must have a unique URL slug.',
           },
-          validate: async (value, { operation }) => {
+          validate: (value, { operation }) => {
             if (operation === 'create' || operation === 'update') {
               // Value is undefined during admin UI navigation
               // This crashes the validation process and causes unexpected behavior

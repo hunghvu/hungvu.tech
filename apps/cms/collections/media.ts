@@ -1,12 +1,12 @@
 /**
- * @author Hung Vu
+ * Author: Hung Vu
  *
  * This collection represents uploaded media
  */
 
 import type { CollectionConfig } from 'payload/types';
-import isLoggedIn from '../access/validator/isLoggedIn';
-import isPublished from '../access/query/isPublished';
+import isLoggedIn from '../access/validator/is-logged-in';
+import isPublished from '../access/query/is-published';
 
 const Media: CollectionConfig = {
   slug: 'media',

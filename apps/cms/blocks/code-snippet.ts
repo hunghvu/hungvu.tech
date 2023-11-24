@@ -1,3 +1,10 @@
+/**
+ * Author: Hung Vu
+ * 
+ * This block represents a code snippet to be used
+ * inside a Lexical Editor.
+ */
+
 import { useFormFields } from 'payload/components/forms'
 import type { Block } from 'payload/types';
 import CodeField from 'payload/dist/admin/components/forms/field-types/Code'

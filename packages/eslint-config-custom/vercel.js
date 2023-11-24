@@ -41,10 +41,14 @@ module.exports = {
     // Unnecessary rules.
     "@next/next/no-html-link-for-pages": "off",
     "@typescript-eslint/no-redundant-type-constituents": "off",
+    "@typescript-eslint/no-unnecessary-condition": "off",
+    "eslint-comments/require-description": "off",
     "import/no-default-export": "off",
     "import/no-named-as-default-member": "off",
     "import/no-unresolved": "off",
     "no-bitwise": "off",
+    "no-param-reassign": "off",
+    "unicorn/prefer-node-protocol": "off",
 
     // Enforce arrow function component definitions.
     "react/function-component-definition": [2, {

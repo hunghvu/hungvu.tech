@@ -1,9 +1,8 @@
 /**
- * @author Hung Vu
- * 
- * Metadata for a static route.
+ * Author: Hung Vu
  */
 
+import path from 'path';
 import { buildConfig } from 'payload/config';
 import { mongooseAdapter } from '@payloadcms/db-mongodb';
 import {
@@ -26,15 +25,13 @@ import {
   lexicalEditor,
 } from '@payloadcms/richtext-lexical';
 import { viteBundler } from '@payloadcms/bundler-vite';
-
-import path from 'path';
-import Users from './collections/Users';
-import Articles from './collections/Articles';
-import Media from './collections/Media';
-import Tags from './collections/Tags';
-import Series from './collections/Series';
-import CodeEditor from './blocks/CodeSnippet';
-import StaticRouteMetadata from './collections/StaticRouteMetadata';
+import Articles from './collections/articles';
+import CodeEditor from './blocks/code-snippet';
+import Users from './collections/users';
+import Media from './collections/media';
+import Series from './collections/series';
+import StaticRouteMetadata from './collections/static-route-metadata';
+import Tags from './collections/tags';
 
 export default buildConfig({
   serverURL: process.env.PAYLOAD_PUBLIC_SERVER_URL!,
@@ -73,8 +70,8 @@ export default buildConfig({
   graphQL: {
     disable: true,
   },
-  csrf: [process.env.PAYLOAD_FRONT_END_DOMAIN!],
-  cors: [process.env.PAYLOAD_FRONT_END_DOMAIN!],
+  csrf: [process.env.PAYLOAD_FRONT_END_DOMAIN!, process.env.PAYLOAD_PUBLIC_SERVER_URL!],
+  cors: [process.env.PAYLOAD_FRONT_END_DOMAIN!, process.env.PAYLOAD_PUBLIC_SERVER_URL!],
   db: mongooseAdapter({
     url: process.env.PAYLOAD_MONGODB_URI!,
   }),

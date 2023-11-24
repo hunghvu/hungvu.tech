@@ -1,5 +1,5 @@
 module.exports = {
-  extends: ["custom/next"],
+  extends: ["custom/vercel"],
   root: true,
   parserOptions: {
     project: "tsconfig.json",

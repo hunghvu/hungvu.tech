@@ -1,12 +1,12 @@
 /**
- * @author Hung Vu
+ * Author: Hung Vu
  *
  * This collection represents an article tag.
  */
 
 import type { CollectionConfig } from 'payload/types';
-import isLoggedIn from '../access/validator/isLoggedIn';
-import isPublished from '../access/query/isPublished';
+import isLoggedIn from '../access/validator/is-logged-in';
+import isPublished from '../access/query/is-published';
 
 const Tags: CollectionConfig = {
   slug: 'tags',
@@ -26,7 +26,7 @@ const Tags: CollectionConfig = {
       index: true,
       unique: true,
       minLength: 1,
-      validate: async (value, { operation }) => {
+      validate: (value, { operation }) => {
         if (operation === 'create' || operation === 'update') {
           // Value is undefined during admin UI navigation
           // This crashes the validation process and causes unexpected behavior
