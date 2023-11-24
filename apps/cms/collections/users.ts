@@ -5,6 +5,7 @@
  */
 
 import type { CollectionConfig } from 'payload/types';
+import isLoggedIn from "../access/validator/is-logged-in";
 
 const Users: CollectionConfig = {
   slug: 'users',
@@ -28,7 +29,7 @@ const Users: CollectionConfig = {
     useAsTitle: 'email',
   },
   access: {
-    read: () => true,
+    read: (req) => isLoggedIn(req)
   },
   fields: [
     // Email added by default

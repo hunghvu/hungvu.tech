@@ -5,6 +5,8 @@
  */
 
 import type { CollectionConfig } from 'payload/types';
+import isPublished from "../access/query/is-published";
+import isLoggedIn from "../access/validator/is-logged-in";
 
 const StaticRouteMetadata: CollectionConfig = {
   slug: 'static-route-metadata',
@@ -18,7 +20,7 @@ const StaticRouteMetadata: CollectionConfig = {
     ],
   },
   access: {
-    read: () => true
+    read: (req) => isLoggedIn(req) || isPublished(),
   },
   fields: [
     {
