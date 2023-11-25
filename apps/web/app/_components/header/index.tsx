@@ -22,13 +22,17 @@ const Header: React.FunctionComponent = () => {
     // },
   ];
   return (
+    // Based on the documentation, there should be a way to directly access hamburger button in mobile .
+    // Still not sure what it is. If we useRef and call getMenuButton, this becomes a client component, which is not desired.
+    // For now, just leave the hamburger button as is (no aria-label = fail accessibility Lighthouse test).
     <Menubar
+      aria-label='Navigation menu'
       end={
         <nav className='flex flex-row gap-4'>
-          <Link className='flex flex-row items-center' href='https://www.linkedin.com/in/hunghvu/'>
+          <Link aria-label='LinkedIn' className='flex flex-row items-center' href='https://www.linkedin.com/in/hunghvu/'>
             <span className='pi pi-linkedin text-2xl' />
           </Link>
-          <Link className='flex flex-row items-center' href='https://github.com/hunghvu/hungvu.tech'>
+          <Link aria-label='GitHub' className='flex flex-row items-center' href='https://github.com/hunghvu/hungvu.tech'>
             <span className='pi pi-github text-2xl' />
           </Link>
         </nav>
@@ -45,6 +49,7 @@ const Header: React.FunctionComponent = () => {
         },
         icon: {
           className: 'text-2xl',
+          
         },
         popupIcon: {
           className: 'w-[1.5rem] h-[1.5rem]',
