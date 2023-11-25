@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "dev:web": "next dev",
-    "build": "next build",
+    "build:web": "next build",
     "start": "next start",
     "lint": "eslint .",
     "lint:fix": "eslint --fix --ext .ts,.tsx .",

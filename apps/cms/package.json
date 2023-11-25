@@ -6,9 +6,9 @@
   "license": "MIT",
   "scripts": {
     "dev:cms": "cross-env PAYLOAD_CONFIG_PATH=./payload.config.ts nodemon",
+    "build:cms": "pnpm copyfiles && pnpm build:payload && pnpm build:server",
     "build:payload": "cross-env PAYLOAD_CONFIG_PATH=./payload.config.ts payload build",
     "build:server": "tsc",
-    "build": "pnpm copyfiles && pnpm build:payload && pnpm build:server",
     "serve": "cross-env PAYLOAD_CONFIG_PATH=dist/payload.config.js NODE_ENV=production node dist/index.js",
     "copyfiles": "copyfiles -u 1 \"./**/*.{html,css,scss,ttf,woff,woff2,eot,svg,jpg,png}\" dist/",
     "lint": "eslint .",

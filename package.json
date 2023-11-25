@@ -7,7 +7,7 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "turbo run build",
+    "build": "dotenv -e .env.production.local -- turbo run build",
     "dev": "dotenv -e .env.development.local -- turbo run dev",
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint:fix",
