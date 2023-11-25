@@ -8,7 +8,7 @@
   ],
   "scripts": {
     "build": "turbo run build",
-    "dev": "turbo run dev",
+    "dev": "dotenv -e .env.development.local -- turbo run dev",
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint:fix",
     "update": "turbo run update",
@@ -16,6 +16,7 @@
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^12.3.4",
+    "dotenv-cli": "^7.3.0",
     "eslint": "^8.52.0",
     "eslint-config-custom": "workspace:*",
     "prettier": "^3.0.3",
