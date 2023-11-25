@@ -6,6 +6,8 @@
 
 import type { MetadataRoute } from 'next'
 
+export const dynamic = 'force-dynamic'
+
 const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
   const sites: MetadataRoute.Sitemap = [
     {
@@ -22,9 +24,7 @@ const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
     // },
   ]
 
-  const articles = await fetch(process.env.NEXT_REQUEST_CMS_ARTICLES_URL!, {
-    cache: process.env.NODE_ENV === 'production' ? 'force-cache' : 'no-store',
-  });
+  const articles = await fetch(process.env.NEXT_REQUEST_CMS_ARTICLES_URL!);
   (await articles.json()).docs.foreach((article: any) => {
     sites.push({
       url: `${process.env.NEXT_PUBLIC_BASE_URL!}/${article.settings.slug}`,

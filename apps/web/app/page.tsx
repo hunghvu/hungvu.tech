@@ -9,6 +9,8 @@ import { notFound } from 'next/navigation';
 import { ArticleJsonLd } from 'next-seo';
 import BlogPage from './page-blog';
 
+export const dynamic = 'force-dynamic'
+
 const handleError = (res: Response): void => {
   if (res.status === 401) {
     throw new Error('Unauthorized');
@@ -26,9 +28,7 @@ const handleError = (res: Response): void => {
 const getAllArticles = async (): Promise<any> => {
   let res;
   try {
-    res = await fetch(process.env.NEXT_REQUEST_CMS_ARTICLES_URL!, {
-      cache: process.env.NODE_ENV === 'production' ? 'force-cache' : 'no-store',
-    });
+    res = await fetch(process.env.NEXT_REQUEST_CMS_ARTICLES_URL!);
   } catch (err) {
     throw new Error('Connection Error');
   }
@@ -48,9 +48,7 @@ const getAllArticles = async (): Promise<any> => {
 const getMetadata = async (): Promise<any> => {
   let res;
   try {
-    res = await fetch(`${process.env.NEXT_REQUEST_CMS_STATIC_ROUTE_METADATA_URL!}?where[isRoot][equals]=${true}`, {
-      cache: process.env.NODE_ENV === 'production' ? 'force-cache' : 'no-store',
-    });
+    res = await fetch(`${process.env.NEXT_REQUEST_CMS_STATIC_ROUTE_METADATA_URL!}?where[isRoot][equals]=${true}`);
   } catch (err) {
     throw new Error('Connection Error');
   }
