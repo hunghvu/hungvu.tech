@@ -5,13 +5,14 @@
     "private": true,
     "main": "index.ts",
     "scripts": {
-        "update": "turbo run update",
         "lint": "eslint .",
-        "lint:fix": "eslint --fix --ext .ts,.tsx ."
+        "lint:fix": "eslint --fix --ext .ts,.tsx .",
+        "deploy:dev:aws": "pulumi up --stack dev --yes",
+        "update": "pnpm update"
     },
     "dependencies": {
-        "@pulumi/pulumi": "^3.0.0",
-        "@pulumi/aws-native": "^0.8.0"
+        "@pulumi/aws-native": "^0.8.0",
+        "@pulumi/pulumi": "^3.94.2"
     },
     "devDependencies": {
         "@types/node": "^20.10.0",
