@@ -33,7 +33,7 @@
     "eslint": "^8.54.0",
     "eslint-config-custom": "workspace:*",
     "tailwind-config": "workspace:*",
-    "tsconfig": "workspace:*",
+    "tsconfig-custom": "workspace:*",
     "typescript": "5.2.2"
   }
 }

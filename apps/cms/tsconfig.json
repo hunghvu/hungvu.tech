@@ -1,5 +1,5 @@
 {
-  "extends": "tsconfig/cms.json",
+  "extends": "tsconfig-custom/cms.json",
   "compilerOptions": {
     "outDir": "./dist",
     "rootDir": "./",

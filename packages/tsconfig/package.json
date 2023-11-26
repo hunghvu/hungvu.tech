@@ -1,8 +1,0 @@
-{
-  "name": "tsconfig",
-  "files": [
-    "base.json",
-    "cms.json",
-    "web.json"
-  ]
-}

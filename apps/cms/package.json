@@ -36,7 +36,7 @@
     "eslint-config-custom": "workspace:*",
     "nodemon": "^3.0.1",
     "ts-node": "^10.9.1",
-    "tsconfig": "workspace:*",
+    "tsconfig-custom": "workspace:*",
     "typescript": "5.2.2"
   }
 }
