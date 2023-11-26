@@ -1,0 +1,20 @@
+{
+    "name": "infras",
+    "description": "hungvu.tech infrastructure",
+    "version": "0.0.0",
+    "private": true,
+    "main": "index.ts",
+    "scripts": {
+        "update": "turbo run update",
+        "lint": "eslint .",
+        "lint:fix": "eslint --fix --ext .ts,.tsx ."
+    },
+    "dependencies": {
+        "@pulumi/pulumi": "^3.0.0",
+        "@pulumi/aws-native": "^0.8.0"
+    },
+    "devDependencies": {
+        "@types/node": "^20.10.0",
+        "tsconfig-custom": "workspace:*"
+    }
+}
