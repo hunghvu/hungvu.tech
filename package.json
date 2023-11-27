@@ -10,6 +10,7 @@
   "scripts": {
     "build": "dotenv -e .env.production.local -- turbo run build",
     "dev": "dotenv -e .env.development.local -- turbo run dev",
+    "deploy": "turbo run deploy",
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint:fix",
     "update": "turbo run update",

@@ -1,2 +1,2 @@
 config:
-  aws-native:region: us-east-1
+  aws-native:region: us-west-2

@@ -88,6 +88,17 @@
       "cache": false,
       "persistent": true
     },
+    "deploy:dev:aws": {
+      "cache": false,
+      "persistent": false
+    },
+    "deploy": {
+      "dependsOn": [
+        "deploy:dev:aws"
+      ],
+      "cache": false,
+      "persistent": false
+    },
     "lint": {},
     "lint:fix": {},
     "update": {}

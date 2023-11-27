@@ -1,6 +1,3 @@
 {
   "extends": "tsconfig-custom/infras.json",
-  "files": [
-    "index.ts"
-  ]
 }

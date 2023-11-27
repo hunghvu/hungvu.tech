@@ -7,10 +7,11 @@
     "scripts": {
         "lint": "eslint .",
         "lint:fix": "eslint --fix --ext .ts,.tsx .",
-        "deploy:dev:aws": "pulumi up --stack dev --yes",
+        "deploy:dev:aws": "pulumi up --stack dev",
         "update": "pnpm update"
     },
     "dependencies": {
+        "@pulumi/aws": "^6.10.0",
         "@pulumi/aws-native": "^0.8.0",
         "@pulumi/pulumi": "^3.94.2"
     },
