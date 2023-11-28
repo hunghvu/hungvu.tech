@@ -17,16 +17,16 @@
     "update": "pnpm update"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.456.0",
-    "@aws-sdk/lib-storage": "^3.456.0",
-    "@payloadcms/bundler-vite": "^0.1.4",
+    "@aws-sdk/client-s3": "^3.458.0",
+    "@aws-sdk/lib-storage": "^3.458.0",
+    "@payloadcms/bundler-vite": "^0.1.5",
     "@payloadcms/db-mongodb": "^1.0.8",
     "@payloadcms/plugin-cloud-storage": "^1.1.1",
     "@payloadcms/richtext-lexical": "^0.1.17",
     "aws-crt": "^1.19.0",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
-    "payload": "^2.2.1",
+    "payload": "^2.2.2",
     "react": "^18.2.0"
   },
   "devDependencies": {
