@@ -25,12 +25,12 @@
     "sharp": "^0.32.6"
   },
   "devDependencies": {
-    "@babel/core": "^7.23.3",
+    "@babel/core": "^7.23.5",
     "@types/escape-html": "^1.0.4",
-    "@types/node": "^20.10.0",
-    "@types/react": "^18.2.39",
+    "@types/node": "^20.10.2",
+    "@types/react": "^18.2.41",
     "@types/react-dom": "^18.2.17",
-    "eslint": "^8.54.0",
+    "eslint": "^8.55.0",
     "eslint-config-custom": "workspace:*",
     "tailwind-config": "workspace:*",
     "tsconfig-custom": "workspace:*",

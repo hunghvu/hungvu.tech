@@ -11,12 +11,12 @@
         "update": "pnpm update"
     },
     "dependencies": {
-        "@pulumi/aws": "^6.10.0",
+        "@pulumi/aws": "^6.13.0",
         "@pulumi/aws-native": "^0.8.0",
-        "@pulumi/pulumi": "^3.94.2"
+        "@pulumi/pulumi": "^3.95.0"
     },
     "devDependencies": {
-        "@types/node": "^20.10.0",
+        "@types/node": "^20.10.2",
         "tsconfig-custom": "workspace:*"
     }
 }
