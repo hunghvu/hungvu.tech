@@ -1,3 +1,4 @@
+
 /**
  * Author: Hung Vu
  * 
@@ -11,6 +12,7 @@
  * Reference: https://www.pulumi.com/docs/cli/commands/pulumi_state_delete/
  */
 
+/* eslint-disable turbo/no-undeclared-env-vars */
 import * as awsClassic from "@pulumi/aws";
 import * as awsNative from "@pulumi/aws-native";
 import * as _pulumi from "@pulumi/pulumi";
@@ -132,8 +134,8 @@ const vpcNetworkAcl = new awsClassic.ec2.NetworkAcl("vpc-acl", {
       ruleNo: 3,
       action: "allow",
       cidrBlock: vpcSubnetPublic.cidrBlock,
-      fromPort: 2002, // Customized SSH port
-      toPort: 2002,
+      fromPort: parseInt(process.env.PORT_SSH!), // Customized SSH port
+      toPort: parseInt(process.env.PORT_SSH!),
     },
     {
       protocol: "-1",

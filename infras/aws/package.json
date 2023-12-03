@@ -1,5 +1,5 @@
 {
-    "name": "infras",
+    "name": "aws",
     "description": "hungvu.tech infrastructure",
     "version": "0.0.0",
     "private": true,
@@ -13,7 +13,8 @@
     "dependencies": {
         "@pulumi/aws": "^6.13.0",
         "@pulumi/aws-native": "^0.8.0",
-        "@pulumi/pulumi": "^3.95.0"
+        "@pulumi/pulumi": "^3.95.0",
+        "dotenv": "^16.3.1"
     },
     "devDependencies": {
         "@types/node": "^20.10.2",
