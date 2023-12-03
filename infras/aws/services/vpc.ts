@@ -16,7 +16,7 @@ import * as awsNative from "@pulumi/aws-native";
 import * as _pulumi from "@pulumi/pulumi";
 
 // Virtual Private Cloud (VPC), is like a building network.
-const vpc = new awsNative.ec2.VPC("vpc-dev", {
+const vpc = new awsNative.ec2.VPC("vpc", {
   cidrBlock: "20.20.0.0/16",
   enableDnsHostnames: true,
   enableDnsSupport: true,
@@ -25,34 +25,35 @@ const vpc = new awsNative.ec2.VPC("vpc-dev", {
 // Subnet the VPC into 2 subnets: public and private
 // Availability Zone (AZ), is defined upon creation and cannot be changed,
 // Must delete and recreate the subnet to change the AZ
-const vpcSubnetPrivate = new awsNative.ec2.Subnet("vpc-subnet-private-dev", {
+const vpcSubnetPrivate = new awsNative.ec2.Subnet("vpc-subnet-private", {
   vpcId: vpc.id,
   cidrBlock: "20.20.1.0/24",
   availabilityZone: "us-west-2a",
 });
 
-const vpcSubnetPublic = new awsNative.ec2.Subnet("vpc-subnet-public-dev", {
+const vpcSubnetPublic = new awsNative.ec2.Subnet("vpc-subnet-public", {
   vpcId: vpc.id,
   cidrBlock: "20.20.100.0/24",
   availabilityZone: "us-west-2b",
 });
 
 // Route Table (RT)
-const vpcRouteTable = new awsNative.ec2.RouteTable("vpc-rt-dev", {
+// Each VPC comes with a default route table (main RT), but we will create a customized one
+const vpcRouteTable = new awsNative.ec2.RouteTable("vpc-rt", {
   vpcId: vpc.id,
 });
 
 // Internet Gateway (IGW)
-const vpcInternetGateway = new awsNative.ec2.InternetGateway("vpc-igw-dev", {});
+const vpcInternetGateway = new awsNative.ec2.InternetGateway("vpc-igw", {});
 
 // VPC and IGW Attachment (not support in AWS Native yet)
-const vpcInternetGatewayAttachment = new awsClassic.ec2.InternetGatewayAttachment("vpc-igw-attachment-dev", {
+const vpcInternetGatewayAttachment = new awsClassic.ec2.InternetGatewayAttachment("vpc-igw-attachment", {
   vpcId: vpc.id,
   internetGatewayId: vpcInternetGateway.id,
 });
 
 // Route 0.0.0.0/0 to IGW (not support in AWS Native yet)
-const vpcRoute = new awsClassic.ec2.Route("vpc-route-dev", {
+const vpcRoute = new awsClassic.ec2.Route("vpc-route", {
   routeTableId: vpcRouteTable.id,
   destinationCidrBlock: "0.0.0.0/0",
   gatewayId: vpcInternetGateway.id,

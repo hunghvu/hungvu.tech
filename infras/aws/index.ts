@@ -1,3 +1,3 @@
-import * as dev from "./dev";
+import * as dev from "./services";
 
 export { dev };
