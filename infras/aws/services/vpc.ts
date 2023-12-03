@@ -90,6 +90,14 @@ const vpcNetworkAcl = new awsClassic.ec2.NetworkAcl("vpc-acl", {
       fromPort: 27017, // MongoDB default port
       toPort: 27017,
     },
+    {
+      protocol: "-1",
+      ruleNo: 4,
+      action: "deny", // There is a catch all rule, but best to explicitly deny all other traffic
+      cidrBlock: vpcSubnetPublic.cidrBlock,
+      fromPort: 0,
+      toPort: 0,
+    },
 
     // Private subnet rules
     {
@@ -108,24 +116,32 @@ const vpcNetworkAcl = new awsClassic.ec2.NetworkAcl("vpc-acl", {
       ruleNo: 1,
       action: "allow",
       cidrBlock: vpcSubnetPublic.cidrBlock,
-      fromPort: 2002, // Customized SSH port
-      toPort: 2002,
+      fromPort: 80,
+      toPort: 80,
     },
     {
       protocol: "tcp",
       ruleNo: 2,
       action: "allow",
       cidrBlock: vpcSubnetPublic.cidrBlock,
-      fromPort: 80,
-      toPort: 80,
+      fromPort: 443,
+      toPort: 443,
     },
     {
       protocol: "tcp",
       ruleNo: 3,
       action: "allow",
       cidrBlock: vpcSubnetPublic.cidrBlock,
-      fromPort: 443,
-      toPort: 443,
+      fromPort: 2002, // Customized SSH port
+      toPort: 2002,
+    },
+    {
+      protocol: "-1",
+      ruleNo: 4,
+      action: "deny", // There is a catch all rule, but best to explicitly deny all other traffic
+      cidrBlock: vpcSubnetPublic.cidrBlock,
+      fromPort: 0,
+      toPort: 0,
     },
 
     // Private subnet rules
