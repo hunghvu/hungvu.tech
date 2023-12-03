@@ -30,7 +30,19 @@ const securityGroup = new awsClassic.ec2.SecurityGroup("security-group", {
       protocol: "tcp",
       fromPort: 27017,
       toPort: 27017,
-    }
+    },
+    {
+      cidrBlocks: ["0.0.0.0/0"],
+      protocol: "icmp",
+      fromPort: 8, // Type of ICMP request
+      toPort: -1, // Code of ICMP request
+    },
+    {
+      cidrBlocks: ["0.0.0.0/0"],
+      protocol: "icmp",
+      fromPort: 0, // Type of ICMP request
+      toPort: -1, // Code of ICMP request
+    },
   ],
   ingress: [
     {
@@ -50,7 +62,19 @@ const securityGroup = new awsClassic.ec2.SecurityGroup("security-group", {
       protocol: "tcp",
       fromPort: parseInt(process.env.PORT_SSH!),
       toPort: parseInt(process.env.PORT_SSH!),
-    }
+    },
+    {
+      cidrBlocks: ["0.0.0.0/0"],
+      protocol: "icmp",
+      fromPort: 8, // Type of ICMP request
+      toPort: -1, // Code of ICMP request
+    },
+    {
+      cidrBlocks: ["0.0.0.0/0"],
+      protocol: "icmp",
+      fromPort: 0, // Type of ICMP request
+      toPort: -1, // Code of ICMP request
+    },
   ],
 });
 

@@ -45,6 +45,17 @@ const vpcRouteTable = new awsNative.ec2.RouteTable("vpc-rt", {
   vpcId: vpc.id,
 });
 
+// Route Table Association (RTA)
+const vpcRouteTableAssociationPrivate = new awsNative.ec2.SubnetRouteTableAssociation("vpc-rta-private", {
+  subnetId: vpcSubnetPrivate.id,
+  routeTableId: vpcRouteTable.id,
+});
+
+const vpcRouteTableAssociationPublic = new awsNative.ec2.SubnetRouteTableAssociation("vpc-rta-public", {
+  subnetId: vpcSubnetPublic.id,
+  routeTableId: vpcRouteTable.id,
+});
+
 // Internet Gateway (IGW)
 const vpcInternetGateway = new awsNative.ec2.InternetGateway("vpc-igw", {});
 
@@ -61,10 +72,8 @@ const vpcRoute = new awsClassic.ec2.Route("vpc-route", {
   gatewayId: vpcInternetGateway.id,
 });
 
-// Network ACL (egress and ingress rule not support in AWS Native yet)
-// Private subnet is only accessible if there is a proxy in the public subnet
-// Since there is no VLAN, there is no subnet isolation
-const vpcNetworkAcl = new awsClassic.ec2.NetworkAcl("vpc-acl", {
+// Network ACL (egress and ingress rule, not support in AWS Native yet)
+const vpcSubnetPublicNetworkAcl = new awsClassic.ec2.NetworkAcl("vpc-subnet-public-nacl", {
   vpcId: vpc.id,
   egress: [
     // Public subnet rules
@@ -72,7 +81,7 @@ const vpcNetworkAcl = new awsClassic.ec2.NetworkAcl("vpc-acl", {
       protocol: "tcp",
       ruleNo: 1,
       action: "allow",
-      cidrBlock: vpcSubnetPublic.cidrBlock,
+      cidrBlock: "0.0.0.0/0",
       fromPort: 80,
       toPort: 80,
     },
@@ -80,7 +89,7 @@ const vpcNetworkAcl = new awsClassic.ec2.NetworkAcl("vpc-acl", {
       protocol: "tcp",
       ruleNo: 2,
       action: "allow",
-      cidrBlock: vpcSubnetPublic.cidrBlock,
+      cidrBlock: "0.0.0.0/0",
       fromPort: 443,
       toPort: 443,
     },
@@ -88,28 +97,30 @@ const vpcNetworkAcl = new awsClassic.ec2.NetworkAcl("vpc-acl", {
       protocol: "tcp",
       ruleNo: 3,
       action: "allow",
-      cidrBlock: vpcSubnetPublic.cidrBlock,
+      cidrBlock: "0.0.0.0/0",
       fromPort: 27017, // MongoDB default port
       toPort: 27017,
     },
     {
-      protocol: "-1",
+      protocol: "icmp",
       ruleNo: 4,
-      action: "deny", // There is a catch all rule, but best to explicitly deny all other traffic
-      cidrBlock: vpcSubnetPublic.cidrBlock,
+      action: "allow",
+      cidrBlock: "0.0.0.0/0",
       fromPort: 0,
       toPort: 0,
+      icmpType: 8, // Type of ICMP request
+      icmpCode: -1, // All codes of ICMP request
     },
-
-    // Private subnet rules
     {
-      protocol: "-1",
-      ruleNo: 1000,
-      action: "deny",
-      cidrBlock: vpcSubnetPrivate.cidrBlock,
+      protocol: "icmp",
+      ruleNo: 5,
+      action: "allow",
+      cidrBlock: "0.0.0.0/0",
       fromPort: 0,
       toPort: 0,
-    }
+      icmpType: 0, // Type of ICMP request
+      icmpCode: -1, // All codes of ICMP request
+    },
   ],
   ingress: [
     // Public subnet rules
@@ -117,7 +128,7 @@ const vpcNetworkAcl = new awsClassic.ec2.NetworkAcl("vpc-acl", {
       protocol: "tcp",
       ruleNo: 1,
       action: "allow",
-      cidrBlock: vpcSubnetPublic.cidrBlock,
+      cidrBlock: "0.0.0.0/0",
       fromPort: 80,
       toPort: 80,
     },
@@ -125,7 +136,7 @@ const vpcNetworkAcl = new awsClassic.ec2.NetworkAcl("vpc-acl", {
       protocol: "tcp",
       ruleNo: 2,
       action: "allow",
-      cidrBlock: vpcSubnetPublic.cidrBlock,
+      cidrBlock: "0.0.0.0/0",
       fromPort: 443,
       toPort: 443,
     },
@@ -133,48 +144,80 @@ const vpcNetworkAcl = new awsClassic.ec2.NetworkAcl("vpc-acl", {
       protocol: "tcp",
       ruleNo: 3,
       action: "allow",
-      cidrBlock: vpcSubnetPublic.cidrBlock,
+      cidrBlock: "0.0.0.0/0",
       fromPort: parseInt(process.env.PORT_SSH!), // Customized SSH port
       toPort: parseInt(process.env.PORT_SSH!),
     },
     {
-      protocol: "-1",
+      protocol: "icmp",
       ruleNo: 4,
-      action: "deny", // There is a catch all rule, but best to explicitly deny all other traffic
-      cidrBlock: vpcSubnetPublic.cidrBlock,
+      action: "allow",
+      cidrBlock: "0.0.0.0/0",
       fromPort: 0,
       toPort: 0,
+      icmpType: 8, // Type of ICMP request
+      icmpCode: -1, // All codes of ICMP request
     },
+    {
+      protocol: "icmp",
+      ruleNo: 5,
+      action: "allow",
+      cidrBlock: "0.0.0.0/0",
+      fromPort: 0,
+      toPort: 0,
+      icmpType: 0, // Type of ICMP request
+      icmpCode: -1, // All codes of ICMP request
+    },
+  ]
+});
 
-    // Private subnet rules
+// Private subnet is only accessible if there is a proxy in the public subnet
+// Since there is no VLAN, there is no subnet isolation
+const vpcSubnetPrivateNetworkAcl = new awsClassic.ec2.NetworkAcl("vpc-subnet-private-nacl", {
+  vpcId: vpc.id,
+  egress: [
     {
       protocol: "-1",
       ruleNo: 1000,
       action: "deny",
-      cidrBlock: vpcSubnetPrivate.cidrBlock,
+      cidrBlock: vpcSubnetPublic.cidrBlock,
+      fromPort: 0,
+      toPort: 0,
+    }
+  ],
+  ingress: [
+    {
+      protocol: "-1",
+      ruleNo: 1000,
+      action: "deny",
+      cidrBlock: vpcSubnetPublic.cidrBlock,
       fromPort: 0,
       toPort: 0,
     }
   ]
 });
 
+// Network ACL Association (not support in AWS Native yet)
 const vpcNetworkAclAssociationPrivate = new awsClassic.ec2.NetworkAclAssociation("vpc-acl-association-private", {
   subnetId: vpcSubnetPrivate.id,
-  networkAclId: vpcNetworkAcl.id,
+  networkAclId: vpcSubnetPrivateNetworkAcl.id,
 });
 
 const vpcNetworkAclAssociationPublic = new awsClassic.ec2.NetworkAclAssociation("vpc-acl-association-public", {
   subnetId: vpcSubnetPublic.id,
-  networkAclId: vpcNetworkAcl.id,
+  networkAclId: vpcSubnetPublicNetworkAcl.id,
 });
 
 export const vpcId = vpc.id;
 export const vpcSubnetPrivateId = vpcSubnetPrivate.id;
 export const vpcSubnetPublicId = vpcSubnetPublic.id;
 export const vpcRouteTableId = vpcRouteTable.id;
+export const vpcRouteTableAssociationPrivateId = vpcRouteTableAssociationPrivate.id;
+export const vpcRouteTableAssociationPublicId = vpcRouteTableAssociationPublic.id;
 export const vpcInternetGatewayId = vpcInternetGateway.id;
 export const vpcInternetGatewayAttachmentId = vpcInternetGatewayAttachment.id;
 export const vpcRouteId = vpcRoute.id;
-export const vpcNetworkAclId = vpcNetworkAcl.id;
+export const vpcSubnetPrivateAclId = vpcSubnetPrivateNetworkAcl.id;
+export const vpcSubnetPublicAclId = vpcSubnetPublicNetworkAcl.id;
 export const vpcNetworkAclAssociationPrivateId = vpcNetworkAclAssociationPrivate.id;
 export const vpcNetworkAclAssociationPublicId = vpcNetworkAclAssociationPublic.id;
