@@ -208,6 +208,84 @@ const vpcNetworkAclAssociationPublic = new awsClassic.ec2.NetworkAclAssociation(
   networkAclId: vpcSubnetPublicNetworkAcl.id,
 });
 
+// Essentially stateful firewall for an EC2 instance (Security Rule, cannot begin with "sg")
+// Not support in AWS Native yet
+const securityGroup = new awsClassic.ec2.SecurityGroup("security-group", {
+  vpcId: vpc.vpcId,
+  egress: [
+    {
+      cidrBlocks: ["0.0.0.0/0"],
+      protocol: "tcp",
+      fromPort: 80,
+      toPort: 80,
+    },
+    {
+      cidrBlocks: ["0.0.0.0/0"],
+      protocol: "tcp",
+      fromPort: 443,
+      toPort: 443,
+    },
+    {
+      cidrBlocks: ["0.0.0.0/0"],
+      protocol: "tcp",
+      fromPort: 27017,
+      toPort: 27017,
+    },
+    {
+      cidrBlocks: ["0.0.0.0/0"],
+      protocol: "icmp",
+      fromPort: 8, // Type of ICMP request
+      toPort: -1, // Code of ICMP request
+    },
+    {
+      cidrBlocks: ["0.0.0.0/0"],
+      protocol: "icmp",
+      fromPort: 0, // Type of ICMP request
+      toPort: -1, // Code of ICMP request
+    },
+  ],
+  ingress: [
+    {
+      cidrBlocks: ["0.0.0.0/0"],
+      protocol: "tcp",
+      fromPort: 80,
+      toPort: 80,
+    },
+    {
+      cidrBlocks: ["0.0.0.0/0"],
+      protocol: "tcp",
+      fromPort: 443,
+      toPort: 443,
+    },
+    {
+      cidrBlocks: [process.env.WHITELISTED_IP_SSH!],
+      protocol: "tcp",
+      fromPort: parseInt(process.env.PORT_SSH!),
+      toPort: parseInt(process.env.PORT_SSH!),
+    },
+    {
+      cidrBlocks: ["0.0.0.0/0"],
+      protocol: "icmp",
+      fromPort: 8, // Type of ICMP request
+      toPort: -1, // Code of ICMP request
+    },
+    {
+      cidrBlocks: ["0.0.0.0/0"],
+      protocol: "icmp",
+      fromPort: 0, // Type of ICMP request
+      toPort: -1, // Code of ICMP request
+    },
+  ],
+});
+
+// Instance Connect Endpoint (not support in AWS Native yet)
+// Used for connecting to EC2 instance via AWS Console, in a private subnet
+// Useful to troubleshoot when accessing EC2 instance is problematic via Elastic IP
+const vpcSubnetPublicInstanceConnectEndpoint = new awsClassic.ec2transitgateway.InstanceConnectEndpoint("vpc-ec2-subnet-public-instance-connect-endpoint", {
+  subnetId: vpcSubnetPublic.id,
+  securityGroupIds: [securityGroup.id],
+});
+
 export const vpcId = vpc.id;
 export const vpcSubnetPrivateId = vpcSubnetPrivate.id;
 export const vpcSubnetPublicId = vpcSubnetPublic.id;
@@ -221,3 +299,5 @@ export const vpcSubnetPrivateAclId = vpcSubnetPrivateNetworkAcl.id;
 export const vpcSubnetPublicAclId = vpcSubnetPublicNetworkAcl.id;
 export const vpcNetworkAclAssociationPrivateId = vpcNetworkAclAssociationPrivate.id;
 export const vpcNetworkAclAssociationPublicId = vpcNetworkAclAssociationPublic.id;
+export const securityGroupId = securityGroup.id;
+export const vpcSubnetPublicInstanceConnectEndpointId = vpcSubnetPublicInstanceConnectEndpoint.id;

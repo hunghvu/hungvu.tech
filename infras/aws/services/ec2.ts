@@ -9,75 +9,6 @@ import * as awsClassic from "@pulumi/aws";
 import * as pulumi from "@pulumi/pulumi";
 import * as vpc from "./vpc";
 
-// Essentially stateful firewall for an EC2 instance (Security Rule, cannot begin with "sg")
-const securityGroup = new awsClassic.ec2.SecurityGroup("security-group", {
-  vpcId: vpc.vpcId,
-  egress: [
-    {
-      cidrBlocks: ["0.0.0.0/0"],
-      protocol: "tcp",
-      fromPort: 80,
-      toPort: 80,
-    },
-    {
-      cidrBlocks: ["0.0.0.0/0"],
-      protocol: "tcp",
-      fromPort: 443,
-      toPort: 443,
-    },
-    {
-      cidrBlocks: ["0.0.0.0/0"],
-      protocol: "tcp",
-      fromPort: 27017,
-      toPort: 27017,
-    },
-    {
-      cidrBlocks: ["0.0.0.0/0"],
-      protocol: "icmp",
-      fromPort: 8, // Type of ICMP request
-      toPort: -1, // Code of ICMP request
-    },
-    {
-      cidrBlocks: ["0.0.0.0/0"],
-      protocol: "icmp",
-      fromPort: 0, // Type of ICMP request
-      toPort: -1, // Code of ICMP request
-    },
-  ],
-  ingress: [
-    {
-      cidrBlocks: ["0.0.0.0/0"],
-      protocol: "tcp",
-      fromPort: 80,
-      toPort: 80,
-    },
-    {
-      cidrBlocks: ["0.0.0.0/0"],
-      protocol: "tcp",
-      fromPort: 443,
-      toPort: 443,
-    },
-    {
-      cidrBlocks: [process.env.WHITELISTED_IP_SSH!],
-      protocol: "tcp",
-      fromPort: parseInt(process.env.PORT_SSH!),
-      toPort: parseInt(process.env.PORT_SSH!),
-    },
-    {
-      cidrBlocks: ["0.0.0.0/0"],
-      protocol: "icmp",
-      fromPort: 8, // Type of ICMP request
-      toPort: -1, // Code of ICMP request
-    },
-    {
-      cidrBlocks: ["0.0.0.0/0"],
-      protocol: "icmp",
-      fromPort: 0, // Type of ICMP request
-      toPort: -1, // Code of ICMP request
-    },
-  ],
-});
-
 const ami = pulumi.output(awsClassic.ec2.getAmi({
   owners: ["amazon"],
   mostRecent: true,
@@ -107,7 +38,7 @@ const ami = pulumi.output(awsClassic.ec2.getAmi({
 const ec2 = new awsClassic.ec2.Instance("ec2", {
   ami: ami.id,
   instanceType: "t4g.nano",
-  vpcSecurityGroupIds: [securityGroup.id],
+  vpcSecurityGroupIds: [vpc.securityGroupId],
   subnetId: vpc.vpcSubnetPublicId,
   creditSpecification: {
     cpuCredits: "standard",
@@ -120,6 +51,14 @@ const ec2 = new awsClassic.ec2.Instance("ec2", {
   // Install Docker
   // Pull Images (web, cms, reverse proxy)
   // TBD
+  userData: `
+    #!/bin/bash
+    ufw allow 80/tcp
+    ufw allow 443/tcp
+    ufw allow 27017/tcp
+    ufw allow ${process.env.PORT_SSH!}/tcp
+    ufw enable
+  `,
 });
 
 // It seems either Elastic IP makes AWS automatically populating public IPv4 and DNS at the same time
@@ -130,7 +69,6 @@ const elasticIpAssociation = new awsClassic.ec2.EipAssociation("elastic-ip-assoc
   allocationId: elasticIp.id,
 });
 
-export const securityGroupId = securityGroup.id;
 export const amiId = ami.id;
 export const ec2Id = ec2.id;
 export const elasticIpId = elasticIp.id;
