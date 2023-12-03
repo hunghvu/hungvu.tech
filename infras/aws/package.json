@@ -7,7 +7,7 @@
     "scripts": {
         "lint": "eslint .",
         "lint:fix": "eslint --fix --ext .ts,.tsx .",
-        "deploy:dev:aws": "pulumi up --stack dev",
+        "deploy:aws": "pulumi up --stack dev",
         "update": "pnpm update"
     },
     "dependencies": {

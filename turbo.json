@@ -88,13 +88,13 @@
       "cache": false,
       "persistent": true
     },
-    "deploy:dev:aws": {
+    "deploy:aws": {
       "cache": false,
       "persistent": false
     },
     "deploy": {
       "dependsOn": [
-        "deploy:dev:aws"
+        "deploy:aws"
       ],
       "cache": false,
       "persistent": false
