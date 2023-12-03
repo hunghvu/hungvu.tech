@@ -58,7 +58,7 @@ const securityGroup = new awsClassic.ec2.SecurityGroup("security-group", {
       toPort: 443,
     },
     {
-      cidrBlocks: ["0.0.0.0/0"],
+      cidrBlocks: [process.env.WHITELISTED_IP_SSH!],
       protocol: "tcp",
       fromPort: parseInt(process.env.PORT_SSH!),
       toPort: parseInt(process.env.PORT_SSH!),

@@ -144,7 +144,7 @@ const vpcSubnetPublicNetworkAcl = new awsClassic.ec2.NetworkAcl("vpc-subnet-publ
       protocol: "tcp",
       ruleNo: 3,
       action: "allow",
-      cidrBlock: "0.0.0.0/0",
+      cidrBlock: process.env.WHITELISTED_IP_SSH!,
       fromPort: parseInt(process.env.PORT_SSH!), // Customized SSH port
       toPort: parseInt(process.env.PORT_SSH!),
     },
