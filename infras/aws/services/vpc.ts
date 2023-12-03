@@ -76,10 +76,29 @@ const vpcRoute = new awsClassic.ec2.Route("vpc-route", {
 const vpcSubnetPublicNetworkAcl = new awsClassic.ec2.NetworkAcl("vpc-subnet-public-nacl", {
   vpcId: vpc.id,
   egress: [
-    // Public subnet rules
+    {
+      protocol: "icmp",
+      ruleNo: 1,
+      action: "allow",
+      cidrBlock: "0.0.0.0/0",
+      fromPort: 0,
+      toPort: 0,
+      icmpType: 8,
+      icmpCode: -1,
+    },
+    {
+      protocol: "icmp",
+      ruleNo: 2,
+      action: "allow",
+      cidrBlock: "0.0.0.0/0",
+      fromPort: 0,
+      toPort: 0,
+      icmpType: 0, // Type of ICMP request
+      icmpCode: -1, // All codes of ICMP request
+    },
     {
       protocol: "tcp",
-      ruleNo: 1,
+      ruleNo: 3,
       action: "allow",
       cidrBlock: "0.0.0.0/0",
       fromPort: 80,
@@ -87,23 +106,29 @@ const vpcSubnetPublicNetworkAcl = new awsClassic.ec2.NetworkAcl("vpc-subnet-publ
     },
     {
       protocol: "tcp",
-      ruleNo: 2,
+      ruleNo: 4,
       action: "allow",
       cidrBlock: "0.0.0.0/0",
       fromPort: 443,
       toPort: 443,
     },
+    // Allow all ephemeral ports
+    // When a client connects to a server, a random port from the ephemeral port range (1024-65535) becomes the client's source port
+    // Reference: https://repost.aws/knowledge-center/resolve-connection-sg-acl-inbound
     {
       protocol: "tcp",
-      ruleNo: 3,
+      ruleNo: 5,
       action: "allow",
       cidrBlock: "0.0.0.0/0",
-      fromPort: 27017, // MongoDB default port
-      toPort: 27017,
+      fromPort: 1024,
+      toPort: 65535,
     },
+
+  ],
+  ingress: [
     {
       protocol: "icmp",
-      ruleNo: 4,
+      ruleNo: 1,
       action: "allow",
       cidrBlock: "0.0.0.0/0",
       fromPort: 0,
@@ -113,7 +138,7 @@ const vpcSubnetPublicNetworkAcl = new awsClassic.ec2.NetworkAcl("vpc-subnet-publ
     },
     {
       protocol: "icmp",
-      ruleNo: 5,
+      ruleNo: 2,
       action: "allow",
       cidrBlock: "0.0.0.0/0",
       fromPort: 0,
@@ -121,12 +146,9 @@ const vpcSubnetPublicNetworkAcl = new awsClassic.ec2.NetworkAcl("vpc-subnet-publ
       icmpType: 0, // Type of ICMP request
       icmpCode: -1, // All codes of ICMP request
     },
-  ],
-  ingress: [
-    // Public subnet rules
     {
       protocol: "tcp",
-      ruleNo: 1,
+      ruleNo: 3,
       action: "allow",
       cidrBlock: "0.0.0.0/0",
       fromPort: 80,
@@ -134,7 +156,7 @@ const vpcSubnetPublicNetworkAcl = new awsClassic.ec2.NetworkAcl("vpc-subnet-publ
     },
     {
       protocol: "tcp",
-      ruleNo: 2,
+      ruleNo: 4,
       action: "allow",
       cidrBlock: "0.0.0.0/0",
       fromPort: 443,
@@ -142,31 +164,19 @@ const vpcSubnetPublicNetworkAcl = new awsClassic.ec2.NetworkAcl("vpc-subnet-publ
     },
     {
       protocol: "tcp",
-      ruleNo: 3,
+      ruleNo: 5,
       action: "allow",
       cidrBlock: process.env.WHITELISTED_IP_SSH!,
       fromPort: parseInt(process.env.PORT_SSH!), // Customized SSH port
       toPort: parseInt(process.env.PORT_SSH!),
     },
     {
-      protocol: "icmp",
-      ruleNo: 4,
+      protocol: "tcp",
+      ruleNo: 6,
       action: "allow",
       cidrBlock: "0.0.0.0/0",
-      fromPort: 0,
-      toPort: 0,
-      icmpType: 8, // Type of ICMP request
-      icmpCode: -1, // All codes of ICMP request
-    },
-    {
-      protocol: "icmp",
-      ruleNo: 5,
-      action: "allow",
-      cidrBlock: "0.0.0.0/0",
-      fromPort: 0,
-      toPort: 0,
-      icmpType: 0, // Type of ICMP request
-      icmpCode: -1, // All codes of ICMP request
+      fromPort: 1024,
+      toPort: 65535,
     },
   ]
 });
@@ -208,7 +218,7 @@ const vpcNetworkAclAssociationPublic = new awsClassic.ec2.NetworkAclAssociation(
   networkAclId: vpcSubnetPublicNetworkAcl.id,
 });
 
-// Essentially stateful firewall for an EC2 instance (Security Rule, cannot begin with "sg")
+// Essentially stateful firewall for an EC2 instance (Security Rule, first argument cannot begin with "sg")
 // Not support in AWS Native yet
 const securityGroup = new awsClassic.ec2.SecurityGroup("security-group", {
   vpcId: vpc.vpcId,
@@ -228,8 +238,15 @@ const securityGroup = new awsClassic.ec2.SecurityGroup("security-group", {
     {
       cidrBlocks: ["0.0.0.0/0"],
       protocol: "tcp",
-      fromPort: 27017,
+      fromPort: 27017, // MongoDB
       toPort: 27017,
+    },
+    // EC2 Instance Connect requires both ingress and eress rules for SSH
+    {
+      cidrBlocks: [process.env.WHITELISTED_IP_SSH!],
+      protocol: "tcp",
+      fromPort: parseInt(process.env.PORT_SSH!),
+      toPort: parseInt(process.env.PORT_SSH!),
     },
     {
       cidrBlocks: ["0.0.0.0/0"],
