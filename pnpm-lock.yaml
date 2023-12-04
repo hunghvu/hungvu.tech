@@ -196,6 +196,25 @@ importers:
         specifier: workspace:*
         version: link:../../packages/tsconfig-custom
 
+  infras/mongodb-atlas:
+    dependencies:
+      '@pulumi/mongodbatlas':
+        specifier: ^3.12.1
+        version: 3.12.1
+      '@pulumi/pulumi':
+        specifier: ^3.95.0
+        version: 3.95.0
+      dotenv:
+        specifier: ^16.3.1
+        version: 16.3.1
+    devDependencies:
+      '@types/node':
+        specifier: ^20.10.3
+        version: 20.10.3
+      tsconfig-custom:
+        specifier: workspace:*
+        version: link:../../packages/tsconfig-custom
+
   packages/eslint-config-custom:
     devDependencies:
       '@vercel/style-guide':
@@ -2526,6 +2545,14 @@ packages:
 
   /@pulumi/cloudflare@5.16.0:
     resolution: {integrity: sha512-7FjJIpsGz9lv+o+nNnbV8UOUXAF248LHCILmExxIfVTblwbp0Mb8Ri68rLOK9qpVPOIwkj2QBorLiZ6Y4anHSg==}
+    dependencies:
+      '@pulumi/pulumi': 3.95.0
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
+  /@pulumi/mongodbatlas@3.12.1:
+    resolution: {integrity: sha512-jxlBCTLBdERhQFUKPAIq4Uspt2p2olOpvd1TrBdMbGHTHp5ovSq+2rUizh9U0Bd2/olkuzr+UAK9+FVQuLBntw==}
     dependencies:
       '@pulumi/pulumi': 3.95.0
     transitivePeerDependencies:

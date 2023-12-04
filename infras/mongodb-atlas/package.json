@@ -1,0 +1,23 @@
+{
+    "name": "mongodb-atlas",
+    "description": "hungvu.tech infrastructure",
+    "version": "0.0.0",
+    "private": true,
+    "main": "index.ts",
+    "scripts": {
+        "lint": "eslint .",
+        "lint:fix": "eslint --fix --ext .ts,.tsx .",
+        "deploy:mongodb-atlas": "pulumi up --stack dev --yes",
+        "deploy:mongodb-atlas:interactive": "pulumi up --stack dev",
+        "update": "pnpm update"
+    },
+    "dependencies": {
+        "@pulumi/mongodbatlas": "^3.12.1",
+        "@pulumi/pulumi": "^3.95.0",
+        "dotenv": "^16.3.1"
+    },
+    "devDependencies": {
+        "@types/node": "^20.10.3",
+        "tsconfig-custom": "workspace:*"
+    }
+}

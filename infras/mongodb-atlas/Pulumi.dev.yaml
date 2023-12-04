@@ -1,0 +1,7 @@
+config:
+  mongodb-atlas:orgId:
+    secure: AAABABWSmVrrLIzMTkCDoNMu5jx6j5/P4dlN3/DTAupJg8XT6mdEo6znn/xrdgnNMoftRUcAG6I=
+  mongodb-atlas:privateKey:
+    secure: AAABANgOqC3eR2+8fzqJ5jS7CgzGIlyI7oBZq7JUoPhKuulQkJBzc4orQFsQDqpbhkmLuj0Rb4LuMEvnu1yxdo8jJUc=
+  mongodb-atlas:publicKey:
+    secure: AAABALlGg022IKeqkoX4YpZXx9/oGH/FSeYAT6AoUG2Br0KTuecv2w==

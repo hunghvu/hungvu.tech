@@ -96,10 +96,15 @@
       "cache": false,
       "persistent": false
     },
+    "deploy:mongodb-atlas": {
+      "cache": false,
+      "persistent": false
+    },
     "deploy": {
       "dependsOn": [
         "deploy:aws",
-        "deploy:cloudflare"
+        "deploy:cloudflare",
+        "deploy:mongodb-atlas"
       ],
       "cache": false,
       "persistent": false
