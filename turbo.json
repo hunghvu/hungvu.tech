@@ -92,9 +92,14 @@
       "cache": false,
       "persistent": false
     },
+    "deploy:cloudflare": {
+      "cache": false,
+      "persistent": false
+    },
     "deploy": {
       "dependsOn": [
-        "deploy:aws"
+        "deploy:aws",
+        "deploy:cloudflare"
       ],
       "cache": false,
       "persistent": false
