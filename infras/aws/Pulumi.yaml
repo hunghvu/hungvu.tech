@@ -1,4 +1,3 @@
 name: aws
 runtime: nodejs
 description: AWS infrastructure for hungvu.tech
-```
