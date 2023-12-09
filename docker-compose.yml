@@ -1,29 +1,101 @@
+# Author: Hung Vu
+
 version: "3.8"
 
 services:
+  caddy:
+    container_name: caddy
+    restart: always
+    image: "ghcr.io/hunghvu/blogfolio-caddy:latest"
+    # build:
+    #   context: .
+    #   dockerfile: ./infras/containers/caddy/Dockerfile
+    networks:
+      - default
+    environment:
+      - CADDY_INGRESS_NETWORKS=default
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - caddy_data:/data
+    ports:
+      - "80:80"
+      - "443:443"
+    labels:
+      # Fill in secrets here in production
+      # Not sure how to access via secrets though
+      caddy.acme_dns: dns cloudflare
+
   web:
     container_name: web
     restart: always
-    build:
-      context: .
-      dockerfile: ./apps/web/Dockerfile
+    image: "ghcr.io/hunghvu/blogfolio-web:latest"
+    # build:
+    #   context: .
+    #   dockerfile: ./apps/web/Dockerfile
     networks:
       - default
     ports:
       - "3000:3000"
+    labels:
+      caddy: hungvu.tech
+      caddy.reverse_proxy: "{{upstreams 3000}}"
 
   cms:
     container_name: cms
     restart: always
-    env_file: ./.env.production.local
-    build:
-      context: .
-      dockerfile: ./apps/cms/Dockerfile
+    environment:
+      PAYLOAD_MONGODB_URI: /run/secrets/payload_mongodb_uri
+      PAYLOAD_MONGODB_DBNAME: /run/secrets/payload_mongodb_dbname
+      PAYLOAD_SECRET: /run/secrets/payload_secret
+      PAYLOAD_S3_ACCESS_KEY_ID: /run/secrets/payload_s3_access_key_id
+      PAYLOAD_S3_BUCKET: /run/secrets/payload_s3_bucket
+      PAYLOAD_S3_ENDPOINT: /run/secrets/payload_s3_endpoint
+      PAYLOAD_S3_REGION: /run/secrets/payload_s3_region
+      PAYLOAD_S3_SECRET_ACCESS_KEY: /run/secrets/payload_s3_secret_access_key
+    secrets:
+      - payload_mongodb_uri
+      - payload_mongodb_dbname
+      - payload_secret
+      - payload_s3_access_key_id
+      - payload_s3_bucket
+      - payload_s3_endpoint
+      - payload_s3_region
+      - payload_s3_secret_access_key
+    image: "ghcr.io/hunghvu/blogfolio-cms:latest"
+    # env_file: ./.env.production.local
+    # build:
+    #   context: .
+    #   dockerfile: ./apps/cms/Dockerfile
     networks:
       - default
     ports:
       - "3100:3100"
+    labels:
+      caddy: payload.hungvu.tech
+      caddy.reverse_proxy: "{{upstreams 3100}}"
+
+# Most of this will be removed after implementing AWS Secrets Manager
+secrets:
+  payload_mongodb_uri:
+    file: payload_mongodb_uri
+  payload_mongodb_dbname:
+    file: payload_mongodb_dbname
+  payload_secret:
+    file: payload_secret
+  payload_s3_access_key_id:
+    file: payload_s3_access_key_id
+  payload_s3_bucket:
+    file: payload_s3_bucket
+  payload_s3_endpoint:
+    file: payload_s3_endpoint
+  payload_s3_region:
+    file: payload_s3_region
+  payload_s3_secret_access_key:
+    file: payload_s3_secret_access_key
 
 networks:
   default:
     driver: bridge
+
+volumes:
+  caddy_data: {}

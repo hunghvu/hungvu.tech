@@ -12,5 +12,8 @@
   "vs-code-prettier-eslint.prettierLast": true,
   "[dockerfile]": {
     "editor.defaultFormatter": "ms-azuretools.vscode-docker"
+  },
+  "[dockercompose]": {
+    "editor.defaultFormatter": "ms-azuretools.vscode-docker"
   } // set as "true" to run 'prettier' last not first
 }
