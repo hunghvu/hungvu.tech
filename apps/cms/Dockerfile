@@ -12,6 +12,7 @@ RUN turbo prune cms --docker
 
 FROM base AS installer
 RUN apk add --no-cache libc6-compat
+RUN apk add --no-cache build-base
 RUN apk update
 
 WORKDIR /app
