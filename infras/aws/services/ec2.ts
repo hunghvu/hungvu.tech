@@ -37,7 +37,7 @@ const ami = pulumi.output(awsClassic.ec2.getAmi({
 
 const ec2 = new awsClassic.ec2.Instance("ec2", {
   ami: ami.id,
-  instanceType: "t4g.nano",
+  instanceType: "t4g.micro",
   vpcSecurityGroupIds: [vpc.securityGroupId],
   subnetId: vpc.vpcSubnetPublicId,
   creditSpecification: {
