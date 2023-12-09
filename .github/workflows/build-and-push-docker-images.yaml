@@ -9,6 +9,8 @@ jobs:
     strategy:
       matrix:
         include:
+          - dockerfile: ./infras/containers/caddy/Dockerfile
+            image: ghcr.io/hunghvu/blogfolio-caddy
           - dockerfile: ./apps/cms/Dockerfile
             image: ghcr.io/hunghvu/blogfolio-cms
           - dockerfile: ./apps/web/Dockerfile
