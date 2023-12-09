@@ -6,7 +6,7 @@ services:
   caddy:
     container_name: caddy
     restart: always
-    image: "ghcr.io/hunghvu/blogfolio-caddy:latest"
+    image: "ghcr.io/hunghvu/blogfolio-caddy:main"
     # build:
     #   context: .
     #   dockerfile: ./infras/containers/caddy/Dockerfile
@@ -28,7 +28,7 @@ services:
   web:
     container_name: web
     restart: always
-    image: "ghcr.io/hunghvu/blogfolio-web:latest"
+    image: "ghcr.io/hunghvu/blogfolio-web:main"
     # build:
     #   context: .
     #   dockerfile: ./apps/web/Dockerfile
@@ -61,7 +61,7 @@ services:
       - payload_s3_endpoint
       - payload_s3_region
       - payload_s3_secret_access_key
-    image: "ghcr.io/hunghvu/blogfolio-cms:latest"
+    image: "ghcr.io/hunghvu/blogfolio-cms:main"
     # env_file: ./.env.production.local
     # build:
     #   context: .
