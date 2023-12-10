@@ -12,7 +12,10 @@ import ArticlePage from './page-article';
 const getArticle = async (slug: string): Promise<any> => {
   let res;
   try {
-    res = await fetch(`${process.env.NEXT_REQUEST_CMS_ARTICLES_URL!}?where[settings.slug][equals]=${slug}`);
+    res = await fetch(
+      `${process.env.NEXT_REQUEST_CMS_ARTICLES_URL!}?where[settings.slug][equals]=${slug}`,
+      { next: { revalidate: 3600 } }
+    );
   } catch (err) {
     throw new Error('Connection Error');
   }
@@ -43,7 +46,10 @@ const getArticle = async (slug: string): Promise<any> => {
 const getAllArticlesInTheSameSeries = async (seriesTitle: string): Promise<any> => {
   let res;
   try {
-    res = await fetch(`${process.env.NEXT_REQUEST_CMS_ARTICLES_URL!}?where[settings.series.title][equals]=${seriesTitle}`);
+    res = await fetch(
+      `${process.env.NEXT_REQUEST_CMS_ARTICLES_URL!}?where[settings.series.title][equals]=${seriesTitle}`,
+      { next: { revalidate: 3600 } }
+    );
   } catch (err) {
     throw new Error('Connection Error');
   }
