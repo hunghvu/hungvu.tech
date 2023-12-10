@@ -24,9 +24,6 @@ COPY --from=builder /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
 COPY --from=builder /app/out/full/ .
 COPY turbo.json turbo.json
 
-# PAYLOAD_PUBLIC_ variables requires during build time
-ENV PAYLOAD_PUBLIC_SERVER_URL https://payload.hungvu.tech
-
 RUN yarn global add turbo
 RUN yarn global add pnpm
 RUN yarn global add dotenv-cli
@@ -52,6 +49,7 @@ COPY --from=installer --chown=payload:nodejs /app/apps/cms/node_modules ./apps/c
 COPY --from=installer --chown=payload:nodejs /app/node_modules/.pnpm ./node_modules/.pnpm
 
 # Runtime environment variables
+ENV PAYLOAD_PUBLIC_SERVER_URL https://payload.hungvu.tech
 ENV PAYLOAD_FRONT_END_DOMAIN https://hungvu.tech
 ENV PAYLOAD_PORT 3100      
 
