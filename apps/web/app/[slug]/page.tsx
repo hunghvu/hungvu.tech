@@ -121,6 +121,12 @@ const Page = async ({ params }: MetadataProps): Promise<any> => {
   if (content.settings.series) {
     relatedArticles = await getAllArticlesInTheSameSeries(content.settings.series.title as string);
   }
+  content.updatedAt = "customizedUpdatedAt" in content.settings
+                      ? content.settings.customizedUpdatedAt
+                      : content.updatedAt
+  content.createdAt = "customizedCreatedAt" in content.settings
+                      ? content.settings.customizedCreatedAt
+                      : content.createdAt
   return (
     <>
       <ArticleJsonLd

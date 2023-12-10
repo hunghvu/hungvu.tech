@@ -29,7 +29,7 @@ export interface User {
   hash?: string | null;
   loginAttempts?: number | null;
   lockUntil?: string | null;
-  password: string | null;
+  password?: string | null;
 }
 export interface Article {
   id: string;
@@ -42,6 +42,8 @@ export interface Article {
     seoDescription: string;
     scheduledReleaseDate: string;
     hideFromHome?: boolean | null;
+    customizedCreatedAt?: string | null;
+    customizedUpdatedAt?: string | null;
   };
   title: string;
   subTitle: string;
@@ -134,14 +136,14 @@ export interface PayloadPreference {
   };
   key?: string | null;
   value?:
-    | {
-        [k: string]: unknown;
-      }
-    | unknown[]
-    | string
-    | number
-    | boolean
-    | null;
+  | {
+    [k: string]: unknown;
+  }
+  | unknown[]
+  | string
+  | number
+  | boolean
+  | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -155,5 +157,5 @@ export interface PayloadMigration {
 
 
 declare module 'payload' {
-  export interface GeneratedTypes extends Config {}
+  export interface GeneratedTypes extends Config { }
 }

@@ -146,6 +146,26 @@ const Articles: CollectionConfig = {
           type: 'checkbox',
           defaultValue: false,
         },
+        {
+          name: 'customizedCreatedAt',
+          label: 'Customized create at (front end only)',
+          type: 'date',
+          admin: {
+            date: {
+              pickerAppearance: 'dayAndTime',
+            },
+          },
+        },
+        {
+          name: 'customizedUpdatedAt',
+          label: 'Customized update at (front end only)',
+          type: 'date',
+          admin: {
+            date: {
+              pickerAppearance: 'dayAndTime',
+            },
+          },
+        },
       ],
     },
     {

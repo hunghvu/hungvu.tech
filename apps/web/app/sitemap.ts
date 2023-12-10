@@ -28,7 +28,10 @@ const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
   (await articles.json()).docs.foreach((article: any) => {
     sites.push({
       url: `${process.env.NEXT_PUBLIC_BASE_URL!}/${article.settings.slug}`,
-      lastModified: new Date(article.updatedAt as string),
+      lastModified: new Date(
+        "customizedUpdatedAt" in article.settings
+          ? article.settings.customizedUpdatedAt as string
+          : article.updatedAt as string),
       changeFrequency: 'daily',
       priority: 0.8,
     })

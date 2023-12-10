@@ -20,7 +20,9 @@ const BlogPage: React.FunctionComponent<{ content: any }> = ({ content }) => {
       return {
         title: article.title,
         description: article.subTitle,
-        date: article.createdAt,
+        date: "customizedCreatedAt" in content.settings
+              ? content.settings.customizedCreatedAt
+              : content.createdAt,
         slug: article.settings.slug,
         tags: article.settings.tags,
       };
