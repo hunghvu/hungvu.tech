@@ -92,6 +92,11 @@ export default buildConfig({
       dbName: process.env.PAYLOAD_MONGODB_DBNAME!,
     }
   }),
+  rateLimit: {
+    window: 60 * 1000, // 1 minute = 60 seconds = 60,000 milliseconds
+    max: 50, // limit each IP to 50 requests per windowMs
+    trustProxy: true,
+  },
   plugins: [
     cloudStorage({
       enabled: process.env.NODE_ENV! === 'production',
