@@ -1,5 +1,5 @@
 # Author: Hung Vu
-# Action for only build and push all images
+# Granular action for only build and push cms image
 name: Build and push Docker images to ghcr.io
 
 on:
@@ -11,12 +11,8 @@ jobs:
     strategy:
       matrix:
         include:
-          - dockerfile: ./infras/containers/caddy/Dockerfile
-            image: ghcr.io/hunghvu/blogfolio-caddy
           - dockerfile: ./apps/cms/Dockerfile
             image: ghcr.io/hunghvu/blogfolio-cms
-          - dockerfile: ./apps/web/Dockerfile
-            image: ghcr.io/hunghvu/blogfolio-web
     permissions:
       contents: read
       packages: write
