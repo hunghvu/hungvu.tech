@@ -1,6 +1,6 @@
 # Author: Hung Vu
 # Granular action for only build and push cms image
-name: Build and push Docker images to ghcr.io
+name: Build and push CMS image to ghcr.io
 
 on:
   workflow_dispatch:
