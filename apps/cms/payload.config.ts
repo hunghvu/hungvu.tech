@@ -84,8 +84,8 @@ export default buildConfig({
   graphQL: {
     disable: true,
   },
-  csrf: [process.env.PAYLOAD_FRONT_END_DOMAIN!, process.env.PAYLOAD_PUBLIC_SERVER_URL!],
-  cors: [process.env.PAYLOAD_FRONT_END_DOMAIN!, process.env.PAYLOAD_PUBLIC_SERVER_URL!],
+  csrf: [process.env.PAYLOAD_FRONT_END_DOMAIN!, process.env.PAYLOAD_BACK_END_DOMAIN!],
+  cors: [process.env.PAYLOAD_FRONT_END_DOMAIN!, process.env.PAYLOAD_BACK_END_DOMAIN!],
   db: mongooseAdapter({
     url: process.env.PAYLOAD_MONGODB_URI!,
     connectOptions: {

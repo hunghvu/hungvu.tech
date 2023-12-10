@@ -56,6 +56,7 @@
     "dev:cms": {
       "env": [
         "PAYLOAD_FRONT_END_DOMAIN",
+        "PAYLOAD_BACK_END_DOMAIN",
         "PAYLOAD_MONGODB_DBNAME",
         "PAYLOAD_MONGODB_URI",
         "PAYLOAD_PORT",

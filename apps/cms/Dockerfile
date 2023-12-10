@@ -45,12 +45,14 @@ USER payload
 # package managers (yarn and pnpm), keep resolving devDependencies and error out
 COPY --from=installer --chown=payload:nodejs /app/apps/cms/package.json ./apps/cms/package.json
 COPY --from=installer --chown=payload:nodejs /app/apps/cms/dist ./apps/cms/dist
+COPY --from=installer --chown=payload:nodejs /app/apps/cms/build ./apps/cms/build
 COPY --from=installer --chown=payload:nodejs /app/apps/cms/node_modules ./apps/cms/node_modules
 COPY --from=installer --chown=payload:nodejs /app/node_modules/.pnpm ./node_modules/.pnpm
 
 # Runtime environment variables
 ENV PAYLOAD_PUBLIC_SERVER_URL https://payload.hungvu.tech
-ENV PAYLOAD_FRONT_END_DOMAIN https://hungvu.tech
+ENV PAYLOAD_FRONT_END_DOMAIN hungvu.tech
+ENV PAYLOAD_BACK_END_DOMAIN payload.hungvu.tech
 ENV PAYLOAD_PORT 3100      
 
 WORKDIR /app/apps/cms
