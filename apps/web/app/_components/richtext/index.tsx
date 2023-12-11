@@ -95,13 +95,14 @@ export const RichText = ({ nodes }: RichTextProps): JSX.Element => {
           case 'list': {
             if (node.tag === 'ol') {
               return (
-                <ol className='pl-4 pt-2 list-decimal list-outside text-sm md:text-base lg:text-lg' key={index}>
+                <ol className='pl-4 pt-2 list-decimal text-sm md:text-base lg:text-lg' key={index}>
                   {serializedChildren}
                 </ol>
               );
             } else if (node.tag === 'ul') {
+              // Customized CSS counter makes <ol> becomes list-inside, so only need to specify list-inside for <ul>
               return (
-                <ul className='pl-4 pt-2 list-disc list-outside text-sm md:text-base lg:text-lg' key={index}>
+                <ul className='pl-4 pt-2 list-disc list-inside text-sm md:text-base lg:text-lg' key={index}>
                   {serializedChildren}
                 </ul>
               );
@@ -110,8 +111,12 @@ export const RichText = ({ nodes }: RichTextProps): JSX.Element => {
           }
           case 'listitem': {
             return (
-              <li className='pb-2' key={index} value={node.value}>
-                {serializedChildren}
+              // Because 'ul' and 'ol' are children of 'li' in nested list, so we need to make it invisible and not count the number
+              // to not affect the layout and order of the list
+              <li className={`pb-2 ${serializedChildren?.props?.children[0].type !== 'span' ? 'invisible flex': 'visible'}`} key={index} value={node.value}>
+                <span className='pl-6'>
+                  {serializedChildren}
+                </span>
               </li>
             );
           }
