@@ -55,6 +55,7 @@ const ec2 = new awsClassic.ec2.Instance("ec2", {
     #!/bin/bash
     ufw allow 80/tcp
     ufw allow 443/tcp
+    ufw allow 443/udp
     ufw allow 27017/tcp
     ufw allow ${process.env.PORT_SSH!}/tcp
     ufw enable

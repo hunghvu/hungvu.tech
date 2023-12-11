@@ -112,12 +112,20 @@ const vpcSubnetPublicNetworkAcl = new awsClassic.ec2.NetworkAcl("vpc-subnet-publ
       fromPort: 443,
       toPort: 443,
     },
+    {
+      protocol: "udp", //UDP for QUIC support
+      ruleNo: 5,
+      action: "allow",
+      cidrBlock: "0.0.0.0/0",
+      fromPort: 443,
+      toPort: 443,
+    },
     // Allow all ephemeral ports
     // When a client connects to a server, a random port from the ephemeral port range (1024-65535) becomes the client's source port
     // Reference: https://repost.aws/knowledge-center/resolve-connection-sg-acl-inbound
     {
       protocol: "tcp",
-      ruleNo: 5,
+      ruleNo: 6,
       action: "allow",
       cidrBlock: "0.0.0.0/0",
       fromPort: 1024,
@@ -163,8 +171,16 @@ const vpcSubnetPublicNetworkAcl = new awsClassic.ec2.NetworkAcl("vpc-subnet-publ
       toPort: 443,
     },
     {
-      protocol: "tcp",
+      protocol: "udp",
       ruleNo: 5,
+      action: "allow",
+      cidrBlock: "0.0.0.0/0",
+      fromPort: 443,
+      toPort: 443,
+    },
+    {
+      protocol: "tcp",
+      ruleNo: 6,
       action: "allow",
       cidrBlock: process.env.WHITELISTED_IP_SSH!,
       fromPort: parseInt(process.env.PORT_SSH!), // Customized SSH port
@@ -172,7 +188,7 @@ const vpcSubnetPublicNetworkAcl = new awsClassic.ec2.NetworkAcl("vpc-subnet-publ
     },
     {
       protocol: "tcp",
-      ruleNo: 6,
+      ruleNo: 7,
       action: "allow",
       cidrBlock: "0.0.0.0/0",
       fromPort: 1024,
@@ -237,6 +253,12 @@ const securityGroup = new awsClassic.ec2.SecurityGroup("security-group", {
     },
     {
       cidrBlocks: ["0.0.0.0/0"],
+      protocol: "udp",
+      fromPort: 443,
+      toPort: 443,
+    },
+    {
+      cidrBlocks: ["0.0.0.0/0"],
       protocol: "tcp",
       fromPort: 27017, // MongoDB
       toPort: 27017,
@@ -271,6 +293,12 @@ const securityGroup = new awsClassic.ec2.SecurityGroup("security-group", {
     {
       cidrBlocks: ["0.0.0.0/0"],
       protocol: "tcp",
+      fromPort: 443,
+      toPort: 443,
+    },
+    {
+      cidrBlocks: ["0.0.0.0/0"],
+      protocol: "udp",
       fromPort: 443,
       toPort: 443,
     },
