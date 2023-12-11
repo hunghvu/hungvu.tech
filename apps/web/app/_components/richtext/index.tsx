@@ -113,7 +113,7 @@ export const RichText = ({ nodes }: RichTextProps): JSX.Element => {
             return (
               // Because 'ul' and 'ol' are children of 'li' in nested list, so we need to make it invisible and not count the number
               // to not affect the layout and order of the list
-              <li className={`pb-2 ${serializedChildren?.props?.children[0].type !== 'span' ? 'invisible flex': 'visible'}`} key={index} value={node.value}>
+              <li className={`pb-2 ${['ul', 'ol'].includes(serializedChildren?.props?.children[0].type) ? 'invisible flex': 'visible'}`} key={index} value={node.value}>
                 <span className='pl-6'>
                   {serializedChildren}
                 </span>
