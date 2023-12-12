@@ -167,10 +167,10 @@ export const RichText = ({ nodes }: RichTextProps): JSX.Element => {
                   <Image
                     alt={altText ?? ''}
                     className='rounded-md'
-                    height={node.value.sizes.embed?.height ?? node.value.height}
+                    height={node.value.height}
                     key={index}
-                    src={node.value.sizes.embed?.url ?? node.value.url}
-                    width={node.value.sizes.embed?.width ?? node.value.width}
+                    src={node.value.url}
+                    width={node.value.width}
                   />
                   <figcaption className='text-sm md:text-base lg:text-lg p-2 rounded-md italic text-[#ffffffde]/70'>{altText ?? ''}</figcaption>
                 </figure>
