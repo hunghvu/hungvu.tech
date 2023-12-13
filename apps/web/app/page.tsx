@@ -28,7 +28,7 @@ const handleError = (res: Response): void => {
 const getAllArticles = async (): Promise<any> => {
   let res;
   try {
-    res = await fetch(process.env.NEXT_REQUEST_CMS_ARTICLES_URL!);
+    res = await fetch(`${process.env.NEXT_REQUEST_CMS_ARTICLES_URL!}?limit=10000`);
   } catch (err) {
     throw new Error('Connection Error');
   }

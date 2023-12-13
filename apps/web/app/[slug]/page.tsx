@@ -47,7 +47,7 @@ const getAllArticlesInTheSameSeries = async (seriesTitle: string): Promise<any> 
   let res;
   try {
     res = await fetch(
-      `${process.env.NEXT_REQUEST_CMS_ARTICLES_URL!}?where[settings.series.title][equals]=${seriesTitle}`,
+      `${process.env.NEXT_REQUEST_CMS_ARTICLES_URL!}?limit=10000&where[settings.series.title][equals]=${seriesTitle}`,
       { next: { revalidate: 3600 } }
     );
   } catch (err) {

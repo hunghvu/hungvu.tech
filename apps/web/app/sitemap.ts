@@ -24,7 +24,7 @@ const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
     // },
   ]
 
-  const articles = await fetch(process.env.NEXT_REQUEST_CMS_ARTICLES_URL!);
+  const articles = await fetch(`${process.env.NEXT_REQUEST_CMS_ARTICLES_URL!}?limit=10000`);
   (await articles.json()).docs.forEach((article: any) => {
     sites.push({
       url: `${process.env.NEXT_PUBLIC_BASE_URL!}/${article.settings.slug}`,
