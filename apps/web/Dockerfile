@@ -33,7 +33,7 @@ RUN yarn global add dotenv-cli
 RUN pnpm install
 
 ENV NODE_ENV production
-ENV NEXT_REQUEST_CMS_ARTICLES_URL https:payload.hungvu.tech/api/articles
+ENV NEXT_REQUEST_CMS_ARTICLES_URL https://payload.hungvu.tech/api/articles
 ENV NEXT_REQUEST_CMS_STATIC_ROUTE_METADATA_URL https://payload.hungvu.tech/api/static-route-metadata
 RUN pnpm run build --filter web
 
@@ -53,7 +53,7 @@ COPY --from=installer --chown=nextjs:nodejs /app/apps/web/.next/static ./apps/we
 # It seems these are required for both build and runtime
 # For build time, it is so Next.js can generate cache files
 # For runtime, it is so Next.js can revalidate cache files
-ENV NEXT_REQUEST_CMS_ARTICLES_URL https:payload.hungvu.tech/api/articles
+ENV NEXT_REQUEST_CMS_ARTICLES_URL https://payload.hungvu.tech/api/articles
 ENV NEXT_REQUEST_CMS_STATIC_ROUTE_METADATA_URL https://payload.hungvu.tech/api/static-route-metadata
 
 CMD node apps/web/server.js
