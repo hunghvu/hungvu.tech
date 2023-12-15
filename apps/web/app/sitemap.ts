@@ -6,8 +6,6 @@
 
 import type { MetadataRoute } from 'next'
 
-export const dynamic = 'force-dynamic'
-
 const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
   const sites: MetadataRoute.Sitemap = [
     {
@@ -24,7 +22,10 @@ const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
     // },
   ]
 
-  const articles = await fetch(`${process.env.NEXT_REQUEST_CMS_ARTICLES_URL!}?limit=10000`);
+  const articles = await fetch(
+    `${process.env.NEXT_REQUEST_CMS_ARTICLES_URL!}?limit=10000`,
+    { next: { revalidate: 3600 } }
+  );
   (await articles.json()).docs.forEach((article: any) => {
     sites.push({
       url: `${process.env.NEXT_PUBLIC_BASE_URL!}/${article.settings.slug}`,
