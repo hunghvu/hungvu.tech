@@ -7,6 +7,7 @@
 /* eslint-disable turbo/no-undeclared-env-vars */
 import * as awsClassic from "@pulumi/aws";
 import * as pulumi from "@pulumi/pulumi";
+import * as iam from "./iam";
 import * as vpc from "./vpc";
 
 const ami = pulumi.output(awsClassic.ec2.getAmi({
@@ -43,6 +44,7 @@ const ec2 = new awsClassic.ec2.Instance("ec2", {
   creditSpecification: {
     cpuCredits: "standard",
   },
+  iamInstanceProfile: iam.ec2InstanceProfile.name,
   // TODO: Config userData
   // Change SSH default port
   // Restrict SSH to only public key
