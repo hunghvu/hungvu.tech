@@ -26,6 +26,7 @@ import {
   UploadFeature,
   lexicalEditor,
 } from '@payloadcms/richtext-lexical';
+import type { FeatureProvider } from '@payloadcms/richtext-lexical';
 import { viteBundler } from '@payloadcms/bundler-vite';
 import Articles from './collections/articles';
 import CodeEditor from './blocks/code-snippet';
@@ -47,6 +48,37 @@ const s3 = s3Adapter({
   bucket: process.env.PAYLOAD_S3_BUCKET!,
 })
 
+const lexicalEditorFeatures = (): FeatureProvider[] => {
+  const features = [
+    BoldTextFeature(),
+    ItalicTextFeature(),
+    UnderlineTextFeature(),
+    StrikethroughTextFeature(),
+    SubscriptTextFeature(),
+    SuperscriptTextFeature(),
+    InlineCodeTextFeature(),
+    ParagraphFeature(),
+    HeadingFeature({
+      enabledHeadingSizes: ['h2', 'h3'],
+    }),
+    UnoderedListFeature(),
+    OrderedListFeature(),
+    LinkFeature({}),
+    BlockQuoteFeature(),
+    UploadFeature(),
+    BlocksFeature({
+      blocks: [CodeEditor]
+    }),
+  ];
+
+  if (process.env.NODE_ENV === 'development') {
+    features.push(
+      TreeviewFeature(),
+    );
+  }
+  return features;
+}
+
 export default buildConfig({
   serverURL: process.env.PAYLOAD_PUBLIC_SERVER_URL!,
   admin: {
@@ -54,28 +86,7 @@ export default buildConfig({
     bundler: viteBundler(),
   },
   editor: lexicalEditor({
-    features: () => [
-      BoldTextFeature(),
-      ItalicTextFeature(),
-      UnderlineTextFeature(),
-      StrikethroughTextFeature(),
-      SubscriptTextFeature(),
-      SuperscriptTextFeature(),
-      InlineCodeTextFeature(),
-      ParagraphFeature(),
-      HeadingFeature({
-        enabledHeadingSizes: ['h2', 'h3'],
-      }),
-      UnoderedListFeature(),
-      OrderedListFeature(),
-      LinkFeature({}),
-      BlockQuoteFeature(),
-      UploadFeature(),
-      TreeviewFeature(),
-      BlocksFeature({
-        blocks: [CodeEditor]
-      }),
-    ],
+    features: () => lexicalEditorFeatures(),
   }),
   collections: [Users, Articles, Media, Tags, Series, StaticRouteMetadata],
   typescript: {
