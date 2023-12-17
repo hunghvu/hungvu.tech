@@ -40,6 +40,7 @@ services:
     labels:
       caddy: hungvu.tech
       caddy.reverse_proxy: "{{upstreams 3000}}"
+      caddy.encode: zstd gzip
 
   cms:
     container_name: cms
@@ -57,6 +58,7 @@ services:
     labels:
       caddy: payload.hungvu.tech
       caddy.reverse_proxy: "{{upstreams 3100}}"
+      caddy.encode: zstd gzip
 
 networks:
   # Network name cannot be "default"
