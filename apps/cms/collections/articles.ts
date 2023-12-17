@@ -199,7 +199,9 @@ const Articles: CollectionConfig = {
   timestamps: true,
   versions: {
     drafts: {
-      autosave: true,
+      autosave: {
+        interval: 1000 * 15 // Autosave every 15 seconds
+      },
     },
   },
 };
