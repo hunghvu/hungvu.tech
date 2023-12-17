@@ -30,3 +30,13 @@ The `cms` requires the following environment variables:
 - PAYLOAD_S3_ENDPOINT
 - PAYLOAD_S3_REGION
 - PAYLOAD_S3_SECRET_ACCESS_KEY
+
+## Author
+
+- Hung Vu:
+  - LinkedIn: https://www.linkedin.com/in/hunghvu/
+  - GitHub: https://github.com/hunghvu
+
+## License
+
+Copyright &copy; 2023 Huu Hung Vu, All Rights Reserved.
