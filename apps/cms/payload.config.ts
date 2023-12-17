@@ -103,6 +103,21 @@ export default buildConfig({
       dbName: process.env.PAYLOAD_MONGODB_DBNAME!,
     }
   }),
+  express: {
+    json: {
+      // There seems to be an oversight,
+      // this should be a mixed field, but payload requires a number field
+      // it cannot parse a string field, even when the document suggests a string
+      // https://payloadcms.com/docs/configuration/express#json
+      //
+      // Also, this only sets the limit on Express itself
+      // but Payload uses body-parser, which has its own limit
+      // not sure if this will cause a conflict, have to test out
+      // Example of conflict mentioned: https://stackoverflow.com/questions/19917401/error-request-entity-too-large
+      // Payload implementation (at least for middleware): https://github.com/payloadcms/payload/blob/1c6174ecb57687ad86bd4972c1040e04b6a0f9d6/packages/payload/src/express/middleware/index.ts#L2
+      limit: 50000000, // in bytes = 50 MB
+    },
+  },
   rateLimit: {
     window: 60 * 1000, // 1 minute = 60 seconds = 60,000 milliseconds
     max: 50, // limit each IP to 50 requests per windowMs
