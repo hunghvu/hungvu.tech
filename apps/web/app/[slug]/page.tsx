@@ -29,7 +29,7 @@ const getArticle = async (slug: string): Promise<any> => {
     notFound();
   }
 
-  if (res.status > 500) {
+  if (res.status >= 500) {
     throw new Error('Server Error');
   }
 
@@ -63,7 +63,7 @@ const getAllArticlesInTheSameSeries = async (seriesTitle: string): Promise<any> 
     notFound();
   }
 
-  if (res.status > 500) {
+  if (res.status >= 500) {
     throw new Error('Server Error');
   }
 

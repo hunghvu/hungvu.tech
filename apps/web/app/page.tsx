@@ -18,7 +18,7 @@ const handleError = (res: Response): void => {
     notFound();
   }
 
-  if (res.status > 500) {
+  if (res.status >= 500) {
     throw new Error('Server Error');
   }
 };
