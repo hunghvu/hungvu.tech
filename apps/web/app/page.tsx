@@ -9,6 +9,8 @@ import { notFound } from 'next/navigation';
 import { ArticleJsonLd } from 'next-seo';
 import BlogPage from './page-blog';
 
+export const dynamic = 'force-dynamic'
+
 const handleError = (res: Response): void => {
   if (res.status === 401) {
     throw new Error('Unauthorized');
