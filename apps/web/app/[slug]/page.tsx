@@ -43,12 +43,11 @@ const getArticle = async (slug: string): Promise<any> => {
   return content.docs[0];
 };
 
-const getAllArticlesInTheSameSeries = async (seriesTitle: string): Promise<any> => {
+const getAllArticlesInTheSameSeries = async (seriesId: string): Promise<any> => {
   let res;
   try {
     res = await fetch(
-      `${process.env.NEXT_REQUEST_CMS_ARTICLES_URL!}?limit=10000&where[settings.series.title][equals]=${seriesTitle}`,
-      { next: { revalidate: 3600 } }
+      `${process.env.NEXT_REQUEST_CMS_ARTICLES_IN_THE_SAME_SERIES_URL!}/${seriesId}`,
     );
   } catch (err) {
     throw new Error('Connection Error');
@@ -125,7 +124,7 @@ const Page = async ({ params }: MetadataProps): Promise<any> => {
   const content = await getArticle(params.slug);
   let relatedArticles;
   if (content.settings.series) {
-    relatedArticles = await getAllArticlesInTheSameSeries(content.settings.series.title as string);
+    relatedArticles = await getAllArticlesInTheSameSeries(content.settings.series.id as string);
   }
   content.updatedAt = "customizedUpdatedAt" in content.settings
                       ? content.settings.customizedUpdatedAt

@@ -23,8 +23,7 @@ const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
   ]
 
   const articles = await fetch(
-    `${process.env.NEXT_REQUEST_CMS_ARTICLES_URL!}?limit=10000`,
-    { next: { revalidate: 3600 } }
+    process.env.NEXT_REQUEST_CMS_ARTICLES_IGNORE_REDUNDANT_FIELDS_URL!
   );
   (await articles.json()).docs.forEach((article: any) => {
     sites.push({

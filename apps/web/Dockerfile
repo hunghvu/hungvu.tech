@@ -34,6 +34,8 @@ RUN pnpm install
 
 ENV NODE_ENV production
 ENV NEXT_REQUEST_CMS_ARTICLES_URL https://payload.hungvu.tech/api/articles
+ENV NEXT_REQUEST_CMS_ARTICLES_IGNORE_REDUNDANT_FIELDS_URL https://payload.hungvu.tech/api/articles/ignore-redundant-fields
+ENV NEXT_REQUEST_CMS_ARTICLES_IN_THE_SAME_SERIES_URL https://payload.hungvu.tech/api/articles/in-series
 ENV NEXT_REQUEST_CMS_STATIC_ROUTE_METADATA_URL https://payload.hungvu.tech/api/static-route-metadata
 RUN pnpm run build --filter web
 
@@ -54,6 +56,8 @@ COPY --from=installer --chown=nextjs:nodejs /app/apps/web/.next/static ./apps/we
 # For build time, it is so Next.js can generate cache files
 # For runtime, it is so Next.js can revalidate cache files
 ENV NEXT_REQUEST_CMS_ARTICLES_URL https://payload.hungvu.tech/api/articles
+ENV NEXT_REQUEST_CMS_ARTICLES_IGNORE_REDUNDANT_FIELDS_URL https://payload.hungvu.tech/api/articles/ignore-redundant-fields
+ENV NEXT_REQUEST_CMS_ARTICLES_IN_THE_SAME_SERIES_URL https://payload.hungvu.tech/api/articles/in-series
 ENV NEXT_REQUEST_CMS_STATIC_ROUTE_METADATA_URL https://payload.hungvu.tech/api/static-route-metadata
 
 CMD node apps/web/server.js

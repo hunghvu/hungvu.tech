@@ -27,8 +27,7 @@ const getAllArticles = async (): Promise<any> => {
   let res;
   try {
     res = await fetch(
-      `${process.env.NEXT_REQUEST_CMS_ARTICLES_URL!}?limit=10000`,
-      { next: { revalidate: 3600 } }
+      process.env.NEXT_REQUEST_CMS_ARTICLES_IGNORE_REDUNDANT_FIELDS_URL!
     );
   } catch (err) {
     throw new Error('Connection Error');
