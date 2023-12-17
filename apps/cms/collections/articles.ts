@@ -5,6 +5,8 @@
  */
 
 /* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import type { CollectionConfig } from 'payload/types';
 import type { Endpoint } from "payload/config";
@@ -22,7 +24,7 @@ const getArticlesIgnoreRedundantFields = (): Omit<Endpoint, 'root'> => {
           collection: 'articles',
           limit: 10000,
         });
-        const docsWithoutBody = resAllArticles.docs.map((article) => {
+        const necessaryFields = resAllArticles.docs.map((article) => {
           const { body, _status, ...restArticles } = article;
 
           // For a repetitive local Postman test, this seems to reduce about 50ms in response time
@@ -38,7 +40,37 @@ const getArticlesIgnoreRedundantFields = (): Omit<Endpoint, 'root'> => {
 
           return restArticles;
         });
-        resAllArticles.docs = docsWithoutBody as any;
+        resAllArticles.docs = necessaryFields as any;
+        res.status(200).json(resAllArticles);
+      } catch (error) {
+        res.status(500).json({ error: error.message });
+      }
+    }
+  }
+}
+
+const getArticlesInTheSameSeries = (): Omit<Endpoint, 'root'> => {
+  return {
+    path: '/in-series/:id',
+    method: 'get',
+    handler: async (req, res) => {
+      try {
+        const resAllArticles = await req.payload.find({
+          collection: 'articles',
+          limit: 10000,
+          where: {
+            "settings.series": {
+              equals: req.params.id
+            }
+          }
+        });
+        const necessaryFields = resAllArticles.docs.map((article) => {
+          const { title, ...restArticles } = article;
+          // Time reduced is insignificant, but we reduce the payload size by 75%.
+          const { slug, ..._restSettings } = restArticles.settings;
+          return ({ title, settings: { slug } }) as any;
+        });
+        resAllArticles.docs = necessaryFields as any;
         res.status(200).json(resAllArticles);
       } catch (error) {
         res.status(500).json({ error: error.message });
@@ -239,6 +271,7 @@ const Articles: CollectionConfig = {
   ],
   endpoints: [
     getArticlesIgnoreRedundantFields(),
+    getArticlesInTheSameSeries(),
   ],
   timestamps: true,
   versions: {
