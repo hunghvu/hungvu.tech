@@ -4,9 +4,50 @@
  * This collection represents a blog article.
  */
 
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import type { CollectionConfig } from 'payload/types';
+import type { Endpoint } from "payload/config";
 import isLoggedIn from '../access/validator/is-logged-in';
 import isPublished from '../access/query/is-published';
+
+
+const getArticlesIgnoreRedundantFields = (): Omit<Endpoint, 'root'> => {
+  return {
+    path: '/ignore-redundant-fields',
+    method: 'get',
+    handler: async (req, res) => {
+      try {
+        const resAllArticles = await req.payload.find({
+          collection: 'articles',
+          limit: 10000,
+        });
+        const docsWithoutBody = resAllArticles.docs.map((article) => {
+          const { body, _status, ...restArticles } = article;
+
+          // For a repetitive local Postman test, this seems to reduce about 50ms in response time
+          // Even though there is a nested loop, seems like it is a net positive.
+          const { images, seoTitle, seoDescription, scheduledReleaseDate, ...restSettings } = restArticles.settings;
+          restArticles.settings = restSettings as any;
+          const restTags = restArticles.settings.tags.map((tag) => {
+            const { createdAt, updatedAt, _status, ...rest } = tag as any;
+            return rest;
+          });
+          restArticles.settings.tags = restTags as any;
+
+
+          return restArticles;
+        });
+        resAllArticles.docs = docsWithoutBody as any;
+        res.status(200).json(resAllArticles);
+      } catch (error) {
+        res.status(500).json({ error: error.message });
+      }
+    }
+  }
+}
+
+
 
 const Articles: CollectionConfig = {
   slug: 'articles',
@@ -148,7 +189,7 @@ const Articles: CollectionConfig = {
         },
         {
           name: 'customizedCreatedAt',
-          label: 'Customized create at (front end only)',
+          label: 'Publish backdate (front end only)',
           type: 'date',
           admin: {
             date: {
@@ -158,7 +199,7 @@ const Articles: CollectionConfig = {
         },
         {
           name: 'customizedUpdatedAt',
-          label: 'Customized update at (front end only)',
+          label: 'Update backdate (front end only)',
           type: 'date',
           admin: {
             date: {
@@ -195,6 +236,9 @@ const Articles: CollectionConfig = {
       required: true,
     },
 
+  ],
+  endpoints: [
+    getArticlesIgnoreRedundantFields(),
   ],
   timestamps: true,
   versions: {
