@@ -3,6 +3,21 @@
 version: "3.8"
 
 services:
+  mongo:
+    container_name: mongo
+    restart: always
+    image: mongo
+    environment:
+      # Fill in secrets here in production
+      MONGO_INITDB_ROOT_USERNAME:
+      MONGO_INITDB_ROOT_PASSWORD:
+    networks:
+      - blogfolio
+    volumes:
+      - ./mongo_data:/data/db
+    ports:
+      - "27017:27017"
+
   caddy:
     container_name: caddy
     restart: always
