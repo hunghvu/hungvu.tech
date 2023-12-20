@@ -16,7 +16,7 @@ services:
     volumes:
       - ./mongo_data:/data/db
     ports:
-      - "27017:27017"
+      - "127.0.0.1:27017:27017"
 
   caddy:
     container_name: caddy
@@ -51,7 +51,7 @@ services:
     networks:
       - blogfolio
     ports:
-      - "3000:3000"
+      - "127.0.0.1:3000:3000"
     labels:
       caddy: hungvu.tech
       caddy.reverse_proxy: "{{upstreams 3000}}"
@@ -69,7 +69,7 @@ services:
     networks:
       - blogfolio
     ports:
-      - "3100:3100"
+      - "127.0.0.1:3100:3100"
     labels:
       caddy: payload.hungvu.tech
       caddy.reverse_proxy: "{{upstreams 3100}}"
