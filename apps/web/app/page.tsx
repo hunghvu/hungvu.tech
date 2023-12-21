@@ -51,7 +51,7 @@ const getMetadata = async (): Promise<any> => {
   let res;
   try {
     res = await fetch(
-      `${process.env.NEXT_REQUEST_CMS_STATIC_ROUTE_METADATA_URL!}?where[isRoot][equals]=${true}`,
+      `${process.env.NEXT_REQUEST_CMS_STATIC_ROUTE_METADATA_URL!}?where[slug][equals]=root`,
       { next: { revalidate: 3600 } }
     );
   } catch (err) {
