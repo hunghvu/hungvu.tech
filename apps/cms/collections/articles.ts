@@ -23,6 +23,16 @@ const getArticlesIgnoreRedundantFields = (): Omit<Endpoint, 'root'> => {
         const resAllArticles = await req.payload.find({
           collection: 'articles',
           limit: 10000,
+          where: {
+            and: [
+              isPublished(),
+              {
+                'settings.scheduledReleaseDate': {
+                  less_than: new Date().toJSON(),
+                },
+              },
+            ],
+          }
         });
         const necessaryFields = resAllArticles.docs.map((article) => {
           const { body, _status, ...restArticles } = article;
@@ -61,7 +71,15 @@ const getArticlesInTheSameSeries = (): Omit<Endpoint, 'root'> => {
           where: {
             "settings.series": {
               equals: req.params.id
-            }
+            },
+            and: [
+              isPublished(),
+              {
+                'settings.scheduledReleaseDate': {
+                  less_than: new Date().toJSON(),
+                },
+              },
+            ],
           }
         });
         const necessaryFields = resAllArticles.docs.map((article) => {
