@@ -52,7 +52,7 @@ const getMetadata = async (): Promise<any> => {
   try {
     res = await fetch(
       `${process.env.NEXT_REQUEST_CMS_STATIC_ROUTE_METADATA_URL!}?where[slug][equals]=root`,
-      { next: { revalidate: 3600 } }
+      { next: { revalidate: process.env.NODE_ENV === "production" ? 3600 : 0 } }
     );
   } catch (err) {
     throw new Error('Connection Error');

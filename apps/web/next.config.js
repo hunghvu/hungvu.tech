@@ -4,8 +4,8 @@ module.exports = {
     formats: ["image/avif", "image/webp"],
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "**.hungvu.tech",
+        protocol: process.env.NODE_ENV === "production" ? "https" : "http",
+        hostname: process.env.NODE_ENV === "production" ? "**.hungvu.tech" : "127.0.0.1",
       },
     ],
   },

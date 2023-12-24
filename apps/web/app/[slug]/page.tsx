@@ -14,7 +14,7 @@ const getArticle = async (slug: string): Promise<any> => {
   try {
     res = await fetch(
       `${process.env.NEXT_REQUEST_CMS_ARTICLES_URL!}?where[settings.slug][equals]=${slug}`,
-      { next: { revalidate: 3600 } }
+      { next: { revalidate: process.env.NODE_ENV === "production" ? 3600 : 0 } }
     );
   } catch (err) {
     throw new Error('Connection Error');
