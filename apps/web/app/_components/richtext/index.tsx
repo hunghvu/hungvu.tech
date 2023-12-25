@@ -95,7 +95,7 @@ export const RichText = ({ nodes }: RichTextProps): JSX.Element => {
           case 'list': {
             if (node.tag === 'ol') {
               return (
-                <ol className='pl-4 pt-2 list-decimal text-sm md:text-base lg:text-lg' key={index}>
+                <ol className='pl-4 pt-2 text-sm md:text-base lg:text-lg' key={index}>
                   {serializedChildren}
                 </ol>
               );

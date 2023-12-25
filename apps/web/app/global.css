@@ -20,4 +20,6 @@ ol {
 ol > li:not(.invisible)::before {
   counter-increment: section;
   content: counters(section, '.') '. ';
+  display: inline-block;
+  min-width: 1.25rem; /* min-width makes most of outer layers and the first indentation aligned*/
 }
