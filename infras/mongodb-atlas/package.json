@@ -13,7 +13,7 @@
     },
     "dependencies": {
         "@pulumi/mongodbatlas": "^3.12.1",
-        "@pulumi/pulumi": "^3.98.0"
+        "@pulumi/pulumi": "^3.99.0"
     },
     "devDependencies": {
         "@types/node": "^20.10.5",

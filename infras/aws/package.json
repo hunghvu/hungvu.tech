@@ -12,9 +12,9 @@
         "update": "pnpm update"
     },
     "dependencies": {
-        "@pulumi/aws": "^6.15.0",
+        "@pulumi/aws": "^6.17.0",
         "@pulumi/aws-native": "^0.8.0",
-        "@pulumi/pulumi": "^3.98.0",
+        "@pulumi/pulumi": "^3.99.0",
         "dotenv": "^16.3.1"
     },
     "devDependencies": {
