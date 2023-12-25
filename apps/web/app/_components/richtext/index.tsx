@@ -26,7 +26,7 @@ export const RichText = ({ nodes }: RichTextProps): JSX.Element => {
     <>
       {nodes.map((node, index): JSX.Element | null | undefined => {
         if (node.type === 'text') {
-          let text = <span dangerouslySetInnerHTML={{ __html: escapeHTML(node.text) }} key={index} />;
+          let text = <span dangerouslySetInnerHTML={{ __html: escapeHTML(node.text) }} key={index} className='leading-10'/>;
           if (node.format & IS_BOLD) {
             text = <strong key={index}>{text}</strong>;
           }
