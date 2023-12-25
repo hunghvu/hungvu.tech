@@ -82,7 +82,7 @@ interface MetadataProps {
 }
 
 export const viewport: Viewport = {
-  themeColor: '#072321',
+  themeColor: '#00002f',
   width: 'device-width',
   initialScale: 1,
 };

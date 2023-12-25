@@ -41,7 +41,7 @@ export const RichText = ({ nodes }: RichTextProps): JSX.Element => {
           }
           if (node.format & IS_CODE) {
             text = (
-              <code className={`${geistMono.className} p-1 bg-dark-cyan-800/50 rounded-md`} key={index}>
+              <code className={`${geistMono.className} p-1 bg-dark-cyan-800/80 rounded-md`} key={index}>
                 {text}
               </code>
             );
@@ -113,8 +113,8 @@ export const RichText = ({ nodes }: RichTextProps): JSX.Element => {
             return (
               // Because 'ul' and 'ol' are children of 'li' in nested list, so we need to make it invisible and not count the number
               // to not affect the layout and order of the list
-              <li className={`pb-2 ${['ul', 'ol'].includes(serializedChildren?.props?.children[0].type) ? 'invisible flex': 'visible'}`} key={index} value={node.value}>
-                <span className='pl-6'>
+              <li className={`${['ul', 'ol'].includes(serializedChildren?.props?.children[0].type) ? 'invisible flex': 'visible'}`} key={index} value={node.value}>
+                <span className='pl-4'>
                   {serializedChildren}
                 </span>
               </li>
@@ -123,7 +123,7 @@ export const RichText = ({ nodes }: RichTextProps): JSX.Element => {
           case 'quote': {
             return (
               <blockquote
-                className='text-sm md:text-base lg:text-lg p-4 my-4 border-l-4 border-dark-cyan-600 bg-dark-cyan-800/50 rounded-md italic'
+                className='text-sm md:text-base lg:text-lg p-4 my-4 border-l-4 border-dark-cyan-600 bg-dark-cyan-900/80 rounded-md italic'
                 key={index}
               >
                 {serializedChildren}
@@ -135,7 +135,7 @@ export const RichText = ({ nodes }: RichTextProps): JSX.Element => {
             if (node.fields.linkType === 'custom') {
               return (
                 <Link
-                  className='text-sm md:text-base lg:text-lg text-[#9fa8da] underline underline-offset-4 decoration-2 font-semibold hover:decoration-4'
+                  className='text-sm md:text-base lg:text-lg text-[#b9c3ff] underline underline-offset-4 decoration-2 font-semibold hover:decoration-4'
                   href={node.fields.url ?? '/'}
                   key={index}
                   prefetch={false}
@@ -189,7 +189,7 @@ export const RichText = ({ nodes }: RichTextProps): JSX.Element => {
             if (node.fields.data.blockType === 'code-editor') {
               return (
                 <div
-                  className={`${geistMono.className} text-sm md:text-base lg:text-lg whitespace-pre-wrap bg-dark-cyan-800/50 rounded-md p-4`}
+                  className={`${geistMono.className} text-sm md:text-base lg:text-lg whitespace-pre-wrap bg-dark-cyan-900/80 rounded-md p-4`}
                   key={index}
                 >
                   <div className='flex flex-row justify-end items-center pb-4'>

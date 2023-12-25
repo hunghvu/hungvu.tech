@@ -11,7 +11,7 @@ import RelatedArticles from './related-articles';
 
 const ArticlePage: React.FunctionComponent<{ content: any; relatedArticles: any }> = ({ content, relatedArticles }) => {
   return (
-    <article className='flex flex-col gap-4 w-full md:w-[768px] p-2 break-words'>
+    <article className='flex flex-col gap-4 w-full md:w-[768px] p-4 break-words bg-[#00002f]/80 border border-1 border-[#e5e7eb60] rounded-md'>
       <div className='flex flex-row gap-16 text-xs md:text-sm lg:text-base text-[#ffffffde]/60'>
         <time dateTime={content.createdAt}>Published on: {utcToLocal(content.createdAt as string, 'MMMM DD, YYYY')}</time>
         <time dateTime={content.updatedAt}>Updated on: {utcToLocal(content.updatedAt as string, 'MMMM DD, YYYY')}</time>
