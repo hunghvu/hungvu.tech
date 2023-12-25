@@ -15,7 +15,10 @@ const Provider: React.FunctionComponent<RootProviderProps> = ({ children }) => {
   return (
     <PrimeReactProvider>
       <Header />
-      <main className='flex flex-col items-center justify-center gap-16 pt-8 lg:pt-16 w-full px-4'>{children}</main>
+      <main className={`flex flex-col items-center justify-center gap-16 pt-8 lg:pt-16 w-full px-4 
+                        bg-[url('/background.svg')] bg-cover bg-fixed bg-no-repeat`}>
+        {children}
+      </main>
     </PrimeReactProvider>
   );
 };

@@ -41,7 +41,7 @@ const Header: React.FunctionComponent = () => {
       pt={{
         root: {
           className: `${geist.className} flex flex-row justify-around font-bold sticky py-1
-                      top-0 z-10 bg-gradient-to-b from-dark-cyan-800/50 via-[#1e1e1e] to-transparent
+                      top-0 z-10 bg-gradient-to-b from-[#00001a] to-[#00002F]
                       text-lg md:text-xl lg:text-2xl `,
         },
         menu: {
