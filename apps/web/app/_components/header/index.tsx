@@ -41,7 +41,7 @@ const Header: React.FunctionComponent = () => {
       pt={{
         root: {
           className: `${geist.className} flex flex-row justify-around font-bold sticky py-1
-                      top-0 z-10 bg-gradient-to-b from-[#00001a] to-[#00002F]
+                      top-0 z-30 bg-gradient-to-b from-[#00001a] to-[#00002F]
                       text-lg md:text-xl lg:text-2xl border-x-0 border-b-1`,
         },
         menu: {
@@ -49,7 +49,6 @@ const Header: React.FunctionComponent = () => {
         },
         icon: {
           className: 'text-2xl',
-          
         },
         popupIcon: {
           className: 'w-[1.5rem] h-[1.5rem]',
