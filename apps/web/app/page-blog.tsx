@@ -47,7 +47,11 @@ const BlogPage: React.FunctionComponent<{ content: any }> = ({ content }) => {
                       />
                     ))}
                   </div>
-                  <Divider pt={{ root: { className: 'lg:hidden' } }} />
+                  <Divider
+                    pt={{
+                      root: { className: 'before:border-[#2c323a]' },
+                    }}
+                  />
                 </aside>
               }
               header={
