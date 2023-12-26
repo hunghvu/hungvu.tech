@@ -44,7 +44,7 @@ const Layout = ({
         `}
       </Script>
 
-      <body className={geist.className}>
+      <body className={`${geist.className} text-[#ffffffde]`}>
         <Provider>{children}</Provider>
       </body>
     </html>

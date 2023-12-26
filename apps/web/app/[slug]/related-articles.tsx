@@ -50,7 +50,7 @@ const RelatedArticles: React.FunctionComponent<RelatedArticlesProps> = ({ curren
     setTimeout(() => {
       virtualscroller.current?.scrollToIndex(currentArticleIndex, 'smooth');
     }, 200);
-  // eslint-disable-next-line react-hooks/exhaustive-deps -- This is intentional, see above.
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- This is intentional, see above.
   }, []);
 
   const itemTemplate = (item: any, options: VirtualScrollerTemplateOptions): React.ReactNode => {
@@ -83,7 +83,11 @@ const RelatedArticles: React.FunctionComponent<RelatedArticlesProps> = ({ curren
   return (
     <nav className='flex flex-col bg-dark-cyan-900 p-4 w-full h-[20rem] rounded-md'>
       <h2 className='text-xl md:text-2xl font-bold text-[#ffffffde]/85'>Series: {currentSeriesTitle}</h2>
-      <Divider />
+      <Divider
+        pt={{
+          root: { className: 'before:border-[#2c323a]' },
+        }}
+      />
       <VirtualScroller
         itemSize={50}
         itemTemplate={itemTemplate}
