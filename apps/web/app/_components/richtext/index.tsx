@@ -189,13 +189,14 @@ export const RichText = ({ nodes }: RichTextProps): JSX.Element => {
             if (node.fields.data.blockType === 'code-editor') {
               return (
                 <div
-                  className={`${geistMono.className} text-sm md:text-base lg:text-lg whitespace-pre-wrap bg-dark-cyan-900/80 rounded-md p-4`}
+                  className='text-sm md:text-base lg:text-lg whitespace-pre-wrap bg-dark-cyan-900/80 rounded-md p-4'
                   key={index}
                 >
                   <div className='flex flex-row justify-end items-center pb-4'>
                     <ButtonCopy codeSnippet={node.fields.data.codeSnippet} language={node.fields.data.language} />
                   </div>
                   <code
+                    className={`${geistMono.className}`}
                     dangerouslySetInnerHTML={{
                       __html: hljs.highlight(node.fields.data.codeSnippet, { language: node.fields.data.language }).value,
                     }}
