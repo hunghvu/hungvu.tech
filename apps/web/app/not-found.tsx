@@ -33,6 +33,7 @@ const NotFound = (): React.ReactNode => {
           <Link
             className='text-lg md:text-xl hover:font-semibold bg-dark-cyan-800 py-1 w-[10rem] md:w-[12rem] rounded-md text-center'
             href='https://github.com/hunghvu/hungvu.tech/issues'
+            prefetch={false}
           >
             Report on GitHub
           </Link>
