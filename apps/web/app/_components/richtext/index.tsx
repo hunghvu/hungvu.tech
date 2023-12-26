@@ -1,5 +1,3 @@
-
-
 /**
  * Author: Hung Vu
  *
@@ -10,11 +8,25 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import escapeHTML from 'escape-html';
-import hljs from 'highlight.js';
+// Highlight.js
+// Does not support html and mysql
+import hljs from 'highlight.js/lib/core';
+import javascript from 'highlight.js/lib/languages/javascript';
+import typscript from 'highlight.js/lib/languages/typescript';
+import css from 'highlight.js/lib/languages/css';
+import dockerfile from 'highlight.js/lib/languages/dockerfile';
+import markdown from 'highlight.js/lib/languages/markdown';
+import pgsql from 'highlight.js/lib/languages/pgsql';
+import python from 'highlight.js/lib/languages/python';
+import sql from 'highlight.js/lib/languages/sql';
+import xml from 'highlight.js/lib/languages/xml';
+import yaml from 'highlight.js/lib/languages/yaml';
 import { geistMono } from '../fonts';
 import { IS_BOLD, IS_ITALIC, IS_STRIKETHROUGH, IS_UNDERLINE, IS_CODE, IS_SUBSCRIPT, IS_SUPERSCRIPT } from './format';
 import type { SerializedLexicalNode } from './types';
 import ButtonCopy from './button-copy';
+
+import 'highlight.js/styles/a11y-dark.min.css';
 
 /* eslint-disable -- Following reference implementation*/
 interface RichTextProps {
@@ -22,11 +34,21 @@ interface RichTextProps {
 }
 
 export const RichText = ({ nodes }: RichTextProps): JSX.Element => {
+  hljs.registerLanguage('javascript', javascript);
+  hljs.registerLanguage('typescript', typscript);
+  hljs.registerLanguage('css', css);
+  hljs.registerLanguage('dockerfile', dockerfile);
+  hljs.registerLanguage('markdown', markdown);
+  hljs.registerLanguage('pgsql', pgsql);
+  hljs.registerLanguage('python', python);
+  hljs.registerLanguage('sql', sql);
+  hljs.registerLanguage('xml', xml);
+  hljs.registerLanguage('yaml', yaml);
   return (
     <>
       {nodes.map((node, index): JSX.Element | null | undefined => {
         if (node.type === 'text') {
-          let text = <span dangerouslySetInnerHTML={{ __html: escapeHTML(node.text) }} key={index} className='leading-10'/>;
+          let text = <span dangerouslySetInnerHTML={{ __html: escapeHTML(node.text) }} key={index} className='leading-10' />;
           if (node.format & IS_BOLD) {
             text = <strong key={index}>{text}</strong>;
           }
@@ -90,7 +112,7 @@ export const RichText = ({ nodes }: RichTextProps): JSX.Element => {
                 </h3>
               );
             }
-            break
+            break;
           }
           case 'list': {
             if (node.tag === 'ol') {
@@ -107,16 +129,18 @@ export const RichText = ({ nodes }: RichTextProps): JSX.Element => {
                 </ul>
               );
             }
-            break
+            break;
           }
           case 'listitem': {
             return (
               // Because 'ul' and 'ol' are children of 'li' in nested list, so we need to make it invisible and not count the number
               // to not affect the layout and order of the list
-              <li className={`${['ul', 'ol'].includes(serializedChildren?.props?.children[0].type) ? 'invisible flex': 'visible'}`} key={index} value={node.value}>
-                <span className='pl-4'>
-                  {serializedChildren}
-                </span>
+              <li
+                className={`${['ul', 'ol'].includes(serializedChildren?.props?.children[0].type) ? 'invisible flex' : 'visible'}`}
+                key={index}
+                value={node.value}
+              >
+                <span className='pl-4'>{serializedChildren}</span>
               </li>
             );
           }
@@ -183,15 +207,12 @@ export const RichText = ({ nodes }: RichTextProps): JSX.Element => {
                 </figure>
               );
             }
-            break
+            break;
           }
           case 'block': {
             if (node.fields.data.blockType === 'code-editor') {
               return (
-                <div
-                  className='text-sm md:text-base lg:text-lg whitespace-pre-wrap bg-dark-cyan-900/80 rounded-md p-4'
-                  key={index}
-                >
+                <div className='text-sm md:text-base lg:text-lg whitespace-pre-wrap bg-dark-cyan-900/80 rounded-md p-4' key={index}>
                   <div className='flex flex-row justify-end items-center pb-4'>
                     <ButtonCopy codeSnippet={node.fields.data.codeSnippet} language={node.fields.data.language} />
                   </div>
@@ -204,7 +225,7 @@ export const RichText = ({ nodes }: RichTextProps): JSX.Element => {
                 </div>
               );
             }
-            break
+            break;
           }
           default:
             return null;

@@ -10,8 +10,6 @@ import { geist } from './_components/fonts';
 
 import './global.css';
 
-import 'highlight.js/styles/a11y-dark.min.css';
-
 // FOUC (affects CLS): https://github.com/primefaces/primereact/issues/5188
 // We will just ignore FOUC for now because importing does not fully resolve the issue.
 // Besides, a large CSS file has an impact to performance.
