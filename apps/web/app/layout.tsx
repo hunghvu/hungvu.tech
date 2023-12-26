@@ -5,6 +5,7 @@
  */
 
 import React from 'react';
+import Script from 'next/script';
 import Provider from './provider';
 import { geist } from './_components/fonts';
 
@@ -15,8 +16,6 @@ import './global.css';
 // Besides, a large CSS file has an impact to performance.
 import 'primeicons/primeicons.css';
 import 'primereact/resources/themes/lara-dark-teal/theme.css';
-
-
 
 export const metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL!),
@@ -36,6 +35,15 @@ const Layout = ({
     <html lang='en'>
       {/* Font family is applied to native HTML elmenets. */}
       {/* For PrimeReact components, we need to specify at root component level. */}
+      <Script id='css-layers'>
+        {`
+          const cssLayerOrder = document.createElement('style');
+          cssLayerOrder.innerHTML = '@layer tailwind-base, primereact, tailwind-utilities;';
+          cssLayerOrder.setAttribute('type', 'text/css');
+          document.querySelector('head').prepend(cssLayerOrder);
+        `}
+      </Script>
+
       <body className={geist.className}>
         <Provider>{children}</Provider>
       </body>
