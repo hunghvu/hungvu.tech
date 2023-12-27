@@ -28,7 +28,9 @@ const ButtonCopy: React.FunctionComponent<{ language: string; codeSnippet: strin
   };
   return (
     <>
-      <Toast ref={toast} />
+      {/* It seems the dark Lara theme has a weird border left (6px), causing a white space on toast content */}
+      {/* Not sure if it is PrimeReact intention, or a bug, but anyway, just remove border left here */}
+      <Toast position='bottom-center' pt={{ content: { className: 'border-l-0' } }} ref={toast} />
       <Button
         aria-label={`Copy ${language} code snippet to clipboard.`}
         className={geist.className}
