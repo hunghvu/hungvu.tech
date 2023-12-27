@@ -93,7 +93,7 @@ export const RichText = ({ nodes }: RichTextProps): JSX.Element => {
         switch (node.type) {
           case 'paragraph': {
             return (
-              <p className='text-sm md:text-base lg:text-lg' key={index}>
+              <p className='text-base md:text-lg' key={index}>
                 {serializedChildren}
               </p>
             );
@@ -101,13 +101,13 @@ export const RichText = ({ nodes }: RichTextProps): JSX.Element => {
           case 'heading': {
             if (node.tag === 'h2') {
               return (
-                <h2 className='text-xl md:text-2xl font-bold' key={index}>
+                <h2 className='text-2xl md:text-3xl font-bold' key={index}>
                   {serializedChildren}
                 </h2>
               );
             } else if (node.tag === 'h3') {
               return (
-                <h3 className='text-lg md:text-xl font-semibold' key={index}>
+                <h3 className='text-xl md:text-2xl font-semibold' key={index}>
                   {serializedChildren}
                 </h3>
               );
@@ -117,14 +117,14 @@ export const RichText = ({ nodes }: RichTextProps): JSX.Element => {
           case 'list': {
             if (node.tag === 'ol') {
               return (
-                <ol className='pl-4 pt-2 text-sm md:text-base lg:text-lg' key={index}>
+                <ol className='pl-4 pt-2 text-base md:text-lg' key={index}>
                   {serializedChildren}
                 </ol>
               );
             } else if (node.tag === 'ul') {
               // Customized CSS counter makes <ol> becomes list-inside, so only need to specify list-inside for <ul>
               return (
-                <ul className='pl-4 pt-2 list-disc list-inside text-sm md:text-base lg:text-lg' key={index}>
+                <ul className='pl-4 pt-2 list-disc list-inside text-base md:text-lg' key={index}>
                   {serializedChildren}
                 </ul>
               );
@@ -146,10 +146,7 @@ export const RichText = ({ nodes }: RichTextProps): JSX.Element => {
           }
           case 'quote': {
             return (
-              <blockquote
-                className='text-sm md:text-base lg:text-lg p-4 my-4 border-l-4 border-dark-cyan-600 bg-dark-cyan-900/80 rounded-md italic'
-                key={index}
-              >
+              <blockquote className='text-base md:text-lg p-4 my-4 border-l-4 border-dark-cyan-600 bg-dark-cyan-900/80 rounded-md italic' key={index}>
                 {serializedChildren}
               </blockquote>
             );
@@ -159,7 +156,7 @@ export const RichText = ({ nodes }: RichTextProps): JSX.Element => {
             if (node.fields.linkType === 'custom') {
               return (
                 <Link
-                  className='text-sm md:text-base lg:text-lg text-[#b9c3ff] underline underline-offset-4 decoration-2 font-semibold hover:decoration-4'
+                  className='text-base md:text-lg text-[#b9c3ff] underline underline-offset-4 decoration-2 font-semibold hover:decoration-4'
                   href={node.fields.url ?? '/'}
                   key={index}
                   prefetch={false}
@@ -172,7 +169,7 @@ export const RichText = ({ nodes }: RichTextProps): JSX.Element => {
             }
             return (
               <Link
-                className='text-sm md:text-base lg:text-lg text-[#9fa8da] underline underline-offset-4 decoration-2 font-semibold hover:decoration-4'
+                className='text-base md:text-lg text-[#9fa8da] underline underline-offset-4 decoration-2 font-semibold hover:decoration-4'
                 href={node.fields.doc.value.settings.slug ?? '/'}
                 key={index}
                 rel='dofollow'
@@ -196,14 +193,14 @@ export const RichText = ({ nodes }: RichTextProps): JSX.Element => {
                     src={node.value.url}
                     width={node.value.width}
                   />
-                  <figcaption className='text-sm md:text-base lg:text-lg p-2 rounded-md italic text-[#ffffffde]/70'>{altText ?? ''}</figcaption>
+                  <figcaption className='text-base md:text-lg p-2 rounded-md italic text-[#ffffffde]/70'>{altText ?? ''}</figcaption>
                 </figure>
               );
             } else if (mimeType?.startsWith('video')) {
               return (
                 <figure className='flex flex-col justify-center items-center' key={index}>
                   <video className='rounded-md' controls itemType={mimeType} key={index} src={node.value.url} />
-                  <figcaption className='text-sm md:text-base lg:text-lg p-2 rounded-md italic text-[#ffffffde]/70'>{altText ?? ''}</figcaption>
+                  <figcaption className='text-base md:text-lg p-2 rounded-md italic text-[#ffffffde]/70'>{altText ?? ''}</figcaption>
                 </figure>
               );
             }
@@ -212,7 +209,7 @@ export const RichText = ({ nodes }: RichTextProps): JSX.Element => {
           case 'block': {
             if (node.fields.data.blockType === 'code-editor') {
               return (
-                <div className='text-sm md:text-base lg:text-lg whitespace-pre-wrap bg-dark-cyan-900/80 rounded-md p-4' key={index}>
+                <div className='text-base md:text-lg whitespace-pre-wrap bg-dark-cyan-900/80 rounded-md p-4' key={index}>
                   <div className='flex flex-row justify-end items-center pb-4'>
                     <ButtonCopy codeSnippet={node.fields.data.codeSnippet} language={node.fields.data.language} />
                   </div>

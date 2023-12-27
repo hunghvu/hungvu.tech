@@ -40,7 +40,7 @@ const BlogPage: React.FunctionComponent<{ content: any }> = ({ content }) => {
                         key={tag.id}
                         pt={{
                           root: { className: 'py-0 bg-dark-cyan-800' },
-                          value: { className: `text-xs md:text-sm lg:text-base ${geist.className} text-[#aeaeae]` },
+                          value: { className: `text-sm md:text-base ${geist.className} text-[#aeaeae]` },
                         }}
                         severity='info'
                         value={tag.title}
@@ -55,7 +55,7 @@ const BlogPage: React.FunctionComponent<{ content: any }> = ({ content }) => {
                 </aside>
               }
               header={
-                <time className='text-[#aeaeae] text-xs md:text-sm lg:text-base pl-5' dateTime={item.date}>
+                <time className='text-[#aeaeae] text-sm md:text-base pl-5' dateTime={item.date}>
                   {utcToLocal(item.date as string, 'MMMM DD, YYYY')}
                 </time>
               }
@@ -63,9 +63,9 @@ const BlogPage: React.FunctionComponent<{ content: any }> = ({ content }) => {
                 root: {
                   className: `py-2 lg:p-4 bg-transparent hover:bg-dark-cyan-900/80 hover:rounded-md ${geist.className} lg:min-h-[21rem]`,
                 },
-                title: { className: 'text-lg md:text-xl lg:text-2xl lg:min-h-[6rem]' },
+                title: { className: 'text-xl md:text-2xl lg:min-h-[6rem]' },
                 body: { className: 'pb-0' },
-                content: { className: 'text-sm md:text-base lg:text-lg lg:min-h-[7.75rem]' },
+                content: { className: 'text-base md:text-lg lg:min-h-[7.75rem]' },
               }}
               role='article'
               title={<h2 className='line-clamp-2 lg:line-clamp-3 break-words'>{item.title}</h2>}

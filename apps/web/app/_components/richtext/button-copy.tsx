@@ -46,7 +46,7 @@ const ButtonCopy: React.FunctionComponent<{ language: string; codeSnippet: strin
           }
         }}
         pt={{
-          root: { className: 'bg-transparent hover:bg-dark-cyan-800 text-[#ffffffde] text-sm md:text-base lg:text-lg' },
+          root: { className: 'bg-transparent hover:bg-dark-cyan-800 text-[#ffffffde] text-base md:text-lg' },
         }}
       />
     </>

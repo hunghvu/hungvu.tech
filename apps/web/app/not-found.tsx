@@ -23,7 +23,7 @@ const NotFound = (): React.ReactNode => {
     <section className='flex flex-col justify-center items-center gap-4 w-full md:w-[768px] m-4'>
       <hgroup className='flex flex-col justify-center items-center gap-6 w-full'>
         <h1 className='text-5xl md:text-6xl font-extrabold'>404 🤖</h1>
-        <p className='text-2xl md:text-3xl font-bold text-[#ffffffde]/70 italic text-center'>
+        <p className='text-3xl md:text-4xl font-bold text-[#ffffffde]/70 italic text-center'>
           The requested content is not available. That is all we know.
         </p>
         <div className='flex flex-row gap-4 justify-center items-center'>

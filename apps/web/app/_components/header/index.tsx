@@ -12,7 +12,7 @@ const Header: React.FunctionComponent = () => {
   const items = [
     {
       label: 'Blog',
-      icon: 'pi pi-home',
+      icon: 'pi pi-book',
       url: '/',
     },
     // {
@@ -42,7 +42,7 @@ const Header: React.FunctionComponent = () => {
         root: {
           className: `${geist.className} flex flex-row justify-around font-bold sticky py-1
                       top-0 z-30 bg-gradient-to-b from-[#00001a] to-[#00002f]
-                      text-lg md:text-xl lg:text-2xl border-x-0 border-t-0 border-b-1`,
+                      text-xl md:text-2xl border-x-0 border-t-0 border-b-1`,
         },
         start: {
           className: 'text-[#8c8c8c]',

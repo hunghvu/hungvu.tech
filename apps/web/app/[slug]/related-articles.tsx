@@ -59,7 +59,7 @@ const RelatedArticles: React.FunctionComponent<RelatedArticlesProps> = ({ curren
         <Tag
           pt={{
             root: {
-              className: `text-[#ffffffde]/70 w-[32px] h-[32px] text-base md:text-lg lg:text-xl rounded-full ${
+              className: `text-[#ffffffde]/70 w-[32px] h-[32px] text-lg md:text-xl rounded-full ${
                 currentArticleSlug === item.slug
                   ? 'bg-dark-cyan-700/70 border border-solid border-2 border-dark-cyan-700/70'
                   : 'bg-transparent border border-solid border-2 border-dark-cyan-700/70'
@@ -70,7 +70,7 @@ const RelatedArticles: React.FunctionComponent<RelatedArticlesProps> = ({ curren
           value={item.index}
         />
         <p
-          className={`block text-[#ffffffde]/70 max-w-[15rem] xs:max-w-[23rem] md:max-w-[40rem] truncate text-sm md:text-base lg:text-lg ${
+          className={`block text-[#ffffffde]/70 max-w-[15rem] xs:max-w-[23rem] md:max-w-[40rem] truncate text-base md:text-lg ${
             currentArticleSlug === item.slug ? 'font-bold' : ''
           }`}
         >
