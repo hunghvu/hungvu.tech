@@ -5,6 +5,7 @@
  */
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { Menubar } from 'primereact/menubar';
 import { geist } from 'app/_components/fonts';
 
@@ -12,12 +13,12 @@ const Header: React.FunctionComponent = () => {
   const items = [
     {
       label: 'Blog',
-      icon: 'pi pi-book',
+      icon: <Image alt={`Navigate to Hung's blog page.`} height={24} src='/book.svg' width={24} />,
       url: '/',
     },
     // {
     //   label: 'Homelab',
-    //   icon: 'pi pi-server',
+    //   icon: <Image alt={`Navigate to Hung's blog page`} height={24} src='/book.svg' width={24} />,
     //   url: '/homelab',
     // },
   ];
@@ -30,10 +31,10 @@ const Header: React.FunctionComponent = () => {
       end={
         <nav className='flex flex-row gap-4'>
           <Link aria-label='LinkedIn' className='flex flex-row items-center' href='https://www.linkedin.com/in/hunghvu/' prefetch={false}>
-            <span className='pi pi-linkedin text-2xl' />
+            <Image alt={`Navigate to Hung's LinkedIn.`} height={24} src='/linkedin.svg' width={24} />
           </Link>
           <Link aria-label='GitHub' className='flex flex-row items-center' href='https://github.com/hunghvu/hungvu.tech' prefetch={false}>
-            <span className='pi pi-github text-2xl' />
+            <Image alt='Navigate to hungvu.tech GitHub repository.' height={24} src='/github.svg' width={24} />
           </Link>
         </nav>
       }
@@ -60,7 +61,7 @@ const Header: React.FunctionComponent = () => {
           className: 'w-[1.5rem] h-[1.5rem]',
         },
         action: {
-          className: 'flex flex-row justify-center items-center',
+          className: 'flex flex-row justify-center items-center gap-1',
         },
         end: {
           className: 'ml-0 text-[#8c8c8c]',

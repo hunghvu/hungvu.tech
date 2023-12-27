@@ -6,6 +6,7 @@
 'use client';
 
 import { useRef } from 'react';
+import Image from 'next/image';
 import { Button } from 'primereact/button';
 import { Toast } from 'primereact/toast';
 import { geist } from '../fonts';
@@ -34,7 +35,7 @@ const ButtonCopy: React.FunctionComponent<{ language: string; codeSnippet: strin
       <Button
         aria-label={`Copy ${language} code snippet to clipboard.`}
         className={geist.className}
-        icon='pi pi-copy'
+        icon={<Image alt={`Copy ${language} code snippet to clipboard.`} height={24} src='/copy.svg' width={24} />}
         iconPos='right'
         // eslint-disable-next-line @typescript-eslint/no-misused-promises -- This is intentional, not an error
         onClick={async () => {

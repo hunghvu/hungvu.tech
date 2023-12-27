@@ -14,7 +14,6 @@ import './global.css';
 // FOUC (affects CLS): https://github.com/primefaces/primereact/issues/5188
 // We will just ignore FOUC for now because importing does not fully resolve the issue.
 // Besides, a large CSS file has an impact to performance.
-import 'primeicons/primeicons.css';
 import 'primereact/resources/themes/lara-dark-teal/theme.css';
 
 export const metadata = {
