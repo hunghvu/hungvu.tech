@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 module.exports = {
   images: {
-    formats: ["image/avif", "image/webp"],
+    // formats: ["image/avif", "image/webp"],
     remotePatterns: [
       {
         protocol: process.env.NODE_ENV === "production" ? "https" : "http",
