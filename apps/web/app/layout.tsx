@@ -43,7 +43,7 @@ const Layout = ({
         `}
       </Script>
 
-      <body className={`${geist.className} text-[#ffffffde]`}>
+      <body className={`${geist.className} text-[#ffffffde] scrollbar`}>
         <Provider>{children}</Provider>
       </body>
     </html>
