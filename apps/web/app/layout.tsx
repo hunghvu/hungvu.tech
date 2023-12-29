@@ -37,7 +37,7 @@ const Layout = ({
       <Script id='css-layers'>
         {`
           const cssLayerOrder = document.createElement('style');
-          cssLayerOrder.innerHTML = '@layer tailwind-base, primereact, tailwind-utilities;';
+          cssLayerOrder.innerHTML = '@layer base, primereact, components, utilities;';
           cssLayerOrder.setAttribute('type', 'text/css');
           document.querySelector('head').prepend(cssLayerOrder);
         `}
