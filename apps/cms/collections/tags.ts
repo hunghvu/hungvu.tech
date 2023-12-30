@@ -23,6 +23,7 @@ const Tags: CollectionConfig = {
       label: 'Tag Title',
       type: 'text',
       required: true,
+      index: true,
       unique: true,
       minLength: 1,
       validate: (value, { operation }) => {

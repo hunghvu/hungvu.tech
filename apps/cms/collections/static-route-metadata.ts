@@ -24,6 +24,12 @@ const StaticRouteMetadata: CollectionConfig = {
   },
   fields: [
     {
+      name: 'isRoot',
+      label: 'Root, no URL slug',
+      type: 'checkbox',
+      defaultValue: false,
+    },
+    {
       name: 'slug',
       label: 'URL Slug',
       type: 'text',
@@ -32,6 +38,9 @@ const StaticRouteMetadata: CollectionConfig = {
       index: true,
       admin: {
         description: 'Every route must have a unique URL slug.',
+        condition: (data) => {
+          return !data.isRoot;
+        },
       },
       validate: (value, { operation }) => {
         if (operation === 'create' || operation === 'update') {
@@ -64,6 +73,7 @@ const StaticRouteMetadata: CollectionConfig = {
       type: 'text',
       required: true,
       unique: true,
+      index: true,
       minLength: 1,
       maxLength: 60,
       admin: {

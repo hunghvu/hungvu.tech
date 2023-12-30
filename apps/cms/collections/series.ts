@@ -23,6 +23,7 @@ const Series: CollectionConfig = {
       label: 'Series Title',
       type: 'text',
       required: true,
+      index: true,
       unique: true,
       minLength: 1,
       maxLength: 60,

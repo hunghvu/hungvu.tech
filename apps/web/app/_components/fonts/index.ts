@@ -6,9 +6,9 @@
 import localfont from "next/font/local";
 
 export const geistMono = localfont({
-  src: "./GeistMonoVariableFont.woff2"
+  src: "./GeistMonoVariableVF.woff2"
 });
 
 export const geist = localfont({
-  src: "./GeistVariableFont.woff2"
+  src: "./GeistVariableVF.woff2"
 });
