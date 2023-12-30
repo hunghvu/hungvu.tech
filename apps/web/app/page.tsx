@@ -51,8 +51,8 @@ const getMetadata = async (): Promise<any> => {
   let res;
   try {
     res = await fetch(
-      `${process.env.NEXT_REQUEST_CMS_STATIC_ROUTE_METADATA_URL!}?where[isRoot][equals]=${true}`,
-      { next: { revalidate: 3600 } }
+      `${process.env.NEXT_REQUEST_CMS_STATIC_ROUTE_METADATA_URL!}?where[slug][equals]=root`,
+      { next: { revalidate: process.env.NODE_ENV === "production" ? 7200 : 0 } }
     );
   } catch (err) {
     throw new Error('Connection Error');
@@ -71,7 +71,7 @@ const getMetadata = async (): Promise<any> => {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#072321',
+  themeColor: '#00002f',
   width: 'device-width',
   initialScale: 1,
 };

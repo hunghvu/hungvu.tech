@@ -18,5 +18,8 @@
   },
   "[postcss]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   } // set as "true" to run 'prettier' last not first
 }

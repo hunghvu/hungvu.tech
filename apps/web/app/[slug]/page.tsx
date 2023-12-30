@@ -14,7 +14,7 @@ const getArticle = async (slug: string): Promise<any> => {
   try {
     res = await fetch(
       `${process.env.NEXT_REQUEST_CMS_ARTICLES_URL!}?where[settings.slug][equals]=${slug}`,
-      { next: { revalidate: 3600 } }
+      { next: { revalidate: process.env.NODE_ENV === "production" ? 7200 : 0 } }
     );
   } catch (err) {
     throw new Error('Connection Error');
@@ -82,7 +82,7 @@ interface MetadataProps {
 }
 
 export const viewport: Viewport = {
-  themeColor: '#072321',
+  themeColor: '#00002f',
   width: 'device-width',
   initialScale: 1,
 };

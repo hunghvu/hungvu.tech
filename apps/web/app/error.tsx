@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#072321',
+  themeColor: '#00002f',
   width: 'device-width',
   initialScale: 1,
 };
@@ -25,7 +25,7 @@ const Error = ({ error }: { error: Error & { digest?: string }; reset: () => voi
     <section className='flex flex-col justify-center items-center gap-4 w-full md:w-[768px] m-4'>
       <hgroup className='flex flex-col justify-center items-center gap-6 w-full'>
         <h1 className='text-5xl md:text-6xl font-extrabold'>Something is off. 🤔</h1>
-        <p className='text-2xl md:text-3xl font-bold text-[#ffffffde]/70 italic text-center'>Digest: {error.digest}.</p>
+        <p className='text-3xl md:text-4xl font-bold text-[#ffffffde]/70 italic text-center'>Digest: {error.digest}.</p>
         <div className='flex flex-row gap-4 justify-center items-center'>
           <Link className='text-lg md:text-xl hover:font-semibold bg-dark-cyan-700 py-1 w-[10rem] md:w-[12rem] rounded-md text-center' href='/'>
             Take me home
@@ -33,6 +33,7 @@ const Error = ({ error }: { error: Error & { digest?: string }; reset: () => voi
           <Link
             className='text-lg md:text-xl hover:font-semibold bg-dark-cyan-800 py-1 w-[10rem] md:w-[12rem] rounded-md text-center'
             href='https://github.com/hunghvu/hungvu.tech/issues'
+            prefetch={false}
           >
             Report on GitHub
           </Link>
