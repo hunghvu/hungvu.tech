@@ -45,11 +45,6 @@ export function middleware(request: any): NextResponse {
     contentSecurityPolicyHeaderValue
   )
 
-  response.headers.set(
-    'Cache-Control',
-    'private, max-age=7200, must-revalidate'
-  )
-
   return response
 }
 

@@ -1,3 +1,5 @@
+
+
 /**
  * Author: Hung Vu
  *
@@ -8,25 +10,11 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import escapeHTML from 'escape-html';
-// Highlight.js
-// Does not support html and mysql
-import hljs from 'highlight.js/lib/core';
-import javascript from 'highlight.js/lib/languages/javascript';
-import typscript from 'highlight.js/lib/languages/typescript';
-import css from 'highlight.js/lib/languages/css';
-import dockerfile from 'highlight.js/lib/languages/dockerfile';
-import markdown from 'highlight.js/lib/languages/markdown';
-import pgsql from 'highlight.js/lib/languages/pgsql';
-import python from 'highlight.js/lib/languages/python';
-import sql from 'highlight.js/lib/languages/sql';
-import xml from 'highlight.js/lib/languages/xml';
-import yaml from 'highlight.js/lib/languages/yaml';
+import hljs from 'highlight.js';
 import { geistMono } from '../fonts';
 import { IS_BOLD, IS_ITALIC, IS_STRIKETHROUGH, IS_UNDERLINE, IS_CODE, IS_SUBSCRIPT, IS_SUPERSCRIPT } from './format';
 import type { SerializedLexicalNode } from './types';
 import ButtonCopy from './button-copy';
-
-import 'highlight.js/styles/a11y-dark.min.css';
 
 /* eslint-disable -- Following reference implementation*/
 interface RichTextProps {
@@ -34,21 +22,11 @@ interface RichTextProps {
 }
 
 export const RichText = ({ nodes }: RichTextProps): JSX.Element => {
-  hljs.registerLanguage('javascript', javascript);
-  hljs.registerLanguage('typescript', typscript);
-  hljs.registerLanguage('css', css);
-  hljs.registerLanguage('dockerfile', dockerfile);
-  hljs.registerLanguage('markdown', markdown);
-  hljs.registerLanguage('pgsql', pgsql);
-  hljs.registerLanguage('python', python);
-  hljs.registerLanguage('sql', sql);
-  hljs.registerLanguage('xml', xml);
-  hljs.registerLanguage('yaml', yaml);
   return (
     <>
       {nodes.map((node, index): JSX.Element | null | undefined => {
         if (node.type === 'text') {
-          let text = <span dangerouslySetInnerHTML={{ __html: escapeHTML(node.text) }} key={index} className='leading-10' />;
+          let text = <span dangerouslySetInnerHTML={{ __html: escapeHTML(node.text) }} key={index} />;
           if (node.format & IS_BOLD) {
             text = <strong key={index}>{text}</strong>;
           }
@@ -63,7 +41,7 @@ export const RichText = ({ nodes }: RichTextProps): JSX.Element => {
           }
           if (node.format & IS_CODE) {
             text = (
-              <code className={`${geistMono.className} p-1 bg-dark-cyan-800/80 rounded-md`} key={index}>
+              <code className={`${geistMono.className} p-1 bg-dark-cyan-800/50 rounded-md`} key={index}>
                 {text}
               </code>
             );
@@ -93,7 +71,7 @@ export const RichText = ({ nodes }: RichTextProps): JSX.Element => {
         switch (node.type) {
           case 'paragraph': {
             return (
-              <p className='text-base md:text-lg' key={index}>
+              <p className='text-sm md:text-base lg:text-lg' key={index}>
                 {serializedChildren}
               </p>
             );
@@ -101,52 +79,53 @@ export const RichText = ({ nodes }: RichTextProps): JSX.Element => {
           case 'heading': {
             if (node.tag === 'h2') {
               return (
-                <h2 className='text-2xl md:text-3xl font-bold' key={index}>
+                <h2 className='text-xl md:text-2xl font-bold' key={index}>
                   {serializedChildren}
                 </h2>
               );
             } else if (node.tag === 'h3') {
               return (
-                <h3 className='text-xl md:text-2xl font-semibold' key={index}>
+                <h3 className='text-lg md:text-xl font-semibold' key={index}>
                   {serializedChildren}
                 </h3>
               );
             }
-            break;
+            break
           }
           case 'list': {
             if (node.tag === 'ol') {
               return (
-                <ol className='pl-4 pt-2 text-base md:text-lg' key={index}>
+                <ol className='pl-4 pt-2 list-decimal text-sm md:text-base lg:text-lg' key={index}>
                   {serializedChildren}
                 </ol>
               );
             } else if (node.tag === 'ul') {
               // Customized CSS counter makes <ol> becomes list-inside, so only need to specify list-inside for <ul>
               return (
-                <ul className='pl-4 pt-2 list-disc list-inside text-base md:text-lg' key={index}>
+                <ul className='pl-4 pt-2 list-disc list-inside text-sm md:text-base lg:text-lg' key={index}>
                   {serializedChildren}
                 </ul>
               );
             }
-            break;
+            break
           }
           case 'listitem': {
             return (
               // Because 'ul' and 'ol' are children of 'li' in nested list, so we need to make it invisible and not count the number
               // to not affect the layout and order of the list
-              <li
-                className={`${['ul', 'ol'].includes(serializedChildren?.props?.children[0].type) ? 'invisible flex' : 'visible'}`}
-                key={index}
-                value={node.value}
-              >
-                <span className='pl-4'>{serializedChildren}</span>
+              <li className={`pb-2 ${['ul', 'ol'].includes(serializedChildren?.props?.children[0].type) ? 'invisible flex': 'visible'}`} key={index} value={node.value}>
+                <span className='pl-6'>
+                  {serializedChildren}
+                </span>
               </li>
             );
           }
           case 'quote': {
             return (
-              <blockquote className='text-base md:text-lg p-4 my-4 border-l-4 border-dark-cyan-600 bg-dark-cyan-900/80 rounded-md italic' key={index}>
+              <blockquote
+                className='text-sm md:text-base lg:text-lg p-4 my-4 border-l-4 border-dark-cyan-600 bg-dark-cyan-800/50 rounded-md italic'
+                key={index}
+              >
                 {serializedChildren}
               </blockquote>
             );
@@ -156,7 +135,7 @@ export const RichText = ({ nodes }: RichTextProps): JSX.Element => {
             if (node.fields.linkType === 'custom') {
               return (
                 <Link
-                  className='text-base md:text-lg text-[#b9c3ff] underline underline-offset-4 decoration-2 font-semibold hover:decoration-4'
+                  className='text-sm md:text-base lg:text-lg text-[#9fa8da] underline underline-offset-4 decoration-2 font-semibold hover:decoration-4'
                   href={node.fields.url ?? '/'}
                   key={index}
                   prefetch={false}
@@ -169,7 +148,7 @@ export const RichText = ({ nodes }: RichTextProps): JSX.Element => {
             }
             return (
               <Link
-                className='text-base md:text-lg text-[#9fa8da] underline underline-offset-4 decoration-2 font-semibold hover:decoration-4'
+                className='text-sm md:text-base lg:text-lg text-[#9fa8da] underline underline-offset-4 decoration-2 font-semibold hover:decoration-4'
                 href={node.fields.doc.value.settings.slug ?? '/'}
                 key={index}
                 rel='dofollow'
@@ -193,28 +172,30 @@ export const RichText = ({ nodes }: RichTextProps): JSX.Element => {
                     src={node.value.url}
                     width={node.value.width}
                   />
-                  <figcaption className='text-base md:text-lg p-2 rounded-md italic text-[#ffffffde]/70'>{altText ?? ''}</figcaption>
+                  <figcaption className='text-sm md:text-base lg:text-lg p-2 rounded-md italic text-[#ffffffde]/70'>{altText ?? ''}</figcaption>
                 </figure>
               );
             } else if (mimeType?.startsWith('video')) {
               return (
                 <figure className='flex flex-col justify-center items-center' key={index}>
                   <video className='rounded-md' controls itemType={mimeType} key={index} src={node.value.url} />
-                  <figcaption className='text-base md:text-lg p-2 rounded-md italic text-[#ffffffde]/70'>{altText ?? ''}</figcaption>
+                  <figcaption className='text-sm md:text-base lg:text-lg p-2 rounded-md italic text-[#ffffffde]/70'>{altText ?? ''}</figcaption>
                 </figure>
               );
             }
-            break;
+            break
           }
           case 'block': {
             if (node.fields.data.blockType === 'code-editor') {
               return (
-                <div className='text-base md:text-lg whitespace-pre-wrap bg-dark-cyan-900/80 rounded-md p-4' key={index}>
+                <div
+                  className={`${geistMono.className} text-sm md:text-base lg:text-lg whitespace-pre-wrap bg-dark-cyan-800/50 rounded-md p-4`}
+                  key={index}
+                >
                   <div className='flex flex-row justify-end items-center pb-4'>
                     <ButtonCopy codeSnippet={node.fields.data.codeSnippet} language={node.fields.data.language} />
                   </div>
                   <code
-                    className={`${geistMono.className}`}
                     dangerouslySetInnerHTML={{
                       __html: hljs.highlight(node.fields.data.codeSnippet, { language: node.fields.data.language }).value,
                     }}
@@ -222,7 +203,7 @@ export const RichText = ({ nodes }: RichTextProps): JSX.Element => {
                 </div>
               );
             }
-            break;
+            break
           }
           default:
             return null;

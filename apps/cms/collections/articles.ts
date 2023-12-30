@@ -191,7 +191,6 @@ const Articles: CollectionConfig = {
           label: 'Series',
           type: 'relationship',
           relationTo: 'series',
-          index: true,
           filterOptions: {
             _status: {
               equals: 'published',
@@ -204,6 +203,7 @@ const Articles: CollectionConfig = {
           type: 'text',
           required: true,
           unique: true,
+          index: true,
           minLength: 1,
           maxLength: 60,
           admin: {
@@ -264,6 +264,7 @@ const Articles: CollectionConfig = {
       label: 'Article Title',
       type: 'text',
       required: true,
+      index: true,
       unique: true,
       minLength: 1,
       admin: {

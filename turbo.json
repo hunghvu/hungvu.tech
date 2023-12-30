@@ -112,17 +112,8 @@
       "cache": false,
       "persistent": false
     },
-    "lint": {
-      "cache": false,
-      "persistent": false
-    },
-    "lint:fix": {
-      "cache": false,
-      "persistent": false
-    },
-    "update": {
-      "cache": false,
-      "persistent": false
-    }
+    "lint": {},
+    "lint:fix": {},
+    "update": {}
   }
 }
