@@ -19,26 +19,13 @@ const CodeEditor: Block = {
       label: 'Choose a language. If choosing an incoorect one, delete the block and try again.'
         + ' This helps reinitialize the code block and linter.',
       required: true,
-      options: ['abap', 'apex', 'azcii', 'bat',
-        'bicep', 'cameligo', 'clojure', 'coffee',
-        'cpp', 'csharp', 'csp', 'css',
-        'cypher', 'dart', 'dockerfile', 'ecl',
-        'elixir', 'flow9', 'freemaker2', 'fsharp',
-        'go', 'graphql', 'handlebars', 'hcl',
-        'html', 'ini', 'java', 'javascript',
-        'julia', 'kotlin', 'less',
-        'lexon', 'liquid', 'lua', 'm3',
-        'markdown', 'mdx', 'mips', 'msdax',
-        'mysql', 'objective-c', 'pascal', 'pascaligo',
-        'perl', 'pgsql', 'php', 'pla',
-        'postiats', 'powerquery', 'powershell', 'protobuf',
-        'pug', 'python', 'qsharp', 'r',
-        'redis', 'redshift', 'restructuredtext', 'ruby',
-        'rust', 'sb', 'scala', 'scheme',
-        'scss', 'shell', 'solidity', 'sophia',
-        'sql', 'st', 'swift', 'systemverilog',
-        'tcl', 'test', 'twig', 'typescript',
-        'vb', 'wgsl', 'xml', 'yaml']
+      options: ['css', 'dockerfile',
+        // highlight.js does not support html
+        // but we can still use html in monaco editor to highlight syntax
+        // highlight.js probably will just not highlight, and not break anything
+        'html', 'javascript', 'markdown',
+        'pgsql', 'python', 'sql',
+        'typescript', 'xml', 'yaml']
     },
     {
       name: 'codeSnippet',

@@ -12,11 +12,11 @@
         "update": "pnpm update"
     },
     "dependencies": {
-        "@pulumi/mongodbatlas": "^3.12.1",
-        "@pulumi/pulumi": "^3.96.2"
+        "@pulumi/mongodbatlas": "^3.13.0",
+        "@pulumi/pulumi": "^3.99.0"
     },
     "devDependencies": {
-        "@types/node": "^20.10.4",
+        "@types/node": "^20.10.5",
         "tsconfig-custom": "workspace:*"
     }
 }
