@@ -10,25 +10,26 @@
 ### Bug fixes
 
 - Highlight.js code snippet does not use Geist Mono font. ([#101](https://github.com/hunghvu/hungvu.tech/issues/101))
-- Ordered list is misaligned when the number label size changes. ([#89](https://github.com/hunghvu/hungvu.tech/issues/89))
+- The ordered list is misaligned when the number label size changes. ([#89](https://github.com/hunghvu/hungvu.tech/issues/89))
 - Line height is small causing big rows (e.g., with code element) to overlap. ([#84](https://github.com/hunghvu/hungvu.tech/issues/#84))
 - Image are unexpectedly zoomed in. ([#65](https://github.com/hunghvu/hungvu.tech/issues/65))
 - Long string overflows the text body. ([#88](https://github.com/hunghvu/hungvu.tech/issues/88))
 - MongoDB performance issue causing slow blog/home page load. ([#93](https://github.com/hunghvu/hungvu.tech/issues/93))
-- Payload custom Articles endpoints returns draft articles and crashes the front end. ([#97](https://github.com/hunghvu/hungvu.tech/issues/97))
+- Payload custom Articles endpoints return draft articles and crash the front end. ([#97](https://github.com/hunghvu/hungvu.tech/issues/97))
 
 ### Optimization
 
-- Turn blog/home page into a server component to improve core web vitals. (#91)
-- Overhaul UI to improve accessibility, and user experience. ([#91](https://github.com/hunghvu/hungvu.tech/issues/91), [#99](https://github.com/hunghvu/hungvu.tech/issues/99), and some other not-linked-to-issue commits)
+- Turn the blog/home page into a server component to improve core web vitals. (#91)
+- Overhaul UI to improve accessibility and user experience. ([#91](https://github.com/hunghvu/hungvu.tech/issues/91), [#99](https://github.com/hunghvu/hungvu.tech/issues/99), and some other not-linked-to-issue commits)
 - Largely improve FCP and LCP by reducing bundled CSS and JavaScript. ([#99](https://github.com/hunghvu/hungvu.tech/issues/99))
-- Side note: AVIF was considered to implement, but it led to heavy load and crashed the server, so was removed. ([#78](https://github.com/hunghvu/hungvu.tech/issues/78), [#105](https://github.com/hunghvu/hungvu.tech/issues/105))
-- Use of cache header to utilize Cloudflare CDN. The issue ([#98](https://github.com/hunghvu/hungvu.tech/issues/98)) remains open for monitoring purpose, but the core idea is implemented.
+- Side note: AVIF was considered for implementation, but it led to a heavy load and crashed the server, so was removed. ([#78](https://github.com/hunghvu/hungvu.tech/issues/78), [#105](https://github.com/hunghvu/hungvu.tech/issues/105))
+- Use of cache header to utilize Cloudflare CDN. The issue ([#98](https://github.com/hunghvu/hungvu.tech/issues/98)) remains open for monitoring purposes, but the core idea is implemented.
 - Increase QUIC/UDP buffer size. ([#95](https://github.com/hunghvu/hungvu.tech/issues/95))
 
 ### Features
 
-- Use of neutral theme for the website (no light/dark mode), with the use of animated SVG. ([#92](https://github.com/hunghvu/hungvu.tech/issues/92))
+- Use of a neutral theme for the website (no light/dark mode), with the use of animated SVG. ([#92](https://github.com/hunghvu/hungvu.tech/issues/92))
+
 
 
 ## [1.0] - 2023-12-17
