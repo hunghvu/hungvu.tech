@@ -12,11 +12,11 @@
         "update": "pnpm update"
     },
     "dependencies": {
-        "@pulumi/cloudflare": "^5.16.0",
+        "@pulumi/cloudflare": "^5.17.0",
         "@pulumi/pulumi": "^3.99.0"
     },
     "devDependencies": {
-        "@types/node": "^20.10.5",
+        "@types/node": "^20.10.6",
         "tsconfig-custom": "workspace:*"
     }
 }
