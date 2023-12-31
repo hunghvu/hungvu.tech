@@ -7,12 +7,17 @@
 
 import { useRef } from 'react';
 import Image from 'next/image';
-import { Button } from 'primereact/button';
 import { Toast } from 'primereact/toast';
+import { Button } from 'primereact/button';
 import { geist } from '../fonts';
 
-const ButtonCopy: React.FunctionComponent<{ language: string; codeSnippet: string }> = ({ language, codeSnippet }) => {
-  const toast = useRef<Toast>(null);
+export interface ButtonCopyProps {
+  language: string;
+  codeSnippet: string;
+}
+
+const ButtonCopy: React.FunctionComponent<ButtonCopyProps> = ({ language, codeSnippet }) => {
+  const toast = useRef<any>(null);
   const showToastSuccess = (): void => {
     toast.current?.show({
       severity: 'success',

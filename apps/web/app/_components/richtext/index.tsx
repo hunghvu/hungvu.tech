@@ -22,10 +22,9 @@ import sql from 'highlight.js/lib/languages/sql';
 import xml from 'highlight.js/lib/languages/xml';
 import yaml from 'highlight.js/lib/languages/yaml';
 import { geistMono } from '../fonts';
+import ButtonCopy from './button-copy-dynamic-wrapper';
 import { IS_BOLD, IS_ITALIC, IS_STRIKETHROUGH, IS_UNDERLINE, IS_CODE, IS_SUBSCRIPT, IS_SUPERSCRIPT } from './format';
 import type { SerializedLexicalNode } from './types';
-import ButtonCopy from './button-copy';
-
 import 'highlight.js/styles/a11y-dark.min.css';
 
 /* eslint-disable -- Following reference implementation*/

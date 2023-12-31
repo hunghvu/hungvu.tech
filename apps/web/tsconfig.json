@@ -1,6 +1,7 @@
 {
   "extends": "tsconfig-custom/web.json",
   "compilerOptions": {
+    "allowImportingTsExtensions": true,
     "plugins": [
       {
         "name": "next"
