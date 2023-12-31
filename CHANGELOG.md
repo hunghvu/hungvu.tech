@@ -15,6 +15,7 @@
 - Image are unexpectedly zoomed in. ([#65](https://github.com/hunghvu/hungvu.tech/issues/65))
 - Long string overflows the text body. ([#88](https://github.com/hunghvu/hungvu.tech/issues/88))
 - MongoDB performance issue causing slow blog/home page load. ([#93](https://github.com/hunghvu/hungvu.tech/issues/93))
+- Payload custom Articles endpoints returns draft articles and crashes the front end. ([#97](https://github.com/hunghvu/hungvu.tech/issues/97))
 
 ### Optimization
 
