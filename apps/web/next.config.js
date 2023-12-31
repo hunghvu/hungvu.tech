@@ -1,7 +1,6 @@
 /** @type {import('next').NextConfig} */
-module.exports = {
+const nextConfig = {
   images: {
-    // formats: ["image/avif", "image/webp"],
     remotePatterns: [
       {
         protocol: process.env.NODE_ENV === "production" ? "https" : "http",
@@ -11,3 +10,8 @@ module.exports = {
   },
   output: "standalone",
 };
+
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+})
+module.exports = process.env.ANALYZE ? withBundleAnalyzer(nextConfig) : nextConfig;

@@ -24,6 +24,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.23.6",
+    "@next/bundle-analyzer": "^14.0.4",
     "@types/escape-html": "^1.0.4",
     "@types/node": "^20.10.5",
     "@types/react": "^18.2.45",
