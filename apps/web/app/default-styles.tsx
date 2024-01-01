@@ -1,12 +1,10 @@
-/* eslint-disable no-nested-ternary */
 import type { PrimeReactPTOptions } from 'primereact/api';
 import { geist } from './_components/fonts';
 
 const DefaultStyles: PrimeReactPTOptions = {
   button: {
     root: ({ props, context }: any) => ({
-      className: `items-center cursor-pointer inline-flex overflow-hidden relative select-none text-center align-bottom h-full transition duration-200 ease-in-out 
-        focus:outline-none focus:outline-offset-0 focus:shadow-[0_0_0_2px_rgba(255,255,255,1),0_0_0_4px_rgba(157,193,251,1),0_1px_2px_0_rgba(0,0,0,1)] 
+      className: `items-center cursor-pointer inline-flex overflow-hidden relative select-none text-center align-bottom h-full text-base md:text-lg 
         ${geist.className} ${
           !props.link && props.severity === null && !props.text && !props.outlined && !props.plain
             ? ' bg-blue-500 border border-blue-500 hover:bg-blue-600 hover:border-blue-600 '
@@ -107,7 +105,6 @@ const DefaultStyles: PrimeReactPTOptions = {
     subTitle: {
       className: 'font-normal mb-2 ',
     },
-    footer: { className: 'pt-5' },
   },
   divider: {
     root: ({ props }: any) => ({
@@ -115,7 +112,7 @@ const DefaultStyles: PrimeReactPTOptions = {
         props.layout === 'horizontal'
           ? 'w-full my-5 mx-0 py-0 px-5 before:block before:left-0 before:absolute before:top-1/2 before:w-full before:border-t before:border-[#2c323a] '
           : props.layout === 'vertical'
-          ? 'min-h-full mx-4 md:mx-5 py-5 before:block before:min-h-full before:absolute before:left-1/2 before:top-0 before:transform before:-translate-x-1/2 before:border-l before:border-[#2c323a] '
+          ? 'min-h-full mx-4 md:mx-5 py-5 before:block before:min-h-full before:absolute before:left-1/2 before:top-0 before:transform before:border-l before:border-[#2c323a] '
           : ''
       } ${
         props.type === 'solid'
@@ -155,7 +152,7 @@ const DefaultStyles: PrimeReactPTOptions = {
     }),
     icon: { className: 'mr-2 text-2xl' },
     submenuIcon: ({ props }: any) => ({
-      className: `${props.root ? 'ml-auto sm:ml-2' : 'ml-auto'}`,
+      className: props.root ? 'ml-auto sm:ml-2' : 'ml-auto',
     }),
     separator: { className: 'border-t border-gray-300 ' },
     button: {
@@ -190,10 +187,10 @@ const DefaultStyles: PrimeReactPTOptions = {
   },
   toast: {
     root: {
-      className: 'w-96 opacity-90',
+      className: '-translate-x-1/2 w-96 opacity-90',
     },
     message: ({ state, index }: any) => ({
-      className: `my-4 rounded-md w-full border-solid border-0 border-l-4 ${
+      className: `flex flex-start my-4 rounded-md w-full border-solid border-0 border-l-4 ${
         state.messages[index] && state.messages[index].message.severity === 'info'
           ? 'bg-blue-100 border-blue-500 text-blue-700'
           : state.messages[index] && state.messages[index].message.severity === 'success'
@@ -212,22 +209,7 @@ const DefaultStyles: PrimeReactPTOptions = {
     text: { className: 'text-base font-normal flex flex-col flex-1 grow shrink ml-4' },
     summary: { className: 'font-bold block' },
     detail: { className: 'mt-1 block' },
-    closeButton: {
-      className: `w-8 h-8 rounded-full bg-transparent transition duration-200 ease-in-out
-        ml-auto overflow-hidden relative
-        flex items-center justify-center
-        hover:bg-white/30`,
-    },
-    transition: {
-      addEndListener: (_node: any, _done: any) => {
-        return null;
-      },
-      enterFromClass: { className: 'opacity-0 translate-x-0 translate-y-2/4 translate-z-0' },
-      enterActiveClass: { className: 'transition-transform transition-opacity duration-300' },
-      leaveFromClass: { className: 'max-h-40' },
-      leaveActiveClass: { className: 'transition-all duration-500 ease-in' },
-      leaveToClass: { className: 'max-h-0 opacity-0 mb-0 overflow-hidden' },
-    },
+    // Not include animation because it does not work with unstyled:true.
   },
 };
 
