@@ -1,14 +1,6 @@
-@layer tailwind-base {
-  @tailwind base;
-}
-
-@layer tailwind-components {
-  @tailwind components;
-}
-
-@layer tailwind-utilities {
-  @tailwind utilities;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 @layer components {
   /* Scrollbar customization is only applicabled to Chromium-based browser (Blink engine)

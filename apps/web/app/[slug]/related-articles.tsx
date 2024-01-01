@@ -31,12 +31,8 @@ const RelatedArticles: React.FunctionComponent<RelatedArticlesProps> = ({ curren
   });
   return (
     <nav className='flex flex-col bg-dark-cyan-900 p-4 w-full h-[20rem] rounded-md'>
-      <h2 className='text-xl md:text-2xl font-bold text-[#ffffffde]/85'>Series: {currentSeriesTitle}</h2>
-      <Divider
-        pt={{
-          root: { className: 'before:border-[#2c323a]' },
-        }}
-      />
+      <h2 className='text-xl md:text-2xl font-bold'>Series: {currentSeriesTitle}</h2>
+      <Divider />
       <div className='flex flex-col h-full overflow-y-scroll scroll-smooth scrollbar' id='related-articles-list'>
         {items.map((item: any) => {
           if (currentArticleSlug === item.slug) currentArticleIndex = item.index;
@@ -45,7 +41,7 @@ const RelatedArticles: React.FunctionComponent<RelatedArticlesProps> = ({ curren
               <Tag
                 pt={{
                   root: {
-                    className: `text-[#ffffffde]/70 w-[32px] h-[32px] text-lg md:text-xl rounded-full ${
+                    className: ` w-[32px] h-[32px] text-lg md:text-xl rounded-full ${
                       currentArticleSlug === item.slug
                         ? 'bg-dark-cyan-700/70 border border-solid border-2 border-dark-cyan-700/70'
                         : 'bg-transparent border border-solid border-2 border-dark-cyan-700/70'
@@ -56,7 +52,7 @@ const RelatedArticles: React.FunctionComponent<RelatedArticlesProps> = ({ curren
                 value={item.index}
               />
               <p
-                className={`block text-[#ffffffde]/70 max-w-[15rem] xs:max-w-[23rem] md:max-w-[40rem] truncate text-base md:text-lg ${
+                className={`block max-w-[15rem] xs:max-w-[23rem] md:max-w-[40rem] truncate text-base md:text-lg ${
                   currentArticleSlug === item.slug ? 'font-bold' : ''
                 }`}
               >

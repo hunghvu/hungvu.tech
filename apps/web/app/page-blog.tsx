@@ -9,7 +9,6 @@ import { Card } from 'primereact/card';
 import { Tag } from 'primereact/tag';
 import { Divider } from 'primereact/divider';
 import { utcToLocal } from '@utils/parse-date';
-import { geist } from 'app/_components/fonts';
 
 const BlogPage: React.FunctionComponent<{ content: any }> = ({ content }) => {
   const data = content
@@ -35,23 +34,10 @@ const BlogPage: React.FunctionComponent<{ content: any }> = ({ content }) => {
                 <aside className='flex flex-col gap-4'>
                   <div className='flex flex-row flex-wrap gap-2'>
                     {item.tags.map((tag: any) => (
-                      <Tag
-                        aria-label={`The article ${item.title} belongs to the topic ${tag}.`}
-                        key={tag.id}
-                        pt={{
-                          root: { className: 'py-0 bg-dark-cyan-800' },
-                          value: { className: `text-sm md:text-base ${geist.className} text-[#aeaeae]` },
-                        }}
-                        severity='info'
-                        value={tag.title}
-                      />
+                      <Tag aria-label={`The article ${item.title} belongs to the topic ${tag}.`} key={tag.id} severity='info' value={tag.title} />
                     ))}
                   </div>
-                  <Divider
-                    pt={{
-                      root: { className: 'before:border-[#2c323a]' },
-                    }}
-                  />
+                  <Divider />
                 </aside>
               }
               header={
@@ -61,7 +47,7 @@ const BlogPage: React.FunctionComponent<{ content: any }> = ({ content }) => {
               }
               pt={{
                 root: {
-                  className: `py-2 lg:p-4 bg-transparent hover:bg-dark-cyan-900/80 hover:rounded-md ${geist.className} lg:min-h-[21rem]`,
+                  className: `py-2 lg:p-4 bg-transparent hover:bg-dark-cyan-800/80 hover:rounded-md lg:min-h-[21rem]`,
                 },
                 title: { className: 'text-xl md:text-2xl lg:min-h-[6rem]' },
                 body: { className: 'pb-0' },

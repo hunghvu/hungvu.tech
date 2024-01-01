@@ -7,9 +7,8 @@
 
 import { useRef } from 'react';
 import Image from 'next/image';
-import { Toast } from 'primereact/toast';
 import { Button } from 'primereact/button';
-import { geist } from '../fonts';
+import { Toast } from 'primereact/toast';
 
 export interface ButtonCopyProps {
   language: string;
@@ -39,7 +38,6 @@ const ButtonCopy: React.FunctionComponent<ButtonCopyProps> = ({ language, codeSn
       <Toast position='bottom-center' pt={{ content: { className: 'border-l-0' } }} ref={toast} />
       <Button
         aria-label={`Copy ${language} code snippet to clipboard.`}
-        className={geist.className}
         icon={<Image alt={`Copy ${language} code snippet to clipboard.`} height={24} src='/copy.svg' width={24} />}
         iconPos='right'
         // eslint-disable-next-line @typescript-eslint/no-misused-promises -- This is intentional, not an error
@@ -52,7 +50,7 @@ const ButtonCopy: React.FunctionComponent<ButtonCopyProps> = ({ language, codeSn
           }
         }}
         pt={{
-          root: { className: 'bg-transparent hover:bg-dark-cyan-800 text-[#ffffffde] text-base md:text-lg' },
+          root: { className: 'bg-transparent hover:bg-dark-cyan-800 text-base md:text-lg' },
         }}
       />
     </>

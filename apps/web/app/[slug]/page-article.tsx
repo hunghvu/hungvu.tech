@@ -20,17 +20,9 @@ const ArticlePage: React.FunctionComponent<{ content: any; relatedArticles: any 
         <h1 className='text-3xl md:text-4xl font-extrabold'>{content.title}</h1>
         <p className='text-2xl md:text-3xl font-light text-[#c5c5c5] italic'>{content.subTitle}</p>
       </hgroup>
-      <Divider
-        pt={{
-          root: { className: 'before:border-[#2c323a]' },
-        }}
-      />
+      <Divider />
       <RichText nodes={content.body.root.children} />
-      <Divider
-        pt={{
-          root: { className: 'before:border-[#2c323a]' },
-        }}
-      />
+      <Divider />
       {relatedArticles ? (
         <RelatedArticles
           currentArticleSlug={content.settings.slug}

@@ -192,14 +192,14 @@ export const RichText = ({ nodes }: RichTextProps): JSX.Element => {
                     src={node.value.url}
                     width={node.value.width}
                   />
-                  <figcaption className='text-base md:text-lg p-2 rounded-md italic text-[#ffffffde]/70'>{altText ?? ''}</figcaption>
+                  <figcaption className='text-base md:text-lg p-2 rounded-md italic'>{altText ?? ''}</figcaption>
                 </figure>
               );
             } else if (mimeType?.startsWith('video')) {
               return (
                 <figure className='flex flex-col justify-center items-center' key={index}>
                   <video className='rounded-md' controls itemType={mimeType} key={index} src={node.value.url} />
-                  <figcaption className='text-base md:text-lg p-2 rounded-md italic text-[#ffffffde]/70'>{altText ?? ''}</figcaption>
+                  <figcaption className='text-base md:text-lg p-2 rounded-md italic'>{altText ?? ''}</figcaption>
                 </figure>
               );
             }

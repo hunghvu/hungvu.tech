@@ -25,7 +25,7 @@ const Error = ({ error }: { error: Error & { digest?: string }; reset: () => voi
     <section className='flex flex-col justify-center items-center gap-4 w-full md:w-[768px] m-4'>
       <hgroup className='flex flex-col justify-center items-center gap-6 w-full'>
         <h1 className='text-5xl md:text-6xl font-extrabold'>Something is off. 🤔</h1>
-        <p className='text-3xl md:text-4xl font-bold text-[#ffffffde]/70 italic text-center'>Digest: {error.digest}.</p>
+        <p className='text-3xl md:text-4xl font-bold italic text-center'>Digest: {error.digest}.</p>
         <div className='flex flex-row gap-4 justify-center items-center'>
           <Link className='text-lg md:text-xl hover:font-semibold bg-dark-cyan-700 py-1 w-[10rem] md:w-[12rem] rounded-md text-center' href='/'>
             Take me home

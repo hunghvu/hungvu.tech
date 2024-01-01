@@ -48,6 +48,7 @@ module.exports = {
     "import/no-named-as-default-member": "off",
     "import/no-unresolved": "off",
     "no-bitwise": "off",
+    "no-nested-ternary": "off",
     "no-param-reassign": "off",
     "unicorn/prefer-node-protocol": "off",
 

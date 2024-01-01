@@ -7,7 +7,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { Menubar } from 'primereact/menubar';
-import { geist } from 'app/_components/fonts';
 
 const Header: React.FunctionComponent = () => {
   const items = [
@@ -41,30 +40,13 @@ const Header: React.FunctionComponent = () => {
       model={items}
       pt={{
         root: {
-          className: `${geist.className} flex flex-row justify-around font-bold sticky py-1
-                      top-0 z-30 bg-gradient-to-b from-[#00001a] to-[#00002f]
-                      text-xl md:text-2xl border-x-0 border-t-0 border-b-1`,
-        },
-        start: {
-          className: 'text-[#8c8c8c]',
+          className: 'flex flex-row justify-around items-center font-bold sticky top-0 z-30 bg-gradient-to-b from-[#00001a] to-[#00002f]',
         },
         menu: {
           className: 'lg:gap-4 bg-transparent backdrop-blur border-x-0 border-t-0 border-b-1',
         },
-        label: {
-          className: 'text-[#8c8c8c]',
-        },
-        icon: {
-          className: 'text-2xl text-[#8c8c8c]',
-        },
-        popupIcon: {
-          className: 'w-[1.5rem] h-[1.5rem]',
-        },
         action: {
           className: 'flex flex-row justify-center items-center gap-1',
-        },
-        end: {
-          className: 'ml-0 text-[#8c8c8c]',
         },
       }}
       start={<Link href='/'>Hung Vu</Link>}
