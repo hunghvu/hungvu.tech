@@ -18,7 +18,6 @@ const Provider: React.FunctionComponent<RootProviderProps> = ({ children }) => {
     // It seems by default, there are always some in-line styles in the DOM (<head>).
     // However, with unstyled:true, they are not applied.
     // This ensures there is no conflict between Tailwind and PrimeReact theme.
-    // However, it seems unstyled:true also disables animation feature (e.g. Toast).
     <PrimeReactProvider value={{ unstyled: true, pt: DefaultStyles }}>
       <div className='z-10 fixed top-0 w-full h-full'>
         <Image alt='Background image of hungvu.tech - Enjoy technology in the starry night.' layout='fill' objectFit='cover' src='/background.svg' />
