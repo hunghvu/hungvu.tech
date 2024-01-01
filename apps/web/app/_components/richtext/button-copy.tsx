@@ -50,9 +50,6 @@ const ButtonCopy: React.FunctionComponent<ButtonCopyProps> = ({ language, codeSn
             showToastError();
           }
         }}
-        pt={{
-          root: { className: 'bg-transparent hover:bg-dark-cyan-800 border-[#aeaeae]' },
-        }}
       />
     </>
   );

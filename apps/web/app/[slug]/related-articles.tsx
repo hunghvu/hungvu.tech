@@ -43,12 +43,11 @@ const RelatedArticles: React.FunctionComponent<RelatedArticlesProps> = ({ curren
                   root: {
                     className: ` w-[32px] h-[32px] text-lg md:text-xl rounded-full ${
                       currentArticleSlug === item.slug
-                        ? 'bg-dark-cyan-700/70 border border-solid border-2 border-dark-cyan-700/70'
-                        : 'bg-transparent border border-solid border-2 border-dark-cyan-700/70'
+                        ? '!bg-dark-cyan-700/70 border border-solid border-2 border-dark-cyan-700/70'
+                        : 'border border-solid border-2 border-dark-cyan-700/70'
                     }`,
                   },
                 }}
-                severity='info'
                 value={item.index}
               />
               <p

@@ -38,17 +38,6 @@ const Header: React.FunctionComponent = () => {
         </nav>
       }
       model={items}
-      pt={{
-        root: {
-          className: 'flex flex-row justify-around items-center font-bold sticky top-0 z-30 bg-gradient-to-b from-[#00001a] to-[#00002f]',
-        },
-        menu: {
-          className: 'lg:gap-4 bg-transparent backdrop-blur border-x-0 border-t-0 border-b-1',
-        },
-        action: {
-          className: 'flex flex-row justify-center items-center gap-1',
-        },
-      }}
       start={<Link href='/'>Hung Vu</Link>}
     />
   );
