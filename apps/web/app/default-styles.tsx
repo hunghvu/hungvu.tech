@@ -7,7 +7,7 @@ import { geist } from './_components/fonts';
 const DefaultStyles: PrimeReactPTOptions = {
   button: {
     root: ({ context }: ButtonPassThroughMethodOptions) => ({
-      className: `flex flex-row justiry-center items-center text-base md:text-lg p-2 border rounded-md border-solid border-[#8c8c8c] hover:border-[#aeaeae]
+      className: `flex flex-row justiry-center items-center text-base md:text-lg p-2 border rounded-md border-solid border-zinc-400 hover:border-zinc-400
         ${geist.className} ${context.disabled ? ' opacity-60 pointer-events-none cursor-default ' : ''}`,
     }),
     label: ({ props }: ButtonPassThroughMethodOptions) => ({
@@ -16,7 +16,7 @@ const DefaultStyles: PrimeReactPTOptions = {
   },
   card: {
     root: {
-      className: `py-2 lg:p-4 bg-transparent hover:bg-dark-cyan-800/80 hover:rounded-md lg:min-h-[21rem] ${geist.className} mt-4`,
+      className: `py-2 lg:p-4 bg-transparent hover:bg-emerald-950/80 hover:rounded-md lg:min-h-[21rem] ${geist.className} mt-4`,
     },
     body: { className: 'flex flex-col gap-5 pt-5 px-5 pb-0' },
     title: { className: 'text-2xl font-bold mb-2 text-xl md:text-2xl lg:min-h-[6rem]' },
@@ -28,28 +28,28 @@ const DefaultStyles: PrimeReactPTOptions = {
   divider: {
     root: {
       className:
-        'flex relative w-full py-4 before:block before:left-0 before:absolute before:top-1/2 before:w-full before:border-t before:border-[#2c323a]',
+        'flex relative w-full py-4 before:block before:left-0 before:absolute before:top-1/2 before:w-full before:border-t before:border-zinc-700',
     },
     content: { className: 'px-1 z-10 ' },
   },
   menubar: {
     root: {
       className: `
-        flex flex-row justify-around items-center font-bold sticky top-0 z-30 bg-gradient-to-b from-[#00001a] to-[#00002f]
-        px-2 py-1 ${geist.className} text-xl md:text-2xl border-b border-[#2c323a] text-[#8c8c8c]
+        flex flex-row justify-around items-center font-bold sticky top-0 z-30 bg-gradient-to-r from-zinc-950 from-60% to-[#00002f] to-90%
+        px-2 py-1 ${geist.className} text-xl md:text-2xl border-b border-zinc-700 text-zinc-400
       `,
     },
     menu: ({ state }: MenubarPassThroughMethodOptions) => ({
       className: `
         lg:gap-4 bg-transparent backdrop-blur sm:p-0 sm:flex sm:flex-row sm:top-auto sm:left-auto sm:relative sm:bg-transparent 
-        sm:shadow-none sm:w-auto flex-col top-full left-0 absolute py-1 shadow-md w-full hover:bg-[#aeaeae]/10 hover:text-[#aeaeae]
-        ${state?.mobileActive ? 'flex border-b border-[#2c323a]' : 'hidden border-none'}`,
+        sm:shadow-none sm:w-auto flex-col top-full left-0 absolute py-1 shadow-md w-full hover:bg-zinc-400/10 hover:text-zinc-400
+        ${state?.mobileActive ? 'flex border-b border-zinc-700' : 'hidden border-none'}`,
     }),
     action: {
       className: 'flex flex-row justify-center items-center gap-1 cursor-pointer p-2',
     },
     button: {
-      className: 'sm:hidden hover:text-[#aeaeae]',
+      className: 'sm:hidden hover:text-zinc-400',
     },
     popupIcon: {
       className: 'w-6 h-6',
@@ -57,9 +57,9 @@ const DefaultStyles: PrimeReactPTOptions = {
   },
   tag: {
     root: {
-      className: 'flex items-center justify-center text-xs font-semibold px-2 bg-dark-cyan-800 rounded-md',
+      className: 'flex items-center justify-center text-xs font-semibold px-2 bg-emerald-950 rounded-md',
     },
-    value: { className: `leading-6 ${geist.className} text-sm md:text-base text-[#aeaeae]` },
+    value: { className: `leading-6 ${geist.className} text-sm md:text-base text-zinc-300` },
   },
   toast: {
     root: {
@@ -69,7 +69,7 @@ const DefaultStyles: PrimeReactPTOptions = {
     message: ({ state, index }: { state: ToastState; index: number }) => ({
       className: `flex flex-row my-4 border-solid border-0 border-l-8 ${
         state.messages[index] && state.messages[index].message.severity === 'success'
-          ? 'bg-dark-cyan-700/60 border-green-100/60'
+          ? 'bg-emerald-700/60 border-green-100/60'
           : state.messages[index] && state.messages[index].message.severity === 'error'
           ? 'bg-red-100/60 border-red-500/60'
           : ''

@@ -27,11 +27,11 @@ const Error = ({ error }: { error: Error & { digest?: string }; reset: () => voi
         <h1 className='text-5xl md:text-6xl font-extrabold'>Something is off. 🤔</h1>
         <p className='text-3xl md:text-4xl font-bold italic text-center'>Digest: {error.digest}.</p>
         <div className='flex flex-row gap-4 justify-center items-center'>
-          <Link className='text-lg md:text-xl hover:font-semibold bg-dark-cyan-700 py-1 w-[10rem] md:w-[12rem] rounded-md text-center' href='/'>
+          <Link className='text-lg md:text-xl hover:font-semibold bg-emerald-700 py-1 w-[10rem] md:w-[12rem] rounded-md text-center' href='/'>
             Take me home
           </Link>
           <Link
-            className='text-lg md:text-xl hover:font-semibold bg-dark-cyan-800 py-1 w-[10rem] md:w-[12rem] rounded-md text-center'
+            className='text-lg md:text-xl hover:font-semibold bg-emerald-950 py-1 w-[10rem] md:w-[12rem] rounded-md text-center'
             href='https://github.com/hunghvu/hungvu.tech/issues'
             prefetch={false}
           >

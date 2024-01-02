@@ -10,15 +10,16 @@
   <!-- Background -->
   <g>
     <defs>
-      <linearGradient id="background-gradient-vertical" x1="0" x2="0" y1="0" y2="1">
-        <stop offset="5%" stop-color="#00002F" />
-        <stop offset="95%" stop-color="#003020" />
+      <linearGradient id="background-gradient-vertical" x1="0" x2="1" y1="0" y2="1">
+        <stop offset="50%" stop-color="#09090b" />
+        <stop offset="80%" stop-color="#022c22" />
       </linearGradient>
     </defs>
     <defs>
-      <linearGradient id="background-gradient-horizontal">
-        <stop offset="60%" stop-color="#00002F" />
-        <stop offset="95%" stop-color="#003020" />
+      <linearGradient id="background-gradient-horizontal" x1="0.3" x2="1" y1="0.3" y2="0.75">
+        <stop offset="5%" stop-color="#09090b" />
+        <stop offset="50%" stop-color="#00002F" />
+        <stop offset="95%" stop-color="#022c22" />
       </linearGradient>
     </defs>
     <style type="text/css">
@@ -84,54 +85,54 @@
       
 
       @keyframes blinking-star {
-          0% { fill: #f5f5f5; }
+          0% { fill: #e4e4e7; }
           25% { fill: #3f3d56; }
           50% { fill: #00002F; }
           75% { fill: #3f3d56; }
-          100% { fill: #f5f5f5; }
+          100% { fill: #e4e4e7; }
       }
     </style>
-      <circle id="star-1" class="star" cx="254" cy="145" r="1.15" fill="#f5f5f5" />
-      <circle id="star-2" class="star" cx="804" cy="125" r="1.86" fill="#f5f5f5" />
-      <circle id="star-3" class="star" cx="525" cy="355" r="1.44" fill="#f5f5f5" />
-      <circle id="star-4" class="star" cx="854" cy="254" r="0.44" fill="#f5f5f5" />
-      <circle id="star-5" class="star" cx="659" cy="454" r="1.95" fill="#f5f5f5" />
-      <circle id="star-6" class="star" cx="436" cy="458" r="1.45" fill="#f5f5f5" />
-      <circle id="star-7" class="star" cx="624" cy="154" r="0.35" fill="#f5f5f5" />
-      <circle id="star-8" class="star" cx="234" cy="354" r="1.46" fill="#f5f5f5" />
-      <circle id="star-9" class="star" cx="425" cy="485" r="1.32" fill="#f5f5f5" />
-      <circle id="star-10" class="star" cx="823" cy="925" r="0.44" fill="#f5f5f5" />
-      <circle id="star-11" class="star" cx="591" cy="155" r="1.65" fill="#f5f5f5" />
-      <circle id="star-12" class="star" cx="685" cy="254" r="1.45" fill="#f5f5f5" />
-      <circle id="star-13" class="star" cx="354" cy="354" r="0.45" fill="#f5f5f5" />
-      <circle id="star-14" class="star" cx="454" cy="254" r="1.15" fill="#f5f5f5" />
-      <circle id="star-15" class="star" cx="214" cy="454" r="1.35" fill="#f5f5f5" />
-      <circle id="star-16" class="star" cx="265" cy="155" r="0.55" fill="#f5f5f5" />
-      <circle id="star-17" class="star" cx="654" cy="354" r="1.55" fill="#f5f5f5" />
-      <circle id="star-18" class="star" cx="125" cy="134" r="1.95" fill="#f5f5f5" />
-      <circle id="star-19" class="star" cx="546" cy="454" r="1.75" fill="#f5f5f5" />
-      <circle id="star-20" class="star" cx="154" cy="254" r="0.95" fill="#f5f5f5" />
+      <circle id="star-1" class="star" cx="254" cy="145" r="1.15" fill="#e4e4e7" />
+      <circle id="star-2" class="star" cx="804" cy="125" r="1.86" fill="#e4e4e7" />
+      <circle id="star-3" class="star" cx="525" cy="355" r="1.44" fill="#e4e4e7" />
+      <circle id="star-4" class="star" cx="854" cy="254" r="0.44" fill="#e4e4e7" />
+      <circle id="star-5" class="star" cx="659" cy="454" r="1.95" fill="#e4e4e7" />
+      <circle id="star-6" class="star" cx="436" cy="458" r="1.45" fill="#e4e4e7" />
+      <circle id="star-7" class="star" cx="624" cy="154" r="0.35" fill="#e4e4e7" />
+      <circle id="star-8" class="star" cx="234" cy="354" r="1.46" fill="#e4e4e7" />
+      <circle id="star-9" class="star" cx="425" cy="485" r="1.32" fill="#e4e4e7" />
+      <circle id="star-10" class="star" cx="823" cy="900" r="0.44" fill="#e4e4e7" />
+      <circle id="star-11" class="star" cx="591" cy="155" r="1.65" fill="#e4e4e7" />
+      <circle id="star-12" class="star" cx="685" cy="254" r="1.45" fill="#e4e4e7" />
+      <circle id="star-13" class="star" cx="354" cy="354" r="0.45" fill="#e4e4e7" />
+      <circle id="star-14" class="star" cx="454" cy="254" r="1.15" fill="#e4e4e7" />
+      <circle id="star-15" class="star" cx="214" cy="454" r="1.35" fill="#e4e4e7" />
+      <circle id="star-16" class="star" cx="265" cy="155" r="0.55" fill="#e4e4e7" />
+      <circle id="star-17" class="star" cx="654" cy="354" r="1.55" fill="#e4e4e7" />
+      <circle id="star-18" class="star" cx="125" cy="134" r="1.95" fill="#e4e4e7" />
+      <circle id="star-19" class="star" cx="546" cy="454" r="1.75" fill="#e4e4e7" />
+      <circle id="star-20" class="star" cx="154" cy="254" r="0.95" fill="#e4e4e7" />
 
-      <circle id="star-21" class="star" cx="185" cy="416" r="1.43" fill="#f5f5f5" />
-      <circle id="star-22" class="star" cx="410" cy="54" r="1.11" fill="#f5f5f5" />
-      <circle id="star-23" class="star" cx="919" cy="155" r="0.05" fill="#f5f5f5" />
-      <circle id="star-24" class="star" cx="37" cy="455" r="0.47" fill="#f5f5f5" />
-      <circle id="star-25" class="star" cx="93" cy="22" r="1.46" fill="#f5f5f5" />
-      <circle id="star-26" class="star" cx="855" cy="345" r="0.65" fill="#f5f5f5" />
-      <circle id="star-27" class="star" cx="55" cy="255" r="1.54" fill="#f5f5f5" />
-      <circle id="star-28" class="star" cx="224" cy="154" r="1.45" fill="#f5f5f5" />
-      <circle id="star-29" class="star" cx="75" cy="15" r="0.95" fill="#f5f5f5" />
-      <circle id="star-30" class="star" cx="589" cy="354" r="1.54" fill="#f5f5f5" />
-      <circle id="star-31" class="star" cx="494" cy="254" r="1.45" fill="#f5f5f5" />
-      <circle id="star-32" class="star" cx="65" cy="485" r="1.45" fill="#f5f5f5" />
-      <circle id="star-33" class="star" cx="975" cy="50" r="1.54" fill="#f5f5f5" />
-      <circle id="star-34" class="star" cx="15" cy="45" r="1.54" fill="#f5f5f5" />
-      <circle id="star-35" class="star" cx="85" cy="124" r="1.54" fill="#f5f5f5" />
-      <circle id="star-36" class="star" cx="414" cy="154" r="1.45" fill="#f5f5f5" />
-      <circle id="star-37" class="star" cx="724" cy="454" r="1.54" fill="#f5f5f5" />
-      <circle id="star-38" class="star" cx="432" cy="354" r="1.45" fill="#f5f5f5" />
-      <circle id="star-39" class="star" cx="772" cy="354" r="1.25" fill="#f5f5f5" />
-      <circle id="star-40" class="star" cx="523" cy="154" r="1.45" fill="#f5f5f5" />
+      <circle id="star-21" class="star" cx="185" cy="416" r="1.43" fill="#e4e4e7" />
+      <circle id="star-22" class="star" cx="410" cy="54" r="1.11" fill="#e4e4e7" />
+      <circle id="star-23" class="star" cx="919" cy="155" r="0.05" fill="#e4e4e7" />
+      <circle id="star-24" class="star" cx="37" cy="455" r="0.47" fill="#e4e4e7" />
+      <circle id="star-25" class="star" cx="193" cy="92" r="1.46" fill="#e4e4e7" />
+      <circle id="star-26" class="star" cx="855" cy="345" r="0.65" fill="#e4e4e7" />
+      <circle id="star-27" class="star" cx="55" cy="255" r="1.54" fill="#e4e4e7" />
+      <circle id="star-28" class="star" cx="224" cy="154" r="1.45" fill="#e4e4e7" />
+      <circle id="star-29" class="star" cx="75" cy="55" r="0.95" fill="#e4e4e7" />
+      <circle id="star-30" class="star" cx="589" cy="354" r="1.54" fill="#e4e4e7" />
+      <circle id="star-31" class="star" cx="494" cy="254" r="1.45" fill="#e4e4e7" />
+      <circle id="star-32" class="star" cx="65" cy="465" r="1.45" fill="#e4e4e7" />
+      <circle id="star-33" class="star" cx="975" cy="50" r="1.54" fill="#e4e4e7" />
+      <circle id="star-34" class="star" cx="15" cy="75" r="1.54" fill="#e4e4e7" />
+      <circle id="star-35" class="star" cx="85" cy="124" r="1.54" fill="#e4e4e7" />
+      <circle id="star-36" class="star" cx="414" cy="154" r="1.45" fill="#e4e4e7" />
+      <circle id="star-37" class="star" cx="724" cy="454" r="1.54" fill="#e4e4e7" />
+      <circle id="star-38" class="star" cx="432" cy="354" r="1.45" fill="#e4e4e7" />
+      <circle id="star-39" class="star" cx="772" cy="354" r="1.25" fill="#e4e4e7" />
+      <circle id="star-40" class="star" cx="523" cy="154" r="1.45" fill="#e4e4e7" />
   </g>
   
   <!-- Tree -->
@@ -263,7 +264,7 @@
     <path
       d="M1035.64285,695.28885a2.87755,2.87755,0,1,0,0-5.7551H1011.983a6.4344,6.4344,0,0,1-2.87755,8.63265,2.87755,2.87755,0,0,0,2.87755,2.87755h23.65987a2.87755,2.87755,0,1,0,0-5.7551Z"
       transform="translate(-93.02536 -198.5)"
-      fill="#f5f5f5"
+      fill="#e4e4e7"
       opacity="0.1"
     />
   </g>

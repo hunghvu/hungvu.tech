@@ -29,7 +29,7 @@ const RelatedArticles: React.FunctionComponent<RelatedArticlesProps> = ({ curren
     relatedArticlesList!.scrollTop = 55 * (items.length - currentArticleIndex);
   });
   return (
-    <nav className='flex flex-col bg-dark-cyan-900 p-4 w-full h-[20rem] rounded-md'>
+    <nav className='flex flex-col bg-emerald-950 p-4 w-full h-[20rem] rounded-md'>
       <h2 className='text-xl md:text-2xl font-bold'>Series: {currentSeriesTitle}</h2>
       <Divider />
       <div className='flex flex-col h-full overflow-y-scroll scroll-smooth scrollbar' id='related-articles-list'>
@@ -40,10 +40,10 @@ const RelatedArticles: React.FunctionComponent<RelatedArticlesProps> = ({ curren
               <Tag
                 pt={{
                   root: {
-                    className: ` w-[32px] h-[32px] text-lg md:text-xl rounded-full ${
+                    className: ` w-[32px] h-[32px] text-lg md:text-xl !rounded-full ${
                       currentArticleSlug === item.slug
                         ? 'border border-solid border-2 border-emerald-500'
-                        : 'border border-solid border-2 border-dark-cyan-700/70'
+                        : 'border border-solid border-2 border-emerald-700/70'
                     }`,
                   },
                 }}

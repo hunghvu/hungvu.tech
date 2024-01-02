@@ -28,7 +28,7 @@ const Layout = ({
     <html lang='en'>
       {/* Font family is applied to native HTML elmenets. */}
       {/* For PrimeReact components, we need to specify at root component level. */}
-      <body className={`${geist.className} text-[#f0f0f0] scrollbar`}>
+      <body className={`${geist.className} text-zinc-100 scrollbar`}>
         <Provider>{children}</Provider>
       </body>
     </html>

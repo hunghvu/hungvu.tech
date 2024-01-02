@@ -62,7 +62,7 @@ export const RichText = ({ nodes }: RichTextProps): JSX.Element => {
           }
           if (node.format & IS_CODE) {
             text = (
-              <code className={`${geistMono.className} p-1 bg-dark-cyan-800/80 rounded-md`} key={index}>
+              <code className={`${geistMono.className} p-1 bg-emerald-950/80 rounded-md`} key={index}>
                 {text}
               </code>
             );
@@ -145,7 +145,7 @@ export const RichText = ({ nodes }: RichTextProps): JSX.Element => {
           }
           case 'quote': {
             return (
-              <blockquote className='text-base md:text-lg p-4 my-4 border-l-4 border-dark-cyan-600 bg-dark-cyan-900/80 rounded-md italic' key={index}>
+              <blockquote className='text-base md:text-lg p-4 my-4 border-l-4 border-emerald-600 bg-emerald-950/80 rounded-md italic' key={index}>
                 {serializedChildren}
               </blockquote>
             );
@@ -155,7 +155,7 @@ export const RichText = ({ nodes }: RichTextProps): JSX.Element => {
             if (node.fields.linkType === 'custom') {
               return (
                 <Link
-                  className='text-base md:text-lg text-[#b9c3ff] underline underline-offset-4 decoration-2 font-semibold hover:decoration-4'
+                  className='text-base md:text-lg text-sky-200 underline underline-offset-4 decoration-2 font-semibold hover:decoration-4'
                   href={node.fields.url ?? '/'}
                   key={index}
                   prefetch={false}
@@ -168,7 +168,7 @@ export const RichText = ({ nodes }: RichTextProps): JSX.Element => {
             }
             return (
               <Link
-                className='text-base md:text-lg text-[#b9c3ff] underline underline-offset-4 decoration-2 font-semibold hover:decoration-4'
+                className='text-base md:text-lg text-sky-200 underline underline-offset-4 decoration-2 font-semibold hover:decoration-4'
                 href={node.fields.doc.value.settings.slug ?? '/'}
                 key={index}
                 rel='dofollow'
@@ -208,7 +208,7 @@ export const RichText = ({ nodes }: RichTextProps): JSX.Element => {
           case 'block': {
             if (node.fields.data.blockType === 'code-editor') {
               return (
-                <div className='text-base md:text-lg whitespace-pre-wrap bg-dark-cyan-900/80 rounded-md p-4' key={index}>
+                <div className='text-base md:text-lg whitespace-pre-wrap bg-emerald-950/80 rounded-md p-4' key={index}>
                   <div className='flex flex-row justify-end items-center pb-4'>
                     <ButtonCopy codeSnippet={node.fields.data.codeSnippet} language={node.fields.data.language} />
                   </div>

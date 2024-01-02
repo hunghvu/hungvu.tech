@@ -25,7 +25,7 @@ const BlogPage: React.FunctionComponent<{ content: any }> = ({ content }) => {
     });
 
   return (
-    <section className='grid grid-cols-1 lg:grid-cols-2 max-w-[1024px] bg-[#00002f]/80 border border-1 border-[#e5e7eb60] rounded-md p-4 lg:gap-8'>
+    <section className='grid grid-cols-1 lg:grid-cols-2 max-w-[1024px] bg-[#00002f]/80 border border-1 border-zinc-500 rounded-md p-4 lg:gap-8'>
       {data.map((item: any) => {
         return (
           <Link href={item.slug} key={item.id}>
@@ -41,14 +41,14 @@ const BlogPage: React.FunctionComponent<{ content: any }> = ({ content }) => {
                 </aside>
               }
               header={
-                <time className='text-[#cccccc] text-sm md:text-base pl-5' dateTime={item.date}>
+                <time className='text-zinc-300 text-sm md:text-base pl-5' dateTime={item.date}>
                   {utcToLocal(item.date as string, 'MMM DD, YYYY')}
                 </time>
               }
               role='article'
               title={<h2 className='line-clamp-2 lg:line-clamp-3 break-words'>{item.title}</h2>}
             >
-              <p className='text-[#e6e6e6] line-clamp-2 lg:line-clamp-3 break-words'>{item.description}</p>
+              <p className='text-zinc-200 line-clamp-2 lg:line-clamp-3 break-words'>{item.description}</p>
             </Card>
           </Link>
         );
