@@ -41,14 +41,14 @@ const BlogPage: React.FunctionComponent<{ content: any }> = ({ content }) => {
                 </aside>
               }
               header={
-                <time className='text-[#aeaeae] text-sm md:text-base pl-5' dateTime={item.date}>
+                <time className='text-[#cccccc] text-sm md:text-base pl-5' dateTime={item.date}>
                   {utcToLocal(item.date as string, 'MMM DD, YYYY')}
                 </time>
               }
               role='article'
               title={<h2 className='line-clamp-2 lg:line-clamp-3 break-words'>{item.title}</h2>}
             >
-              <p className='text-[#c5c5c5] line-clamp-2 lg:line-clamp-3 break-words'>{item.description}</p>
+              <p className='text-[#e6e6e6] line-clamp-2 lg:line-clamp-3 break-words'>{item.description}</p>
             </Card>
           </Link>
         );

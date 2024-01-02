@@ -168,7 +168,7 @@ export const RichText = ({ nodes }: RichTextProps): JSX.Element => {
             }
             return (
               <Link
-                className='text-base md:text-lg text-[#9fa8da] underline underline-offset-4 decoration-2 font-semibold hover:decoration-4'
+                className='text-base md:text-lg text-[#b9c3ff] underline underline-offset-4 decoration-2 font-semibold hover:decoration-4'
                 href={node.fields.doc.value.settings.slug ?? '/'}
                 key={index}
                 rel='dofollow'

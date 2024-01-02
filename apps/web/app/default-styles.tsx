@@ -51,6 +51,9 @@ const DefaultStyles: PrimeReactPTOptions = {
     button: {
       className: 'sm:hidden hover:text-[#aeaeae]',
     },
+    popupIcon: {
+      className: 'w-6 h-6',
+    },
   },
   tag: {
     root: {
