@@ -57,7 +57,7 @@ const DefaultStyles: PrimeReactPTOptions = {
   },
   tag: {
     root: {
-      className: 'flex items-center justify-center text-xs font-semibold px-2 bg-dark-cyan-800',
+      className: 'flex items-center justify-center text-xs font-semibold px-2 bg-dark-cyan-800 rounded-md',
     },
     value: { className: `leading-6 ${geist.className} text-sm md:text-base text-[#aeaeae]` },
   },
