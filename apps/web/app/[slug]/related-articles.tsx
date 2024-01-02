@@ -18,7 +18,6 @@ interface RelatedArticlesProps {
 const RelatedArticles: React.FunctionComponent<RelatedArticlesProps> = ({ currentArticleSlug, currentSeriesTitle, relatedArticles }) => {
   const items = relatedArticles.map((item: any, index: any) => {
     return {
-      id: item.id,
       title: item.title,
       slug: item.settings.slug,
       index: relatedArticles.length - index,
@@ -37,7 +36,7 @@ const RelatedArticles: React.FunctionComponent<RelatedArticlesProps> = ({ curren
         {items.map((item: any) => {
           if (currentArticleSlug === item.slug) currentArticleIndex = item.index;
           return (
-            <Link className='flex flex-row items-center gap-4 py-4 h-[55px] hover:font-bold relative' href={`/${item.slug}`} key={item.id}>
+            <Link className='flex flex-row items-center gap-4 py-4 h-[55px] hover:font-bold relative' href={`/${item.slug}`} key={item.slug}>
               <Tag
                 pt={{
                   root: {
