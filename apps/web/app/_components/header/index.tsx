@@ -29,10 +29,24 @@ const Header: React.FunctionComponent = () => {
       aria-label='Navigation menu'
       end={
         <nav className='flex flex-row gap-4'>
-          <Link aria-label='LinkedIn' className='flex flex-row items-center' href='https://www.linkedin.com/in/hunghvu/' prefetch={false}>
+          <Link
+            aria-label='LinkedIn'
+            className='flex flex-row items-center'
+            href='https://www.linkedin.com/in/hunghvu/'
+            prefetch={false}
+            rel='nofollow noopener noreferrer'
+            target='_blank'
+          >
             <Image alt={`Navigate to Hung's LinkedIn.`} height={24} src='/linkedin.svg' width={24} />
           </Link>
-          <Link aria-label='GitHub' className='flex flex-row items-center' href='https://github.com/hunghvu/hungvu.tech' prefetch={false}>
+          <Link
+            aria-label='GitHub'
+            className='flex flex-row items-center'
+            href='https://github.com/hunghvu/hungvu.tech'
+            prefetch={false}
+            rel='nofollow noopener noreferrer'
+            target='_blank'
+          >
             <Image alt='Navigate to hungvu.tech GitHub repository.' height={24} src='/github.svg' width={24} />
           </Link>
         </nav>

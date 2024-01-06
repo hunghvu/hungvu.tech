@@ -158,8 +158,8 @@ export const RichText = ({ nodes }: RichTextProps): JSX.Element => {
                   className='text-base md:text-lg text-sky-200 underline underline-offset-4 decoration-2 font-semibold hover:decoration-4'
                   href={node.fields.url ?? '/'}
                   key={index}
-                  prefetch={false}
-                  rel='nofollow noopener noreferrer'
+                  prefetch={node.fields.url.includes('hungvu.tech')}
+                  rel={node.fields.url.includes('hungvu.tech') ? undefined : 'nofollow noopener noreferrer'}
                   target={node.fields.newTab ? '_blank' : undefined}
                 >
                   {serializedChildren}
@@ -171,8 +171,7 @@ export const RichText = ({ nodes }: RichTextProps): JSX.Element => {
                 className='text-base md:text-lg text-sky-200 underline underline-offset-4 decoration-2 font-semibold hover:decoration-4'
                 href={node.fields.doc.value.settings.slug ?? '/'}
                 key={index}
-                rel='dofollow'
-                target={node.newTab ? 'target="_blank"' : undefined}
+                target={node.newTab ? '_blank' : undefined}
               >
                 {serializedChildren}
               </Link>
