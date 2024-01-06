@@ -39,4 +39,4 @@ The `cms` requires the following environment variables:
 
 ## License
 
-Copyright &copy; 2023 Huu Hung Vu, All Rights Reserved.
+Copyright &copy; 2024 Huu Hung Vu, All Rights Reserved.
