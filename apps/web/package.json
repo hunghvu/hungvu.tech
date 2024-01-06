@@ -17,7 +17,7 @@
     "highlight.js": "^11.9.0",
     "next": "^14.0.4",
     "next-seo": "^6.4.0",
-    "primereact": "^10.2.1",
+    "primereact": "^10.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "sharp": "^0.32.6"
@@ -31,8 +31,8 @@
     "@types/react-dom": "^18.2.18",
     "autoprefixer": "^10.4.16",
     "eslint-config-custom": "workspace:*",
-    "postcss": "^8.4.32",
-    "tailwindcss": "^3.4.0",
+    "postcss": "^8.4.33",
+    "tailwindcss": "^3.4.1",
     "tsconfig-custom": "workspace:*",
     "typescript": "5.2.2"
   }
