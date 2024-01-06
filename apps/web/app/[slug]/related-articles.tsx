@@ -36,26 +36,28 @@ const RelatedArticles: React.FunctionComponent<RelatedArticlesProps> = ({ curren
         {items.map((item: any) => {
           if (currentArticleSlug === item.slug) currentArticleIndex = item.index;
           return (
-            <Link className='flex flex-row items-center gap-4 py-4 h-[55px] hover:font-bold relative' href={`/${item.slug}`} key={item.slug}>
-              <Tag
-                pt={{
-                  root: {
-                    className: ` w-[32px] h-[32px] text-lg md:text-xl !rounded-full ${
-                      currentArticleSlug === item.slug
-                        ? 'border border-solid border-2 border-emerald-500'
-                        : 'border border-solid border-2 border-emerald-700/70'
-                    }`,
-                  },
-                }}
-                value={item.index}
-              />
-              <p
-                className={`block max-w-[15rem] xs:max-w-[23rem] md:max-w-[40rem] truncate text-base md:text-lg ${
-                  currentArticleSlug === item.slug ? 'font-bold' : ''
-                }`}
-              >
-                {item.title}
-              </p>
+            <Link href={`/${item.slug}`} key={item.slug}>
+              <article className='flex flex-row items-center gap-4 py-4 h-[55px] hover:font-bold relative'>
+                <Tag
+                  pt={{
+                    root: {
+                      className: ` w-[32px] h-[32px] text-lg md:text-xl !rounded-full ${
+                        currentArticleSlug === item.slug
+                          ? 'border border-solid border-2 border-emerald-500'
+                          : 'border border-solid border-2 border-emerald-700/70'
+                      }`,
+                    },
+                  }}
+                  value={item.index}
+                />
+                <p
+                  className={`block max-w-[15rem] xs:max-w-[23rem] md:max-w-[40rem] truncate text-base md:text-lg ${
+                    currentArticleSlug === item.slug ? 'font-bold' : ''
+                  }`}
+                >
+                  {item.title}
+                </p>
+              </article>
             </Link>
           );
         })}

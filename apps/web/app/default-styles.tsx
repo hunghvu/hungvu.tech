@@ -19,7 +19,7 @@ const DefaultStyles: PrimeReactPTOptions = {
       className: `py-2 lg:p-4 bg-transparent hover:bg-emerald-950/80 hover:rounded-md lg:min-h-[21rem] ${geist.className} mt-4`,
     },
     body: { className: 'flex flex-col gap-5 pt-5 px-5 pb-0' },
-    title: { className: 'text-2xl font-bold mb-2 text-xl md:text-2xl lg:min-h-[6rem]' },
+    title: { className: 'font-bold mb-2 text-xl md:text-2xl lg:min-h-[6rem]' },
     subTitle: {
       className: 'font-normal mb-2 ',
     },
