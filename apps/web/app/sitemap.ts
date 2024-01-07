@@ -4,6 +4,7 @@
  * Sitemap generator: https://nextjs.org/docs/app/api-reference/file-conventions/metadata/sitemap
  */
 
+import getArticlesWithMinimalResponse from "@utils/request/server-side/get-articles-with-minimal-response";
 import type { MetadataRoute } from 'next'
 
 export const dynamic = 'force-dynamic'
@@ -24,10 +25,8 @@ const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
     // },
   ]
 
-  const articles = await fetch(
-    process.env.NEXT_REQUEST_CMS_ARTICLES_IGNORE_REDUNDANT_FIELDS_URL!
-  );
-  (await articles.json()).docs.forEach((article: any) => {
+  const articles = await getArticlesWithMinimalResponse();
+  articles.forEach((article: any) => {
     sites.push({
       url: `${process.env.NEXT_PUBLIC_BASE_URL!}/${article.settings.slug}`,
       lastModified: new Date(
