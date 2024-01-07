@@ -37,7 +37,25 @@ const downloadAndProcessOpenWrtTohDatabaseDump = async () => {
       delimiter: '\t',
       relax_quotes: true,
     });
-    console.log(records)
+    const cleanedRecords = records.map((record: any) => {
+      // Remove all non-alphanumeric characters
+      // This is to prevent injection attack
+      // Also, it is easier to search for a device
+      const cleanedRecord = Object.fromEntries(
+        Object.entries(record).map(([key, value]) => {
+          if (typeof value === 'string') {
+            const dirtyValues = [
+              ['', ' ', '-', 'Null', 'NULL', 'unknown', 'http://', 'https://', 'http://-', 'https://-']
+            ]
+            return [key, value.includes('¿') || ['', ' ', '-', 'Null', 'NULL', 'unknown'].includes(value) ? 'Unknown' : value];
+          }
+          return [key, value];
+        })
+      );
+
+      return cleanedRecord;
+    })
+    console.log(cleanedRecords)
   } catch (error) {
     console.error('Error:', error);
   }
