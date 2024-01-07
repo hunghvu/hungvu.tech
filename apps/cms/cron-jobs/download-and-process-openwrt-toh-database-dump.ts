@@ -8,13 +8,13 @@
 
 import AdmZip from 'adm-zip';
 import { parse } from 'csv-parse/sync'
-import { readFileSync } from 'fs-extra';
+import { stringify } from 'csv-stringify/sync'
+import { readFileSync, writeFileSync } from 'fs-extra';
 
 const downloadAndProcessOpenWrtTohDatabaseDump = async () => {
-  const url = 'https://openwrt.org/_media/toh_dump_tab_separated.zip';
   try {
     // Download the file
-    const response = await fetch(url,
+    const response = await fetch('https://openwrt.org/_media/toh_dump_tab_separated.zip',
       {
         method: 'GET',
         headers: {
@@ -29,8 +29,10 @@ const downloadAndProcessOpenWrtTohDatabaseDump = async () => {
     zip.extractAllTo('/tmp', true);
 
     // Read the CSV file
-    const file = '/tmp/ToH_dump_tab_separated.csv'
-    const csv = readFileSync(file, 'utf8');
+    // Remove " and ' characters, which are problematic in CSV
+    const csv = readFileSync('/tmp/ToH_dump_tab_separated.csv', 'utf8')
+      .replace("\"", "")
+      .replace("'", "");
     const records = parse(csv, {
       columns: true,
       skip_empty_lines: true,
@@ -38,24 +40,34 @@ const downloadAndProcessOpenWrtTohDatabaseDump = async () => {
       relax_quotes: true,
     });
     const cleanedRecords = records.map((record: any) => {
+      // Remove unnecessary fields
+      delete record['device_techdata'];
+      delete record['picture'];
+
       // Remove all non-alphanumeric characters
       // This is to prevent injection attack
       // Also, it is easier to search for a device
-      const cleanedRecord = Object.fromEntries(
-        Object.entries(record).map(([key, value]) => {
-          if (typeof value === 'string') {
-            const dirtyValues = [
-              ['', ' ', '-', 'Null', 'NULL', 'unknown', 'http://', 'https://', 'http://-', 'https://-']
-            ]
-            return [key, value.includes('¿') || ['', ' ', '-', 'Null', 'NULL', 'unknown'].includes(value) ? 'Unknown' : value];
+      const cleaned = Object.fromEntries(
+        Object.entries(record).map(([key, value]: [string, string]) => {
+          const dirtyValues = ['', ' ', '-', 'Null', 'NULL', 'other', 'http://', 'https://', 'http://-', 'https://-']
+          // Standardize all unknown values
+          if (value.includes('¿') || value.includes('unknown') || value.includes('Unknown') || dirtyValues.includes(value)) {
+            value = 'Unknown';
+          }
+          // Normalize whereAvailable
+          else if (value.includes('Discontinued') || value.includes('discontinued')) {
+            value = 'Discontinued';
           }
           return [key, value];
         })
       );
-
-      return cleanedRecord;
+      return cleaned;
     })
-    console.log(cleanedRecords)
+    // Write the cleaned CSV file, only in development environment
+    // So that we can use LibreOffice to open it and check for errors
+    if (process.env.NODE_ENV === 'development') {
+      writeFileSync('/tmp/ToH_cleaned.csv', stringify(cleanedRecords, { header: true }));
+    }
   } catch (error) {
     console.error('Error:', error);
   }

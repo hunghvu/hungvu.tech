@@ -20,7 +20,7 @@ const bree = new Bree({
   defaultExtension: process.env.TS_NODE ? 'ts' : 'js',
   acceptedExtensions: ['.ts', '.js'],
   jobs: [
-    { name: 'download-and-process-openwrt-toh-database-dump', interval: process.env.NODE_ENV === 'development' ? '15s' : '24h' },
+    { name: 'download-and-process-openwrt-toh-database-dump', interval: process.env.NODE_ENV === 'development' ? '15s' : 'at 12:00 am' },
   ]
 });
 
