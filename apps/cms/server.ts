@@ -14,16 +14,6 @@ dotenv.config();
 // Allow Bree to use TypeScript jobs, or else "cannot use import outside of module" error will be thrown
 Bree.extend(BreeWorker.default)
 
-// The cron job runs in a separate worker, so theoretically should not blocks the main thread
-const bree = new Bree({
-  root: path.join(__dirname, 'cron-jobs'),
-  defaultExtension: process.env.TS_NODE ? 'ts' : 'js',
-  acceptedExtensions: ['.ts', '.js'],
-  jobs: [
-    { name: 'download-and-process-openwrt-toh-database-dump', interval: process.env.NODE_ENV === 'development' ? '15s' : 'at 12:00 am' },
-  ]
-});
-
 const PAYLOAD_PORT = process.env.PAYLOAD_PORT!;
 const app = express();
 
@@ -38,8 +28,20 @@ payload.init({
   secret: process.env.PAYLOAD_SECRET!,
   express: app,
   onInit: async () => {
-    await bree.start();
     payload.logger.info(`Payload Admin URL: ${payload.getAdminURL()}`);
+    const bree = new Bree({
+      root: path.join(__dirname, 'cron-jobs'),
+      defaultExtension: process.env.TS_NODE ? 'ts' : 'js',
+      acceptedExtensions: ['.ts', '.js'],
+      jobs: [
+        { name: 'download-and-process-openwrt-toh-database-dump', interval: process.env.NODE_ENV === 'production' ? 'at 12:00 am' : '15s' },
+      ],
+      // TODO: In the future, we need to find a way to differentiate messages from different workers, that is if we have a new cron job
+      workerMessageHandler: (message) => {
+        // console.log(payload)
+      }
+    });
+    await bree.start();
   },
 });
 

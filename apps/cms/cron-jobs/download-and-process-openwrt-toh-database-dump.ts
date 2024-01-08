@@ -10,6 +10,7 @@ import AdmZip from 'adm-zip';
 import { parse } from 'csv-parse/sync'
 import { stringify } from 'csv-stringify/sync'
 import { readFileSync, writeFileSync } from 'fs-extra';
+import { parentPort } from 'worker_threads';
 
 const downloadAndProcessOpenWrtTohDatabaseDump = async () => {
   try {
@@ -67,6 +68,8 @@ const downloadAndProcessOpenWrtTohDatabaseDump = async () => {
     // So that we can use LibreOffice to open it and check for errors
     if (process.env.NODE_ENV === 'development') {
       writeFileSync('/tmp/ToH_cleaned.csv', stringify(cleanedRecords, { header: true }));
+    } else if (process.env.NODE_ENV === 'production') {
+      parentPort.postMessage(cleanedRecords)
     }
   } catch (error) {
     console.error('Error:', error);
