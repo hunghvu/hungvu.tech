@@ -8,6 +8,7 @@ import Bree from "bree";
 import dotenv from 'dotenv';
 import express from 'express';
 import payload from 'payload';
+import updateOpenwrtToh from "./cron-jobs/worker-message-handler/update-openwrt-toh";
 
 dotenv.config();
 
@@ -36,9 +37,9 @@ payload.init({
       jobs: [
         { name: 'download-and-process-openwrt-toh-database-dump', interval: process.env.NODE_ENV === 'production' ? 'at 12:00 am' : '15s' },
       ],
-      // TODO: In the future, we need to find a way to differentiate messages from different workers, that is if we have a new cron job
-      workerMessageHandler: (message) => {
-        // console.log(payload)
+      // Name is the job name.
+      workerMessageHandler: async ({ name, message }) => {
+        await updateOpenwrtToh(message);
       }
     });
     await bree.start();

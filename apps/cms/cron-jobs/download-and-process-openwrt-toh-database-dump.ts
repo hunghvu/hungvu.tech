@@ -68,9 +68,8 @@ const downloadAndProcessOpenWrtTohDatabaseDump = async () => {
     // So that we can use LibreOffice to open it and check for errors
     if (process.env.NODE_ENV === 'development') {
       writeFileSync('/tmp/ToH_cleaned.csv', stringify(cleanedRecords, { header: true }));
-    } else if (process.env.NODE_ENV === 'production') {
-      parentPort.postMessage(cleanedRecords)
     }
+    parentPort.postMessage(cleanedRecords)
   } catch (error) {
     console.error('Error:', error);
   }
