@@ -35,6 +35,7 @@ import Media from './collections/media';
 import Series from './collections/series';
 import StaticRouteMetadata from './collections/static-route-metadata';
 import Tags from './collections/tags';
+import OpenwrtToh from "./collections/openwrt-toh";
 
 const s3 = s3Adapter({
   config: {
@@ -88,7 +89,7 @@ export default buildConfig({
   editor: lexicalEditor({
     features: () => lexicalEditorFeatures(),
   }),
-  collections: [Users, Articles, Media, Tags, Series, StaticRouteMetadata],
+  collections: [Users, Articles, Media, Tags, Series, StaticRouteMetadata, OpenwrtToh],
   typescript: {
     outputFile: path.resolve(__dirname, 'payload-types.ts'),
   },
