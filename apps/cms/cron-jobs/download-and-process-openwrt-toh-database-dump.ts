@@ -12,18 +12,32 @@ import { stringify } from 'csv-stringify/sync'
 import { readFileSync, writeFileSync } from 'fs-extra';
 import { parentPort } from 'worker_threads';
 
+const fetchWithExponentialBackoff = async (url: string, options: RequestInit, timeout: number, maxRetries: number) => {
+  while (maxRetries >= 0) {
+    try {
+      return await fetch(url, options);
+    } catch (error) {
+      if (maxRetries === 0) {
+        console.error('Error: Fetch OpenWRT ToH database dump failed, no more retries.');
+        throw error;
+      }
+      console.error(`Error: Fetch OpenWRT ToH database dump failed, retrying in ${timeout / 60} seconds.`);
+      await new Promise(resolve => setTimeout(resolve, timeout));
+      maxRetries--;
+      timeout *= 2;
+    }
+  }
+}
+
 const downloadAndProcessOpenWrtTohDatabaseDump = async () => {
   try {
     // Download the file
-    const response = await fetch('https://openwrt.org/_media/toh_dump_tab_separated.zip',
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/zip',
-        },
-      }
-
-    );
+    const response = await fetchWithExponentialBackoff('https://openwrt.org/_media/toh_dump_tab_separated.zip', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/zip',
+      },
+    }, 3600, 5);
 
     // Read the file in-memory
     const zip = new AdmZip(Buffer.from(await response.arrayBuffer()));
