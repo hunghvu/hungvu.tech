@@ -93,7 +93,7 @@ const downloadAndProcessOpenWrtTohDatabaseDump = async (): Promise<void> => {
     parentPort.postMessage(cleanedRecords)
   } catch (error) {
     console.error('Error:', error);
-    process.exit(0);
+    process.exit(1);
   }
 };
 
