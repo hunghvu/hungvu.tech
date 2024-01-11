@@ -40,6 +40,7 @@ module.exports = {
   rules: {
     // Unnecessary rules.
     "@next/next/no-html-link-for-pages": "off",
+    "@typescript-eslint/ban-tslint-comment": "off",
     "@typescript-eslint/no-confusing-non-null-assertion": "off",
     "@typescript-eslint/no-redundant-type-constituents": "off",
     "@typescript-eslint/no-unnecessary-condition": "off",

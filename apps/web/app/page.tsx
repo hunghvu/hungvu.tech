@@ -6,9 +6,9 @@
 
 import type { Metadata, Viewport } from 'next';
 import { ArticleJsonLd } from 'next-seo';
-import BlogPage from './page-blog';
 import getArticlesWithMinimalResponse from '@utils/request/server-side/get-articles-with-minimal-response';
 import getMetadataBySlug from '@utils/request/server-side/get-metadata-by-slug';
+import BlogPage from './page-blog';
 
 export const dynamic = 'force-dynamic';
 

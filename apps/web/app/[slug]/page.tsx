@@ -6,9 +6,9 @@
 
 import type { Metadata, Viewport } from 'next';
 import { ArticleJsonLd } from 'next-seo';
-import ArticlePage from './page-article';
 import getArticleBySlug from '@utils/request/server-side/get-article-by-slug';
 import getArticlesInTheSameSeries from '@utils/request/server-side/get-articles-in-the-same-series';
+import ArticlePage from './page-article';
 
 interface MetadataProps {
   params: { slug: string };

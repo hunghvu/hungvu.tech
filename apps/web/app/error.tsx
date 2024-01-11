@@ -34,8 +34,8 @@ const Error = ({ error }: { error: Error & { digest?: string }; reset: () => voi
             className='text-lg md:text-xl hover:font-semibold bg-emerald-950 py-1 w-[10rem] md:w-[12rem] rounded-md text-center'
             href='https://github.com/hunghvu/hungvu.tech/issues'
             prefetch={false}
-            target='_blank'
             rel='nofollow noopener noreferrer'
+            target='_blank'
           >
             Report on GitHub
           </Link>

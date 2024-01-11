@@ -9,6 +9,7 @@ import dotenv from 'dotenv';
 import express from 'express';
 import payload from 'payload';
 import updateOpenwrtToh from "./cron-jobs/worker-message-handler/update-openwrt-toh";
+import type { OpenwrtToh } from "./payload-types";
 
 dotenv.config();
 
@@ -38,8 +39,10 @@ payload.init({
         { name: 'download-and-process-openwrt-toh-database-dump', interval: process.env.NODE_ENV === 'production' ? 'at 12:00 am' : '15s' },
       ],
       // Name is the job name.
-      workerMessageHandler: async ({ name, message }) => {
-        await updateOpenwrtToh(message);
+      workerMessageHandler: ({ message }: { message: OpenwrtToh[] }) => {
+        void (async () => {
+          await updateOpenwrtToh(message);
+        })();
       }
     });
     await bree.start();

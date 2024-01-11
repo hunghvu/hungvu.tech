@@ -24,7 +24,8 @@
         "PAYLOAD_S3_BUCKET",
         "PAYLOAD_S3_ENDPOINT",
         "PAYLOAD_S3_REGION",
-        "PAYLOAD_S3_SECRET_ACCESS_KEY"
+        "PAYLOAD_S3_SECRET_ACCESS_KEY",
+        "TS_NODE"
       ],
       "outputs": [
         "dist/**"
@@ -39,7 +40,8 @@
         "NEXT_PUBLIC_REMOTE_IMAGE_PATH",
         "NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION",
         "NEXT_REQUEST_CMS_ARTICLES_URL",
-        "NEXT_REQUEST_CMS_STATIC_ROUTE_METADATA_URL"
+        "NEXT_REQUEST_CMS_STATIC_ROUTE_METADATA_URL",
+        "ANALYZE"
       ],
       "outputs": [
         ".next/**"
@@ -66,7 +68,8 @@
         "PAYLOAD_S3_BUCKET",
         "PAYLOAD_S3_ENDPOINT",
         "PAYLOAD_S3_REGION",
-        "PAYLOAD_S3_SECRET_ACCESS_KEY"
+        "PAYLOAD_S3_SECRET_ACCESS_KEY",
+        "TS_NODE"
       ]
     },
     "dev:web": {
@@ -80,7 +83,8 @@
         "NEXT_REQUEST_CMS_ARTICLES_URL",
         "NEXT_REQUEST_CMS_ARTICLES_IGNORE_REDUNDANT_FIELDS_URL",
         "NEXT_REQUEST_CMS_ARTICLES_IN_THE_SAME_SERIES_URL",
-        "NEXT_REQUEST_CMS_STATIC_ROUTE_METADATA_URL"
+        "NEXT_REQUEST_CMS_STATIC_ROUTE_METADATA_URL",
+        "ANALYZE"
       ]
     },
     "dev": {

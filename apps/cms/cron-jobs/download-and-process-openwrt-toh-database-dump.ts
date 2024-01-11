@@ -6,13 +6,19 @@
  * The data is not clean, so information are processed before inserting into the database
  */
 
+/* eslint-disable no-promise-executor-return */
+/* eslint-disable @typescript-eslint/no-loop-func */
+/* eslint-disable no-console */
+/* eslint-disable import/named */
+/* eslint-disable no-await-in-loop */
+import { parentPort } from 'worker_threads';
 import AdmZip from 'adm-zip';
 import { parse } from 'csv-parse/sync'
 import { stringify } from 'csv-stringify/sync'
+import type { Input } from 'csv-stringify/sync';
 import { readFileSync, writeFileSync } from 'fs-extra';
-import { parentPort } from 'worker_threads';
 
-const fetchWithExponentialBackoff = async (url: string, options: RequestInit, timeout: number, maxRetries: number) => {
+const fetchWithExponentialBackoff = async (url: string, options: RequestInit, timeout: number, maxRetries: number): Promise<Response> => {
   while (maxRetries >= 0) {
     try {
       return await fetch(url, options);
@@ -22,6 +28,7 @@ const fetchWithExponentialBackoff = async (url: string, options: RequestInit, ti
         throw error;
       }
       console.error(`Error: Fetch OpenWRT ToH database dump failed, retrying in ${timeout / 60} seconds.`);
+      // Reference: https://stackoverflow.com/questions/951021/what-is-the-javascript-version-of-sleep#comment9130694_951057
       await new Promise(resolve => setTimeout(resolve, timeout));
       maxRetries--;
       timeout *= 2;
@@ -29,7 +36,7 @@ const fetchWithExponentialBackoff = async (url: string, options: RequestInit, ti
   }
 }
 
-const downloadAndProcessOpenWrtTohDatabaseDump = async () => {
+const downloadAndProcessOpenWrtTohDatabaseDump = async (): Promise<void> => {
   try {
     // Download the file
     const response = await fetchWithExponentialBackoff('https://openwrt.org/_media/toh_dump_tab_separated.zip', {
@@ -54,10 +61,10 @@ const downloadAndProcessOpenWrtTohDatabaseDump = async () => {
       delimiter: '\t',
       relax_quotes: true,
     });
-    const cleanedRecords = records.map((record: any) => {
+    const cleanedRecords = records.map((record: Record<string, string>) => {
       // Remove unnecessary fields
-      delete record['device_techdata'];
-      delete record['picture'];
+      delete record.device_techdata;
+      delete record.picture;
 
       // Remove all non-alphanumeric characters
       // This is to prevent injection attack
@@ -81,14 +88,17 @@ const downloadAndProcessOpenWrtTohDatabaseDump = async () => {
     // Write the cleaned CSV file, only in development environment
     // So that we can use LibreOffice to open it and check for errors
     if (process.env.NODE_ENV === 'development') {
-      writeFileSync('/tmp/ToH_cleaned.csv', stringify(cleanedRecords, { header: true }));
+      writeFileSync('/tmp/ToH_cleaned.csv', stringify(cleanedRecords as Input, { header: true }));
     }
     parentPort.postMessage(cleanedRecords)
   } catch (error) {
     console.error('Error:', error);
+    process.exit(0);
   }
 };
 
-downloadAndProcessOpenWrtTohDatabaseDump();
+void (async () => {
+  await downloadAndProcessOpenWrtTohDatabaseDump();
+})();
 
 
