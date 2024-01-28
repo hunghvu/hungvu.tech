@@ -15,11 +15,11 @@ const Header: React.FunctionComponent = () => {
       icon: <Image alt={`Navigate to Hung's blog page.`} height={24} src='/book.svg' width={24} />,
       url: '/',
     },
-    // {
-    //   label: 'Homelab',
-    //   icon: <Image alt={`Navigate to Hung's blog page`} height={24} src='/book.svg' width={24} />,
-    //   url: '/homelab',
-    // },
+    {
+      label: 'Lab',
+      icon: <Image alt={`Navigate to Hung's experimental lab page`} height={24} src='/flask.svg' width={24} />,
+      url: '/lab',
+    },
   ];
   return (
     // Based on the documentation, there should be a way to directly access hamburger button in mobile .
