@@ -102,6 +102,7 @@ const getArticlesInTheSameSeries = (): Omit<Endpoint, 'root'> => {
 const Articles: CollectionConfig = {
   slug: 'articles',
   admin: {
+    group: 'blog',
     useAsTitle: 'title',
     defaultColumns: [
       // Some columns name are implicitly created by Payload.

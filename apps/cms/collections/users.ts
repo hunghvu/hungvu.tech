@@ -26,6 +26,7 @@ const Users: CollectionConfig = {
     }
     : true,
   admin: {
+    group: 'global-settings',
     useAsTitle: 'email',
   },
   access: {

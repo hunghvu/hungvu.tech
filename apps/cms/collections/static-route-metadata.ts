@@ -11,6 +11,7 @@ import isLoggedIn from "../access/validator/is-logged-in";
 const StaticRouteMetadata: CollectionConfig = {
   slug: 'static-route-metadata',
   admin: {
+    group: 'global-settings',
     useAsTitle: 'slug',
     defaultColumns: [
       'title',

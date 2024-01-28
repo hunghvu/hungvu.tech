@@ -10,6 +10,9 @@ import isPublished from '../access/query/is-published';
 
 const Media: CollectionConfig = {
   slug: 'media',
+  admin: {
+    group: 'blog'
+  },
   access: {
     read: (req) => isLoggedIn(req) || isPublished(),
   },

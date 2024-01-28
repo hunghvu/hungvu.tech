@@ -14,6 +14,7 @@ const OpenwrtToh: CollectionConfig = {
     plural: 'OpenWRT Table of Hardware',
   },
   admin: {
+    group: 'lab',
     useAsTitle: 'model',
     defaultColumns: ['brand', 'model', 'version', 'createdAt', 'updatedAt', '_status'],
   },
