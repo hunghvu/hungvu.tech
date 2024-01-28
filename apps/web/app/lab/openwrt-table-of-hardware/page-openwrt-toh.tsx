@@ -1,8 +1,17 @@
+'use client';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
+import { useState } from 'react';
+import { MultiSelect } from 'primereact/multiselect';
+import { utcToLocal } from '@utils/parse-date';
+
+interface ColumnData {
+  name: string;
+  label: string;
+}
 
 // 1 to 1 mapping of the schema from the OpenWRT Table of Hardware in the CMS
-const openWrtTohSchema = [
+const columns: ColumnData[] = [
   {
     name: 'pid',
     label: 'Product ID',
@@ -302,10 +311,74 @@ const openWrtTohSchema = [
 ];
 
 const PageOpenwrtToh: React.FunctionComponent<{ content: any }> = ({ content }) => {
+  const [visibleColumns, setVisibleColumns] = useState<ColumnData[]>([
+    {
+      name: 'brand',
+      label: 'Brand',
+    },
+    {
+      name: 'model',
+      label: 'Model',
+    },
+    {
+      name: 'version',
+      label: 'Version',
+    },
+    {
+      name: 'cpu',
+      label: 'CPU',
+    },
+    {
+      name: 'supportedcurrentrel',
+      label: 'Supported Current Release',
+    },
+    {
+      name: 'cpucores',
+      label: 'CPU Cores',
+    },
+    {
+      name: 'cpumhz',
+      label: 'CPU MHz',
+    },
+    {
+      name: 'flashmb',
+      label: 'Flash (MB)',
+    },
+    {
+      name: 'rammb',
+      label: 'RAM (MB)',
+    },
+  ]);
+  const onColumnToggle = ({ value }: { value: string[] }): void => {
+    // Performance can be better using a dictionary, but TBD
+    const selectedColumns = value.map((name: string) => {
+      return columns.find((col) => col.name === name);
+    });
+    setVisibleColumns(selectedColumns as ColumnData[]);
+  };
+  const header = (
+    <MultiSelect
+      filter
+      onChange={onColumnToggle}
+      optionLabel='label'
+      optionValue='name'
+      options={columns}
+      placeholder='Select Columns'
+      // Invoke anonymous function to return array of visible column names
+      value={(() => visibleColumns.map((col) => col.name))()}
+    />
+  );
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+  const time = (timestamp: string) => <time dateTime={timestamp}>{utcToLocal(timestamp, 'MMM DD, YYYY')}</time>;
   return (
     <section className='max-w-[1536px]'>
       <DataTable
+        // Use database id instead of pid from ToH, because id is guaranteed to be unique
+        dataKey='id'
+        filterDisplay='row'
+        header={header}
         multiSortMeta={[
+          { field: 'supportedcurrentrel', order: -1 },
           { field: 'cpucores', order: -1 },
           { field: 'cpumhz', order: -1 },
           { field: 'flashmb', order: -1 },
@@ -318,22 +391,16 @@ const PageOpenwrtToh: React.FunctionComponent<{ content: any }> = ({ content }) 
         sortMode='multiple'
         sortOrder={-1}
         stripedRows
-        tableStyle={{ minWidth: '50rem' }}
+        tableStyle={{ minWidth: '1536px' }}
         value={content}
       >
         {/* Create all columns with name as field, label as header */}
-        {openWrtTohSchema.map((col, i) => (
-          <Column
-            field={col.name}
-            filter
-            filterField={col.name}
-            filterPlaceholder={`Search by ${col.label}`}
-            header={col.label}
-            key={i}
-            showFilterMenu={false}
-            sortable
-          />
+        {visibleColumns.map((col, i) => (
+          // eslint-disable-next-line react/no-array-index-key
+          <Column field={col.name} filter filterField={col.name} filterPlaceholder={`Search by ${col.label}`} header={col.label} key={i} sortable />
         ))}
+        <Column body={(rowData) => time(rowData.createdAt as string)} field='createdAt' header='Created At' sortable />
+        <Column body={(rowData) => time(rowData.updatedAt as string)} field='updatedAt' header='Updated At' sortable />
       </DataTable>
     </section>
   );
