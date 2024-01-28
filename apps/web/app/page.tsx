@@ -6,7 +6,7 @@
 
 import type { Metadata, Viewport } from 'next';
 import { ArticleJsonLd } from 'next-seo';
-import getArticlesWithMinimalResponse from '@utils/request/server-side/get-articles-with-minimal-response';
+import getArticlesWithMinimalResponse from '@utils/request/server-side/blog/get-articles-with-minimal-response';
 import getMetadataBySlug from '@utils/request/server-side/get-metadata-by-slug';
 import PageBlog from './page-blog';
 
