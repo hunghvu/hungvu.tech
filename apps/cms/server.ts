@@ -45,7 +45,7 @@ payload.init({
         })();
       }
     });
-    await bree.start();
+    // await bree.start();
   },
 });
 
