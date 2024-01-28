@@ -9,7 +9,7 @@ import { utcToLocal } from 'app/_utilities/parse-date';
 import { RichText } from 'app/_components/richtext';
 import RelatedArticles from './related-articles';
 
-const ArticlePage: React.FunctionComponent<{ content: any; relatedArticles: any }> = ({ content, relatedArticles }) => {
+const PageArticle: React.FunctionComponent<{ content: any; relatedArticles: any }> = ({ content, relatedArticles }) => {
   return (
     <article className='flex flex-col gap-4 w-full md:w-[768px] p-4 break-words bg-[#00002f]/80 border border-1 border-zinc-500 rounded-md'>
       <div className='flex flex-row gap-16 text-sm md:text-base text-zinc-300'>
@@ -37,4 +37,4 @@ const ArticlePage: React.FunctionComponent<{ content: any; relatedArticles: any 
   );
 };
 
-export default ArticlePage;
+export default PageArticle;

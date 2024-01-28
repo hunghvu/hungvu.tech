@@ -8,7 +8,7 @@ import type { Metadata, Viewport } from 'next';
 import { ArticleJsonLd } from 'next-seo';
 import getArticlesWithMinimalResponse from '@utils/request/server-side/get-articles-with-minimal-response';
 import getMetadataBySlug from '@utils/request/server-side/get-metadata-by-slug';
-import BlogPage from './page-blog';
+import PageBlog from './page-blog';
 
 export const dynamic = 'force-dynamic';
 
@@ -79,7 +79,7 @@ const Page = async (): Promise<any> => {
         url={process.env.NEXT_PUBLIC_BASE_URL!}
         useAppDir
       />
-      <BlogPage content={content} />
+      <PageBlog content={content} />
     </>
   );
 };

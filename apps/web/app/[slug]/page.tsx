@@ -8,7 +8,7 @@ import type { Metadata, Viewport } from 'next';
 import { ArticleJsonLd } from 'next-seo';
 import getArticleBySlug from '@utils/request/server-side/get-article-by-slug';
 import getArticlesInTheSameSeries from '@utils/request/server-side/get-articles-in-the-same-series';
-import ArticlePage from './page-article';
+import PageArticle from './page-article';
 
 interface MetadataProps {
   params: { slug: string };
@@ -87,7 +87,7 @@ const Page = async ({ params }: MetadataProps): Promise<any> => {
         url={`${process.env.NEXT_PUBLIC_BASE_URL!}/${content.settings.slug}`}
         useAppDir
       />
-      <ArticlePage content={content} relatedArticles={relatedArticles} />
+      <PageArticle content={content} relatedArticles={relatedArticles} />
     </>
   );
 };

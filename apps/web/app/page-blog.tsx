@@ -10,7 +10,7 @@ import { Tag } from 'primereact/tag';
 import { Divider } from 'primereact/divider';
 import { utcToLocal } from '@utils/parse-date';
 
-const BlogPage: React.FunctionComponent<{ content: any }> = ({ content }) => {
+const PageBlog: React.FunctionComponent<{ content: any }> = ({ content }) => {
   const data = content
     .filter((article: any) => article.settings.hideFromHome === false)
     .map((article: any) => {
@@ -61,4 +61,4 @@ const BlogPage: React.FunctionComponent<{ content: any }> = ({ content }) => {
   );
 };
 
-export default BlogPage;
+export default PageBlog;
