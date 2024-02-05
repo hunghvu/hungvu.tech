@@ -12,11 +12,11 @@
         "update": "pnpm update"
     },
     "dependencies": {
-        "@pulumi/mongodbatlas": "^3.13.0",
-        "@pulumi/pulumi": "^3.103.1"
+        "@pulumi/mongodbatlas": "^3.14.0",
+        "@pulumi/pulumi": "^3.104.2"
     },
     "devDependencies": {
-        "@types/node": "^20.11.8",
+        "@types/node": "^20.11.16",
         "eslint-config-custom": "workspace:*",
         "tsconfig-custom": "workspace:*"
     }

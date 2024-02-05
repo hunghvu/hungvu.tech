@@ -13,10 +13,10 @@
     },
     "dependencies": {
         "@pulumi/cloudflare": "^5.19.0",
-        "@pulumi/pulumi": "^3.103.1"
+        "@pulumi/pulumi": "^3.104.2"
     },
     "devDependencies": {
-        "@types/node": "^20.11.8",
+        "@types/node": "^20.11.16",
         "eslint-config-custom": "workspace:*",
         "tsconfig-custom": "workspace:*"
     }
