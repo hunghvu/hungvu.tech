@@ -505,14 +505,17 @@ const DefaultStyles: PrimeReactPTOptions = {
     menu: ({ state }: MenubarPassThroughMethodOptions) => ({
       className: `
         lg:gap-4 bg-transparent backdrop-blur sm:p-0 sm:flex sm:flex-row sm:top-auto sm:left-auto sm:relative sm:bg-transparent 
-        sm:shadow-none sm:w-auto flex-col top-full left-0 absolute py-1 shadow-md w-full hover:bg-zinc-400/10 hover:text-zinc-400
+        sm:shadow-none sm:w-auto flex-col top-full left-0 absolute py-1 shadow-md w-full
         ${state?.mobileActive ? 'flex border-b border-zinc-700' : 'hidden border-none'}`,
     }),
     action: {
       className: 'flex flex-row justify-center items-center gap-1 cursor-pointer p-2',
     },
+    menuitem: {
+      className: 'hover:bg-zinc-400/10 hover:text-zinc-400',
+    },
     button: {
-      className: 'sm:hidden hover:text-zinc-400',
+      className: 'sm:hidden',
     },
     popupIcon: {
       className: 'w-6 h-6',
@@ -534,8 +537,8 @@ const DefaultStyles: PrimeReactPTOptions = {
         state.messages[index] && state.messages[index].message.severity === 'success'
           ? 'bg-emerald-700/60 border-green-100/60'
           : state.messages[index] && state.messages[index].message.severity === 'error'
-          ? 'bg-red-100/60 border-red-500/60'
-          : ''
+            ? 'bg-red-100/60 border-red-500/60'
+            : ''
       }`,
     }),
     content: { className: 'flex justify-center p-4 bg-transparent backdrop-blur' },
