@@ -372,7 +372,10 @@ const PageOpenwrtToh: React.FunctionComponent<{ content: any }> = ({ content }) 
           { field: 'flashmb', order: -1 },
           { field: 'rammb', order: -1 },
         ]}
+        paginator
         removableSort
+        rows={10}
+        rowsPerPageOptions={[10, 25, 50, 100]}
         scrollHeight='800px'
         scrollable
         showGridlines
