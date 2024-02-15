@@ -349,24 +349,12 @@ const PageOpenwrtToh: React.FunctionComponent<{ content: any }> = ({ content }) 
       label: 'RAM (MB)',
     },
   ]);
-  const onColumnToggle = ({ value }: { value: string[] }): void => {
-    // Performance can be better using a dictionary, but TBD
-    const selectedColumns = value.map((name: string) => {
-      return columns.find((col) => col.name === name);
-    });
-    setVisibleColumns(selectedColumns as ColumnData[]);
+  const onColumnToggle = ({ value }: { value: ColumnData[] }): void => {
+    const orderedSelectedColumns = columns.filter((col) => value.some((selectedColumn) => selectedColumn.name === col.name));
+    setVisibleColumns(orderedSelectedColumns);
   };
   const header = (
-    <MultiSelect
-      filter
-      onChange={onColumnToggle}
-      optionLabel='label'
-      optionValue='name'
-      options={columns}
-      placeholder='Select Columns'
-      // Invoke anonymous function to return array of visible column names
-      value={(() => visibleColumns.map((col) => col.name))()}
-    />
+    <MultiSelect filter onChange={onColumnToggle} optionLabel='label' options={columns} placeholder='Select Columns' value={visibleColumns} />
   );
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   const time = (timestamp: string) => <time dateTime={timestamp}>{utcToLocal(timestamp, 'MMM DD, YYYY')}</time>;
