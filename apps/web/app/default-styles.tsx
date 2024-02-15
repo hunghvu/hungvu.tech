@@ -68,7 +68,7 @@ const DefaultStyles: PrimeReactPTOptions = {
     table: { className: 'w-full border-spacing-0' },
     thead: ({ context }: any) => ({
       className: classNames({
-        'bg-slate-50 top-0 z-[1]': context.scrollable,
+        'bg-slate-50 sticky top-0 z-30': context.scrollable,
       }),
     }),
     tbody: ({ props, context }: any) => ({
