@@ -376,12 +376,10 @@ const PageOpenwrtToh: React.FunctionComponent<{ content: any }> = ({ content }) 
         removableSort
         rows={10}
         rowsPerPageOptions={[10, 25, 50, 100]}
-        scrollHeight='800px'
+        scrollHeight='700px'
         scrollable
-        showGridlines
         sortMode='multiple'
         sortOrder={-1}
-        stripedRows
         tableStyle={{ minWidth: '1536px' }}
         value={content}
       >
