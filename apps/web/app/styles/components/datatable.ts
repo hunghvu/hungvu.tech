@@ -82,7 +82,7 @@ const datatable: DataTablePassThroughOptions = {
     },
     filterButtonbar: { className: `flex items-center justify-between p-5` },
     filterClearButton: {
-      root: { className: `w-auto min-[0px]:text-sm border-blue-500 text-blue-500 px-4 py-3` },
+      root: { className: `w-auto min-[0px]:text-sm border-sky-500 text-sky-500 px-4 py-3` },
     },
     filterApplyButton: {
       root: { className: `w-auto min-[0px]:text-sm px-4 py-3` },
