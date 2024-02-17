@@ -28,7 +28,7 @@ const datatable: DataTablePassThroughOptions = {
     headerContent: { className: `flex items-center gap-2` },
     bodyCell: {
       className: `
-        text-left border border-solid border-t-0 border-r-0 border-zinc-500 bg-[#00002f]/80 p-4
+        text-left text-lg border border-solid border-t-0 border-r-0 border-zinc-500 bg-[#00002f]/80 p-4
       `,
     },
     sortIcon: ({ context }: ColumnPassThroughMethodOptions) => ({
@@ -45,7 +45,7 @@ const datatable: DataTablePassThroughOptions = {
     },
     columnFilter: { className: `inline-flex items-center ml-auto` },
     filterInput: {
-      className: `text-black`,
+      className: `text-black bg-zinc-100`,
     },
     filterOverlay: {
       className: `bg-emerald-950 border border-t-0 border-solid border-zinc-500 rounded-md min-w-[12.5rem]`
