@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 'use client';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
@@ -21,16 +22,8 @@ const columns: ColumnData[] = [
     label: 'Device Type',
   },
   {
-    name: 'brand',
-    label: 'Brand',
-  },
-  {
-    name: 'model',
-    label: 'Model',
-  },
-  {
-    name: 'version',
-    label: 'Version',
+    name: 'deviceName',
+    label: 'Device Name',
   },
   {
     name: 'fccid',
@@ -313,16 +306,8 @@ const columns: ColumnData[] = [
 const PageOpenwrtToh: React.FunctionComponent<{ content: any }> = ({ content }) => {
   const [visibleColumns, setVisibleColumns] = useState<ColumnData[]>([
     {
-      name: 'brand',
-      label: 'Brand',
-    },
-    {
-      name: 'model',
-      label: 'Model',
-    },
-    {
-      name: 'version',
-      label: 'Version',
+      name: 'deviceName',
+      label: 'Device Name',
     },
     {
       name: 'cpu',
@@ -358,6 +343,7 @@ const PageOpenwrtToh: React.FunctionComponent<{ content: any }> = ({ content }) 
   );
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   const time = (timestamp: string) => <time dateTime={timestamp}>{utcToLocal(timestamp, 'MMM DD, YYYY')}</time>;
+  content = content.map((row: any) => ({ ...row, deviceName: `${row.brand} / ${row.model} / ${row.version}` }));
   return (
     <section className='max-w-[1536px]'>
       <DataTable
@@ -385,7 +371,6 @@ const PageOpenwrtToh: React.FunctionComponent<{ content: any }> = ({ content }) 
       >
         {/* Create all columns with name as field, label as header */}
         {visibleColumns.map((col, i) => (
-          // eslint-disable-next-line react/no-array-index-key
           <Column field={col.name} filter filterField={col.name} filterPlaceholder={`Search by ${col.label}`} header={col.label} key={i} sortable />
         ))}
         <Column body={(rowData) => time(rowData.createdAt as string)} field='createdAt' header='Created At' sortable />
