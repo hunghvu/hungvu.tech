@@ -20,7 +20,7 @@ const datatable: DataTablePassThroughOptions = {
   column: {
     headerCell: ({ context }: ColumnPassThroughMethodOptions) => ({
       className: `
-        text-left font-bold bg-emerald-950 border border-solid border-zinc-500 border-t-0 border-r-0
+        text-left font-bold border border-solid border-zinc-500 border-t-0 border-r-0
         transition duration-200 text-xl p-4
         ${context.sorted ? `bg-[#00002f]` : `bg-emerald-950 text-zinc-300`}
       `,

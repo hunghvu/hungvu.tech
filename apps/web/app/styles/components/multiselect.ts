@@ -12,7 +12,7 @@ const multiselect: MultiSelectPassThroughOptions = {
   }),
   labelContainer: { className: 'overflow-hidden flex flex-auto cursor-pointer' },
   label: {
-    className: 'block overflow-hidden whitespace-nowrap cursor-pointer overflow-ellipsis text-black p-2 transition duration-200'
+    className: 'block overflow-hidden whitespace-nowrap cursor-pointer overflow-ellipsis text-black p-2 transition duration-200 font-normal'
   },
   trigger: {
     className: 'flex items-center justify-center shrink-0 bg-transparent text-black w-12 rounded-tr-lg rounded-br-lg'
