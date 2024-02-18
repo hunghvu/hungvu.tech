@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-confusing-void-expression */
+/* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable react/no-array-index-key */
 'use client';
@@ -7,6 +9,7 @@ import { Column } from 'primereact/column';
 import { useState } from 'react';
 import { MultiSelect } from 'primereact/multiselect';
 import { utcToLocal } from '@utils/parse-date';
+import { FilterMatchMode } from 'primereact/api';
 import type { SelectItemOptionsType } from 'primereact/selectitem';
 
 interface ColumnData {
@@ -392,11 +395,8 @@ const MultiSelectFilterTemplate: React.FC<{
 }> = ({ filterOptions, selectOptions }) => {
   return (
     <MultiSelect
-      className='p-column-filter'
-      onChange={(e) => {
-        filterOptions.filterCallback(e.value);
-      }}
-      optionLabel='name'
+      filter
+      onChange={(e) => filterOptions.filterApplyCallback(e.value)}
       options={selectOptions}
       placeholder='Any'
       value={filterOptions.value}
@@ -469,19 +469,17 @@ const PageOpenwrtToh: React.FunctionComponent<{ content: any }> = ({ content }) 
     return acc;
   }, {});
 
-  // Turn set into an array of object with shape: {name: value, label: value}
   // Sort the array alphabetically from Z to A, case-insensitive, and descending numerical order if applicable
   for (const key in selectOptionsDictionary) {
-    selectOptionsDictionary[key] = Array.from(selectOptionsDictionary[key])
-      .sort((a: any, b: any) => {
-        if (isNaN(a) && isNaN(b)) {
-          return b.toLowerCase().localeCompare(a.toLowerCase());
-        } else if (!isNaN(a) && !isNaN(b)) {
-          return b - a; // Reverse descending numerical order
-        }
-        return isNaN(a) ? -1 : 1; // Numbers before letters
-      })
-      .map((item: any) => ({ name: item, label: item }));
+    selectOptionsDictionary[key] = Array.from(selectOptionsDictionary[key]).sort((a: any, b: any) => {
+      if (isNaN(a) && isNaN(b)) {
+        return b.toLowerCase().localeCompare(a.toLowerCase());
+      } else if (!isNaN(a) && !isNaN(b)) {
+        return b - a; // Reverse descending numerical order
+      }
+      return isNaN(a) ? -1 : 1; // Numbers before letters
+    });
+    // .map((item: any) => ({ name: item, label: item }));
   }
 
   return (
@@ -527,12 +525,10 @@ const PageOpenwrtToh: React.FunctionComponent<{ content: any }> = ({ content }) 
               <Column
                 field={col.name}
                 filter
-                // eslint-disable-next-line react/no-unstable-nested-components
                 filterElement={(filterOptions) => (
                   <MultiSelectFilterTemplate filterOptions={filterOptions} selectOptions={selectOptionsDictionary[col.name]} />
                 )}
-                filterField={col.name}
-                filterPlaceholder={`Search by ${col.label}`}
+                filterMatchMode={FilterMatchMode.IN}
                 header={col.label}
                 key={i}
                 showFilterMatchModes={false}

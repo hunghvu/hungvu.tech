@@ -62,49 +62,25 @@ const datatable: DataTablePassThroughOptions = {
           : ''}
         `
     }),
-    filterOperator: {
+    filterMenuButton: ({ context }: ColumnPassThroughMethodOptions) => ({
       className: `
-        px-5 py-3 border-b border-solid 
-        border-zinc-500 rounded-md text-zinc-300 bg-[#00002f] 
-        rounded-t-md
-      `,
-    },
-    filterOperatorDropdown: {
-      root: { className: `min-[0px]:flex` },
-    },
-    filterConstraint: { className: `p-5 border-b border-solid border-zinc-500 rounded-md` },
-    filterAddRule: { className: `py-3 px-5` },
-    filterAddRuleButton: {
-      root: { className: `justify-center w-full min-[0px]:text-sm` },
-    },
-    filterRemoveButton: {
-      root: { className: `ml-2` },
-    },
-    filterButtonbar: { className: `flex items-center justify-between p-5` },
-    filterClearButton: {
-      root: { className: `w-auto min-[0px]:text-sm border-sky-500 text-sky-500 px-4 py-3` },
-    },
-    filterApplyButton: {
-      root: { className: `w-auto min-[0px]:text-sm px-4 py-3` },
-    },
-    filterMenuButton: {
+          inline-flex justify-center items-center cursor-pointer no-underline overflow-hidden relative ml-2
+          w-8 h-8 rounded-md transition duration-200 hover:text-zinc-300 hover:bg-zinc-300/20
+          focus:outline-0 focus:outline-offset-0 focus:shadow-[0_0_0_0.2rem_rgba(191,219,254,1)]
+          ${context.active ? `bg-sky-200 text-black` : ''}
+        `,
+
+    }),
+    headerFilterClearButton: ({ context }: ColumnPassThroughMethodOptions) => ({
       className: `
         inline-flex justify-center items-center cursor-pointer no-underline overflow-hidden relative ml-2
-        w-8 h-8 rounded-md
+        w-8 h-8 rounded-md ml-4
         transition duration-200
         hover:text-zinc-300 hover:bg-zinc-300/20
         focus:outline-0 focus:outline-offset-0 focus:shadow-[0_0_0_0.2rem_rgba(191,219,254,1)]
-      `,
-    },
-    headerFilterClearButton: {
-      className: `
-      inline-flex justify-center items-center cursor-pointer no-underline overflow-hidden relative ml-2
-      w-8 h-8 rounded-md ml-4
-      transition duration-200
-      hover:text-zinc-300 hover:bg-zinc-300/20
-      focus:outline-0 focus:outline-offset-0 focus:shadow-[0_0_0_0.2rem_rgba(191,219,254,1)]
-      `,
-    },
-  }
+        ${!context.hidden ? 'invisible' : ''}`
+
+    })
+  },
 }
 export { datatable }
