@@ -7,7 +7,7 @@ const button = {
       ${geist.className} ${context.disabled ? ' opacity-60 pointer-events-none cursor-default ' : ''}`,
   }),
   label: ({ props }: ButtonPassThroughMethodOptions) => ({
-    className: !props.label ? 'hidden' : 'ml-2',
+    className: !props.label ? 'hidden' : '',
   }),
 }
 
