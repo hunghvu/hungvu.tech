@@ -453,13 +453,13 @@ const PageOpenwrtToh: React.FunctionComponent<{ content: any }> = ({ content }) 
   const time = (timestamp: string) => <time dateTime={timestamp}>{utcToLocal(timestamp, 'MMM DD, YYYY')}</time>;
 
   // Add a deviceName column to the content
-  content = content.map((row: any) => ({ ...row, deviceName: `${row.brand} / ${row.model} / ${row.version}` }));
+  const contentWithDeviceName = content.map((row: any) => ({ ...row, deviceName: `${row.brand} / ${row.model} / ${row.version}` }));
 
   // Create a dictionary of select options for each column
   // From multiple documents, reduce to a single dictionary, with value as a set
   // That set contain all values from the respective key in original document
   // E.g. [{key: value1}, {key: value2}] => { key: Set([value1, value2, ...]) }
-  const selectOptionsDictionary = content.reduce((acc: any, item: any) => {
+  const selectOptionsDictionary = contentWithDeviceName.reduce((acc: any, item: any) => {
     for (const [key, value] of Object.entries(item)) {
       if (acc[key] === undefined || acc[key].length === 0) {
         acc[key] = new Set();
@@ -507,7 +507,7 @@ const PageOpenwrtToh: React.FunctionComponent<{ content: any }> = ({ content }) 
         sortMode='multiple'
         sortOrder={-1}
         tableStyle={{ minWidth: '1536px' }}
-        value={content}
+        value={contentWithDeviceName}
       >
         {/* Create all columns with name as field, label as header */}
         {visibleColumns.map((col, i) => {
