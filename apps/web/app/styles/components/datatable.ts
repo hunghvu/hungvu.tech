@@ -45,18 +45,18 @@ const datatable: DataTablePassThroughOptions = {
     },
     columnFilter: { className: `inline-flex items-center ml-auto` },
     filterInput: {
-      className: `text-black bg-zinc-100`,
+      className: `text-black rounded-md`,
     },
     filterOverlay: {
-      className: `bg-emerald-950 border border-t-0 border-solid border-zinc-500 rounded-md min-w-[12.5rem]`
+      className: `bg-emerald-950 rounded-md min-w-[12.5rem]`
     },
     filterMatchModeDropdown: {
       root: { className: `min-[0px]:flex mb-2` },
     },
-    filterRowItems: { className: `m-0 p-0 py-3 list-none ` },
+    filterRowItems: { className: `m-0 p-0 py-2 list-none` },
     filterRowItem: ({ context }: ColumnPassThroughMethodOptions) => ({
       className: `
-          m-0 py-3 px-5 transition duration-200 hover:bg-emerald-900
+          m-0 p-4 transition duration-200 hover:bg-emerald-900
           ${context !== null && context !== void 0 && context.highlighted
           ? 'bg-emerald-900'
           : ''}

@@ -18,17 +18,17 @@ const multiselect: MultiSelectPassThroughOptions = {
     className: 'flex items-center justify-center shrink-0 bg-transparent text-black w-12 rounded-tr-lg rounded-br-lg'
   },
   panel: {
-    className: 'bg-zinc-100 text-black border-0 rounded-md shadow-lg'
+    className: 'bg-zinc-100 text-black border-0 rounded-md shadow-md'
   },
   header: {
-    className: 'p-2 border-b border-zinc-500 text-black bg-zinc-100 rounded-t-lg flex items-center justify-between'
+    className: 'p-2 border-b border-zinc-500 text-black bg-zinc-100 rounded-t-md flex items-center justify-between'
   },
   headerCheckboxContainer: {
     className: 'inline-flex cursor-pointer select-none align-bottom relative mr-2 w-6 h-6'
   },
   headerCheckbox: {
     root: ({ props }: CheckboxPassThroughMethodOptions) => ({
-      className: `flex items-center justify-center border-2 w-6 h-6 text-black rounded-lg transition-colors duration-200
+      className: `flex items-center justify-center border-2 w-6 h-6 text-black rounded-md transition-colors duration-200
           hover:border-blue-500 focus:outline-none focus:outline-offset-0 focus:shadow-[0_0_0_0.2rem_rgba(191,219,254,1)]
           ${!(props !== null && props !== undefined && props.checked) ? 'border-zinc-500 bg-zinc-100' : 'border-blue-500 bg-blue-500'}`
 
@@ -36,7 +36,7 @@ const multiselect: MultiSelectPassThroughOptions = {
   },
   headerCheckboxIcon: { className: 'w-4 h-4 transition-all duration-200 text-zinc-100 text-base' },
   wrapper: {
-    className: 'max-h-[200px] overflow-auto bg-zinc-100 text-black border-0 rounded-md shadow-lg'
+    className: 'max-h-[200px] overflow-auto bg-zinc-100 text-black border-0 rounded-md shadow-md'
   },
   list: { className: 'py-2 list-none m-0' },
   emptyMessage: { className: 'px-4 text-black' },
@@ -57,8 +57,11 @@ const multiselect: MultiSelectPassThroughOptions = {
   filterContainer: { className: 'flex flex-row justify-center items-center' },
   filterInput: {
     root: {
-      className: `pr-7 -mr-7 w-full font-sans text-base text-black bg-zinc-100 py-3 px-3 border border-zinc-500 transition duration-200 rounded-lg appearance-none
-        hover:border-blue-500 focus:outline-none focus:outline-offset-0 focus:shadow-[0_0_0_0.2rem_rgba(191,219,254,1)]`
+      className: `
+        pr-6 -mr-6 w-full font-sans text-base text-black bg-zinc-100 
+        py-4 px-4 border border-zinc-500 transition duration-200 rounded-lg 
+        appearance-none hover:border-blue-500 focus:outline-none focus:outline-offset-0 
+        focus:shadow-[0_0_0_0.2rem_rgba(191,219,254,1)]`
     }
   },
   transition: transitions.overlay

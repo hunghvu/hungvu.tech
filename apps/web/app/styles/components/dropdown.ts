@@ -15,7 +15,7 @@ const dropdown: DropdownPassThroughOptions = {
         cursor-pointer block flex flex-auto overflow-hidden overflow-ellipsis whitespace-nowrap relative
         border-0 p-2 transition duration-200 rounded appearance-none font-sans text-base
         focus:outline-none focus:shadow-none text-black text-lg
-        ${props.showClear ? 'pr-7' : ''}
+        ${props.showClear ? 'pr-6' : ''}
       `,
   }),
   item: ({ context }: DropdownPassThroughMethodOptions) => ({
@@ -28,7 +28,7 @@ const dropdown: DropdownPassThroughOptions = {
       `,
   }),
   trigger: {
-    className: 'flex items-center justify-center shrink-0 bg-transparent text-black w-12 rounded-tr-lg rounded-br-lg'
+    className: 'flex items-center justify-center shrink-0 bg-transparent text-black w-12 rounded-tr-md rounded-br-md'
   },
   panel: {
     className: 'bg-zinc-100'
