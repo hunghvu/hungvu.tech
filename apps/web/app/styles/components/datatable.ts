@@ -56,9 +56,9 @@ const datatable: DataTablePassThroughOptions = {
     filterRowItems: { className: `m-0 p-0 py-3 list-none ` },
     filterRowItem: ({ context }: ColumnPassThroughMethodOptions) => ({
       className: `
-          m-0 py-3 px-5 bg-transparent transition duration-200 
+          m-0 py-3 px-5 transition duration-200 hover:bg-emerald-900
           ${context !== null && context !== void 0 && context.highlighted
-          ? 'bg-emeral-600'
+          ? 'bg-emerald-900'
           : ''}
         `
     }),
