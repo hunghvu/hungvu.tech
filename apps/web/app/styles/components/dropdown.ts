@@ -5,7 +5,7 @@ const dropdown: DropdownPassThroughOptions = {
   root: ({ props }: DropdownPassThroughMethodOptions) => ({
     className: `
         cursor-pointer inline-flex relative select-none
-        bg-zinc-100 border border-zinc-300 transition-colors duration-200 ease-in-out rounded-md w-full md:w-56
+        bg-zinc-100 border border-zinc-500 transition-colors duration-200 ease-in-out rounded-md w-full md:w-56
         hover:border-sky-200 focus:outline-none focus:outline-offset-0 focus:shadow-[0_0_0_0.2rem_rgba(191,219,254,1)]
         ${props.disabled ? 'opacity-60 select-none pointer-events-none cursor-default' : ''}
       `,
@@ -22,10 +22,8 @@ const dropdown: DropdownPassThroughOptions = {
     className: `
         cursor-pointer font-normal overflow-hidden relative whitespace-nowrap
         m-0 p-2 border-0  transition-shadow duration-200 rounded-none text-black text-lg
-        ${!context.focused && !context.selected ? 'hover:bg-zinc-200' : ''}
         ${context.focused && !context.selected ? 'hover:bg-zinc-200' : ''}
-        ${context.focused && context.selected ? 'bg-sky-200' : ''}
-        ${!context.focused && context.selected ? 'bg-sky-100' : ''}
+        ${!context.focused && context.selected ? 'bg-sky-200' : ''}
         ${context.disabled ? 'opacity-60 select-none pointer-events-none cursor-default' : ''}
       `,
   }),

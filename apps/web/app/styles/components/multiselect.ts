@@ -5,7 +5,7 @@ import { transitions } from "./transitions";
 const multiselect: MultiSelectPassThroughOptions = {
   root: ({ props }: MultiSelectPassThroughMethodOptions) => ({
     className: `inline-flex cursor-pointer select-none
-        bg-zinc-100 border border-zinc-300 transition-colors duration-200 ease-in-out rounded-md
+        bg-zinc-100 border border-zinc-500 transition-colors duration-200 ease-in-out rounded-md
         w-full md:w-80
         ${props === null || props === undefined || props.disabled ? 'opacity-60 select-none pointer-events-none cursor-default' : ''}`
 
@@ -21,7 +21,7 @@ const multiselect: MultiSelectPassThroughOptions = {
     className: 'bg-zinc-100 text-black border-0 rounded-md shadow-lg'
   },
   header: {
-    className: 'p-2 border-b border-zinc-300 text-black bg-zinc-100 rounded-t-lg flex items-center justify-between'
+    className: 'p-2 border-b border-zinc-500 text-black bg-zinc-100 rounded-t-lg flex items-center justify-between'
   },
   headerCheckboxContainer: {
     className: 'inline-flex cursor-pointer select-none align-bottom relative mr-2 w-6 h-6'
@@ -30,7 +30,7 @@ const multiselect: MultiSelectPassThroughOptions = {
     root: ({ props }: CheckboxPassThroughMethodOptions) => ({
       className: `flex items-center justify-center border-2 w-6 h-6 text-black rounded-lg transition-colors duration-200
           hover:border-blue-500 focus:outline-none focus:outline-offset-0 focus:shadow-[0_0_0_0.2rem_rgba(191,219,254,1)]
-          ${!(props !== null && props !== undefined && props.checked) ? 'border-zinc-300 bg-zinc-100' : 'border-blue-500 bg-blue-500'}`
+          ${!(props !== null && props !== undefined && props.checked) ? 'border-zinc-500 bg-zinc-100' : 'border-blue-500 bg-blue-500'}`
 
     })
   },
@@ -51,13 +51,13 @@ const multiselect: MultiSelectPassThroughOptions = {
   checkbox: ({ context }: MultiSelectPassThroughMethodOptions) => ({
     className: `flex items-center justify-center border-2 w-6 h-6 text-black rounded-lg transition-colors duration-200
         hover:border-blue-500 focus:outline-none focus:outline-offset-0 focus:shadow-[0_0_0_0.2rem_rgba(191,219,254,1)]
-        ${!(context !== null && context !== undefined && context.selected) ? 'border-zinc-300 bg-zinc-100' : 'border-blue-500 bg-blue-500'}`
+        ${!(context !== null && context !== undefined && context.selected) ? 'border-zinc-500 bg-zinc-100' : 'border-blue-500 bg-blue-500'}`
   }),
   checkboxIcon: { className: 'w-4 h-4 transition-all duration-200 text-zinc-100 text-base' },
   filterContainer: { className: 'flex flex-row justify-center items-center' },
   filterInput: {
     root: {
-      className: `pr-7 -mr-7 w-full font-sans text-base text-black bg-zinc-100 py-3 px-3 border border-zinc-300 transition duration-200 rounded-lg appearance-none
+      className: `pr-7 -mr-7 w-full font-sans text-base text-black bg-zinc-100 py-3 px-3 border border-zinc-500 transition duration-200 rounded-lg appearance-none
         hover:border-blue-500 focus:outline-none focus:outline-offset-0 focus:shadow-[0_0_0_0.2rem_rgba(191,219,254,1)]`
     }
   },
