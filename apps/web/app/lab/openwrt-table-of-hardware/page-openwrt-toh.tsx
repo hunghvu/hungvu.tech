@@ -370,11 +370,22 @@ const PageOpenwrtToh: React.FunctionComponent<{ content: any }> = ({ content }) 
         value={content}
       >
         {/* Create all columns with name as field, label as header */}
-        {visibleColumns.map((col, i) => (
-          <Column field={col.name} filter filterField={col.name} filterPlaceholder={`Search by ${col.label}`} header={col.label} key={i} sortable />
-        ))}
-        <Column body={(rowData) => time(rowData.createdAt as string)} field='createdAt' header='Created At' sortable />
-        <Column body={(rowData) => time(rowData.updatedAt as string)} field='updatedAt' header='Updated At' sortable />
+        {visibleColumns.map((col, i) => {
+          if (col.name === 'createdAt' || col.name === 'updatedAt') {
+            return (
+              <Column
+                body={(rowData) => time(col.name === 'createdAt' ? (rowData.createdAt as string) : (rowData.updatedAt as string))}
+                field={col.name}
+                header={col.label}
+                key={i}
+                sortable
+              />
+            );
+          }
+          return (
+            <Column field={col.name} filter filterField={col.name} filterPlaceholder={`Search by ${col.label}`} header={col.label} key={i} sortable />
+          );
+        })}
       </DataTable>
     </section>
   );
