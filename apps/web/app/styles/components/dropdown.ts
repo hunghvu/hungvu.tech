@@ -30,6 +30,10 @@ const dropdown: DropdownPassThroughOptions = {
   trigger: {
     className: 'flex items-center justify-center shrink-0 bg-transparent text-black w-12 rounded-tr-md rounded-br-md'
   },
+  wrapper: {
+    className: 'max-h-[200px] overflow-auto bg-zinc-100 border-0 rounded-md shadow-lg'
+  },
+  list: { className: 'py-2 list-none m-0' },
   panel: {
     className: 'bg-zinc-100'
   },
