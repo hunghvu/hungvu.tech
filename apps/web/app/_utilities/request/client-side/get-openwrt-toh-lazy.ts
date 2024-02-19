@@ -1,11 +1,10 @@
 import { notFound } from "next/navigation";
 
-const getOpenwrtToh = async (numberOfDevices: number, page: number): Promise<any> => {
+const getOpenwrtTohLazy = async (numberOfDevices: number, page: number): Promise<any> => {
   let res;
   try {
     res = await fetch(
-      `${process.env.NEXT_REQUEST_CMS_OPENWRT_TOH!}?limit=${numberOfDevices}&page=${page}`,
-      { next: { revalidate: process.env.NODE_ENV === "production" ? 86400 : 0 } }
+      `${process.env.NEXT_PUBLIC_API_OPENWRT_TOH!}?limit=${numberOfDevices}&page=${page}`
     );
   } catch (err) {
     throw new Error('Connection Error');
@@ -26,4 +25,4 @@ const getOpenwrtToh = async (numberOfDevices: number, page: number): Promise<any
   return content;
 };
 
-export default getOpenwrtToh;
+export default getOpenwrtTohLazy;

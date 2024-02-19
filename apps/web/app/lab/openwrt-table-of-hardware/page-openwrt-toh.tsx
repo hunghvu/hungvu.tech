@@ -3,391 +3,19 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable react/no-array-index-key */
 'use client';
+
 import { DataTable } from 'primereact/datatable';
-import type { ColumnFilterElementTemplateOptions } from 'primereact/column';
 import { Column } from 'primereact/column';
 import { useState } from 'react';
 import { MultiSelect } from 'primereact/multiselect';
 import { utcToLocal } from '@utils/parse-date';
 import { FilterMatchMode } from 'primereact/api';
+import type { ColumnFilterElementTemplateOptions } from 'primereact/column';
+import type { DataTableStateEvent } from 'primereact/datatable';
 import type { SelectItemOptionsType } from 'primereact/selectitem';
-
-interface ColumnData {
-  name: string;
-  label: string;
-  filterMode: 'none' | 'standard' | 'multiSelect';
-}
-
-// Mapping of the schema from the OpenWRT Table of Hardware in the CMS
-// Aside from a search box, there are 2 filter modes:
-// - Standard: The default implementation of PrimeReact
-// - MultiSelect: A dropdown with checkboxes for each column
-// Although there should be a thrid option: "Comparison", considering a free-text nature
-// of the data, it is not implemented
-const columns: ColumnData[] = [
-  {
-    name: 'pid',
-    label: 'Product ID',
-    filterMode: 'standard',
-  },
-  {
-    name: 'devicetype',
-    label: 'Device Type',
-    filterMode: 'multiSelect',
-  },
-  // This is the only column that is not in the CMS schema
-  // It is the combination of brand, model, and version
-  {
-    name: 'deviceName',
-    label: 'Device Name',
-    filterMode: 'standard',
-  },
-  {
-    name: 'fccid',
-    label: 'FCC ID',
-    filterMode: 'standard',
-  },
-  {
-    name: 'availability',
-    label: 'Availability',
-    filterMode: 'multiSelect',
-  },
-  {
-    name: 'whereavailable',
-    label: 'Where Available',
-    filterMode: 'multiSelect',
-  },
-  {
-    name: 'supportedsincecommit',
-    label: 'Supported Since Commit',
-    filterMode: 'standard',
-  },
-  {
-    name: 'supportedsincerel',
-    label: 'Supported Since Release',
-    filterMode: 'multiSelect',
-  },
-  {
-    name: 'supportedcurrentrel',
-    label: 'Supported Current Release',
-    filterMode: 'multiSelect',
-  },
-  {
-    name: 'unsupported_functions',
-    label: 'Unsupported Functions',
-    filterMode: 'multiSelect',
-  },
-  {
-    name: 'target',
-    label: 'Target',
-    filterMode: 'multiSelect',
-  },
-  {
-    name: 'subtarget',
-    label: 'Subtarget',
-    filterMode: 'multiSelect',
-  },
-  {
-    name: 'packagearchitecture',
-    label: 'Package Architecture',
-    filterMode: 'multiSelect',
-  },
-  {
-    name: 'bootloader',
-    label: 'Bootloader',
-    filterMode: 'multiSelect',
-  },
-  {
-    name: 'cpu',
-    label: 'CPU',
-    filterMode: 'multiSelect',
-  },
-  {
-    name: 'cpucores',
-    label: 'CPU Cores',
-    filterMode: 'multiSelect',
-  },
-  {
-    name: 'cpumhz',
-    label: 'CPU MHz',
-    filterMode: 'multiSelect',
-  },
-  {
-    name: 'flashmb',
-    label: 'Flash (MB)',
-    filterMode: 'multiSelect',
-  },
-  {
-    name: 'rammb',
-    label: 'RAM (MB)',
-    filterMode: 'multiSelect',
-  },
-  {
-    name: 'ethernet100mports',
-    label: 'Ethernet 100M Ports',
-    filterMode: 'multiSelect',
-  },
-  {
-    name: 'ethernetgbitports',
-    label: 'Ethernet Gbit Ports',
-    filterMode: 'multiSelect',
-  },
-  {
-    name: 'ethernet1gports',
-    label: 'Ethernet 1G Ports',
-    filterMode: 'multiSelect',
-  },
-  {
-    name: 'ethernet2_5gports',
-    label: 'Ethernet 2.5G Ports',
-    filterMode: 'multiSelect',
-  },
-  {
-    name: 'ethernet5gports',
-    label: 'Ethernet 5G Ports',
-    filterMode: 'multiSelect',
-  },
-  {
-    name: 'ethernet10gports',
-    label: 'Ethernet 10G Ports',
-    filterMode: 'multiSelect',
-  },
-  {
-    name: 'sfp_ports',
-    label: 'SFP Ports',
-    filterMode: 'multiSelect',
-  },
-  {
-    name: 'sfp_plus_ports',
-    label: 'SFP+ Ports',
-    filterMode: 'multiSelect',
-  },
-  {
-    name: 'switch',
-    label: 'Switch',
-    filterMode: 'multiSelect',
-  },
-  {
-    name: 'vlan',
-    label: 'VLAN',
-    filterMode: 'multiSelect',
-  },
-  {
-    name: 'modem',
-    label: 'Modem',
-    filterMode: 'multiSelect',
-  },
-  {
-    name: 'commentsnetworkports',
-    label: 'Comments Network Ports',
-    filterMode: 'standard',
-  },
-  {
-    name: 'wlanhardware',
-    label: 'WLAN Hardware',
-    filterMode: 'multiSelect',
-  },
-  {
-    name: 'wlan24ghz',
-    label: 'WLAN 2.4GHz',
-    filterMode: 'multiSelect',
-  },
-  {
-    name: 'wlan50ghz',
-    label: 'WLAN 5GHz',
-    filterMode: 'multiSelect',
-  },
-  {
-    name: 'wlancomments',
-    label: 'WLAN Comments',
-    filterMode: 'standard',
-  },
-  {
-    name: 'wlandriver',
-    label: 'WLAN Driver',
-    filterMode: 'multiSelect',
-  },
-  {
-    name: 'detachableantennas',
-    label: 'Detachable Antennas',
-    filterMode: 'multiSelect',
-  },
-  {
-    name: 'bluetooth',
-    label: 'Bluetooth',
-    filterMode: 'multiSelect',
-  },
-  {
-    name: 'usbports',
-    label: 'USB Ports',
-    filterMode: 'multiSelect',
-  },
-  {
-    name: 'sataports',
-    label: 'SATA Ports',
-    filterMode: 'multiSelect',
-  },
-  {
-    name: 'commentsusbsataports',
-    label: 'Comments USB/SATA Ports',
-    filterMode: 'standard',
-  },
-  {
-    name: 'videoports',
-    label: 'Video Ports',
-    filterMode: 'multiSelect',
-  },
-  {
-    name: 'audioports',
-    label: 'Audio Ports',
-    filterMode: 'multiSelect',
-  },
-  {
-    name: 'phoneports',
-    label: 'Phone Ports',
-    filterMode: 'multiSelect',
-  },
-  {
-    name: 'commentsavports',
-    label: 'Comments AV Ports',
-    filterMode: 'standard',
-  },
-  {
-    name: 'serial',
-    label: 'Serial',
-    filterMode: 'multiSelect',
-  },
-  {
-    name: 'serialconnectionparameters',
-    label: 'Serial Connection Parameters',
-    filterMode: 'multiSelect',
-  },
-  {
-    name: 'jtag',
-    label: 'JTAG',
-    filterMode: 'multiSelect',
-  },
-  {
-    name: 'ledcount',
-    label: 'LED Count',
-    filterMode: 'multiSelect',
-  },
-  {
-    name: 'buttoncount',
-    label: 'Button Count',
-    filterMode: 'multiSelect',
-  },
-  {
-    name: 'gpios',
-    label: 'GPIOs',
-    filterMode: 'multiSelect',
-  },
-  {
-    name: 'powersupply',
-    label: 'Power Supply',
-    filterMode: 'multiSelect',
-  },
-  {
-    name: 'devicepage',
-    label: 'Device Page',
-    filterMode: 'standard',
-  },
-  {
-    name: 'owrt_forum_topic_url',
-    label: 'OpenWRT Forum Topic URL',
-    filterMode: 'standard',
-  },
-  {
-    name: 'lede_forum_topic_url',
-    label: 'LEDE Forum Topic URL',
-    filterMode: 'standard',
-  },
-  {
-    name: 'forumsearch',
-    label: 'Forum Search',
-    filterMode: 'standard',
-  },
-  {
-    name: 'gitsearch',
-    label: 'Git Search',
-    filterMode: 'standard',
-  },
-  {
-    name: 'wikideviurl',
-    label: 'WikiDevi URL',
-    filterMode: 'standard',
-  },
-  {
-    name: 'oemdevicehomepageurl',
-    label: 'OEM Device Homepage URL',
-    filterMode: 'standard',
-  },
-  {
-    name: 'firmwareoemstockurl',
-    label: 'Firmware OEM Stock URL',
-    filterMode: 'standard',
-  },
-  {
-    name: 'firmwareopenwrtinstallurl',
-    label: 'Firmware OpenWRT Install URL',
-    filterMode: 'standard',
-  },
-  {
-    name: 'firmwareopenwrtupgradeurl',
-    label: 'Firmware OpenWRT Upgrade URL',
-    filterMode: 'standard',
-  },
-  {
-    name: 'firmwareopenwrtsnapshotinstallurl',
-    label: 'Firmware OpenWRT Snapshot Install URL',
-    filterMode: 'standard',
-  },
-  {
-    name: 'firmwareopenwrtsnapshotupgradeurl',
-    label: 'Firmware OpenWRT Snapshot Upgrade URL',
-    filterMode: 'standard',
-  },
-  {
-    name: 'installationmethods',
-    label: 'Installation Methods',
-    filterMode: 'multiSelect',
-  },
-  {
-    name: 'commentinstallation',
-    label: 'Comment Installation',
-    filterMode: 'standard',
-  },
-  {
-    name: 'recoverymethods',
-    label: 'Recovery Methods',
-    filterMode: 'multiSelect',
-  },
-  {
-    name: 'commentrecovery',
-    label: 'Comment Recovery',
-    filterMode: 'standard',
-  },
-  {
-    name: 'comments',
-    label: 'Comments',
-    filterMode: 'standard',
-  },
-  {
-    name: 'page',
-    label: 'Page',
-    filterMode: 'standard',
-  },
-  {
-    name: 'createdAt',
-    label: 'Created At',
-    filterMode: 'none',
-  },
-  {
-    name: 'updatedAt',
-    label: 'Updated At',
-    filterMode: 'none',
-  },
-];
+import getOpenwrtTohLazy from '@utils/request/client-side/get-openwrt-toh-lazy';
+import { columns } from './columns';
+import type { ColumnData } from './columns';
 
 const MultiSelectFilterTemplate: React.FC<{
   filterOptions: ColumnFilterElementTemplateOptions;
@@ -404,7 +32,14 @@ const MultiSelectFilterTemplate: React.FC<{
   );
 };
 
-const PageOpenwrtToh: React.FunctionComponent<{ content: any }> = ({ content }) => {
+const Time: React.FC<{ timestamp: string }> = ({ timestamp }) => <time dateTime={timestamp}>{utcToLocal(timestamp, 'MMM DD, YYYY')}</time>;
+
+const addDeviceName = (data: any): ColumnData[] =>
+  data.docs.map((row: any) => ({ ...row, deviceName: `${row.brand} / ${row.model} / ${row.version}` }));
+
+const PageOpenwrtToh: React.FunctionComponent<{ data: any }> = ({ data }) => {
+  //////////////////////////
+  // Column toggle
   const [visibleColumns, setVisibleColumns] = useState<ColumnData[]>([
     {
       name: 'deviceName',
@@ -442,6 +77,7 @@ const PageOpenwrtToh: React.FunctionComponent<{ content: any }> = ({ content }) 
       filterMode: 'multiSelect',
     },
   ]);
+
   const onColumnToggle = ({ value }: { value: ColumnData[] }): void => {
     const orderedSelectedColumns = columns.filter((col) => value.some((selectedColumn) => selectedColumn.name === col.name));
     setVisibleColumns(orderedSelectedColumns);
@@ -449,12 +85,13 @@ const PageOpenwrtToh: React.FunctionComponent<{ content: any }> = ({ content }) 
   const header = (
     <MultiSelect filter onChange={onColumnToggle} optionLabel='label' options={columns} placeholder='Select Columns' value={visibleColumns} />
   );
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-  const time = (timestamp: string) => <time dateTime={timestamp}>{utcToLocal(timestamp, 'MMM DD, YYYY')}</time>;
+  //////////////////////////
 
   // Add a deviceName column to the content
-  const contentWithDeviceName = content.map((row: any) => ({ ...row, deviceName: `${row.brand} / ${row.model} / ${row.version}` }));
+  const [contentWithDeviceName, setContentWithDeviceName] = useState(addDeviceName(data));
 
+  //////////////////////////
+  // Filter
   // Create a dictionary of select options for each column
   // From multiple documents, reduce to a single dictionary, with value as a set
   // That set contain all values from the respective key in original document
@@ -479,16 +116,31 @@ const PageOpenwrtToh: React.FunctionComponent<{ content: any }> = ({ content }) 
       }
       return isNaN(a) ? -1 : 1; // Numbers before letters
     });
-    // .map((item: any) => ({ name: item, label: item }));
   }
+  //////////////////////////
+
+  //////////////////////////
+  // Paginated client-side query for lazy loading
+  const [first, setFirst] = useState(0);
+  const [rows, setRows] = useState(10);
+
+  const onPageChange = async (e: DataTableStateEvent): Promise<void> => {
+    setFirst(e.first);
+    setRows(e.rows);
+    const newPageData = await getOpenwrtTohLazy(e.rows, e.page! + 1);
+    setContentWithDeviceName(addDeviceName(newPageData));
+  };
 
   return (
     <section className='max-w-[1536px]'>
       <DataTable
         // Use database id instead of pid from ToH, because id is guaranteed to be unique
+        currentPageReportTemplate='Page {currentPage} of {totalPages}'
         dataKey='id'
         filterDisplay='row'
+        first={first}
         header={header}
+        lazy // lazy is required to trigger custom totalRecords: https://github.com/orgs/primefaces/discussions/242
         multiSortMeta={[
           { field: 'supportedcurrentrel', order: -1 },
           { field: 'cpucores', order: -1 },
@@ -496,15 +148,18 @@ const PageOpenwrtToh: React.FunctionComponent<{ content: any }> = ({ content }) 
           { field: 'flashmb', order: -1 },
           { field: 'rammb', order: -1 },
         ]}
+        onPage={onPageChange as any}
         paginator
+        paginatorTemplate='CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown'
         removableSort
-        rows={10}
-        rowsPerPageOptions={[10, 25, 50, 100]}
+        rows={rows}
+        rowsPerPageOptions={[10, 50, 100, 10000]}
         scrollHeight='700px'
         scrollable
         sortMode='multiple'
         sortOrder={-1}
         tableStyle={{ minWidth: '1536px' }}
+        totalRecords={data.totalDocs}
         value={contentWithDeviceName}
       >
         {/* Create all columns with name as field, label as header */}
@@ -512,10 +167,18 @@ const PageOpenwrtToh: React.FunctionComponent<{ content: any }> = ({ content }) 
           if (col.name === 'createdAt' || col.name === 'updatedAt') {
             return (
               <Column
-                body={(rowData) => time(col.name === 'createdAt' ? (rowData.createdAt as string) : (rowData.updatedAt as string))}
+                body={(rowData) => <Time timestamp={col.name === 'createdAt' ? (rowData.createdAt as string) : (rowData.updatedAt as string)} />}
                 field={col.name}
                 header={col.label}
                 key={i}
+                pt={{
+                  // Min width must be at bodyCellm not root
+                  // Although both yield the same result, using root causes a side effect
+                  // The sortBadge counter will stretch of the entire column, if using root
+                  bodyCell: {
+                    className: 'min-w-60',
+                  },
+                }}
                 sortable
               />
             );
