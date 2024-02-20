@@ -49,7 +49,7 @@ const multiselect: MultiSelectPassThroughOptions = {
     className: 'inline-flex cursor-pointer select-none align-bottom relative mr-2 w-6 h-6'
   },
   checkbox: ({ context }: MultiSelectPassThroughMethodOptions) => ({
-    className: `flex items-center justify-center border-2 w-6 h-6 text-black rounded-lg transition-colors duration-200
+    className: `flex items-center justify-center border-2 w-6 h-6 text-black rounded-md transition-colors duration-200
         hover:border-blue-500 focus:outline-none focus:outline-offset-0 focus:shadow-[0_0_0_0.2rem_rgba(191,219,254,1)]
         ${!(context !== null && context !== undefined && context.selected) ? 'border-zinc-500 bg-zinc-100' : 'border-blue-500 bg-blue-500'}`
   }),
@@ -59,7 +59,7 @@ const multiselect: MultiSelectPassThroughOptions = {
     root: {
       className: `
         pr-6 -mr-6 w-full font-sans text-base text-black bg-zinc-100 
-        py-4 px-4 border border-zinc-500 transition duration-200 rounded-lg 
+        py-4 px-4 border border-zinc-500 transition duration-200 rounded-md 
         appearance-none hover:border-blue-500 focus:outline-none focus:outline-offset-0 
         focus:shadow-[0_0_0_0.2rem_rgba(191,219,254,1)]`
     }
