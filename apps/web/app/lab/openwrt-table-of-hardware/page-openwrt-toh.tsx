@@ -165,6 +165,9 @@ const PageOpenwrtToh: React.FunctionComponent<{ data: any }> = ({ data }) => {
         sortOrder={-1}
         totalRecords={data.totalDocs}
         value={contentWithDeviceName}
+        virtualScrollerOptions={{
+          itemSize: 64,
+        }}
       >
         {/* Create all columns with name as field, label as header */}
         {visibleColumns.map((col, i) => {
