@@ -44,9 +44,6 @@ const datatable: DataTablePassThroughOptions = {
       `,
     },
     columnFilter: { className: `inline-flex items-center ml-auto` },
-    filterInput: {
-      className: `text-black rounded-md`,
-    },
     filterOverlay: {
       className: `bg-emerald-950 rounded-md min-w-[12.5rem]`
     },
@@ -67,7 +64,7 @@ const datatable: DataTablePassThroughOptions = {
           inline-flex justify-center items-center cursor-pointer no-underline overflow-hidden relative ml-2
           w-8 h-8 rounded-md transition duration-200 hover:text-zinc-300 hover:bg-zinc-300/20
           focus:outline-0 focus:outline-offset-0 focus:shadow-[0_0_0_0.2rem_rgba(191,219,254,1)]
-          ${context.active ? `bg-sky-200 text-black` : ''}
+          ${context.active ? `bg-sky-200 text-zinc-600` : ''}
         `,
 
     }),

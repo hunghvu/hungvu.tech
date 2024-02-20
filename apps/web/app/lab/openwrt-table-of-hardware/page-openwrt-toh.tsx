@@ -135,7 +135,7 @@ const PageOpenwrtToh: React.FunctionComponent<{ data: any }> = ({ data }) => {
     <section className='w-[260px] sm:w-[640px] md:w-[768px] lg:w-[1024px] xl:w-[1280px] 2xl:w-[1536px]'>
       <DataTable
         // Use database id instead of pid from ToH, because id is guaranteed to be unique
-        currentPageReportTemplate='Page {currentPage} of {totalPages}'
+        currentPageReportTemplate='Jump to page (1 - {totalPages}):'
         dataKey='id'
         filterDisplay='row'
         first={first}
@@ -150,7 +150,7 @@ const PageOpenwrtToh: React.FunctionComponent<{ data: any }> = ({ data }) => {
         ]}
         onPage={onPageChange as any}
         paginator
-        paginatorTemplate='CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown'
+        paginatorTemplate='RowsPerPageDropdown FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport JumpToPageInput'
         pt={{
           root: {
             className: 'w-full',
