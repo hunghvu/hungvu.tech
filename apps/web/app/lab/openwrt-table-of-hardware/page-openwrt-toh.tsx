@@ -132,7 +132,7 @@ const PageOpenwrtToh: React.FunctionComponent<{ data: any }> = ({ data }) => {
   };
 
   return (
-    <section className='max-w-[1536px]'>
+    <section className='w-[260px] sm:w-[640px] md:w-[768px] lg:w-[1024px] xl:w-[1280px] 2xl:w-[1536px]'>
       <DataTable
         // Use database id instead of pid from ToH, because id is guaranteed to be unique
         currentPageReportTemplate='Page {currentPage} of {totalPages}'
@@ -151,6 +151,11 @@ const PageOpenwrtToh: React.FunctionComponent<{ data: any }> = ({ data }) => {
         onPage={onPageChange as any}
         paginator
         paginatorTemplate='CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown'
+        pt={{
+          root: {
+            className: 'w-full',
+          },
+        }}
         removableSort
         rows={rows}
         rowsPerPageOptions={[10, 50, 100, 10000]}
@@ -158,7 +163,6 @@ const PageOpenwrtToh: React.FunctionComponent<{ data: any }> = ({ data }) => {
         scrollable
         sortMode='multiple'
         sortOrder={-1}
-        tableStyle={{ minWidth: '1536px' }}
         totalRecords={data.totalDocs}
         value={contentWithDeviceName}
       >
