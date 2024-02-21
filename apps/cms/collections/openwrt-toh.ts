@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable no-await-in-loop */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 /**
@@ -60,6 +61,8 @@ const multiSelectFields = [
   "recoverymethods"
 ];
 
+const sortRule = (a: string, b: string) => new Intl.Collator("en", { caseFirst: 'lower', numeric: true, sensitivity: "base" }).compare(a, b);
+
 const getAvailableValues = (): Omit<Endpoint, 'root'> => {
   return {
     path: '/available-values-of-each-field',
@@ -71,12 +74,16 @@ const getAvailableValues = (): Omit<Endpoint, 'root'> => {
         const resAvailableValues = {};
         for (const field of multiSelectFields) {
           await mongoose.distinct(field, (err, data) => {
+            // In-place sort
+            // By default, distinct() sort (0-9 then A-Z then a-z), but we want (0-9 then a/A - z/Z)
+            data.sort(sortRule)
             if (err) {
               res.status(500).json({ error: err.message });
             } else {
               resAvailableValues[field] = data;
             }
           }).clone();
+          // https://stackoverflow.com/questions/68945315/mongooseerror-query-was-already-executed
         }
         res.status(200).json({ availableValues: resAvailableValues });
       }
