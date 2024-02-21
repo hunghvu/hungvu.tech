@@ -1,11 +1,91 @@
+/* eslint-disable no-await-in-loop */
+/* eslint-disable @typescript-eslint/no-misused-promises */
 /**
  * Author: Hung Vu
  *
  * This collection represents an OpenWRT Table of Hardware.
  */
 
+import type { Endpoint } from "payload/config";
 import type { CollectionConfig } from 'payload/types';
 
+// This indicates fields on the front end that are multi-select
+// NOT the fields in the CMS
+const multiSelectFields = [
+  "devicetype",
+  "availability",
+  "whereavailable",
+  "supportedsincerel",
+  "supportedcurrentrel",
+  "unsupported_functions",
+  "target",
+  "subtarget",
+  "packagearchitecture",
+  "bootloader",
+  "cpu",
+  "cpucores",
+  "cpumhz",
+  "flashmb",
+  "rammb",
+  "ethernet100mports",
+  "ethernetgbitports",
+  "ethernet1gports",
+  "ethernet2_5gports",
+  "ethernet5gports",
+  "ethernet10gports",
+  "sfp_ports",
+  "sfp_plus_ports",
+  "switch",
+  "vlan",
+  "modem",
+  "wlanhardware",
+  "wlan24ghz",
+  "wlan50ghz",
+  "wlandriver",
+  "detachableantennas",
+  "bluetooth",
+  "usbports",
+  "sataports",
+  "videoports",
+  "audioports",
+  "phoneports",
+  "serial",
+  "serialconnectionparameters",
+  "jtag",
+  "ledcount",
+  "buttoncount",
+  "gpios",
+  "powersupply",
+  "installationmethods",
+  "recoverymethods"
+];
+
+const getAvailableValues = (): Omit<Endpoint, 'root'> => {
+  return {
+    path: '/available-values-of-each-field',
+    method: 'get',
+    handler: async (req, res) => {
+      try {
+        const slug = 'openwrt-toh';
+        const mongoose = req.payload.db.collections[slug];
+        const resAvailableValues = {};
+        for (const field of multiSelectFields) {
+          await mongoose.distinct(field, (err, data) => {
+            if (err) {
+              res.status(500).json({ error: err.message });
+            } else {
+              resAvailableValues[field] = data;
+            }
+          }).clone();
+        }
+        res.status(200).json({ availableValues: resAvailableValues });
+      }
+      catch (error) {
+        res.status(500).json({ error: error.message });
+      }
+    }
+  }
+}
 
 const OpenwrtToh: CollectionConfig = {
   slug: 'openwrt-toh',
@@ -391,6 +471,7 @@ const OpenwrtToh: CollectionConfig = {
     },
 
   ],
+  endpoints: [getAvailableValues()],
   timestamps: true,
   // No need for versionings and drafts because this collection is "read-only"
   // All updates are done via cron jobs
