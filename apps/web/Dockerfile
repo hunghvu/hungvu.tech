@@ -23,6 +23,7 @@ COPY turbo.json turbo.json
 
 ENV NEXT_PUBLIC_BASE_URL https://hungvu.tech
 ENV NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION EGTdZytY_C05esF562wX0i-fpIShKgfypgbhQV3bPzU
+ENV NEXT_PUBLIC_API_OPENWRT_TOH=http://127.0.0.1:3000/api/openwrt-toh
 ENV NEXT_TELEMETRY_DISABLED 1
 
 RUN yarn global add turbo
@@ -39,7 +40,6 @@ ENV NEXT_REQUEST_CMS_ARTICLES_IN_THE_SAME_SERIES_URL https://payload.hungvu.tech
 ENV NEXT_REQUEST_CMS_STATIC_ROUTE_METADATA_URL https://payload.hungvu.tech/api/static-route-metadata
 ENV NEXT_REQUEST_CMS_OPENWRT_TOH http://127.0.0.1:3001/api/openwrt-toh
 ENV NEXT_REQUEST_CMS_OPENWRT_TOH_AVAILABLE_VALUES_OF_EACH_FIELD http://127.0.0.1:3001/api/openwrt-toh/available-values-of-each-field
-ENV NEXT_PUBLIC_API_OPENWRT_TOH=http://127.0.0.1:3000/api/openwrt-toh
 RUN pnpm run build --filter web
 
 FROM base AS runner
@@ -65,6 +65,5 @@ ENV NEXT_REQUEST_CMS_ARTICLES_IN_THE_SAME_SERIES_URL https://payload.hungvu.tech
 ENV NEXT_REQUEST_CMS_STATIC_ROUTE_METADATA_URL https://payload.hungvu.tech/api/static-route-metadata
 ENV NEXT_REQUEST_CMS_OPENWRT_TOH http://127.0.0.1:3001/api/openwrt-toh
 ENV NEXT_REQUEST_CMS_OPENWRT_TOH_AVAILABLE_VALUES_OF_EACH_FIELD http://127.0.0.1:3001/api/openwrt-toh/available-values-of-each-field
-ENV NEXT_PUBLIC_API_OPENWRT_TOH=http://127.0.0.1:3000/api/openwrt-toh
 
 CMD node apps/web/server.js
