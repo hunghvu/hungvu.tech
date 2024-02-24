@@ -37,6 +37,9 @@ ENV NEXT_REQUEST_CMS_ARTICLES_URL https://payload.hungvu.tech/api/articles
 ENV NEXT_REQUEST_CMS_ARTICLES_IGNORE_REDUNDANT_FIELDS_URL https://payload.hungvu.tech/api/articles/ignore-redundant-fields
 ENV NEXT_REQUEST_CMS_ARTICLES_IN_THE_SAME_SERIES_URL https://payload.hungvu.tech/api/articles/in-series
 ENV NEXT_REQUEST_CMS_STATIC_ROUTE_METADATA_URL https://payload.hungvu.tech/api/static-route-metadata
+ENV NEXT_REQUEST_CMS_OPENWRT_TOH http://127.0.0.1:3001/api/openwrt-toh
+ENV NEXT_REQUEST_CMS_OPENWRT_TOH_AVAILABLE_VALUES_OF_EACH_FIELD http://127.0.0.1:3001/api/openwrt-toh/available-values-of-each-field
+ENV NEXT_PUBLIC_API_OPENWRT_TOH=http://127.0.0.1:3000/api/openwrt-toh
 RUN pnpm run build --filter web
 
 FROM base AS runner
@@ -60,5 +63,8 @@ ENV NEXT_REQUEST_CMS_ARTICLES_URL https://payload.hungvu.tech/api/articles
 ENV NEXT_REQUEST_CMS_ARTICLES_IGNORE_REDUNDANT_FIELDS_URL https://payload.hungvu.tech/api/articles/ignore-redundant-fields
 ENV NEXT_REQUEST_CMS_ARTICLES_IN_THE_SAME_SERIES_URL https://payload.hungvu.tech/api/articles/in-series
 ENV NEXT_REQUEST_CMS_STATIC_ROUTE_METADATA_URL https://payload.hungvu.tech/api/static-route-metadata
+ENV NEXT_REQUEST_CMS_OPENWRT_TOH http://127.0.0.1:3001/api/openwrt-toh
+ENV NEXT_REQUEST_CMS_OPENWRT_TOH_AVAILABLE_VALUES_OF_EACH_FIELD http://127.0.0.1:3001/api/openwrt-toh/available-values-of-each-field
+ENV NEXT_PUBLIC_API_OPENWRT_TOH=http://127.0.0.1:3000/api/openwrt-toh
 
 CMD node apps/web/server.js
