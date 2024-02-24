@@ -41,7 +41,7 @@ const columns: ColumnData[] = [
   {
     name: 'whereavailable',
     label: 'Where Available',
-    filterMode: 'multiSelect',
+    filterMode: 'standard',
   },
   {
     name: 'supportedsincecommit',
@@ -61,7 +61,7 @@ const columns: ColumnData[] = [
   {
     name: 'unsupported_functions',
     label: 'Unsupported Functions',
-    filterMode: 'multiSelect',
+    filterMode: 'standard',
   },
   {
     name: 'target',
@@ -101,7 +101,7 @@ const columns: ColumnData[] = [
   {
     name: 'flashmb',
     label: 'Flash (MB)',
-    filterMode: 'multiSelect',
+    filterMode: 'standard',
   },
   {
     name: 'rammb',
@@ -171,7 +171,7 @@ const columns: ColumnData[] = [
   {
     name: 'wlanhardware',
     label: 'WLAN Hardware',
-    filterMode: 'multiSelect',
+    filterMode: 'standard',
   },
   {
     name: 'wlan24ghz',
@@ -271,7 +271,7 @@ const columns: ColumnData[] = [
   {
     name: 'powersupply',
     label: 'Power Supply',
-    filterMode: 'multiSelect',
+    filterMode: 'standard',
   },
   {
     name: 'devicepage',
@@ -336,7 +336,7 @@ const columns: ColumnData[] = [
   {
     name: 'installationmethods',
     label: 'Installation Methods',
-    filterMode: 'multiSelect',
+    filterMode: 'standard',
   },
   {
     name: 'commentinstallation',
@@ -346,7 +346,7 @@ const columns: ColumnData[] = [
   {
     name: 'recoverymethods',
     label: 'Recovery Methods',
-    filterMode: 'multiSelect',
+    filterMode: 'standard',
   },
   {
     name: 'commentrecovery',

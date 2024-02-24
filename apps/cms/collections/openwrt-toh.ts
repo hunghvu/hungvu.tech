@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable no-await-in-loop */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 /**
@@ -15,10 +14,8 @@ import type { CollectionConfig } from 'payload/types';
 const multiSelectFields = [
   "devicetype",
   "availability",
-  "whereavailable",
   "supportedsincerel",
   "supportedcurrentrel",
-  "unsupported_functions",
   "target",
   "subtarget",
   "packagearchitecture",
@@ -26,7 +23,6 @@ const multiSelectFields = [
   "cpu",
   "cpucores",
   "cpumhz",
-  "flashmb",
   "rammb",
   "ethernet100mports",
   "ethernetgbitports",
@@ -39,7 +35,6 @@ const multiSelectFields = [
   "switch",
   "vlan",
   "modem",
-  "wlanhardware",
   "wlan24ghz",
   "wlan50ghz",
   "wlandriver",
@@ -56,12 +51,9 @@ const multiSelectFields = [
   "ledcount",
   "buttoncount",
   "gpios",
-  "powersupply",
-  "installationmethods",
-  "recoverymethods"
 ];
 
-const sortRule = (a: string, b: string) => new Intl.Collator("en", { caseFirst: 'lower', numeric: true, sensitivity: "base" }).compare(a, b);
+const sortRule = (a: string, b: string): number => new Intl.Collator("en", { caseFirst: 'lower', numeric: true, sensitivity: "base" }).compare(a, b);
 
 const getAvailableValues = (): Omit<Endpoint, 'root'> => {
   return {
