@@ -13,10 +13,10 @@
     },
     "dependencies": {
         "@pulumi/mongodbatlas": "^3.14.1",
-        "@pulumi/pulumi": "^3.105.0"
+        "@pulumi/pulumi": "^3.107.0"
     },
     "devDependencies": {
-        "@types/node": "^20.11.17",
+        "@types/node": "^20.11.20",
         "eslint-config-custom": "workspace:*",
         "tsconfig-custom": "workspace:*"
     }
