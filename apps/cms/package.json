@@ -20,7 +20,7 @@
     "@aws-sdk/client-s3": "^3.521.0",
     "@aws-sdk/lib-storage": "^3.521.0",
     "@breejs/ts-worker": "^2.0.0",
-    "@payloadcms/bundler-vite": "^0.1.6",
+    "@payloadcms/bundler-webpack": "^1.0.6",
     "@payloadcms/db-mongodb": "^1.4.3",
     "@payloadcms/plugin-cloud-storage": "^1.1.2",
     "@payloadcms/richtext-lexical": "^0.1.17",

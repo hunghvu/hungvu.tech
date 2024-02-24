@@ -27,7 +27,7 @@ import {
   lexicalEditor,
 } from '@payloadcms/richtext-lexical';
 import type { FeatureProvider } from '@payloadcms/richtext-lexical';
-import { viteBundler } from '@payloadcms/bundler-vite';
+import { webpackBundler } from "@payloadcms/bundler-webpack";
 import Articles from './collections/articles';
 import CodeEditor from './blocks/code-snippet';
 import Users from './collections/users';
@@ -84,7 +84,23 @@ export default buildConfig({
   serverURL: process.env.PAYLOAD_PUBLIC_SERVER_URL!,
   admin: {
     user: Users.slug,
-    bundler: viteBundler(),
+    bundler: webpackBundler(),
+    webpack: (config) => {
+      return {
+        ...config,
+        resolve: {
+          ...config.resolve,
+          fallback: {
+            ...config.resolve.fallback,
+            fs: false,
+            path: false,
+            os: false,
+            util: false,
+            process: false,
+          }
+        },
+      }
+    },
   },
   editor: lexicalEditor({
     features: () => lexicalEditorFeatures(),
