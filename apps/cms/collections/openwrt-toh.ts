@@ -77,7 +77,7 @@ const getAvailableValues = (): Omit<Endpoint, 'root'> => {
           }).clone();
           // https://stackoverflow.com/questions/68945315/mongooseerror-query-was-already-executed
         }
-        res.status(200).json({ availableValues: resAvailableValues });
+        res.status(200).json({ docs: resAvailableValues });
       }
       catch (error) {
         res.status(500).json({ error: error.message });

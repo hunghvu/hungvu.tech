@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-confusing-void-expression */
 /* eslint-disable react/no-unstable-nested-components */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable react/no-array-index-key */
 'use client';
 
@@ -37,9 +36,12 @@ const Time: React.FC<{ timestamp: string }> = ({ timestamp }) => <time dateTime=
 const addDeviceName = (data: any): ColumnData[] =>
   data.docs.map((row: any) => ({ ...row, deviceName: `${row.brand} / ${row.model} / ${row.version}` }));
 
-const PageOpenwrtToh: React.FunctionComponent<{ data: any }> = ({ data }) => {
-  //////////////////////////
-  // Column toggle
+interface PageOpenwrtTohProps {
+  data: any;
+  availableValues: any;
+}
+
+const PageOpenwrtToh: React.FunctionComponent<PageOpenwrtTohProps> = ({ data, availableValues }) => {
   const [visibleColumns, setVisibleColumns] = useState<ColumnData[]>([
     {
       name: 'deviceName',
@@ -82,44 +84,10 @@ const PageOpenwrtToh: React.FunctionComponent<{ data: any }> = ({ data }) => {
     const orderedSelectedColumns = columns.filter((col) => value.some((selectedColumn) => selectedColumn.name === col.name));
     setVisibleColumns(orderedSelectedColumns);
   };
-  const header = (
-    <MultiSelect filter onChange={onColumnToggle} optionLabel='label' options={columns} placeholder='Select Columns' value={visibleColumns} />
-  );
-  //////////////////////////
 
   // Add a deviceName column to the content
   const [contentWithDeviceName, setContentWithDeviceName] = useState(addDeviceName(data));
 
-  //////////////////////////
-  // Filter
-  // Create a dictionary of select options for each column
-  // From multiple documents, reduce to a single dictionary, with value as a set
-  // That set contain all values from the respective key in original document
-  // E.g. [{key: value1}, {key: value2}] => { key: Set([value1, value2, ...]) }
-  const selectOptionsDictionary = contentWithDeviceName.reduce((acc: any, item: any) => {
-    for (const [key, value] of Object.entries(item)) {
-      if (acc[key] === undefined || acc[key].length === 0) {
-        acc[key] = new Set();
-      }
-      acc[key].add(value);
-    }
-    return acc;
-  }, {});
-
-  // Sort the array alphabetically from Z to A, case-insensitive, and descending numerical order if applicable
-  for (const key in selectOptionsDictionary) {
-    selectOptionsDictionary[key] = Array.from(selectOptionsDictionary[key]).sort((a: any, b: any) => {
-      if (isNaN(a) && isNaN(b)) {
-        return b.toLowerCase().localeCompare(a.toLowerCase());
-      } else if (!isNaN(a) && !isNaN(b)) {
-        return b - a; // Reverse descending numerical order
-      }
-      return isNaN(a) ? -1 : 1; // Numbers before letters
-    });
-  }
-  //////////////////////////
-
-  //////////////////////////
   // Paginated client-side query for lazy loading
   const [first, setFirst] = useState(0);
   const [rows, setRows] = useState(10);
@@ -139,7 +107,9 @@ const PageOpenwrtToh: React.FunctionComponent<{ data: any }> = ({ data }) => {
         dataKey='id'
         filterDisplay='row'
         first={first}
-        header={header}
+        header={() => (
+          <MultiSelect filter onChange={onColumnToggle} optionLabel='label' options={columns} placeholder='Select Columns' value={visibleColumns} />
+        )}
         lazy // lazy is required to trigger custom totalRecords: https://github.com/orgs/primefaces/discussions/242
         multiSortMeta={[
           { field: 'supportedcurrentrel', order: -1 },
@@ -196,7 +166,7 @@ const PageOpenwrtToh: React.FunctionComponent<{ data: any }> = ({ data }) => {
                 field={col.name}
                 filter
                 filterElement={(filterOptions) => (
-                  <MultiSelectFilterTemplate filterOptions={filterOptions} selectOptions={selectOptionsDictionary[col.name]} />
+                  <MultiSelectFilterTemplate filterOptions={filterOptions} selectOptions={availableValues.docs[col.name]} />
                 )}
                 filterMatchMode={FilterMatchMode.IN}
                 header={col.label}
