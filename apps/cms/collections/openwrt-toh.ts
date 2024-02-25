@@ -113,6 +113,21 @@ const filterValues = (): Omit<Endpoint, 'root'> => {
           limit: body.rows,
           where: query,
         })
+        const multiSortMeta = body.multiSortMeta as { field: string, order: -1 | 0 | 1 }[]
+        if (filteredValues.docs.length > 0) {
+          filteredValues.docs.sort((a, b) => {
+            for (const rule of multiSortMeta) {
+              const field = rule.field;
+              const order = rule.order;
+              const comparison = (order === 1 ? 1 : -1) * (sortRule(a[field] as string, b[field] as string));
+              if (comparison !== 0) {
+                return comparison;
+              }
+            }
+
+            return 0; // If all fields are equal, keep the original order
+          })
+        }
         res.status(200).json(filteredValues);
       }
       catch (error) {

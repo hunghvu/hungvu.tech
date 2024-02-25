@@ -106,6 +106,7 @@ const PageOpenwrtToh: React.FunctionComponent<PageOpenwrtTohProps> = ({ data, av
     filters: defaultFilters,
 
     // Sorting
+    // Sort field and order are unused, but is required to be present based on DataTableStateEvent type
     sortField: '',
     sortOrder: -1,
     multiSortMeta: [
