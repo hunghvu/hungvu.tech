@@ -4,8 +4,9 @@
  * Sitemap generator: https://nextjs.org/docs/app/api-reference/file-conventions/metadata/sitemap
  */
 
+import getArticlesWithMinimalResponse from "@utils/request/server-side/blog/get-articles-with-minimal-response";
+import getLabsWithMinimalResponse from "@utils/request/server-side/lab/get-labs-with-minimal-response";
 import type { MetadataRoute } from 'next'
-import getArticlesWithMinimalResponse from "@utils/request/server-side/get-articles-with-minimal-response";
 
 export const dynamic = 'force-dynamic'
 
@@ -17,12 +18,12 @@ const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
       changeFrequency: 'always',
       priority: 1,
     },
-    // {
-    //   url: `${process.env.NEXT_PUBLIC_BASE_URL!}/homelab`,
-    //   lastModified: new Date(),
-    //   changeFrequency: 'always',
-    //   priority: 1,
-    // },
+    {
+      url: `${process.env.NEXT_PUBLIC_BASE_URL!}/lab`,
+      lastModified: new Date(),
+      changeFrequency: 'always',
+      priority: 1,
+    },
   ]
 
   const articles = await getArticlesWithMinimalResponse();
@@ -33,6 +34,16 @@ const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
         "customizedUpdatedAt" in article.settings
           ? article.settings.customizedUpdatedAt as string
           : article.updatedAt as string),
+      changeFrequency: 'daily',
+      priority: 0.8,
+    })
+  });
+
+  const labs = await getLabsWithMinimalResponse();
+  labs.forEach((lab: any) => {
+    sites.push({
+      url: `${process.env.NEXT_PUBLIC_BASE_URL!}/lab/${lab.settings.slug}`,
+      lastModified: new Date(lab.updatedAt as string),
       changeFrequency: 'daily',
       priority: 0.8,
     })
