@@ -146,7 +146,7 @@ const PageOpenwrtToh: React.FunctionComponent<PageOpenwrtTohProps> = ({ availabl
   }, [lazyDataTableState]);
 
   return (
-    <section className='flex flex-col gap-4 p-4 break-words bg-[#00002f]/80 border border-1 border-zinc-500 rounded-md w-[260px] sm:w-[640px] md:w-[768px] lg:w-[1024px] xl:w-[1280px] 2xl:w-[1536px]'>
+    <section className='flex flex-col gap-4 p-4 break-words bg-[#00002f]/80 border border-1 border-zinc-500 rounded-md w-full sm:w-[640px] md:w-[768px] lg:w-[1024px] xl:w-[1280px] 2xl:w-[1536px]'>
       <hgroup className='flex flex-col gap-6 w-full'>
         <h1 className='text-3xl md:text-4xl font-extrabold'>{contentData.title}</h1>
         <p className='text-xl md:text-2xl font-light text-zinc-200 italic'>{contentData.subTitle}</p>
@@ -162,21 +162,27 @@ const PageOpenwrtToh: React.FunctionComponent<PageOpenwrtTohProps> = ({ availabl
           filters={lazyDataTableState.filters}
           first={lazyDataTableState.first}
           header={() => (
-            <aside className='flex flex-row justify-start items-baseline gap-8'>
-              <fieldset>
-                <legend className='text-xl'>Show Columns</legend>
-                <MultiSelect
-                  filter
-                  onChange={onColumnToggle}
-                  optionLabel='label'
-                  options={columns}
-                  placeholder='Select Columns'
-                  value={visibleColumns}
-                />
-              </fieldset>
-              <Button label='Clear Filters' onClick={() => setLazyDataTableState({ ...lazyDataTableState, filters: defaultFilters })} />
-              <Button label='Clear Sorts' onClick={() => setLazyDataTableState({ ...lazyDataTableState, multiSortMeta: [] })} />
-            </aside>
+            <div className='flex flex-col md:flex-row justify-start items-center gap-4 md:gap-8'>
+              <Button
+                label='Clear Filters'
+                onClick={() => setLazyDataTableState({ ...lazyDataTableState, filters: defaultFilters })}
+                pt={{ root: { className: 'w-full md:w-[128px]' } }}
+              />
+              <Button
+                label='Clear Sorts'
+                onClick={() => setLazyDataTableState({ ...lazyDataTableState, multiSortMeta: [] })}
+                pt={{ root: { className: 'w-full md:w-[120px]' } }}
+              />
+              <p className='text-xl w-full md:w-[150px]'>Show Columns</p>
+              <MultiSelect
+                filter
+                onChange={onColumnToggle}
+                optionLabel='label'
+                options={columns}
+                placeholder='Select Columns'
+                value={visibleColumns}
+              />
+            </div>
           )}
           lazy // lazy is required to trigger custom totalRecords: https://github.com/orgs/primefaces/discussions/242
           multiSortMeta={lazyDataTableState.multiSortMeta}
