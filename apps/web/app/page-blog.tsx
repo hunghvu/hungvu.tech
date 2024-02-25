@@ -25,9 +25,9 @@ const PageBlog: React.FunctionComponent<{ content: any }> = ({ content }) => {
     });
 
   return (
-    <>
+    <section className='flex flex-col justify-center items-center gap-16'>
       <h1 className='font-bold mb-2 text-2xl md:text-3xl'>Latest Articles</h1>
-      <section className='grid grid-cols-1 lg:grid-cols-2 max-w-[1024px] bg-[#00002f]/80 border border-1 border-zinc-500 rounded-md p-4 lg:gap-8'>
+      <div className='grid grid-cols-1 lg:grid-cols-2 max-w-[1024px] bg-[#00002f]/80 border border-1 border-zinc-500 rounded-md p-4 lg:gap-8'>
         {data.map((item: any) => {
           return (
             <Link href={item.slug} key={item.id}>
@@ -56,8 +56,8 @@ const PageBlog: React.FunctionComponent<{ content: any }> = ({ content }) => {
             </Link>
           );
         })}
-      </section>
-    </>
+      </div>
+    </section>
   );
 };
 
