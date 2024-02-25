@@ -89,7 +89,7 @@ const PageOpenwrtToh: React.FunctionComponent<PageOpenwrtTohProps> = ({ data, av
       acc[col.name] = { value: [], matchMode: FilterMatchMode.IN };
       return acc;
     }
-    acc[col.name] = { value: '', matchMode: FilterMatchMode.STARTS_WITH };
+    acc[col.name] = { value: '', matchMode: FilterMatchMode.CONTAINS };
     return acc;
   }, {});
 
@@ -216,7 +216,20 @@ const PageOpenwrtToh: React.FunctionComponent<PageOpenwrtTohProps> = ({ data, av
             );
           }
           return (
-            <Column field={col.name} filter filterField={col.name} filterPlaceholder={`Search by ${col.label}`} header={col.label} key={i} sortable />
+            <Column
+              field={col.name}
+              filter
+              filterField={col.name}
+              filterMatchModeOptions={[
+                { label: 'Contains', value: FilterMatchMode.CONTAINS },
+                { label: 'Equals', value: FilterMatchMode.EQUALS },
+                { label: 'Not Equals', value: FilterMatchMode.NOT_EQUALS },
+              ]}
+              filterPlaceholder={`Search by ${col.label}`}
+              header={col.label}
+              key={i}
+              sortable
+            />
           );
         })}
       </DataTable>
