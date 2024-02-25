@@ -20,7 +20,7 @@ import { Divider } from 'primereact/divider';
 import { columns } from './columns';
 import type { ColumnData } from './columns';
 
-const MultiSelectFilterTemplate: React.FC<{
+const MultiSelectFilterTemplate: React.FunctionComponent<{
   filterOptions: ColumnFilterElementTemplateOptions;
   selectOptions: SelectItemOptionsType;
 }> = ({ filterOptions, selectOptions }) => {
@@ -35,7 +35,9 @@ const MultiSelectFilterTemplate: React.FC<{
   );
 };
 
-const Time: React.FC<{ timestamp: string }> = ({ timestamp }) => <time dateTime={timestamp}>{utcToLocal(timestamp, 'MMM DD, YYYY')}</time>;
+const Time: React.FunctionComponent<{ timestamp: string }> = ({ timestamp }) => (
+  <time dateTime={timestamp}>{utcToLocal(timestamp, 'MMM DD, YYYY')}</time>
+);
 
 interface PageOpenwrtTohProps {
   availableValues: any;
