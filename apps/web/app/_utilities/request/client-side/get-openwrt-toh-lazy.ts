@@ -1,4 +1,3 @@
-import { notFound } from "next/navigation";
 import type { DataTableStateEvent } from "primereact/datatable";
 
 const getOpenwrtTohLazy = async (event: DataTableStateEvent): Promise<any> => {
@@ -26,10 +25,6 @@ const getOpenwrtTohLazy = async (event: DataTableStateEvent): Promise<any> => {
   }
 
   const content = await res.json();
-  // Payload CMS can returns status 200, but with an empty array.
-  if (content.docs.length < 1) {
-    notFound();
-  }
   return content;
 };
 
