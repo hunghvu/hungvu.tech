@@ -15,7 +15,7 @@ const PageLab: React.FunctionComponent<{ content: any }> = ({ content }) => {
       id: lab.id,
       title: lab.title,
       description: lab.subTitle,
-      slug: lab.settings.slug,
+      slug: `lab/${lab.settings.slug}`,
       tags: lab.settings.tags,
     };
   });
