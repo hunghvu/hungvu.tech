@@ -95,11 +95,17 @@ const filterValues = (): Omit<Endpoint, 'root'> => {
       try {
         const slug = 'openwrt-toh';
         const body = req.body
-        const filters = body.filters as Record<string, { value: string[] }>;
+        const filters = body.filters as Record<string, { value: string[] | string, matchMode: string }>;
         const query: any = { and: [] };
         for (const [field, rule] of Object.entries(filters)) {
-          if (multiSelectFields.includes(field) && (rule as any).value.length > 0) {
-            query.and.push({ [field]: { in: (rule as any).value } });
+          if (multiSelectFields.includes(field) && rule.value.length > 0) {
+            query.and.push({ [field]: { in: rule.value } });
+          } else if (rule.matchMode === 'contains' && rule.value) {
+            query.and.push({ [field]: { contains: rule.value } });
+          } else if (rule.matchMode === 'equals' && rule.value) {
+            query.and.push({ [field]: { equals: rule.value } });
+          } else if (rule.matchMode === 'notEquals' && rule.value) {
+            query.and.push({ [field]: { not_equals: rule.value } });
           }
         }
         const filteredValues = await payload.find({
