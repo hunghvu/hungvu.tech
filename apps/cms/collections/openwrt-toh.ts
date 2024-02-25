@@ -111,6 +111,7 @@ const filterValues = (): Omit<Endpoint, 'root'> => {
         const filteredValues = await payload.find({
           collection: slug,
           limit: body.rows,
+          page: body.page + 1,
           where: query,
         })
         const multiSortMeta = body.multiSortMeta as { field: string, order: -1 | 0 | 1 }[]
