@@ -66,6 +66,13 @@ const downloadAndProcessOpenWrtTohDatabaseDump = async (): Promise<void> => {
       delete record.device_techdata;
       delete record.picture;
 
+      // Create a new field deviceName
+      const deviceName = `${record.brand} / ${record.model} / ${record.version}`;
+      record.deviceName = deviceName;
+      delete record.brand;
+      delete record.model;
+      delete record.version;
+
       // Remove all non-alphanumeric characters
       // This is to prevent injection attack
       // Also, it is easier to search for a device

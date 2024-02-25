@@ -36,7 +36,7 @@ payload.init({
       defaultExtension: process.env.TS_NODE ? 'ts' : 'js',
       acceptedExtensions: ['.ts', '.js'],
       jobs: [
-        { name: 'download-and-process-openwrt-toh-database-dump', interval: process.env.NODE_ENV === 'production' ? 'at 12:00 am' : '15s' },
+        { name: 'download-and-process-openwrt-toh-database-dump', interval: process.env.NODE_ENV === 'production' ? 'at 12:00 am' : '90s' },
       ],
       // Name is the job name.
       workerMessageHandler: ({ message }: { message: OpenwrtToh[] }) => {

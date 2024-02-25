@@ -119,18 +119,8 @@ const OpenwrtToh: CollectionConfig = {
       type: 'text',
     },
     {
-      name: 'brand',
-      label: 'Brand',
-      type: 'text',
-    },
-    {
-      name: 'model',
-      label: 'Model',
-      type: 'text',
-    },
-    {
-      name: 'version',
-      label: 'Version',
+      name: 'deviceName',
+      label: 'Device Name',
       type: 'text',
     },
     {

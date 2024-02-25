@@ -44,6 +44,7 @@ module.exports = {
     "@typescript-eslint/no-confusing-non-null-assertion": "off",
     "@typescript-eslint/no-redundant-type-constituents": "off",
     "@typescript-eslint/no-unnecessary-condition": "off",
+    "@typescript-eslint/no-unnecessary-type-assertion": "off",
     "eslint-comments/require-description": "off",
     "import/no-default-export": "off",
     "import/no-named-as-default-member": "off",
