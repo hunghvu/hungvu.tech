@@ -1,10 +1,18 @@
 import { notFound } from "next/navigation";
+import type { DataTableStateEvent } from "primereact/datatable";
 
-const getOpenwrtTohLazy = async (numberOfDevices: number, page: number): Promise<any> => {
+const getOpenwrtTohLazy = async (event: DataTableStateEvent): Promise<any> => {
   let res;
   try {
     res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_OPENWRT_TOH!}?limit=${numberOfDevices}&page=${page}`
+      process.env.NEXT_PUBLIC_API_OPENWRT_TOH_FILTER!,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(event),
+      }
     );
   } catch (err) {
     throw new Error('Connection Error');

@@ -6,6 +6,7 @@
  * This collection represents an OpenWRT Table of Hardware.
  */
 
+import payload from 'payload';
 import type { Endpoint } from "payload/config";
 import type { CollectionConfig } from 'payload/types';
 
@@ -78,6 +79,37 @@ const getAvailableValues = (): Omit<Endpoint, 'root'> => {
           // https://stackoverflow.com/questions/68945315/mongooseerror-query-was-already-executed
         }
         res.status(200).json({ docs: resAvailableValues });
+      }
+      catch (error) {
+        res.status(500).json({ error: error.message });
+      }
+    }
+  }
+}
+
+const filterValues = (): Omit<Endpoint, 'root'> => {
+  return {
+    path: '/filter',
+    method: 'post',
+    handler: async (req, res) => {
+      try {
+        const slug = 'openwrt-toh';
+        const body = req.body
+        const filters = body.filters as Record<string, { value: string[] }>;
+        const query: any = { and: [{ or: [] }] };
+        for (const [field, rule] of Object.entries(filters)) {
+          if (multiSelectFields.includes(field) && (rule as any).value.length > 0) {
+            for (const value of (filters[field] as any).value as unknown as string[]) {
+              query.and[0].or.push({ [field]: { equals: value } });
+            }
+          }
+        }
+        const filteredValues = await payload.find({
+          collection: slug,
+          limit: body.rows,
+          where: query,
+        })
+        res.status(200).json(filteredValues);
       }
       catch (error) {
         res.status(500).json({ error: error.message });
@@ -460,7 +492,7 @@ const OpenwrtToh: CollectionConfig = {
     },
 
   ],
-  endpoints: [getAvailableValues()],
+  endpoints: [getAvailableValues(), filterValues()],
   timestamps: true,
   // No need for versionings and drafts because this collection is "read-only"
   // All updates are done via cron jobs

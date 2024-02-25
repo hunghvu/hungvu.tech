@@ -133,9 +133,8 @@ const PageOpenwrtToh: React.FunctionComponent<PageOpenwrtTohProps> = ({ data, av
   };
 
   const fetchData = async (): Promise<void> => {
-    // const newPageData = await getOpenwrtTohLazy(lazyDataTableState);
-    // setContent(newPageData);
-    // lazyDataTableState.filters = defaultFilters;
+    const newPageData = await getOpenwrtTohLazy(lazyDataTableState);
+    setContent(newPageData);
   };
   useEffect(() => {
     void fetchData();

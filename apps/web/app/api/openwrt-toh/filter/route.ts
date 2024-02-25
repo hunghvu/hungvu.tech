@@ -6,16 +6,21 @@
 
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { NextResponse, type NextRequest } from 'next/server'
+import type { DataTableStateEvent } from "primereact/datatable";
 
-export async function GET(req: NextRequest) {
-  const numberOfDevices = req.nextUrl.searchParams.get('limit')
-  const page = req.nextUrl.searchParams.get('page')
+export async function POST(req: NextRequest) {
+  const event = await req.json() as DataTableStateEvent;
   let res;
   try {
     res = await fetch(
-      `${process.env.NEXT_REQUEST_CMS_OPENWRT_TOH!}?limit=${numberOfDevices}&page=${page}`,
-      { next: { revalidate: process.env.NODE_ENV === "production" ? 86400 : 0 } }
-    );
+      process.env.NEXT_REQUEST_CMS_OPENWRT_TOH_FILTER!,
+      {
+        next: { revalidate: process.env.NODE_ENV === "production" ? 86400 : 0 },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(event),
+      },
+    )
   } catch (err) {
     return new NextResponse('Cannot fetch OpenWRT Table of Hardware', { status: 500 });
   }
