@@ -69,7 +69,7 @@ const PageOpenwrtToh: React.FunctionComponent<PageOpenwrtTohProps> = ({ data, av
     {
       name: 'flashmb',
       label: 'Flash (MB)',
-      filterMode: 'multiSelect',
+      filterMode: 'standard',
     },
     {
       name: 'rammb',
