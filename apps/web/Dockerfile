@@ -21,10 +21,6 @@ COPY --from=builder /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
 COPY --from=builder /app/out/full/ .
 COPY turbo.json turbo.json
 
-ENV NEXT_PUBLIC_BASE_URL https://hungvu.tech
-ENV NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION EGTdZytY_C05esF562wX0i-fpIShKgfypgbhQV3bPzU
-ENV NEXT_PUBLIC_API_OPENWRT_TOH=http://127.0.0.1:3000/api/openwrt-toh
-ENV NEXT_TELEMETRY_DISABLED 1
 
 RUN yarn global add turbo
 RUN yarn global add pnpm
@@ -33,13 +29,30 @@ RUN yarn global add dotenv-cli
 # and breaks turborepo setup
 RUN pnpm install
 
+ENV NEXT_TELEMETRY_DISABLED 1
 ENV NODE_ENV production
+
+# Public environment variables, only for build time
+ENV NEXT_PUBLIC_BASE_URL https://hungvu.tech
+ENV NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION EGTdZytY_C05esF562wX0i-fpIShKgfypgbhQV3bPzU
+ENV NEXT_PUBLIC_API_OPENWRT_TOH=https://hungvu.tech/api/openwrt-toh
+
+# Global content material
+ENV NEXT_REQUEST_CMS_STATIC_ROUTE_METADATA_URL https://payload.hungvu.tech/api/static-route-metadata
+
+# Blog
 ENV NEXT_REQUEST_CMS_ARTICLES_URL https://payload.hungvu.tech/api/articles
 ENV NEXT_REQUEST_CMS_ARTICLES_IGNORE_REDUNDANT_FIELDS_URL https://payload.hungvu.tech/api/articles/ignore-redundant-fields
 ENV NEXT_REQUEST_CMS_ARTICLES_IN_THE_SAME_SERIES_URL https://payload.hungvu.tech/api/articles/in-series
-ENV NEXT_REQUEST_CMS_STATIC_ROUTE_METADATA_URL https://payload.hungvu.tech/api/static-route-metadata
-ENV NEXT_REQUEST_CMS_OPENWRT_TOH http://127.0.0.1:3001/api/openwrt-toh
-ENV NEXT_REQUEST_CMS_OPENWRT_TOH_AVAILABLE_VALUES_OF_EACH_FIELD http://127.0.0.1:3001/api/openwrt-toh/available-values-of-each-field
+
+# Lab
+ENV NEXT_REQUEST_CMS_LABS_URL https://payload.hungvu.tech/api/labs
+ENV NEXT_REQUEST_CMS_LABS_IGNORE_REDUNDANT_FIELDS_URL https://payload.hungvu.tech/api/labs/ignore-redundant-fields
+
+# Lab - OpenWRT TOH
+ENV NEXT_REQUEST_CMS_OPENWRT_TOH_URL https://payload.hungvu.tech/api/openwrt-toh
+ENV NEXT_REQUEST_CMS_OPENWRT_TOH_AVAILABLE_VALUES_OF_EACH_FIELD_URL https://payload.hungvu.tech/api/openwrt-toh/available-values-of-each-field
+ENV NEXT_REQUEST_CMS_OPENWRT_TOH_FILTER_URL https://payload.hungvu.tech/api/openwrt-toh/filter
 RUN pnpm run build --filter web
 
 FROM base AS runner
@@ -56,14 +69,29 @@ COPY --from=installer --chown=nextjs:nodejs /app/apps/web/.next/standalone ./
 COPY --from=installer --chown=nextjs:nodejs /app/apps/web/.next/static ./apps/web/.next/static
 COPY --from=installer --chown=nextjs:nodejs /app/apps/web/public ./apps/web/public
 
+ENV NEXT_TELEMETRY_DISABLED 1
+ENV NODE_ENV production
+
 # It seems these are required for both build and runtime
 # For build time, it is so Next.js can generate cache files
 # For runtime, it is so Next.js can revalidate cache files
+
+# Global content material
+ENV NEXT_REQUEST_CMS_STATIC_ROUTE_METADATA_URL https://payload.hungvu.tech/api/static-route-metadata
+
+# Blog
 ENV NEXT_REQUEST_CMS_ARTICLES_URL https://payload.hungvu.tech/api/articles
 ENV NEXT_REQUEST_CMS_ARTICLES_IGNORE_REDUNDANT_FIELDS_URL https://payload.hungvu.tech/api/articles/ignore-redundant-fields
 ENV NEXT_REQUEST_CMS_ARTICLES_IN_THE_SAME_SERIES_URL https://payload.hungvu.tech/api/articles/in-series
-ENV NEXT_REQUEST_CMS_STATIC_ROUTE_METADATA_URL https://payload.hungvu.tech/api/static-route-metadata
-ENV NEXT_REQUEST_CMS_OPENWRT_TOH http://127.0.0.1:3001/api/openwrt-toh
-ENV NEXT_REQUEST_CMS_OPENWRT_TOH_AVAILABLE_VALUES_OF_EACH_FIELD http://127.0.0.1:3001/api/openwrt-toh/available-values-of-each-field
+
+# Lab
+ENV NEXT_REQUEST_CMS_LABS_URL https://payload.hungvu.tech/api/labs
+ENV NEXT_REQUEST_CMS_LABS_IGNORE_REDUNDANT_FIELDS_URL https://payload.hungvu.tech/api/labs/ignore-redundant-fields
+
+# Lab - OpenWRT TOH
+ENV NEXT_REQUEST_CMS_OPENWRT_TOH_URL https://payload.hungvu.tech/api/openwrt-toh
+ENV NEXT_REQUEST_CMS_OPENWRT_TOH_AVAILABLE_VALUES_OF_EACH_FIELD_URL https://payload.hungvu.tech/api/openwrt-toh/available-values-of-each-field
+ENV NEXT_REQUEST_CMS_OPENWRT_TOH_FILTER_URL https://payload.hungvu.tech/api/openwrt-toh/filter
+
 
 CMD node apps/web/server.js

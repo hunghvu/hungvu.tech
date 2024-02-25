@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
   let res;
   try {
     res = await fetch(
-      process.env.NEXT_REQUEST_CMS_OPENWRT_TOH_FILTER!,
+      process.env.NEXT_REQUEST_CMS_OPENWRT_TOH_FILTER_URL!,
       {
         next: { revalidate: process.env.NODE_ENV === "production" ? 86400 : 0 },
         method: 'POST',

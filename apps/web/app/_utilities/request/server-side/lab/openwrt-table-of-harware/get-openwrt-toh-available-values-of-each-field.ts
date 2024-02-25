@@ -4,7 +4,7 @@ const getOpenwrtTohAvailableValuesOfEachField = async (): Promise<any> => {
   let res;
   try {
     res = await fetch(
-      process.env.NEXT_REQUEST_CMS_OPENWRT_TOH_AVAILABLE_VALUES_OF_EACH_FIELD!,
+      process.env.NEXT_REQUEST_CMS_OPENWRT_TOH_AVAILABLE_VALUES_OF_EACH_FIELD_URL!,
       { next: { revalidate: process.env.NODE_ENV === "production" ? 86400 : 0 } }
     );
   } catch (err) {
