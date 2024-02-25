@@ -66,13 +66,6 @@ const downloadAndProcessOpenWrtTohDatabaseDump = async (): Promise<void> => {
       delete record.device_techdata;
       delete record.picture;
 
-      // Create a new field deviceName
-      const deviceName = `${record.brand} / ${record.model} / ${record.version}`;
-      record.deviceName = deviceName;
-      delete record.brand;
-      delete record.model;
-      delete record.version;
-
       // Remove all non-alphanumeric characters
       // This is to prevent injection attack
       // Also, it is easier to search for a device
@@ -90,6 +83,14 @@ const downloadAndProcessOpenWrtTohDatabaseDump = async (): Promise<void> => {
           return [key, value];
         })
       );
+
+      // Create a new field deviceName
+      const deviceName = `${cleaned.brand} / ${cleaned.model} / ${cleaned.version}`;
+      cleaned.deviceName = deviceName;
+      delete cleaned.brand;
+      delete cleaned.model;
+      delete cleaned.version;
+
       return cleaned;
     })
     // Write the cleaned CSV file, only in development environment
