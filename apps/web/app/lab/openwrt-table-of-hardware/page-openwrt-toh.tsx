@@ -15,6 +15,8 @@ import type { DataTableStateEvent } from 'primereact/datatable';
 import type { SelectItemOptionsType } from 'primereact/selectitem';
 import getOpenwrtTohLazy from '@utils/request/client-side/get-openwrt-toh-lazy';
 import { Button } from 'primereact/button';
+import { RichText } from 'app/_components/richtext';
+import { Divider } from 'primereact/divider';
 import { columns } from './columns';
 import type { ColumnData } from './columns';
 
@@ -36,11 +38,12 @@ const MultiSelectFilterTemplate: React.FC<{
 const Time: React.FC<{ timestamp: string }> = ({ timestamp }) => <time dateTime={timestamp}>{utcToLocal(timestamp, 'MMM DD, YYYY')}</time>;
 
 interface PageOpenwrtTohProps {
-  data: any;
   availableValues: any;
+  contentData: any;
+  tohData: any;
 }
 
-const PageOpenwrtToh: React.FunctionComponent<PageOpenwrtTohProps> = ({ data, availableValues }) => {
+const PageOpenwrtToh: React.FunctionComponent<PageOpenwrtTohProps> = ({ availableValues, contentData, tohData }) => {
   const [visibleColumns, setVisibleColumns] = useState<ColumnData[]>([
     {
       name: 'deviceName',
@@ -95,13 +98,13 @@ const PageOpenwrtToh: React.FunctionComponent<PageOpenwrtTohProps> = ({ data, av
   }, {});
 
   // Pagination
-  const [content, setContent] = useState(data);
+  const [newTohData, setNewTohData] = useState(tohData);
   const [lazyDataTableState, setLazyDataTableState] = useState<DataTableStateEvent>({
     // Pagination
     first: 0,
     rows: 10,
     page: 0,
-    pageCount: content.totalPages,
+    pageCount: newTohData.totalPages,
 
     // Filtering
     filters: defaultFilters,
@@ -135,120 +138,128 @@ const PageOpenwrtToh: React.FunctionComponent<PageOpenwrtTohProps> = ({ data, av
   };
 
   const fetchData = async (): Promise<void> => {
-    const newPageData = await getOpenwrtTohLazy(lazyDataTableState);
-    setContent(newPageData);
+    const newData = await getOpenwrtTohLazy(lazyDataTableState);
+    setNewTohData(newData);
   };
   useEffect(() => {
     void fetchData();
   }, [lazyDataTableState]);
 
   return (
-    <section className='w-[260px] sm:w-[640px] md:w-[768px] lg:w-[1024px] xl:w-[1280px] 2xl:w-[1536px]'>
-      <DataTable
-        // Use database id instead of pid from ToH, because id is guaranteed to be unique
-        currentPageReportTemplate='Jump to page (1 - {totalPages}):'
-        dataKey='id'
-        filterDisplay='row'
-        filters={lazyDataTableState.filters}
-        first={lazyDataTableState.first}
-        header={() => (
-          <aside className='flex flex-row justify-start items-baseline gap-8'>
-            <fieldset>
-              <legend className='text-xl'>Show Columns</legend>
-              <MultiSelect
-                filter
-                onChange={onColumnToggle}
-                optionLabel='label'
-                options={columns}
-                placeholder='Select Columns'
-                value={visibleColumns}
-              />
-            </fieldset>
-            <Button label='Clear Filters' onClick={() => setLazyDataTableState({ ...lazyDataTableState, filters: defaultFilters })} />
-            <Button label='Clear Sorts' onClick={() => setLazyDataTableState({ ...lazyDataTableState, multiSortMeta: [] })} />
-          </aside>
-        )}
-        lazy // lazy is required to trigger custom totalRecords: https://github.com/orgs/primefaces/discussions/242
-        multiSortMeta={lazyDataTableState.multiSortMeta}
-        onFilter={onFilter}
-        onPage={onPage}
-        onSort={onSort}
-        paginator
-        paginatorTemplate='RowsPerPageDropdown FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport JumpToPageInput'
-        pt={{
-          root: {
-            className: 'w-full',
-          },
-        }}
-        removableSort
-        rows={lazyDataTableState.rows}
-        rowsPerPageOptions={[10, 50, 100, 10000]}
-        scrollHeight='700px'
-        scrollable
-        sortField={lazyDataTableState.sortField}
-        sortMode='multiple'
-        sortOrder={lazyDataTableState.sortOrder}
-        totalRecords={content.totalDocs}
-        value={content.docs}
-        virtualScrollerOptions={{
-          itemSize: 64,
-        }}
-      >
-        {/* Create all columns with name as field, label as header */}
-        {visibleColumns.map((col, i) => {
-          if (col.name === 'createdAt' || col.name === 'updatedAt') {
+    <section className='flex flex-col gap-4 p-4 break-words bg-[#00002f]/80 border border-1 border-zinc-500 rounded-md w-[260px] sm:w-[640px] md:w-[768px] lg:w-[1024px] xl:w-[1280px] 2xl:w-[1536px]'>
+      <hgroup className='flex flex-col gap-6 w-full'>
+        <h1 className='text-3xl md:text-4xl font-extrabold'>{contentData.title}</h1>
+        <p className='text-xl md:text-2xl font-light text-zinc-200 italic'>{contentData.subTitle}</p>
+      </hgroup>
+      <Divider />
+      <RichText nodes={contentData.body.root.children} />
+      <div className='mt-16'>
+        <DataTable
+          // Use database id instead of pid from ToH, because id is guaranteed to be unique
+          currentPageReportTemplate='Jump to page (1 - {totalPages}):'
+          dataKey='id'
+          filterDisplay='row'
+          filters={lazyDataTableState.filters}
+          first={lazyDataTableState.first}
+          header={() => (
+            <aside className='flex flex-row justify-start items-baseline gap-8'>
+              <fieldset>
+                <legend className='text-xl'>Show Columns</legend>
+                <MultiSelect
+                  filter
+                  onChange={onColumnToggle}
+                  optionLabel='label'
+                  options={columns}
+                  placeholder='Select Columns'
+                  value={visibleColumns}
+                />
+              </fieldset>
+              <Button label='Clear Filters' onClick={() => setLazyDataTableState({ ...lazyDataTableState, filters: defaultFilters })} />
+              <Button label='Clear Sorts' onClick={() => setLazyDataTableState({ ...lazyDataTableState, multiSortMeta: [] })} />
+            </aside>
+          )}
+          lazy // lazy is required to trigger custom totalRecords: https://github.com/orgs/primefaces/discussions/242
+          multiSortMeta={lazyDataTableState.multiSortMeta}
+          onFilter={onFilter}
+          onPage={onPage}
+          onSort={onSort}
+          paginator
+          paginatorTemplate='RowsPerPageDropdown FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport JumpToPageInput'
+          pt={{
+            root: {
+              className: 'w-full',
+            },
+          }}
+          removableSort
+          rows={lazyDataTableState.rows}
+          rowsPerPageOptions={[10, 50, 100, 10000]}
+          scrollHeight='700px'
+          scrollable
+          sortField={lazyDataTableState.sortField}
+          sortMode='multiple'
+          sortOrder={lazyDataTableState.sortOrder}
+          totalRecords={newTohData.totalDocs}
+          value={newTohData.docs}
+          virtualScrollerOptions={{
+            itemSize: 64,
+          }}
+        >
+          {/* Create all columns with name as field, label as header */}
+          {visibleColumns.map((col, i) => {
+            if (col.name === 'createdAt' || col.name === 'updatedAt') {
+              return (
+                <Column
+                  body={(rowData) => <Time timestamp={col.name === 'createdAt' ? (rowData.createdAt as string) : (rowData.updatedAt as string)} />}
+                  field={col.name}
+                  header={col.label}
+                  key={i}
+                  pt={{
+                    // Min width must be at bodyCellm not root
+                    // Although both yield the same result, using root causes a side effect
+                    // The sortBadge counter will stretch of the entire column, if using root
+                    bodyCell: {
+                      className: 'min-w-60',
+                    },
+                  }}
+                  sortable
+                />
+              );
+            }
+            if (col.filterMode === 'multiSelect') {
+              return (
+                <Column
+                  field={col.name}
+                  filter
+                  filterElement={(filterOptions) => (
+                    <MultiSelectFilterTemplate filterOptions={filterOptions} selectOptions={availableValues.docs[col.name]} />
+                  )}
+                  filterMatchMode={FilterMatchMode.IN}
+                  header={col.label}
+                  key={i}
+                  showFilterMatchModes={false}
+                  sortable
+                />
+              );
+            }
             return (
               <Column
-                body={(rowData) => <Time timestamp={col.name === 'createdAt' ? (rowData.createdAt as string) : (rowData.updatedAt as string)} />}
                 field={col.name}
+                filter
+                filterField={col.name}
+                filterMatchModeOptions={[
+                  { label: 'Contains', value: FilterMatchMode.CONTAINS },
+                  { label: 'Equals', value: FilterMatchMode.EQUALS },
+                  { label: 'Not Equals', value: FilterMatchMode.NOT_EQUALS },
+                ]}
+                filterPlaceholder={`Search by ${col.label}`}
                 header={col.label}
                 key={i}
-                pt={{
-                  // Min width must be at bodyCellm not root
-                  // Although both yield the same result, using root causes a side effect
-                  // The sortBadge counter will stretch of the entire column, if using root
-                  bodyCell: {
-                    className: 'min-w-60',
-                  },
-                }}
                 sortable
               />
             );
-          }
-          if (col.filterMode === 'multiSelect') {
-            return (
-              <Column
-                field={col.name}
-                filter
-                filterElement={(filterOptions) => (
-                  <MultiSelectFilterTemplate filterOptions={filterOptions} selectOptions={availableValues.docs[col.name]} />
-                )}
-                filterMatchMode={FilterMatchMode.IN}
-                header={col.label}
-                key={i}
-                showFilterMatchModes={false}
-                sortable
-              />
-            );
-          }
-          return (
-            <Column
-              field={col.name}
-              filter
-              filterField={col.name}
-              filterMatchModeOptions={[
-                { label: 'Contains', value: FilterMatchMode.CONTAINS },
-                { label: 'Equals', value: FilterMatchMode.EQUALS },
-                { label: 'Not Equals', value: FilterMatchMode.NOT_EQUALS },
-              ]}
-              filterPlaceholder={`Search by ${col.label}`}
-              header={col.label}
-              key={i}
-              sortable
-            />
-          );
-        })}
-      </DataTable>
+          })}
+        </DataTable>
+      </div>
     </section>
   );
 };
