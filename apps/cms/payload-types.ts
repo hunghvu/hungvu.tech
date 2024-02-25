@@ -9,17 +9,22 @@
 export interface Config {
   collections: {
     users: User;
-    articles: Article;
     media: Media;
     tags: Tag;
+    articles: Article;
     series: Series;
     'static-route-metadata': StaticRouteMetadatum;
+    labs: Lab;
     'openwrt-toh': OpenwrtToh;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
   globals: {};
 }
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users".
+ */
 export interface User {
   id: string;
   updatedAt: string;
@@ -33,37 +38,10 @@ export interface User {
   lockUntil?: string | null;
   password?: string | null;
 }
-export interface Article {
-  id: string;
-  settings: {
-    slug: string;
-    tags: (string | Tag)[];
-    images: string | Media;
-    series?: (string | null) | Series;
-    seoTitle: string;
-    seoDescription: string;
-    scheduledReleaseDate: string;
-    hideFromHome?: boolean | null;
-    customizedCreatedAt?: string | null;
-    customizedUpdatedAt?: string | null;
-  };
-  title: string;
-  subTitle: string;
-  body: {
-    [k: string]: unknown;
-  }[];
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
-export interface Tag {
-  id: string;
-  title: string;
-  description: string;
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media".
+ */
 export interface Media {
   id: string;
   alt: string;
@@ -111,6 +89,49 @@ export interface Media {
     };
   };
 }
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tags".
+ */
+export interface Tag {
+  id: string;
+  title: string;
+  description: string;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "articles".
+ */
+export interface Article {
+  id: string;
+  settings: {
+    slug: string;
+    tags: (string | Tag)[];
+    images: string | Media;
+    series?: (string | null) | Series;
+    seoTitle: string;
+    seoDescription: string;
+    scheduledReleaseDate: string;
+    hideFromHome?: boolean | null;
+    customizedCreatedAt?: string | null;
+    customizedUpdatedAt?: string | null;
+  };
+  title: string;
+  subTitle: string;
+  body: {
+    [k: string]: unknown;
+  }[];
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "series".
+ */
 export interface Series {
   id: string;
   title: string;
@@ -119,6 +140,10 @@ export interface Series {
   createdAt: string;
   _status?: ('draft' | 'published') | null;
 }
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "static-route-metadata".
+ */
 export interface StaticRouteMetadatum {
   id: string;
   slug: string;
@@ -129,13 +154,37 @@ export interface StaticRouteMetadatum {
   createdAt: string;
   _status?: ('draft' | 'published') | null;
 }
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "labs".
+ */
+export interface Lab {
+  id: string;
+  settings: {
+    slug: string;
+    tags: (string | Tag)[];
+    images: string | Media;
+    seoTitle: string;
+    seoDescription: string;
+  };
+  title: string;
+  subTitle: string;
+  body: {
+    [k: string]: unknown;
+  }[];
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "openwrt-toh".
+ */
 export interface OpenwrtToh {
   id: string;
   pid: string;
   devicetype?: string | null;
-  brand?: string | null;
-  model?: string | null;
-  version?: string | null;
+  deviceName?: string | null;
   fccid?: string | null;
   availability?: string | null;
   whereavailable?: string | null;
@@ -206,6 +255,10 @@ export interface OpenwrtToh {
   updatedAt: string;
   createdAt: string;
 }
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-preferences".
+ */
 export interface PayloadPreference {
   id: string;
   user: {
@@ -225,6 +278,10 @@ export interface PayloadPreference {
   updatedAt: string;
   createdAt: string;
 }
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-migrations".
+ */
 export interface PayloadMigration {
   id: string;
   name?: string | null;

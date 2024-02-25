@@ -11,7 +11,7 @@ import isPublished from '../access/query/is-published';
 const Tags: CollectionConfig = {
   slug: 'tags',
   admin: {
-    group: 'Blog',
+    group: 'Global Content Material',
     useAsTitle: 'title',
     defaultColumns: ['title', 'description', 'createdAt', 'updatedAt', '_status'],
   },
