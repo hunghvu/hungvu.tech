@@ -22,14 +22,14 @@ export async function POST(req: NextRequest) {
       },
     )
   } catch (err) {
-    return new NextResponse('Cannot fetch OpenWRT Table of Hardware', { status: 500 });
+    return NextResponse.json({ error: 'Cannot fetch OpenWRT Table of Hardware.' }, { status: 500 });
   }
 
   // This endpoint is public, so no need to catch 4xx
   // The endpoint only returns code 500 for catch-all purpose
   // The bigger (>) comparison is for when the server is down, Cloudflare can return 5xx status
   if (res.status >= 500) {
-    return new NextResponse('Cannot fetch OpenWRT Table of Hardware', { status: 500 });
+    return NextResponse.json({ error: 'Cannot fetch OpenWRT Table of Hardware.' }, { status: 500 });
   }
 
   const data = await res.json();
