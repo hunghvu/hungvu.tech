@@ -14,6 +14,7 @@ import type { ColumnFilterElementTemplateOptions } from 'primereact/column';
 import type { DataTableStateEvent } from 'primereact/datatable';
 import type { SelectItemOptionsType } from 'primereact/selectitem';
 import getOpenwrtTohLazy from '@utils/request/client-side/get-openwrt-toh-lazy';
+import { Button } from 'primereact/button';
 import { columns } from './columns';
 import type { ColumnData } from './columns';
 
@@ -151,7 +152,21 @@ const PageOpenwrtToh: React.FunctionComponent<PageOpenwrtTohProps> = ({ data, av
         filters={lazyDataTableState.filters}
         first={lazyDataTableState.first}
         header={() => (
-          <MultiSelect filter onChange={onColumnToggle} optionLabel='label' options={columns} placeholder='Select Columns' value={visibleColumns} />
+          <aside className='flex flex-row justify-start items-baseline gap-8'>
+            <fieldset>
+              <legend className='text-xl'>Show Columns</legend>
+              <MultiSelect
+                filter
+                onChange={onColumnToggle}
+                optionLabel='label'
+                options={columns}
+                placeholder='Select Columns'
+                value={visibleColumns}
+              />
+            </fieldset>
+            <Button label='Clear Filters' onClick={() => setLazyDataTableState({ ...lazyDataTableState, filters: defaultFilters })} />
+            <Button label='Clear Sorts' onClick={() => setLazyDataTableState({ ...lazyDataTableState, multiSortMeta: [] })} />
+          </aside>
         )}
         lazy // lazy is required to trigger custom totalRecords: https://github.com/orgs/primefaces/discussions/242
         multiSortMeta={lazyDataTableState.multiSortMeta}
