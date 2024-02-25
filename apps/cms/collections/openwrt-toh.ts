@@ -94,10 +94,13 @@ const filterValues = (): Omit<Endpoint, 'root'> => {
     handler: async (req, res) => {
       try {
         const slug = 'openwrt-toh';
-        const body = req.body
+        const body = req.body;
         const filters = body.filters as Record<string, { value: string[] | string, matchMode: string }>;
         const query: any = { and: [] };
         for (const [field, rule] of Object.entries(filters)) {
+          if (rule.value === null) {
+            continue;
+          }
           if (multiSelectFields.includes(field) && rule.value.length > 0) {
             query.and.push({ [field]: { in: rule.value } });
           } else if (rule.matchMode === 'contains' && rule.value) {
