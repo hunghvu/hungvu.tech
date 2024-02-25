@@ -21,8 +21,6 @@ const columns: ColumnData[] = [
     label: 'Device Type',
     filterMode: 'multiSelect',
   },
-  // This is the only column that is not in the CMS schema
-  // It is the combination of brand, model, and version
   {
     name: 'deviceName',
     label: 'Device Name',
