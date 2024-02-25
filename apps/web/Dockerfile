@@ -40,6 +40,9 @@ ENV NEXT_PUBLIC_API_OPENWRT_TOH=https://hungvu.tech/api/openwrt-toh
 # Global content material
 ENV NEXT_REQUEST_CMS_STATIC_ROUTE_METADATA_URL https://payload.hungvu.tech/api/static-route-metadata
 
+# Media
+ENV NEXT_REQUEST_CMS_MEDIA_URL https://payload.hungvu.tech/api/media
+
 # Blog
 ENV NEXT_REQUEST_CMS_ARTICLES_URL https://payload.hungvu.tech/api/articles
 ENV NEXT_REQUEST_CMS_ARTICLES_IGNORE_REDUNDANT_FIELDS_URL https://payload.hungvu.tech/api/articles/ignore-redundant-fields
@@ -78,6 +81,9 @@ ENV NODE_ENV production
 
 # Global content material
 ENV NEXT_REQUEST_CMS_STATIC_ROUTE_METADATA_URL https://payload.hungvu.tech/api/static-route-metadata
+
+# Media
+ENV NEXT_REQUEST_CMS_MEDIA_URL https://payload.hungvu.tech/api/media
 
 # Blog
 ENV NEXT_REQUEST_CMS_ARTICLES_URL https://payload.hungvu.tech/api/articles
