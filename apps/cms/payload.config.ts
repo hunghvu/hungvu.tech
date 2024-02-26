@@ -27,7 +27,7 @@ import {
   lexicalEditor,
 } from '@payloadcms/richtext-lexical';
 import type { FeatureProvider } from '@payloadcms/richtext-lexical';
-import { viteBundler } from '@payloadcms/bundler-vite';
+import { webpackBundler } from "@payloadcms/bundler-webpack";
 import Articles from './collections/articles';
 import CodeEditor from './blocks/code-snippet';
 import Users from './collections/users';
@@ -35,6 +35,8 @@ import Media from './collections/media';
 import Series from './collections/series';
 import StaticRouteMetadata from './collections/static-route-metadata';
 import Tags from './collections/tags';
+import OpenwrtToh from "./collections/openwrt-toh";
+import Labs from "./collections/labs";
 
 const s3 = s3Adapter({
   config: {
@@ -83,12 +85,28 @@ export default buildConfig({
   serverURL: process.env.PAYLOAD_PUBLIC_SERVER_URL!,
   admin: {
     user: Users.slug,
-    bundler: viteBundler(),
+    bundler: webpackBundler(),
+    webpack: (config) => {
+      return {
+        ...config,
+        resolve: {
+          ...config.resolve,
+          fallback: {
+            ...config.resolve.fallback,
+            fs: false,
+            path: false,
+            os: false,
+            util: false,
+            process: false,
+          }
+        },
+      }
+    },
   },
   editor: lexicalEditor({
     features: () => lexicalEditorFeatures(),
   }),
-  collections: [Users, Articles, Media, Tags, Series, StaticRouteMetadata],
+  collections: [Users, Media, Tags, Articles, Series, StaticRouteMetadata, Labs, OpenwrtToh],
   typescript: {
     outputFile: path.resolve(__dirname, 'payload-types.ts'),
   },

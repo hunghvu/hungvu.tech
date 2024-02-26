@@ -9,9 +9,8 @@ import { Card } from 'primereact/card';
 import { Tag } from 'primereact/tag';
 import { Divider } from 'primereact/divider';
 import { utcToLocal } from '@utils/parse-date';
-import { geist } from 'app/_components/fonts';
 
-const BlogPage: React.FunctionComponent<{ content: any }> = ({ content }) => {
+const PageBlog: React.FunctionComponent<{ content: any }> = ({ content }) => {
   const data = content
     .filter((article: any) => article.settings.hideFromHome === false)
     .map((article: any) => {
@@ -26,57 +25,40 @@ const BlogPage: React.FunctionComponent<{ content: any }> = ({ content }) => {
     });
 
   return (
-    <section className='grid grid-cols-1 lg:grid-cols-2 max-w-[1024px] bg-[#00002f]/80 border border-1 border-[#e5e7eb60] rounded-md p-4 lg:gap-8'>
-      {data.map((item: any) => {
-        return (
-          <Link href={item.slug} key={item.id}>
-            <Card
-              footer={
-                <aside className='flex flex-col gap-4'>
-                  <div className='flex flex-row flex-wrap gap-2'>
-                    {item.tags.map((tag: any) => (
-                      <Tag
-                        aria-label={`The article ${item.title} belongs to the topic ${tag}.`}
-                        key={tag.id}
-                        pt={{
-                          root: { className: 'py-0 bg-dark-cyan-800' },
-                          value: { className: `text-sm md:text-base ${geist.className} text-[#aeaeae]` },
-                        }}
-                        severity='info'
-                        value={tag.title}
-                      />
-                    ))}
-                  </div>
-                  <Divider
-                    pt={{
-                      root: { className: 'before:border-[#2c323a]' },
-                    }}
-                  />
-                </aside>
-              }
-              header={
-                <time className='text-[#aeaeae] text-sm md:text-base pl-5' dateTime={item.date}>
-                  {utcToLocal(item.date as string, 'MMMM DD, YYYY')}
-                </time>
-              }
-              pt={{
-                root: {
-                  className: `py-2 lg:p-4 bg-transparent hover:bg-dark-cyan-900/80 hover:rounded-md ${geist.className} lg:min-h-[21rem]`,
-                },
-                title: { className: 'text-xl md:text-2xl lg:min-h-[6rem]' },
-                body: { className: 'pb-0' },
-                content: { className: 'text-base md:text-lg lg:min-h-[7.75rem]' },
-              }}
-              role='article'
-              title={<h2 className='line-clamp-2 lg:line-clamp-3 break-words'>{item.title}</h2>}
-            >
-              <p className='text-[#c5c5c5] line-clamp-2 lg:line-clamp-3 break-words'>{item.description}</p>
-            </Card>
-          </Link>
-        );
-      })}
+    <section className='flex flex-col justify-center items-center gap-16'>
+      <h1 className='font-bold mb-2 text-2xl md:text-3xl'>Latest Articles</h1>
+      <div className='grid grid-cols-1 lg:grid-cols-2 max-w-[1024px] bg-[#00002f]/80 border border-1 border-zinc-500 rounded-md p-4 lg:gap-8'>
+        {data.map((item: any) => {
+          return (
+            <Link href={item.slug} key={item.id}>
+              <article>
+                <Card
+                  footer={
+                    <aside className='flex flex-col gap-4'>
+                      <div className='flex flex-row flex-wrap gap-2'>
+                        {item.tags.map((tag: any) => (
+                          <Tag aria-label={`The article ${item.title} belongs to the topic ${tag}.`} key={tag.id} value={tag.title} />
+                        ))}
+                      </div>
+                      <Divider />
+                    </aside>
+                  }
+                  header={
+                    <time className='text-zinc-300 text-sm md:text-base pl-5' dateTime={item.date}>
+                      {utcToLocal(item.date as string, 'MMM DD, YYYY')}
+                    </time>
+                  }
+                  title={<h2 className='line-clamp-2 lg:line-clamp-3 break-words'>{item.title}</h2>}
+                >
+                  <p className='text-zinc-200 line-clamp-2 lg:line-clamp-3 break-words'>{item.description}</p>
+                </Card>
+              </article>
+            </Link>
+          );
+        })}
+      </div>
     </section>
   );
 };
 
-export default BlogPage;
+export default PageBlog;

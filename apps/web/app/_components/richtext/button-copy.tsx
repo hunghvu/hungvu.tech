@@ -7,9 +7,8 @@
 
 import { useRef } from 'react';
 import Image from 'next/image';
-import { Toast } from 'primereact/toast';
 import { Button } from 'primereact/button';
-import { geist } from '../fonts';
+import { Toast } from 'primereact/toast';
 
 export interface ButtonCopyProps {
   language: string;
@@ -23,6 +22,7 @@ const ButtonCopy: React.FunctionComponent<ButtonCopyProps> = ({ language, codeSn
       severity: 'success',
       summary: 'Copied to clipboard',
       detail: `${language.charAt(0).toUpperCase() + language.slice(1)} code snippet copied to clipboard.`,
+      life: 3000,
     });
   };
   const showToastError = (): void => {
@@ -30,17 +30,27 @@ const ButtonCopy: React.FunctionComponent<ButtonCopyProps> = ({ language, codeSn
       severity: 'error',
       summary: 'Failed to copy',
       detail: `${language.charAt(0).toUpperCase() + language.slice(1)} code snippet was not copied to clipboard.`,
+      life: 3000,
     });
   };
   return (
     <>
-      {/* It seems the dark Lara theme has a weird border left (6px), causing a white space on toast content */}
-      {/* Not sure if it is PrimeReact intention, or a bug, but anyway, just remove border left here */}
-      <Toast position='bottom-center' pt={{ content: { className: 'border-l-0' } }} ref={toast} />
+      {/* This means there are multiple toasts in a page, which is not ideal, but is technically fine. */}
+      <Toast position='bottom-center' ref={toast} />
       <Button
         aria-label={`Copy ${language} code snippet to clipboard.`}
-        className={geist.className}
-        icon={<Image alt={`Copy ${language} code snippet to clipboard.`} height={24} src='/copy.svg' width={24} />}
+        icon={
+          <Image
+            alt={`Copy ${language} code snippet to clipboard.`}
+            height={24}
+            src='/copy.svg'
+            style={{
+              maxWidth: '100%',
+              height: 'auto',
+            }}
+            width={24}
+          />
+        }
         iconPos='right'
         // eslint-disable-next-line @typescript-eslint/no-misused-promises -- This is intentional, not an error
         onClick={async () => {
@@ -50,9 +60,6 @@ const ButtonCopy: React.FunctionComponent<ButtonCopyProps> = ({ language, codeSn
           } catch {
             showToastError();
           }
-        }}
-        pt={{
-          root: { className: 'bg-transparent hover:bg-dark-cyan-800 text-[#ffffffde] text-base md:text-lg' },
         }}
       />
     </>

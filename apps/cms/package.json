@@ -17,27 +17,35 @@
     "update": "pnpm update"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.481.0",
-    "@aws-sdk/lib-storage": "^3.481.0",
-    "@payloadcms/bundler-vite": "^0.1.5",
-    "@payloadcms/db-mongodb": "^1.1.1",
-    "@payloadcms/plugin-cloud-storage": "^1.1.1",
+    "@aws-sdk/client-s3": "^3.521.0",
+    "@aws-sdk/lib-storage": "^3.521.0",
+    "@breejs/ts-worker": "^2.0.0",
+    "@payloadcms/bundler-webpack": "^1.0.6",
+    "@payloadcms/db-mongodb": "^1.4.3",
+    "@payloadcms/plugin-cloud-storage": "^1.1.2",
     "@payloadcms/richtext-lexical": "^0.1.17",
-    "aws-crt": "^1.20.0",
-    "dotenv": "^16.3.1",
+    "adm-zip": "^0.5.10",
+    "aws-crt": "^1.21.1",
+    "bree": "^9.2.2",
+    "csv-parse": "^5.5.3",
+    "dotenv": "^16.4.5",
     "express": "^4.18.2",
-    "payload": "^2.5.0",
+    "fs-extra": "^11.2.0",
+    "payload": "^2.11.2",
     "react": "^18.2.0",
     "sharp": "^0.32.6"
   },
   "devDependencies": {
+    "@types/adm-zip": "^0.5.5",
     "@types/express": "^4.17.21",
+    "@types/fs-extra": "^11.0.4",
     "copyfiles": "^2.4.1",
     "cross-env": "^7.0.3",
+    "csv-stringify": "^6.4.5",
     "eslint-config-custom": "workspace:*",
-    "nodemon": "^3.0.2",
+    "nodemon": "^3.1.0",
     "ts-node": "^10.9.2",
     "tsconfig-custom": "workspace:*",
-    "typescript": "5.2.2"
+    "typescript": "^5.3.3"
   }
 }

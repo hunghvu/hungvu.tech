@@ -5,70 +5,12 @@
  */
 
 import type { Metadata, Viewport } from 'next';
-import { notFound } from 'next/navigation';
 import { ArticleJsonLd } from 'next-seo';
-import BlogPage from './page-blog';
+import getArticlesWithMinimalResponse from '@utils/request/server-side/blog/get-articles-with-minimal-response';
+import getMetadataBySlug from '@utils/request/server-side/get-metadata-by-slug';
+import PageBlog from './page-blog';
 
-export const dynamic = 'force-dynamic'
-
-const handleError = (res: Response): void => {
-  if (res.status === 401) {
-    throw new Error('Unauthorized');
-  }
-
-  if (res.status === 404) {
-    notFound();
-  }
-
-  if (res.status >= 500) {
-    throw new Error('Server Error');
-  }
-};
-
-const getAllArticles = async (): Promise<any> => {
-  let res;
-  try {
-    res = await fetch(
-      process.env.NEXT_REQUEST_CMS_ARTICLES_IGNORE_REDUNDANT_FIELDS_URL!
-    );
-  } catch (err) {
-    throw new Error('Connection Error');
-  }
-
-  handleError(res);
-
-  const content = await res.json();
-
-  // Payload CMS can returns status 200, but with an empty array.
-  if (content.docs.length < 1 || !('settings' in content.docs[0])) {
-    notFound();
-  }
-
-  return content.docs;
-};
-
-const getMetadata = async (): Promise<any> => {
-  let res;
-  try {
-    res = await fetch(
-      `${process.env.NEXT_REQUEST_CMS_STATIC_ROUTE_METADATA_URL!}?where[slug][equals]=root`,
-      { next: { revalidate: process.env.NODE_ENV === "production" ? 7200 : 0 } }
-    );
-  } catch (err) {
-    throw new Error('Connection Error');
-  }
-
-  handleError(res);
-
-  const metadata = await res.json();
-
-  // Payload CMS can returns status 200, but with an empty array.
-  if (metadata.docs.length < 1) {
-    notFound();
-  }
-
-  return metadata.docs[0];
-};
+export const dynamic = 'force-dynamic';
 
 export const viewport: Viewport = {
   themeColor: '#00002f',
@@ -77,7 +19,7 @@ export const viewport: Viewport = {
 };
 
 export const generateMetadata = async (): Promise<Metadata> => {
-  const metadata = await getMetadata();
+  const metadata = await getMetadataBySlug('root');
   return {
     title: `${metadata.seoTitle} - hungvu.tech`,
     description: `${metadata.seoDescription}`,
@@ -110,8 +52,8 @@ export const generateMetadata = async (): Promise<Metadata> => {
 };
 
 const Page = async (): Promise<any> => {
-  const content = await getAllArticles();
-  const metadata = await getMetadata();
+  const content = await getArticlesWithMinimalResponse();
+  const metadata = await getMetadataBySlug('root');
   return (
     <>
       <ArticleJsonLd
@@ -137,7 +79,7 @@ const Page = async (): Promise<any> => {
         url={process.env.NEXT_PUBLIC_BASE_URL!}
         useAppDir
       />
-      <BlogPage content={content} />
+      <PageBlog content={content} />
     </>
   );
 };

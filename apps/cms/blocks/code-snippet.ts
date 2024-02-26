@@ -16,7 +16,7 @@ const CodeEditor: Block = {
     {
       name: 'language',
       type: 'select',
-      label: 'Choose a language. If choosing an incoorect one, delete the block and try again.'
+      label: 'Choose a language. If choosing an incorrect one, delete the block and try again.'
         + ' This helps reinitialize the code block and linter.',
       required: true,
       options: ['css', 'dockerfile',

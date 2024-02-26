@@ -5,76 +5,10 @@
  */
 
 import type { Metadata, Viewport } from 'next';
-import { notFound } from 'next/navigation';
 import { ArticleJsonLd } from 'next-seo';
-import ArticlePage from './page-article';
-
-const getArticle = async (slug: string): Promise<any> => {
-  let res;
-  try {
-    res = await fetch(
-      `${process.env.NEXT_REQUEST_CMS_ARTICLES_URL!}?where[settings.slug][equals]=${slug}`,
-      { next: { revalidate: process.env.NODE_ENV === "production" ? 7200 : 0 } }
-    );
-  } catch (err) {
-    throw new Error('Connection Error');
-  }
-
-  // Catch errors first, or else json conversion may fail.
-  if (res.status === 401) {
-    throw new Error('Unauthorized');
-  }
-
-  if (res.status === 404) {
-    notFound();
-  }
-
-  if (res.status >= 500) {
-    throw new Error('Server Error');
-  }
-
-  const content = await res.json();
-
-  // Payload CMS can returns status 200, but with an empty array.
-  if (content.docs.length < 1 || !('settings' in content.docs[0])) {
-    notFound();
-  }
-
-  return content.docs[0];
-};
-
-const getAllArticlesInTheSameSeries = async (seriesId: string): Promise<any> => {
-  let res;
-  try {
-    res = await fetch(
-      `${process.env.NEXT_REQUEST_CMS_ARTICLES_IN_THE_SAME_SERIES_URL!}/${seriesId}`,
-    );
-  } catch (err) {
-    throw new Error('Connection Error');
-  }
-
-  // Catch errors first, or else json conversion may fail.
-  if (res.status === 401) {
-    throw new Error('Unauthorized');
-  }
-
-  if (res.status === 404) {
-    notFound();
-  }
-
-  if (res.status >= 500) {
-    throw new Error('Server Error');
-  }
-
-  const content = await res.json();
-
-  // Payload CMS can returns status 200, but with an empty array.
-  if (content.docs.length < 1 || !('settings' in content.docs[0])) {
-    notFound();
-  }
-
-  return content.docs;
-};
+import getArticleBySlug from '@utils/request/server-side/blog/get-article-by-slug';
+import getArticlesInTheSameSeries from '@utils/request/server-side/blog/get-articles-in-the-same-series';
+import PageArticle from './page-article';
 
 interface MetadataProps {
   params: { slug: string };
@@ -88,7 +22,7 @@ export const viewport: Viewport = {
 };
 
 export const generateMetadata = async ({ params }: MetadataProps): Promise<Metadata> => {
-  const content = await getArticle(params.slug);
+  const content = await getArticleBySlug(params.slug);
   return {
     title: `${content.settings.seoTitle} - hungvu.tech`,
     description: `${content.settings.seoDescription}`,
@@ -121,17 +55,13 @@ export const generateMetadata = async ({ params }: MetadataProps): Promise<Metad
 };
 
 const Page = async ({ params }: MetadataProps): Promise<any> => {
-  const content = await getArticle(params.slug);
+  const content = await getArticleBySlug(params.slug);
   let relatedArticles;
   if (content.settings.series) {
-    relatedArticles = await getAllArticlesInTheSameSeries(content.settings.series.id as string);
+    relatedArticles = await getArticlesInTheSameSeries(content.settings.series.id as string);
   }
-  content.updatedAt = "customizedUpdatedAt" in content.settings
-                      ? content.settings.customizedUpdatedAt
-                      : content.updatedAt
-  content.createdAt = "customizedCreatedAt" in content.settings
-                      ? content.settings.customizedCreatedAt
-                      : content.createdAt
+  content.updatedAt = 'customizedUpdatedAt' in content.settings ? content.settings.customizedUpdatedAt : content.updatedAt;
+  content.createdAt = 'customizedCreatedAt' in content.settings ? content.settings.customizedCreatedAt : content.createdAt;
   return (
     <>
       <ArticleJsonLd
@@ -157,7 +87,7 @@ const Page = async ({ params }: MetadataProps): Promise<any> => {
         url={`${process.env.NEXT_PUBLIC_BASE_URL!}/${content.settings.slug}`}
         useAppDir
       />
-      <ArticlePage content={content} relatedArticles={relatedArticles} />
+      <PageArticle content={content} relatedArticles={relatedArticles} />
     </>
   );
 };

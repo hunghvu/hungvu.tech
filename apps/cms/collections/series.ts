@@ -11,6 +11,7 @@ import isPublished from '../access/query/is-published';
 const Series: CollectionConfig = {
   slug: 'series',
   admin: {
+    group: 'Blog',
     useAsTitle: 'title',
     defaultColumns: ['title', 'description', 'createdAt', 'updatedAt', '_status'],
   },

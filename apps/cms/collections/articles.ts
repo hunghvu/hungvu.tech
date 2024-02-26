@@ -6,7 +6,6 @@
 
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import type { CollectionConfig } from 'payload/types';
 import type { Endpoint } from "payload/config";
@@ -102,6 +101,7 @@ const getArticlesInTheSameSeries = (): Omit<Endpoint, 'root'> => {
 const Articles: CollectionConfig = {
   slug: 'articles',
   admin: {
+    group: 'Blog',
     useAsTitle: 'title',
     defaultColumns: [
       // Some columns name are implicitly created by Payload.

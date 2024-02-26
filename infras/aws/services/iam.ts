@@ -4,7 +4,6 @@
  * Configure IAM role for EC2 instance.
  */
 
-import * as pulumi from "@pulumi/pulumi";
 import * as awsClassic from "@pulumi/aws";
 
 // Create an IAM role for the EC2 instance

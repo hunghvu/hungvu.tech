@@ -14,6 +14,7 @@
     "access",
     "blocks",
     "collections",
+    "cron-jobs",
     "payload.config.ts",
     "server.ts",
   ]
