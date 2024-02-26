@@ -6,11 +6,6 @@
  * The data is not clean, so information are processed before inserting into the database
  */
 
-/* eslint-disable no-promise-executor-return */
-/* eslint-disable @typescript-eslint/no-loop-func */
-/* eslint-disable no-console */
-/* eslint-disable import/named */
-/* eslint-disable no-await-in-loop */
 import { parentPort } from 'worker_threads';
 import AdmZip from 'adm-zip';
 import { parse } from 'csv-parse/sync'

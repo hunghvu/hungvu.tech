@@ -4,9 +4,9 @@
  * Sitemap generator: https://nextjs.org/docs/app/api-reference/file-conventions/metadata/sitemap
  */
 
+import type { MetadataRoute } from 'next'
 import getArticlesWithMinimalResponse from "@utils/request/server-side/blog/get-articles-with-minimal-response";
 import getLabsWithMinimalResponse from "@utils/request/server-side/lab/get-labs-with-minimal-response";
-import type { MetadataRoute } from 'next'
 
 export const dynamic = 'force-dynamic'
 

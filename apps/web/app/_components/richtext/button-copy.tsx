@@ -44,11 +44,11 @@ const ButtonCopy: React.FunctionComponent<ButtonCopyProps> = ({ language, codeSn
             alt={`Copy ${language} code snippet to clipboard.`}
             height={24}
             src='/copy.svg'
-            width={24}
             style={{
               maxWidth: '100%',
               height: 'auto',
             }}
+            width={24}
           />
         }
         iconPos='right'

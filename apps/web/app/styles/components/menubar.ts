@@ -1,5 +1,5 @@
-import { geist } from "app/_components/fonts"
 import type { MenubarPassThroughMethodOptions } from "primereact/menubar"
+import { geist } from "app/_components/fonts"
 
 const menubar = {
   root: {

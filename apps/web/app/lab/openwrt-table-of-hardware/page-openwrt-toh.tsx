@@ -1,22 +1,18 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable @typescript-eslint/no-confusing-void-expression */
-/* eslint-disable react/no-unstable-nested-components */
-/* eslint-disable react/no-array-index-key */
 'use client';
 
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { useEffect, useState } from 'react';
 import { MultiSelect } from 'primereact/multiselect';
-import { utcToLocal } from '@utils/parse-date';
 import { FilterMatchMode } from 'primereact/api';
 import type { ColumnFilterElementTemplateOptions } from 'primereact/column';
 import type { DataTableStateEvent } from 'primereact/datatable';
 import type { SelectItemOptionsType } from 'primereact/selectitem';
-import getOpenwrtTohLazy from '@utils/request/client-side/get-openwrt-toh-lazy';
 import { Button } from 'primereact/button';
-import { RichText } from 'app/_components/richtext';
 import { Divider } from 'primereact/divider';
+import getOpenwrtTohLazy from '@utils/request/client-side/get-openwrt-toh-lazy';
+import { RichText } from 'app/_components/richtext';
+import { utcToLocal } from '@utils/parse-date';
 import { columns } from './columns';
 import type { ColumnData } from './columns';
 
@@ -213,14 +209,14 @@ const PageOpenwrtToh: React.FunctionComponent<PageOpenwrtTohProps> = ({ availabl
           }}
         >
           {/* Create all columns with name as field, label as header */}
-          {visibleColumns.map((col, i) => {
+          {visibleColumns.map((col) => {
             if (col.name === 'createdAt' || col.name === 'updatedAt') {
               return (
                 <Column
                   body={(rowData) => <Time timestamp={col.name === 'createdAt' ? (rowData.createdAt as string) : (rowData.updatedAt as string)} />}
                   field={col.name}
                   header={col.label}
-                  key={i}
+                  key={col.name}
                   pt={{
                     // Min width must be at bodyCellm not root
                     // Although both yield the same result, using root causes a side effect
@@ -243,7 +239,7 @@ const PageOpenwrtToh: React.FunctionComponent<PageOpenwrtTohProps> = ({ availabl
                   )}
                   filterMatchMode={FilterMatchMode.IN}
                   header={col.label}
-                  key={i}
+                  key={col.name}
                   showFilterMatchModes={false}
                   sortable
                 />
@@ -261,7 +257,7 @@ const PageOpenwrtToh: React.FunctionComponent<PageOpenwrtTohProps> = ({ availabl
                 ]}
                 filterPlaceholder={`Search by ${col.label}`}
                 header={col.label}
-                key={i}
+                key={col.name}
                 sortable
               />
             );

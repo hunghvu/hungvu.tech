@@ -45,7 +45,7 @@ payload.init({
         })();
       }
     });
-    // await bree.start();
+    if (process.env.NODE_ENV === 'production') await bree.start();
   },
 });
 

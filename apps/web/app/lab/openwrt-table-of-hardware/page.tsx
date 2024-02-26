@@ -1,8 +1,8 @@
+import type { Viewport, Metadata } from 'next';
+import { ArticleJsonLd } from 'next-seo';
 import getOpenwrtToh from '@utils/request/server-side/lab/openwrt-table-of-harware/get-openwrt-toh';
 import getOpenwrtTohAvailableValuesOfEachField from '@utils/request/server-side/lab/openwrt-table-of-harware/get-openwrt-toh-available-values-of-each-field';
 import getLabBySlug from '@utils/request/server-side/lab/get-lab-by-slug';
-import type { Viewport, Metadata } from 'next';
-import { ArticleJsonLd } from 'next-seo';
 import PageOpenwrtToh from './page-openwrt-toh';
 
 export const viewport: Viewport = {

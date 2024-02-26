@@ -1,5 +1,5 @@
-import { geist } from "app/_components/fonts";
 import type { ButtonPassThroughMethodOptions } from "primereact/button";
+import { geist } from "app/_components/fonts";
 
 const button = {
   root: ({ context }: ButtonPassThroughMethodOptions) => ({

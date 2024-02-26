@@ -4,8 +4,8 @@
  * Sitemap generator: https://nextjs.org/docs/app/api-reference/file-conventions/metadata/sitemap
  */
 
-import getMedia from "@utils/request/server-side/get-media";
 import type { MetadataRoute } from 'next'
+import getMedia from "@utils/request/server-side/get-media";
 
 export const dynamic = 'force-dynamic'
 
