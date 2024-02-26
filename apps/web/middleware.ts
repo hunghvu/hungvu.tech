@@ -12,8 +12,8 @@ export function middleware(request: any): NextResponse {
   // style-src unsafe-inline is required for Tailwind CSS
   const cspHeader = `
     default-src 'self';
-    script-src 'self' 'nonce-${nonce}' https://hungvu.tech 'unsafe-inline' ${process.env.NODE_ENV === 'production' ? '' : `'unsafe-eval'`};
-    style-src 'self' 'unsafe-inline';
+    script-src 'self' https://hungvu.tech 'unsafe-inline' ${process.env.NODE_ENV === 'production' ? '' : `'unsafe-eval'`};
+    style-src 'self' https://hungvu.tech 'unsafe-inline';
     img-src 'self' blob: data:;
     font-src 'self';
     object-src 'none';
