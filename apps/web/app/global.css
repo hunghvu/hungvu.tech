@@ -8,10 +8,12 @@
   Other engines are not considered */
   .scrollbar::-webkit-scrollbar {
     width: 8px;
+    height: 8px;
   }
 
   .scrollbar::-webkit-scrollbar-track {
-    background: #00002f;
+    background: #022c22;
+    border: 1px solid #00002f;
   }
 
   .scrollbar::-webkit-scrollbar-thumb {

@@ -17,6 +17,11 @@ const datatable: DataTablePassThroughOptions = {
       ${context.scrollable ? `sticky top-0 z-30` : ``}
     `,
   }),
+  virtualScroller: {
+    root: {
+      className: 'scrollbar'
+    }
+  },
   column: {
     headerCell: ({ context }: ColumnPassThroughMethodOptions) => ({
       className: `
