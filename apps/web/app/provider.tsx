@@ -21,7 +21,15 @@ const Provider: React.FunctionComponent<RootProviderProps> = ({ children }) => {
     // This ensures there is no conflict between Tailwind and PrimeReact theme.
     <PrimeReactProvider value={{ unstyled: true, pt: Styles }}>
       <div className='z-10 fixed top-0 w-full h-full'>
-        <Image alt='Background image of hungvu.tech - Enjoy technology in the starry night.' layout='fill' objectFit='cover' src='/background.svg' />
+        <Image
+          alt='Background image of hungvu.tech - Enjoy technology in the starry night.'
+          fill
+          sizes='100vw'
+          src='/background.svg'
+          style={{
+            objectFit: 'cover',
+          }}
+        />
       </div>
       <div className='flex flex-col gap-8 h-screen'>
         <Header />

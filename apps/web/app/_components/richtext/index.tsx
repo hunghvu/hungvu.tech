@@ -190,6 +190,10 @@ export const RichText = ({ nodes }: RichTextProps): JSX.Element => {
                     key={index}
                     src={node.value.url}
                     width={node.value.width}
+                    style={{
+                      maxWidth: '100%',
+                      height: 'auto',
+                    }}
                   />
                   <figcaption className='text-base md:text-lg p-2 rounded-md italic'>{altText ?? ''}</figcaption>
                 </figure>

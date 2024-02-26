@@ -39,7 +39,18 @@ const ButtonCopy: React.FunctionComponent<ButtonCopyProps> = ({ language, codeSn
       <Toast position='bottom-center' ref={toast} />
       <Button
         aria-label={`Copy ${language} code snippet to clipboard.`}
-        icon={<Image alt={`Copy ${language} code snippet to clipboard.`} height={24} src='/copy.svg' width={24} />}
+        icon={
+          <Image
+            alt={`Copy ${language} code snippet to clipboard.`}
+            height={24}
+            src='/copy.svg'
+            width={24}
+            style={{
+              maxWidth: '100%',
+              height: 'auto',
+            }}
+          />
+        }
         iconPos='right'
         // eslint-disable-next-line @typescript-eslint/no-misused-promises -- This is intentional, not an error
         onClick={async () => {

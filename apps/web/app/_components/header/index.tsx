@@ -12,12 +12,34 @@ const Header: React.FunctionComponent = () => {
   const items = [
     {
       label: 'Blog',
-      icon: <Image alt={`Navigate to Hung's blog page.`} height={24} src='/book.svg' width={24} />,
+      icon: (
+        <Image
+          alt={`Navigate to Hung's blog page.`}
+          height={24}
+          src='/book.svg'
+          style={{
+            maxWidth: '100%',
+            height: 'auto',
+          }}
+          width={24}
+        />
+      ),
       url: '/',
     },
     {
       label: 'Lab',
-      icon: <Image alt={`Navigate to Hung's experimental lab page`} height={24} src='/flask.svg' width={24} />,
+      icon: (
+        <Image
+          alt={`Navigate to Hung's experimental lab page`}
+          height={24}
+          src='/flask.svg'
+          style={{
+            maxWidth: '100%',
+            height: 'auto',
+          }}
+          width={24}
+        />
+      ),
       url: '/lab',
     },
   ];
@@ -37,7 +59,16 @@ const Header: React.FunctionComponent = () => {
             rel='nofollow noopener noreferrer'
             target='_blank'
           >
-            <Image alt={`Navigate to Hung's LinkedIn.`} height={24} src='/linkedin.svg' width={24} />
+            <Image
+              alt={`Navigate to Hung's LinkedIn.`}
+              height={24}
+              src='/linkedin.svg'
+              style={{
+                maxWidth: '100%',
+                height: 'auto',
+              }}
+              width={24}
+            />
           </Link>
           <Link
             aria-label='GitHub'
@@ -47,7 +78,16 @@ const Header: React.FunctionComponent = () => {
             rel='nofollow noopener noreferrer'
             target='_blank'
           >
-            <Image alt='Navigate to hungvu.tech GitHub repository.' height={24} src='/github.svg' width={24} />
+            <Image
+              alt='Navigate to hungvu.tech GitHub repository.'
+              height={24}
+              src='/github.svg'
+              style={{
+                maxWidth: '100%',
+                height: 'auto',
+              }}
+              width={24}
+            />
           </Link>
         </nav>
       }
