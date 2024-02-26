@@ -25,7 +25,7 @@ const Provider: React.FunctionComponent<RootProviderProps> = ({ children }) => {
       </div>
       <div className='flex flex-col gap-8 h-screen'>
         <Header />
-        <main className='flex flex-col items-center justify-center gap-16 lg:pt-16 w-full px-4 z-20 relative mb-auto'>{children}</main>
+        <main className='flex flex-col items-center justify-center gap-16 lg:pt-16 w-full px-4 z-20 relative mt-16 mb-auto'>{children}</main>
         <Footer />
       </div>
     </PrimeReactProvider>

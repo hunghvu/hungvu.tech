@@ -4,7 +4,7 @@ import type { MenubarPassThroughMethodOptions } from "primereact/menubar"
 const menubar = {
   root: {
     className: `
-      flex flex-row justify-around items-center font-bold sticky top-0 z-30 bg-gradient-to-r from-zinc-950 from-60% to-[#00002f] to-90%
+      flex flex-row justify-around items-center font-bold fixed w-full z-30 bg-gradient-to-r from-zinc-950 from-60% to-[#00002f] to-90%
       px-2 py-1 ${geist.className} text-xl md:text-2xl border-b border-zinc-700 text-zinc-400
     `,
   },
