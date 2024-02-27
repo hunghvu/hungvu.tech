@@ -2,28 +2,28 @@
 
 ## [1.2] - 2024-02-25
 
-- This version focuses on delivering a "Lab" section of the website. The "Lab" is a collection of mini projects that the author wants to experiment on. This time, it is an OpenWRT table of hardware.
-- Feature development was merged at [2867f61](https://github.com/hunghvu/hungvu.tech/commit/2867f61aaaf90a123b19702b02acf77ea77db4cd), but some fixes were introduced after to resolve issues in production environment. The website is ready at [4213095](https://github.com/hunghvu/hungvu.tech/commit/4213095828983e96ef47444e93923898b8f054a8).
+- This version focuses on delivering the website's "Lab" section. The "Lab" is a collection of mini projects the author wants to experiment on. This time, it is an OpenWRT table of hardware.
+- Feature development was merged at [2867f61](https://github.com/hunghvu/hungvu.tech/commit/2867f61aaaf90a123b19702b02acf77ea77db4cd), but some fixes were introduced after to resolve issues in the production environment. The website is ready at [4213095](https://github.com/hunghvu/hungvu.tech/commit/4213095828983e96ef47444e93923898b8f054a8).
 - For a detailed work view, please visit commit history or [Milestone v1.2](https://github.com/hunghvu/hungvu.tech/milestone/3?closed=1).
 
 ### Features
 
 - Add footer. ([#72](https://github.com/hunghvu/hungvu.tech/issues/72))
-- Add OpenWRT Table of Hardware (full details) that is updated every 24 hours. This involves several issues. Please view the milestone for a better overview. 
+- Add OpenWRT Table of Hardware (full details) that is updated every 24 hours. This involves several issues. Please take a look at the milestone for a better overview. 
 
 ### Optimization
 
-- Move from PrimeReact built-in styles plus Tailwind styles to fully unstyled Tailwind. This greatly reduces CSS and blocking resources size. ([#111](https://github.com/hunghvu/hungvu.tech/issues/111))
+- Move from PrimeReact built-in styles plus Tailwind styles to fully unstyled Tailwind. This greatly reduces CSS and blocking resource size. ([#111](https://github.com/hunghvu/hungvu.tech/issues/111))
 - Improve SEO on link elements. ([#62](https://github.com/hunghvu/hungvu.tech/issues/62))
 - Improve semantics of blog/home page. ([#115](https://github.com/hunghvu/hungvu.tech/issues/115), and [5180b20](https://github.com/hunghvu/hungvu.tech/commit/5fd3230cb42dd24a9f8de16bd3016194d5fa6ff8))
-- Extract all API request to `utilities` for the front end. ([#70](https://github.com/hunghvu/hungvu.tech/issues/70))
+- Extract all API requests to `utilities` for the front end. ([#70](https://github.com/hunghvu/hungvu.tech/issues/70))
 
 ### Known issues
 
-- Menubar has key uique error due to an upstream PrimeReact bug. [#123](https://github.com/hunghvu/hungvu.tech/issues/121)
-- CSP Nonce is removed in [#150](https://github.com/hunghvu/hungvu.tech/issues/150) due to breaking behavior in production. Future release will re-evaluate the implementation of CSP.
+- Menubar has a key unique error due to an upstream PrimeReact bug. [#123](https://github.com/hunghvu/hungvu.tech/issues/121)
+- CSP Nonce is removed in [#150](https://github.com/hunghvu/hungvu.tech/issues/150) due to breaking behavior in production. Future releases will re-evaluate the implementation of CSP.
 - Performance of OpenWRT Table of Hardware might not be optimal due to the lack of dynamic import for large JS bundle. [#147](https://github.com/hunghvu/hungvu.tech/issues/147)
-- **Might be false positive**: Lighthouse test using PageSpeed Insights sometimes results in lower score than expected, dropping about 10-20 points in performance. The result is not consistent so this needs to be investigated.
+- **Might be false positive**: Lighthouse test using PageSpeed Insights sometimes results in a lower score than expected, dropping about 10-20 points in performance. The result is not consistent so this needs to be investigated.
 
 ## [1.1] - 2023-12-30
 
