@@ -35,7 +35,7 @@ ENV NODE_ENV production
 # Public environment variables, only for build time
 ENV NEXT_PUBLIC_BASE_URL https://hungvu.tech
 ENV NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION EGTdZytY_C05esF562wX0i-fpIShKgfypgbhQV3bPzU
-ENV NEXT_PUBLIC_API_OPENWRT_TOH=https://hungvu.tech/api/openwrt-toh
+ENV NEXT_PUBLIC_API_OPENWRT_TOH_FILTER https://hungvu.tech/api/openwrt-toh/filter
 
 # Global content material
 ENV NEXT_REQUEST_CMS_STATIC_ROUTE_METADATA_URL https://payload.hungvu.tech/api/static-route-metadata
