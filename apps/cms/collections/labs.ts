@@ -161,7 +161,7 @@ const Labs: CollectionConfig = {
     },
     {
       name: 'body',
-      label: 'LAb Body',
+      label: 'Lab Body',
       type: 'richText',
       required: true,
     },
