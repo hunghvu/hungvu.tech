@@ -148,8 +148,8 @@ const OpenwrtToh: CollectionConfig = {
   },
   admin: {
     group: 'Experiment',
-    useAsTitle: 'model',
-    defaultColumns: ['brand', 'model', 'version', 'createdAt', 'updatedAt', '_status'],
+    useAsTitle: 'deviceName',
+    defaultColumns: ['deviceName', 'createdAt', 'updatedAt', '_status'],
   },
   access: {
     read: () => true,
