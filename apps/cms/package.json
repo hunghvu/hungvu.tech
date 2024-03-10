@@ -17,8 +17,8 @@
     "update": "pnpm update"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.521.0",
-    "@aws-sdk/lib-storage": "^3.521.0",
+    "@aws-sdk/client-s3": "^3.529.1",
+    "@aws-sdk/lib-storage": "^3.529.1",
     "@breejs/ts-worker": "^2.0.0",
     "@payloadcms/bundler-webpack": "^1.0.6",
     "@payloadcms/db-mongodb": "^1.4.3",
@@ -27,9 +27,9 @@
     "adm-zip": "^0.5.10",
     "aws-crt": "^1.21.1",
     "bree": "^9.2.2",
-    "csv-parse": "^5.5.3",
+    "csv-parse": "^5.5.5",
     "dotenv": "^16.4.5",
-    "express": "^4.18.2",
+    "express": "^4.18.3",
     "fs-extra": "^11.2.0",
     "payload": "^2.11.2",
     "react": "^18.2.0",
@@ -41,11 +41,11 @@
     "@types/fs-extra": "^11.0.4",
     "copyfiles": "^2.4.1",
     "cross-env": "^7.0.3",
-    "csv-stringify": "^6.4.5",
+    "csv-stringify": "^6.4.6",
     "eslint-config-custom": "workspace:*",
     "nodemon": "^3.1.0",
     "ts-node": "^10.9.2",
     "tsconfig-custom": "workspace:*",
-    "typescript": "^5.3.3"
+    "typescript": "^5.4.2"
   }
 }
