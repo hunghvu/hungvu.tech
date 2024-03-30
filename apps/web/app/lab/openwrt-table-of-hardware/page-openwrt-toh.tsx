@@ -251,9 +251,9 @@ const PageOpenwrtToh: React.FunctionComponent<PageOpenwrtTohProps> = ({ availabl
                 filter
                 filterField={col.name}
                 filterMatchModeOptions={[
-                  { label: 'Contains', value: FilterMatchMode.CONTAINS },
-                  { label: 'Equals', value: FilterMatchMode.EQUALS },
-                  { label: 'Not Equals', value: FilterMatchMode.NOT_EQUALS },
+                  { label: 'Contains', matchMode: FilterMatchMode.CONTAINS },
+                  { label: 'Equals', matchMode: FilterMatchMode.EQUALS },
+                  { label: 'Not Equals', matchMode: FilterMatchMode.NOT_EQUALS },
                 ]}
                 filterPlaceholder={`Search by ${col.label}`}
                 header={col.label}
