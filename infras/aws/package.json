@@ -12,13 +12,13 @@
         "update": "pnpm update"
     },
     "dependencies": {
-        "@pulumi/aws": "^6.28.1",
+        "@pulumi/aws": "^6.28.2",
         "@pulumi/aws-native": "^0.8.0",
         "@pulumi/pulumi": "^3.112.0",
         "dotenv": "^16.4.5"
     },
     "devDependencies": {
-        "@types/node": "^20.11.30",
+        "@types/node": "^20.12.2",
         "eslint-config-custom": "workspace:*",
         "tsconfig-custom": "workspace:*"
     }
