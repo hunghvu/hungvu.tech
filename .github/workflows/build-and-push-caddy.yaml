@@ -1,6 +1,6 @@
 # Author: Hung Vu
 # Granular action for only build and push caddy image
-name: Build and push Caddy image to ghcr.io
+name: Build and push Caddy image to Docker Hub
 
 on:
   workflow_dispatch:
@@ -12,7 +12,7 @@ jobs:
       matrix:
         include:
           - dockerfile: ./infras/containers/caddy/Dockerfile
-            image: ghcr.io/hunghvu/blogfolio-caddy
+            image: docker.io/hunghvu/blogfolio-caddy
     permissions:
       contents: read
       packages: write
@@ -29,12 +29,11 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Login to GitHub Container Registry
+      - name: Login to Docker Hub Container Registry
         uses: docker/login-action@v3
         with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
       
       - name: Extract metadata (tags, labels) for Docker images
         id: meta
