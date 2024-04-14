@@ -52,6 +52,10 @@ services:
       - blogfolio
     ports:
       - "127.0.0.1:3000:3000"
+    deploy:
+      resources:
+        limits:
+          memory: 300M
     labels:
       caddy: hungvu.tech
       caddy.tls.resolvers: 1.1.1.1 1.0.0.1
@@ -71,6 +75,10 @@ services:
       - blogfolio
     ports:
       - "127.0.0.1:3100:3100"
+    deploy:
+      resources:
+        limits:
+          memory: 300M
     labels:
       caddy: payload.hungvu.tech
       caddy.tls.resolvers: 1.1.1.1 1.0.0.1
