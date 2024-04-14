@@ -12,7 +12,7 @@ jobs:
       matrix:
         include:
           - dockerfile: ./infras/containers/caddy/Dockerfile
-            image: ghcr.io/hunghvu/blogfolio-caddy
+            image: docker.io/hunghvu/blogfolio-caddy
     permissions:
       contents: read
       packages: write
@@ -32,9 +32,8 @@ jobs:
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
         with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
       
       - name: Extract metadata (tags, labels) for Docker images
         id: meta
