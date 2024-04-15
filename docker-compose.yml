@@ -3,95 +3,109 @@
 version: "3.8"
 
 services:
-  # mongo:
-  #   container_name: mongo
-  #   restart: always
-  #   image: mongo
-  #   environment:
-  #     # Fill in secrets here in production
-  #     MONGO_INITDB_ROOT_USERNAME:
-  #     MONGO_INITDB_ROOT_PASSWORD:
-  #   networks:
-  #     - blogfolio
-  #   volumes:
-  #     - ./mongo_data:/data/db
-  #   ports:
-  #     - "127.0.0.1:27017:27017"
-
-  caddy:
-    container_name: caddy
+  # MongoDB Atlas does not support IPv6, so self hosting is a stopgap solution
+  mongo:
+    container_name: mongo
     restart: always
-    image: "ghcr.io/hunghvu/blogfolio-caddy:main"
+    image: mongo
+    environment:
+      # Fill in secrets here in production
+      MONGO_INITDB_ROOT_USERNAME: REDACTED
+      MONGO_INITDB_ROOT_PASSWORD: REDACTED
+    networks:
+      blogfolio:
+        # The REDACTED is VPC subnet /64, but the address is in /112
+        # Container IPv6 requires at lest /80 to work 
+        # And definitely not /64, because it's the VPC subnet (conflict)
+        ipv6_address: "REDACTED::2"
+    volumes:
+      - ./mongo_data:/data/db
+    ports:
+      - "[::1]:27017:27017/tcp"
+      # Remove IPv6-related lines above
+      # And uncomment this line to expose the port to the host machine
+      # - "127.0.0.1:27017:27017/tcp"
+      # This is useful for db operation like mongodump, mongorestore, rsync, scp, etc.
+
+caddy:
+  container_name: caddy
+  restart: always
+  image: "docker.io/hunghvu/blogfolio-caddy:main"
     # build:
     #   context: .
     #   dockerfile: ./infras/containers/caddy/Dockerfile
-    networks:
-      - blogfolio
-    environment:
-      - CADDY_INGRESS_NETWORKS=blogfolio
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - ./caddy_data:/data
-    ports:
-      - "80:80"
-      - "443:443"
-      - "443:443/udp" # HTTP/3 support https://caddyserver.com/docs/running#docker-compose
-    labels:
-      # Fill in secrets here in production
-      # Not sure how to access via secrets though
-      caddy.acme_dns: cloudflare
+  networks:
+    blogfolio:
+      ipv6_address: "REDACTED::3"
+  environment:
+    - CADDY_INGRESS_NETWORKS=blogfolio
+  volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+    - ./caddy_data:/data
+  ports:
+    - "[::]:80:80/tcp"
+    - "[::]:443:443/tcp"
+    - "[::]:443:443/udp" # HTTP/3 support https://caddyserver.com/docs/running#docker-compose
+    - "[::]:2019:2019/tcp"
+  labels:
+    debug: ""
+
+cms:
+  container_name: cms
+  restart: always
+  env_file: ./.env.production.local
+  image: "docker.io/hunghvu/blogfolio-cms:main"
+  # env_file: ./.env.production.local
+  # build:
+  #   context: .
+  #   dockerfile: ./apps/cms/Dockerfile
+  networks:
+    blogfolio:
+      ipv6_address: "REDACTED::4"
+  ports:
+    - "[::1]:3100:3100/tcp"
+  deploy:
+    resources:
+      limits:
+        memory: 300M
+  labels:
+    caddy: "payload.hungvu.tech"
+    caddy.tls.dns: "cloudflare REDACTED"
+    caddy.tls.resolvers: "2606:4700:4700::1111 2606:4700:4700::1001"
+    caddy.reverse_proxy: "[REDACTED::4]:3100"
+    caddy.encode: "zstd gzip"
 
   web:
     container_name: web
     restart: always
-    image: "ghcr.io/hunghvu/blogfolio-web:main"
+    image: "docker.io/hunghvu/blogfolio-web:main"
     # build:
     #   context: .
     #   dockerfile: ./apps/web/Dockerfile
     networks:
-      - blogfolio
+      blogfolio:
+        ipv6_address: "REDACTED::5"
     ports:
-      - "127.0.0.1:3000:3000"
+      - "[::1]:3000:3000/tcp"
     deploy:
       resources:
         limits:
           memory: 300M
     labels:
-      caddy: hungvu.tech
-      caddy.tls.resolvers: 1.1.1.1 1.0.0.1
-      caddy.reverse_proxy: "{{upstreams 3000}}"
-      caddy.encode: zstd gzip
-
-  cms:
-    container_name: cms
-    restart: always
-    env_file: ./.env.production.local
-    image: "ghcr.io/hunghvu/blogfolio-cms:main"
-    # env_file: ./.env.production.local
-    # build:
-    #   context: .
-    #   dockerfile: ./apps/cms/Dockerfile
-    networks:
-      - blogfolio
-    ports:
-      - "127.0.0.1:3100:3100"
-    deploy:
-      resources:
-        limits:
-          memory: 300M
-    labels:
-      caddy: payload.hungvu.tech
-      caddy.tls.resolvers: 1.1.1.1 1.0.0.1
-      caddy.reverse_proxy: "{{upstreams 3100}}"
-      caddy.encode: zstd gzip
+      caddy: "hungvu.tech"
+      caddy.tls.dns: "cloudflare REDACTED"
+      caddy.tls.resolvers: "2606:4700:4700::1111 2606:4700:4700::1001"
+      caddy.reverse_proxy: "[REDACTED::5]:3000"
+      caddy.encode: "zstd gzip"
 
 networks:
   # Network name cannot be "default"
   # And the network must be external, or else caddy cannot connect to other containers
   # Error: "container not in the same network as caddy" via "docker logs --follow caddy"
+
+  # Helpful resource: https://docs.docker.com/config/daemon/ipv6/
+  # To create IPv6 network, run
+  # docker network create --ipv6 --subnet="REDACTED::/112" --gateway="REDACTED::1" blogfolio
   blogfolio:
     driver: bridge
     external: true
-
-volumes:
-  caddy_data:
