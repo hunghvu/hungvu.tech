@@ -254,26 +254,29 @@ const vpcSubnetPublicNetworkAcl = new awsClassic.ec2.NetworkAcl("vpc-subnet-publ
     },
 
     // IPv6 rules
-    {
-      protocol: "icmp",
-      ruleNo: 101,
-      action: "allow",
-      ipv6CidrBlock: "::/0",
-      fromPort: 0,
-      toPort: 0,
-      icmpType: 8, // Type of ICMP request
-      icmpCode: -1, // All codes of ICMP request
-    },
-    {
-      protocol: "icmp",
-      ruleNo: 102,
-      action: "allow",
-      ipv6CidrBlock: "::/0",
-      fromPort: 0,
-      toPort: 0,
-      icmpType: 0, // Type of ICMP request
-      icmpCode: -1, // All codes of ICMP request
-    },
+    // https://github.com/hashicorp/terraform-provider-aws/issues/35526
+    // ICMP v6 is not supported via API yet, hence invalid protocol.
+    // But it is togglable via AWS Console
+    // {
+    //   protocol: "icmpv6",
+    //   ruleNo: 101,
+    //   action: "allow",
+    //   ipv6CidrBlock: "::/0",
+    //   fromPort: 0,
+    //   toPort: 0,
+    //   icmpType: 8, // Type of ICMP request
+    //   icmpCode: -1, // All codes of ICMP request
+    // },
+    // {
+    //   protocol: "icmpv6",
+    //   ruleNo: 102,
+    //   action: "allow",
+    //   ipv6CidrBlock: "::/0",
+    //   fromPort: 0,
+    //   toPort: 0,
+    //   icmpType: 0, // Type of ICMP request
+    //   icmpCode: -1, // All codes of ICMP request
+    // },
     {
       protocol: "tcp",
       ruleNo: 103,
@@ -327,6 +330,7 @@ const vpcNetworkAclAssociationPublic = new awsClassic.ec2.NetworkAclAssociation(
 const securityGroup = new awsClassic.ec2.SecurityGroup("security-group-04132024", {
   vpcId: vpc.id,
   egress: [
+    // https://serverfault.com/questions/1148691/ipv6-icmp-rules-for-aws-security-group
     {
       cidrBlocks: ["0.0.0.0/0"],
       ipv6CidrBlocks: ["::/0"],
@@ -365,16 +369,16 @@ const securityGroup = new awsClassic.ec2.SecurityGroup("security-group-04132024"
       fromPort: parseInt(process.env.PORT_SSH!),
       toPort: parseInt(process.env.PORT_SSH!),
     },
+    // ICMP v6 is not supported via API yet, hence invalid protocol.
+    // Also needs a deducated block, because different protocol
     {
       cidrBlocks: ["0.0.0.0/0"],
-      ipv6CidrBlocks: ["::/0"],
       protocol: "icmp",
       fromPort: 8, // Type of ICMP request
       toPort: -1, // Code of ICMP request
     },
     {
       cidrBlocks: ["0.0.0.0/0"],
-      ipv6CidrBlocks: ["::/0"],
       protocol: "icmp",
       fromPort: 0, // Type of ICMP request
       toPort: -1, // Code of ICMP request
@@ -411,14 +415,12 @@ const securityGroup = new awsClassic.ec2.SecurityGroup("security-group-04132024"
     },
     {
       cidrBlocks: ["0.0.0.0/0"],
-      ipv6CidrBlocks: ["::/0"],
       protocol: "icmp",
       fromPort: 8, // Type of ICMP request
       toPort: -1, // Code of ICMP request
     },
     {
       cidrBlocks: ["0.0.0.0/0"],
-      ipv6CidrBlocks: ["::/0"],
       protocol: "icmp",
       fromPort: 0, // Type of ICMP request
       toPort: -1, // Code of ICMP request
