@@ -31,9 +31,6 @@ caddy:
   container_name: caddy
   restart: always
   image: "docker.io/hunghvu/blogfolio-caddy:main"
-    # build:
-    #   context: .
-    #   dockerfile: ./infras/containers/caddy/Dockerfile
   networks:
     blogfolio:
       ipv6_address: "REDACTED::3"
@@ -55,10 +52,6 @@ cms:
   restart: always
   env_file: ./.env.production.local
   image: "docker.io/hunghvu/blogfolio-cms:main"
-  # env_file: ./.env.production.local
-  # build:
-  #   context: .
-  #   dockerfile: ./apps/cms/Dockerfile
   networks:
     blogfolio:
       ipv6_address: "REDACTED::4"
@@ -79,9 +72,6 @@ cms:
     container_name: web
     restart: always
     image: "docker.io/hunghvu/blogfolio-web:main"
-    # build:
-    #   context: .
-    #   dockerfile: ./apps/web/Dockerfile
     networks:
       blogfolio:
         ipv6_address: "REDACTED::5"

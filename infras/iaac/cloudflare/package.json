@@ -1,5 +1,5 @@
 {
-    "name": "mongodb-atlas",
+    "name": "cloudflare",
     "description": "hungvu.tech infrastructure",
     "version": "0.0.0",
     "private": true,
@@ -7,16 +7,16 @@
     "scripts": {
         "lint": "eslint .",
         "lint:fix": "eslint --fix --ext .ts,.tsx .",
-        "deploy:mongodb-atlas": "pulumi up --stack dev --yes",
-        "deploy:mongodb-atlas:interactive": "pulumi up --stack dev",
+        "deploy:cloudflare": "pulumi up --stack dev --yes",
+        "deploy:cloudflare:interactive": "pulumi up --stack dev",
         "update": "pnpm update"
     },
     "dependencies": {
-        "@pulumi/mongodbatlas": "^3.14.3",
-        "@pulumi/pulumi": "^3.112.0"
+        "@pulumi/cloudflare": "^5.26.0",
+        "@pulumi/pulumi": "^3.113.3"
     },
     "devDependencies": {
-        "@types/node": "^20.12.5",
+        "@types/node": "^20.12.7",
         "eslint-config-custom": "workspace:*",
         "tsconfig-custom": "workspace:*"
     }
