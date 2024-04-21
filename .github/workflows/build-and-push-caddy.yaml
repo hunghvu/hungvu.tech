@@ -8,13 +8,6 @@ on:
 jobs:
   build-and-publish:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        include:
-          - dockerfile: ./infras/containers/caddy/Dockerfile
-          - image: |
-              docker.io/hunghvu/blogfolio-caddy
-              ghcr.io/hunghvu/blogfolio-caddy
     permissions:
       contents: read
       packages: write
@@ -48,7 +41,9 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ matrix.image }}
+          images: |
+              docker.io/hunghvu/blogfolio-caddy
+              ghcr.io/hunghvu/blogfolio-caddy
 
       # If we want to reference a subdir
       # https://github.com/docker/build-push-action/issues/528
@@ -57,7 +52,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: ${{ matrix.dockerfile }}
+          file: ./infras/containers/caddy/Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
