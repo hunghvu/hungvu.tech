@@ -23,7 +23,7 @@ COPY turbo.json turbo.json
 
 
 RUN yarn global add turbo
-RUN yarn global add pnpm
+RUN yarn global add pnpm@9.0.4
 RUN yarn global add dotenv-cli
 # pnpm install cannot run after NODE_ENV production, or else it skips devDependencies
 # and breaks turborepo setup
