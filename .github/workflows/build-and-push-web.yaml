@@ -42,8 +42,8 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: |
-              docker.io/hunghvu/blogfolio-caddy
-              ghcr.io/hunghvu/blogfolio-caddy
+              docker.io/hunghvu/blogfolio-web
+              ghcr.io/hunghvu/blogfolio-web
 
       # If we want to reference a subdir
       # https://github.com/docker/build-push-action/issues/528
