@@ -1,0 +1,31 @@
+# Author: Hung Vu
+
+version: "3.8"
+
+services:
+  web:
+    container_name: web
+    restart: always
+    build:
+      context: .
+      dockerfile: ../../../../apps/web/Dockerfile
+    networks:
+      - blogfolio
+    ports:
+      - "127.0.0.1:3000:3000"
+  cms:
+    container_name: cms
+    restart: always
+    env_file: ../../../../.env.production.local
+    build:
+      context: .
+      dockerfile: ../../../../apps/cms/Dockerfile
+    networks:
+      - blogfolio
+    ports:
+      - "127.0.0.1:3100:3100"
+
+networks:
+  blogfolio:
+    driver: bridge
+    external: true
