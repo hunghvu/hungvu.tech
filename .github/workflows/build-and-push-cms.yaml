@@ -8,13 +8,6 @@ on:
 jobs:
   build-and-publish:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        include:
-          - dockerfile: ./apps/cms/Dockerfile
-          - image: |
-              docker.io/hunghvu/blogfolio-cms
-              ghcr.io/hunghvu/blogfolio-cms
     permissions:
       contents: read
       packages: write
