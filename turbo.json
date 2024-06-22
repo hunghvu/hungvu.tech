@@ -2,16 +2,14 @@
   "$schema": "https://turbo.build/schema.json",
   "globalDependencies": [
     "**/.env.*local",
-    "**/tsconfig.json"
-  ],
-  "globalDotEnv": [
+    "**/tsconfig.json",
     ".env.development.local",
     ".env.production.local"
   ],
   "globalEnv": [
     "NODE_ENV"
   ],
-  "pipeline": {
+  "tasks": {
     "build:cms": {
       "env": [
         "PAYLOAD_FRONT_END_DOMAIN",

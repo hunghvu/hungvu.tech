@@ -12,11 +12,11 @@
         "update": "pnpm update"
     },
     "dependencies": {
-        "@pulumi/cloudflare": "^5.26.0",
-        "@pulumi/pulumi": "^3.113.3"
+        "@pulumi/cloudflare": "^5.31.0",
+        "@pulumi/pulumi": "^3.121.0"
     },
     "devDependencies": {
-        "@types/node": "^20.12.7",
+        "@types/node": "^20.14.7",
         "eslint-config-custom": "workspace:*",
         "tsconfig-custom": "workspace:*"
     }
