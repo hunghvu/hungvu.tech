@@ -1,5 +1,0 @@
-packages:
-  - "apps/cms/*"
-  - "apps/web/*"
-  - "infras/*"
-  - "packages/*"

@@ -1,8 +1,0 @@
-config:
-  cloudflare:accountId: 
-    secure: AAABAB44UEkJq3C8sM30cm6SrEUPKd+Xk4zCJ4LwCPLNUkII7TupdeLmQeJTYOWgAAo8kUI8mnPgcklPUcCWBQ==
-  cloudflare:apiToken:
-    secure: AAABANTSx+tShETU4UVolvEh/73+M/N+i6Z98u0iewVvmjEuYYjdRmyOHij3p14VaIlHDTakREDIKzZIPGlXJcvGX/Q6JzSC
-  cloudflare:domain: hungvu.tech
-  cloudflare:zoneId: 
-    secure: AAABAGbucp40yCQzw9jdAX8fa8VpeH5xa9rf0nkj/Emq+ydczJfFay6LAKSWzHUKx+NgoFXiIxqp3NMnh+64zw==
