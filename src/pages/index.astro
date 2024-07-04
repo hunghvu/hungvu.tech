@@ -3,6 +3,10 @@ import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import { getCollection } from 'astro:content';
+import FormattedDate from '../components/FormattedDate.astro';
+
+const posts = (await getCollection('blog')).sort((a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf());
 ---
 
 <!doctype html>
@@ -10,6 +14,7 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
   <head>
     <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
   </head>
+
   <body>
     <Header />
     <main>
@@ -18,6 +23,29 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
         Welcome to my digital repository. This is where I log my own learning experience. The topics range from software development, configuraiton,
         review, to homelab setup. I hope you find something useful here.
       </p>
+      <section class='mt-10'>
+        <ul>
+          {
+            posts.map((post) => (
+              <li>
+                <a href={`/blog/${post.slug}/`}>
+                  <div class='card'>
+                    <figure>
+                      <img width={720} height={360} src={post.data.heroImage} alt='' />
+                    </figure>
+                    <div class='card-body'>
+                      <h3 class='card-title'>{post.data.title}</h3>
+                      <p>
+                        <FormattedDate date={post.data.pubDate} />
+                      </p>
+                    </div>
+                  </div>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
     </main>
     <Footer />
   </body>
