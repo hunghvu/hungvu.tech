@@ -6,6 +6,7 @@ export default {
 	},
 	plugins: [require('daisyui')],
 	daisyui: {
-		prefix: 'daisyui-'
+		prefix: 'daisyui-',
+		themes: ['emerald', 'forest']
 	}
 }
