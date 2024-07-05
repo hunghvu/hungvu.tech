@@ -24,21 +24,19 @@ const posts = (await getCollection('blog')).sort((a, b) => a.data.pubDate.valueO
         review, to homelab setup. I hope you find something useful here.
       </p>
       <section class='mt-10'>
-        <ul>
+        <ul class='grid grid-cols-3 gap-8'>
           {
             posts.map((post) => (
-              <li>
-                <a href={`/blog/${post.slug}/`}>
-                  <div class='card'>
-                    <figure>
-                      <img width={720} height={360} src={post.data.heroImage} alt='' />
-                    </figure>
-                    <div class='card-body'>
-                      <h3 class='card-title'>{post.data.title}</h3>
-                      <p>
-                        <FormattedDate date={post.data.pubDate} />
-                      </p>
-                    </div>
+              <li class='col-span-1'>
+                <a class='daisyui-card bg-base-100 shadow-xl h-96' href={`/blog/${post.slug}/`}>
+                  <figure>
+                    <img class='w-full max-w-full h-auto' src={post.data.heroImage} alt='' />
+                  </figure>
+                  <div class='daisyui-card-body'>
+                    <h3 class='daisyui-card-title'>{post.data.title}</h3>
+                    <p>
+                      <FormattedDate date={post.data.pubDate} />
+                    </p>
                   </div>
                 </a>
               </li>
