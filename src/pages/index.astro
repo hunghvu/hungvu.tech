@@ -15,16 +15,21 @@ const posts = (await getCollection('blog')).sort((a, b) => a.data.pubDate.valueO
     <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
   </head>
 
-  <body>
+  <body class='flex flex-col items-center w-full bg-base-100'>
     <Header />
-    <main>
-      <h1>Hello, Tech Enthusiasts!</h1>
-      <p>
-        Welcome to my digital repository. This is where I log my own learning experience. The topics range from software development, configuraiton,
-        review, to homelab setup. I hope you find something useful here.
-      </p>
-      <section class='mt-10'>
-        <ul class='grid grid-cols-3 gap-8'>
+    <main class='flex flex-col items-center w-full max-w-[1360px] pt-12 px-6'>
+      <div class='daisyui-card bg-base-300'>
+        <div class='daisyui-card-body'>
+          <h1 class='daisyui-card-title text-5xl text-base-content'>Hello, Tech Enthusiasts!</h1>
+          <p class='text-base-content'>
+            Welcome to my digital repository. This is where I log my own learning experience. The topics range from software development,
+            configuraiton, review, to homelab setup. I hope you find something useful here!
+          </p>
+        </div>
+      </div>
+
+      <section class='mt-10 w-full flex flex-row justify-center'>
+        <ul class='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
           {
             posts.map((post) => (
               <li class='col-span-1'>
@@ -33,7 +38,7 @@ const posts = (await getCollection('blog')).sort((a, b) => a.data.pubDate.valueO
                     <img class='w-full max-w-full h-auto' src={post.data.heroImage} alt='' />
                   </figure>
                   <div class='daisyui-card-body'>
-                    <h3 class='daisyui-card-title'>{post.data.title}</h3>
+                    <h3 class='daisyui-card-title text-base-content'>{post.data.title}</h3>
                     <p>
                       <FormattedDate date={post.data.pubDate} />
                     </p>
