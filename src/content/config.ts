@@ -11,7 +11,7 @@ const blog = defineCollection({
 		coverAlt: z.string(),
 
 		// Viewable, but sort of metadata-like information
-		publishDate: z.coerce.date(),
+		publishedDate: z.coerce.date(),
 		updatedDate: z.coerce.date().optional(),
 		tags: z.array(z.string()),
 		series: z.string().optional(),
