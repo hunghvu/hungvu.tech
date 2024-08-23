@@ -9,7 +9,6 @@ import FormattedDate from '../components/FormattedDate.astro';
 const posts = (await getCollection('blog')).sort((a, b) => a.data.publishedDate.valueOf() - b.data.publishedDate.valueOf());
 ---
 
-<!doctype html>
 <html lang='en'>
   <head>
     <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
