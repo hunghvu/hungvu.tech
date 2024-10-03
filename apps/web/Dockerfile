@@ -4,6 +4,7 @@ FROM base AS builder
 RUN apk add --no-cache libc6-compat
 RUN apk update
 WORKDIR /app
+ENV SKIP_YARN_COREPACK_CHECK=0
 RUN yarn global add turbo
 COPY . .
 RUN turbo prune web --docker
@@ -21,9 +22,9 @@ COPY --from=builder /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
 COPY --from=builder /app/out/full/ .
 COPY turbo.json turbo.json
 
-
+ENV SKIP_YARN_COREPACK_CHECK=0
 RUN yarn global add turbo
-RUN yarn global add pnpm@9.0.4
+RUN yarn global add pnpm
 RUN yarn global add dotenv-cli
 # pnpm install cannot run after NODE_ENV production, or else it skips devDependencies
 # and breaks turborepo setup
@@ -33,29 +34,29 @@ ENV NEXT_TELEMETRY_DISABLED 1
 ENV NODE_ENV production
 
 # Public environment variables, only for build time
-ENV NEXT_PUBLIC_BASE_URL https://hungvu.tech
-ENV NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION EGTdZytY_C05esF562wX0i-fpIShKgfypgbhQV3bPzU
-ENV NEXT_PUBLIC_API_OPENWRT_TOH_FILTER https://hungvu.tech/api/openwrt-toh/filter
+ENV NEXT_PUBLIC_BASE_URL=https://hungvu.tech
+ENV NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION=EGTdZytY_C05esF562wX0i-fpIShKgfypgbhQV3bPzU
+ENV NEXT_PUBLIC_API_OPENWRT_TOH_FILTER=https://hungvu.tech/api/openwrt-toh/filter
 
 # Global content material
-ENV NEXT_REQUEST_CMS_STATIC_ROUTE_METADATA_URL https://payload.hungvu.tech/api/static-route-metadata
+ENV NEXT_REQUEST_CMS_STATIC_ROUTE_METADATA_URL=https://payload.hungvu.tech/api/static-route-metadata
 
 # Media
-ENV NEXT_REQUEST_CMS_MEDIA_URL https://payload.hungvu.tech/api/media
+ENV NEXT_REQUEST_CMS_MEDIA_URL=https://payload.hungvu.tech/api/media
 
 # Blog
-ENV NEXT_REQUEST_CMS_ARTICLES_URL https://payload.hungvu.tech/api/articles
-ENV NEXT_REQUEST_CMS_ARTICLES_IGNORE_REDUNDANT_FIELDS_URL https://payload.hungvu.tech/api/articles/ignore-redundant-fields
-ENV NEXT_REQUEST_CMS_ARTICLES_IN_THE_SAME_SERIES_URL https://payload.hungvu.tech/api/articles/in-series
+ENV NEXT_REQUEST_CMS_ARTICLES_URL=https://payload.hungvu.tech/api/articles
+ENV NEXT_REQUEST_CMS_ARTICLES_IGNORE_REDUNDANT_FIELDS_URL=https://payload.hungvu.tech/api/articles/ignore-redundant-fields
+ENV NEXT_REQUEST_CMS_ARTICLES_IN_THE_SAME_SERIES_URL=https://payload.hungvu.tech/api/articles/in-series
 
 # Lab
-ENV NEXT_REQUEST_CMS_LABS_URL https://payload.hungvu.tech/api/labs
-ENV NEXT_REQUEST_CMS_LABS_IGNORE_REDUNDANT_FIELDS_URL https://payload.hungvu.tech/api/labs/ignore-redundant-fields
+ENV NEXT_REQUEST_CMS_LABS_URL=https://payload.hungvu.tech/api/labs
+ENV NEXT_REQUEST_CMS_LABS_IGNORE_REDUNDANT_FIELDS_URL=https://payload.hungvu.tech/api/labs/ignore-redundant-fields
 
 # Lab - OpenWRT TOH
-ENV NEXT_REQUEST_CMS_OPENWRT_TOH_URL https://payload.hungvu.tech/api/openwrt-toh
-ENV NEXT_REQUEST_CMS_OPENWRT_TOH_AVAILABLE_VALUES_OF_EACH_FIELD_URL https://payload.hungvu.tech/api/openwrt-toh/available-values-of-each-field
-ENV NEXT_REQUEST_CMS_OPENWRT_TOH_FILTER_URL https://payload.hungvu.tech/api/openwrt-toh/filter
+ENV NEXT_REQUEST_CMS_OPENWRT_TOH_URL=https://payload.hungvu.tech/api/openwrt-toh
+ENV NEXT_REQUEST_CMS_OPENWRT_TOH_AVAILABLE_VALUES_OF_EACH_FIELD_URL=https://payload.hungvu.tech/api/openwrt-toh/available-values-of-each-field
+ENV NEXT_REQUEST_CMS_OPENWRT_TOH_FILTER_URL=https://payload.hungvu.tech/api/openwrt-toh/filter
 RUN pnpm run build --filter web
 
 FROM base AS runner
@@ -72,8 +73,8 @@ COPY --from=installer --chown=nextjs:nodejs /app/apps/web/.next/standalone ./
 COPY --from=installer --chown=nextjs:nodejs /app/apps/web/.next/static ./apps/web/.next/static
 COPY --from=installer --chown=nextjs:nodejs /app/apps/web/public ./apps/web/public
 
-ENV NEXT_TELEMETRY_DISABLED 1
-ENV NODE_ENV production
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV NODE_ENV=production
 
 # It seems these are required for both build and runtime
 # For build time, it is so Next.js can generate cache files

@@ -1,7 +1,5 @@
 # Author: Hung Vu
 
-version: "3.8"
-
 services:
   # MongoDB Atlas does not support IPv6, so self hosting is a stopgap solution
   mongo:

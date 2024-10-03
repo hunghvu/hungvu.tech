@@ -7,6 +7,7 @@ RUN apk update
 
 WORKDIR /app
 COPY . .
+ENV SKIP_YARN_COREPACK_CHECK=0
 RUN yarn global add turbo
 RUN turbo prune cms --docker
 
@@ -24,12 +25,13 @@ COPY --from=builder /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
 COPY --from=builder /app/out/full/ .
 COPY turbo.json turbo.json
 
+ENV SKIP_YARN_COREPACK_CHECK=0
 RUN yarn global add turbo
-RUN yarn global add pnpm@9.0.4
+RUN yarn global add pnpm
 RUN yarn global add dotenv-cli
 RUN pnpm install
 
-ENV NODE_ENV production
+ENV NODE_ENV=production
 RUN pnpm run build --filter cms
 
 FROM base AS runner
@@ -50,10 +52,11 @@ COPY --from=installer --chown=payload:nodejs /app/apps/cms/node_modules ./apps/c
 COPY --from=installer --chown=payload:nodejs /app/node_modules/.pnpm ./node_modules/.pnpm
 
 # Runtime environment variables
-ENV PAYLOAD_PUBLIC_SERVER_URL https://payload.hungvu.tech
-ENV PAYLOAD_FRONT_END_DOMAIN hungvu.tech
-ENV PAYLOAD_BACK_END_DOMAIN payload.hungvu.tech
-ENV PAYLOAD_PORT 3100      
+ENV PAYLOAD_PUBLIC_SERVER_URL=https://payload.hungvu.tech
+ENV PAYLOAD_FRONT_END_DOMAIN=hungvu.tech
+ENV PAYLOAD_BACK_END_DOMAIN=payload.hungvu.tech
+ENV PAYLOAD_PORT=3100      
 
+ENV SKIP_YARN_COREPACK_CHECK=0
 WORKDIR /app/apps/cms
 CMD yarn run serve
