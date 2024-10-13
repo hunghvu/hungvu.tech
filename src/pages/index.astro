@@ -5,6 +5,7 @@ import Footer from '../components/Footer.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 import { getCollection } from 'astro:content';
 import FormattedDate from '../components/FormattedDate.astro';
+import { Image } from 'astro:assets';
 
 const posts = (await getCollection('blog')).sort((a, b) => a.data.publishedDate.valueOf() - b.data.publishedDate.valueOf());
 ---
@@ -34,7 +35,7 @@ const posts = (await getCollection('blog')).sort((a, b) => a.data.publishedDate.
               <li class='col-span-1'>
                 <a class='daisyui-card bg-base-100 shadow-xl h-96' href={`/${post.slug}/`}>
                   <figure>
-                    <img class='w-full max-w-full h-auto' src={post.data.coverImage} alt={post.data.coverAlt} />
+                    <Image class='w-full max-w-full h-auto' src={post.data.coverImage} alt={post.data.coverAlt} />
                   </figure>
                   <div class='daisyui-card-body'>
                     <h3 class='daisyui-card-title text-base-content'>{post.data.readerTitle}</h3>

@@ -1,7 +1,7 @@
 ---
 readerTitle: 'Second post'
 readerDescription: 'Lorem ipsum dolor sit amet.'
-coverImage: '/blog-placeholder-4.jpg'
+coverImage: '/public/blog-placeholder-4.png'
 coverAlt: 'Lorem ipsum dolor sit amet'
 publishedDate: 'July 07, 2024'
 updatedDate: 'July 08, 2024'
