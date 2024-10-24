@@ -1,14 +1,14 @@
 ---
-readerTitle: 'Markdown Style Guide'
-readerDescription: 'Here is a sample of some basic Markdown syntax that can be used when writing Markdown content in Astro.'
-coverImage: '/public/blog-placeholder-1.png'
-coverAlt: 'Lorem ipsum dolor sit amet'
-publishedDate: 'July 07, 2024'
-updatedDate: 'July 08, 2024'
-tags: ['tag-1', 'tag-2', 'tag-3']
-series: 'Lorem ipsum dolor sit amet'
-seoTitle: 'Lorem ipsum dolor sit amet'
-seoDescription: 'Lorem ipsum dolor sit amet'
+readerTitle: "Markdown Style Guide"
+readerDescription: "Here is a sample of some basic Markdown syntax that can be used when writing Markdown content in Astro."
+coverImage: "/public/blog-placeholder-1.png"
+coverAlt: "Lorem ipsum dolor sit amet"
+publishedDate: "July 07, 2024"
+updatedDate: "July 08, 2024"
+tags: ["tag-1", "tag-2", "tag-3"]
+series: "Lorem ipsum dolor sit amet"
+seoTitle: "Lorem ipsum dolor sit amet"
+seoDescription: "Lorem ipsum dolor sit amet"
 ---
 
 Here is a sample of some basic Markdown syntax that can be used when writing Markdown content in Astro.
@@ -105,7 +105,7 @@ we can use 3 backticks ``` in new line and write snippet and close with 3 backti
 
 ````markdown
 ```html
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -121,7 +121,7 @@ we can use 3 backticks ``` in new line and write snippet and close with 3 backti
 ### Output
 
 ```html
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />

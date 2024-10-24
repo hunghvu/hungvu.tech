@@ -1,35 +1,48 @@
 ---
-import { type CollectionEntry, getCollection } from 'astro:content';
-import BaseHead from '../components/BaseHead.astro';
-import Footer from '../components/Footer.astro';
-import FormattedDate from '../components/FormattedDate.astro';
-import Header from '../components/Header.astro';
-import { Image } from 'astro:assets';
+import { type CollectionEntry, getCollection } from "astro:content";
+import BaseHead from "../components/BaseHead.astro";
+import Footer from "../components/Footer.astro";
+import FormattedDate from "../components/FormattedDate.astro";
+import Header from "../components/Header.astro";
+import { Image } from "astro:assets";
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog');
+  const posts = await getCollection("blog");
   return posts.map((post) => ({
     params: { slug: post.slug },
     props: post,
   }));
 }
-type Props = CollectionEntry<'blog'>;
-const { readerTitle, readerDescription, coverImage, coverAlt, publishedDate, updatedDate } = Astro.props.data;
+type Props = CollectionEntry<"blog">;
+const {
+  readerTitle,
+  readerDescription,
+  coverImage,
+  coverAlt,
+  publishedDate,
+  updatedDate,
+} = Astro.props.data;
 const { Content } = await Astro.props.render();
 ---
 
-<html lang='en'>
+<html lang="en">
   <head>
     <BaseHead title={readerTitle} description={readerDescription} />
   </head>
 
-  <body class='flex flex-col items-center w-full bg-base-100'>
+  <body class="flex w-full flex-col items-center bg-base-100">
     <Header />
-    <main class='flex flex-col items-center w-full max-w-[1360px] py-12 px-6'>
-      <article class='flex flex-col items-center w-full'>
-        <Image class='w-full max-w-full h-auto mb-6' src={coverImage} alt={coverAlt} />
-        <div class='prose prose-sm sm:prose-base lg:prose-lg dark:prose-invert w-full'>
-          <p class='text-info-content text-center'>
+    <main class="flex w-full max-w-[1360px] flex-col items-center px-6 py-12">
+      <article class="flex w-full flex-col items-center">
+        <Image
+          class="mb-6 h-auto w-full max-w-full"
+          src={coverImage}
+          alt={coverAlt}
+        />
+        <div
+          class="prose prose-sm w-full sm:prose-base lg:prose-lg dark:prose-invert"
+        >
+          <p class="text-center text-info-content">
             Posted on: <FormattedDate date={publishedDate} />{
               updatedDate && (
                 <>
@@ -38,8 +51,8 @@ const { Content } = await Astro.props.render();
               )
             }
           </p>
-          <h1 class='text-base-content text-center'>{readerTitle}</h1>
-          <p class='text-info-content text-center'>{readerDescription}</p>
+          <h1 class="text-center text-base-content">{readerTitle}</h1>
+          <p class="text-center text-info-content">{readerDescription}</p>
           <hr />
           <Content />
         </div>

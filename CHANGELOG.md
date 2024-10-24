@@ -9,7 +9,7 @@
 ### Features
 
 - Add footer. ([#72](https://github.com/hunghvu/hungvu.tech/issues/72))
-- Add OpenWRT Table of Hardware (full details) that is updated every 24 hours. This involves several issues. Please take a look at the milestone for a better overview. 
+- Add OpenWRT Table of Hardware (full details) that is updated every 24 hours. This involves several issues. Please take a look at the milestone for a better overview.
 
 ### Optimization
 
@@ -54,8 +54,6 @@
 ### Features
 
 - Use of a neutral theme for the website (no light/dark mode), with the use of animated SVG. ([#92](https://github.com/hunghvu/hungvu.tech/issues/92))
-
-
 
 ## [1.0] - 2023-12-17
 
