@@ -5,10 +5,8 @@
   // Reference: https://github.com/ota-meshi/eslint-plugin-astro?tab=readme-ov-file#-editor-integrations
   "eslint.validate": [
     "javascript",
-    "javascriptreact",
     "astro", // Enable .astro
-    "typescript", // Enable .ts
-    "typescriptreact" // Enable .tsx
+    "typescript" // Enable .ts
   ],
   "prettier.documentSelectors": ["**/*.astro"],
   "[astro]": {

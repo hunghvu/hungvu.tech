@@ -37,16 +37,19 @@ importers:
       theme-change:
         specifier: ^2.5.0
         version: 2.5.0
-      typescript:
-        specifier: ^5.6.3
-        version: 5.6.3
     devDependencies:
       "@typescript-eslint/parser":
         specifier: ^8.11.0
         version: 8.11.0(eslint@9.13.0(jiti@1.21.6))(typescript@5.6.3)
+      astro-eslint-parser:
+        specifier: ^1.0.3
+        version: 1.0.3(typescript@5.6.3)
       eslint:
         specifier: ^9.13.0
         version: 9.13.0(jiti@1.21.6)
+      eslint-config-prettier:
+        specifier: ^9.1.0
+        version: 9.1.0(eslint@9.13.0(jiti@1.21.6))
       eslint-plugin-astro:
         specifier: ^1.3.0
         version: 1.3.0(eslint@9.13.0(jiti@1.21.6))(typescript@5.6.3)
@@ -62,6 +65,9 @@ importers:
       prettier-plugin-tailwindcss:
         specifier: ^0.6.8
         version: 0.6.8(prettier-plugin-astro@0.14.1)(prettier@3.3.3)
+      typescript:
+        specifier: ^5.6.3
+        version: 5.6.3
 
 packages:
   "@alloc/quick-lru@5.2.0":
@@ -2155,6 +2161,15 @@ packages:
     engines: { node: ">=12" }
     peerDependencies:
       eslint: ">=6.0.0"
+
+  eslint-config-prettier@9.1.0:
+    resolution:
+      {
+        integrity: sha512-NSWl5BFQWEPi1j4TjVNItzYV7dZXZ+wP6I6ZhrBGpChQhZRUaElihE9uRRkcbRnNb76UMKDF3r+WTmNcGPKsqw==,
+      }
+    hasBin: true
+    peerDependencies:
+      eslint: ">=7.0.0"
 
   eslint-plugin-astro@1.3.0:
     resolution:
@@ -6630,6 +6645,10 @@ snapshots:
     dependencies:
       eslint: 9.13.0(jiti@1.21.6)
       semver: 7.6.3
+
+  eslint-config-prettier@9.1.0(eslint@9.13.0(jiti@1.21.6)):
+    dependencies:
+      eslint: 9.13.0(jiti@1.21.6)
 
   eslint-plugin-astro@1.3.0(eslint@9.13.0(jiti@1.21.6))(typescript@5.6.3):
     dependencies:
