@@ -1,15 +1,16 @@
 ---
-import HeaderLink from "./HeaderLink.astro";
 import { SITE_TITLE } from "../consts";
 ---
 
 <header class="flex w-full flex-row items-center justify-center">
   <nav
-    class="flex w-full max-w-[1360px] flex-row items-center justify-between p-5"
+    class="flex w-full max-w-screen-xl flex-row items-center justify-between p-8"
   >
-    <a href="/" class="flex flex-row items-center text-xl">{SITE_TITLE}</a>
+    <a href="/" class="flex flex-row items-center text-xl font-bold"
+      >{SITE_TITLE}</a
+    >
     <div class="flex flex-row items-center justify-between">
-      <HeaderLink href="/">Home</HeaderLink>
+      <a href="/" class="text-lg font-bold">Home</a>
     </div>
     <div class="flex flex-row items-center justify-end gap-4 text-xl">
       <a href="https://www.linkedin.com/in/hunghvu/" target="_blank">
