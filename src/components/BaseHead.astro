@@ -57,7 +57,7 @@ const { title, description, image = "/blog-placeholder-1.png" } = Astro.props;
 <script is:inline>
   // ☝️ This script prevent the FART effect.
   if (localStorage.getItem("theme") === null) {
-    document.documentElement.setAttribute("data-theme", "emerald");
+    document.documentElement.setAttribute("data-theme", "light");
   } else
     document.documentElement.setAttribute(
       "data-theme",

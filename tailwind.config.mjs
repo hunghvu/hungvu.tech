@@ -7,6 +7,5 @@ export default {
   plugins: [require("@tailwindcss/typography"), require("daisyui")],
   daisyui: {
     prefix: "daisyui-",
-    themes: ["emerald", "forest"],
   },
 };
