@@ -22,10 +22,8 @@ const posts = (await getCollection("blog")).sort(
     <main class="flex w-full max-w-screen-xl flex-col items-center px-6 py-12">
       <div class="daisyui-card bg-base-300">
         <div class="daisyui-card-body">
-          <h1 class="daisyui-card-title text-5xl text-base-content">
-            Hello, Tech Enthusiasts!
-          </h1>
-          <p class="text-base-content">
+          <h1 class="daisyui-card-title text-5xl">Hello, Tech Enthusiasts!</h1>
+          <p>
             Welcome to my digital repository. This is where I log my own
             learning experience. The topics range from software development,
             configuraiton, review, to homelab setup. I hope you find something
@@ -51,9 +49,7 @@ const posts = (await getCollection("blog")).sort(
                     />
                   </figure>
                   <div class="daisyui-card-body">
-                    <h3 class="daisyui-card-title text-base-content">
-                      {post.data.readerTitle}
-                    </h3>
+                    <h3 class="daisyui-card-title">{post.data.readerTitle}</h3>
                     <p>
                       <FormattedDate date={post.data.publishedDate} />
                     </p>

@@ -43,7 +43,7 @@ const { Content, headings } = await Astro.props.render();
         <div
           class="prose prose-sm w-full sm:prose-base lg:prose-lg dark:prose-invert"
         >
-          <p class="text-center text-info-content">
+          <p class="text-center">
             Posted on: <FormattedDate date={publishedDate} />{
               updatedDate && (
                 <>
@@ -52,8 +52,8 @@ const { Content, headings } = await Astro.props.render();
               )
             }
           </p>
-          <h1 class="text-center text-base-content">{readerTitle}</h1>
-          <p class="text-center text-info-content">{readerDescription}</p>
+          <h1 class="text-center">{readerTitle}</h1>
+          <p class="text-center">{readerDescription}</p>
           <hr />
           <TableOfContents headings={headings} />
           <hr />
