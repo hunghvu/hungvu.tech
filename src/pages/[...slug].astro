@@ -5,6 +5,7 @@ import Footer from "../components/Footer.astro";
 import FormattedDate from "../components/FormattedDate.astro";
 import Header from "../components/Header.astro";
 import { Image } from "astro:assets";
+import TableOfContents from "../components/toc/TableOfContents.astro";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog");
@@ -22,7 +23,7 @@ const {
   publishedDate,
   updatedDate,
 } = Astro.props.data;
-const { Content } = await Astro.props.render();
+const { Content, headings } = await Astro.props.render();
 ---
 
 <html lang="en">
@@ -35,7 +36,7 @@ const { Content } = await Astro.props.render();
     <main class="flex w-full max-w-screen-xl flex-col items-center px-6 py-12">
       <article class="flex w-full flex-col items-center">
         <Image
-          class="mb-6 h-auto w-full max-w-full"
+          class="mb-6 h-auto w-full max-w-full rounded-2xl"
           src={coverImage}
           alt={coverAlt}
         />
@@ -53,6 +54,8 @@ const { Content } = await Astro.props.render();
           </p>
           <h1 class="text-center text-base-content">{readerTitle}</h1>
           <p class="text-center text-info-content">{readerDescription}</p>
+          <hr />
+          <TableOfContents headings={headings} />
           <hr />
           <Content />
         </div>
