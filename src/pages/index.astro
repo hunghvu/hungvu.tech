@@ -8,7 +8,8 @@ import FormattedDate from "../components/FormattedDate.astro";
 import { Image } from "astro:assets";
 
 const posts = (await getCollection("blog")).sort(
-  (a, b) => a.data.publishedDate.valueOf() - b.data.publishedDate.valueOf(),
+  // Latest article first
+  (a, b) => b.data.publishedDate.valueOf() - a.data.publishedDate.valueOf(),
 );
 ---
 
