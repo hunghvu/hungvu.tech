@@ -6,6 +6,7 @@ import FormattedDate from "../components/FormattedDate.astro";
 import Header from "../components/Header.astro";
 import { Image } from "astro:assets";
 import TableOfContents from "../components/toc/TableOfContents.astro";
+import Series from "../components/Series.astro";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog");
@@ -22,6 +23,7 @@ const {
   coverAlt,
   publishedDate,
   updatedDate,
+  series,
 } = Astro.props.data;
 const { Content, headings } = await Astro.props.render();
 ---
@@ -54,10 +56,9 @@ const { Content, headings } = await Astro.props.render();
           </p>
           <h1 class="text-center">{readerTitle}</h1>
           <p class="text-center">{readerDescription}</p>
-          <hr />
           <TableOfContents headings={headings} />
-          <hr />
           <Content />
+          {series ? <Series series={series} /> : null}
         </div>
       </article>
       <Footer />
