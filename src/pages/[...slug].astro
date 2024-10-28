@@ -56,8 +56,11 @@ const { Content, headings } = await Astro.props.render();
           </p>
           <h1 class="text-center">{readerTitle}</h1>
           <p class="text-center">{readerDescription}</p>
-          <TableOfContents headings={headings} />
+          <hr />
+          {headings.length > 1 ? <TableOfContents headings={headings} /> : null}
+          <br />
           <Content />
+          <br />
           {series ? <Series series={series} /> : null}
         </div>
       </article>
