@@ -106,12 +106,18 @@ const { title, description, image = "/blog-placeholder-1.png" } = Astro.props;
     max-height: 36.25rem;
   }
 
-  /* pre {
+  // This is so we have a line wrap effect, for example
+  // const x = 123333333333333333333333333333  <= continue to the right edge
+  // 333333333333333333
+  // And not like this
+  // cost x =     <= unexpected line break
+  // 33333333333333333333333333333333
+  code > span {
+    margin-right: 2rem;
+  }
 
-    width: 612px;
-    white-space: nowrap;
-    overflow-wrap: break-word;
-    word-break: break-word;
-
-  } */
+  code > span > span {
+    word-break: break-all;
+    white-space: pre-wrap;
+  }
 </style>

@@ -43,7 +43,7 @@ const { Content, headings } = await Astro.props.render();
           alt={coverAlt}
         />
         <div
-          class="prose prose-sm w-full sm:prose-base lg:prose-lg dark:prose-invert"
+          class="prose prose-sm w-full break-words sm:prose-base lg:prose-lg dark:prose-invert"
         >
           <p class="text-center">
             Posted on: <FormattedDate date={publishedDate} />{
