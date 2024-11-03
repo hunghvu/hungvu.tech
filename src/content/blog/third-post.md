@@ -5,7 +5,6 @@ coverImage: "/public/blog-placeholder-4.png"
 coverAlt: "Lorem ipsum dolor sit amet"
 publishedDate: "July 22, 2022"
 updatedDate: "July 08, 2024"
-tags: ["tag-1", "tag-2", "tag-3"]
 series: "Lorem ipsum dolor sit amet"
 seoTitle: "Lorem ipsum dolor sit amet"
 seoDescription: "Lorem ipsum dolor sit amet"

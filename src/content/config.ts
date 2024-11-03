@@ -19,7 +19,6 @@ const blog = defineCollection({
       // Viewable, but sort of metadata-like information
       publishedDate: z.coerce.date(),
       updatedDate: z.coerce.date().optional(),
-      tags: z.array(z.string()),
       series: z.string().optional(),
 
       // Not viewable, but used for SEO
