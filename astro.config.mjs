@@ -1,4 +1,5 @@
 import { defineConfig } from "astro/config";
+import embeds from "astro-embed/integration";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 import tailwind from "@astrojs/tailwind";
@@ -9,7 +10,7 @@ import { rehypePrettyCode } from "rehype-pretty-code";
 // https://astro.build/config
 export default defineConfig({
   site: "https://hungvu.tech",
-  integrations: [mdx(), sitemap(), tailwind()],
+  integrations: [embeds(), mdx(), sitemap(), tailwind()],
   markdown: {
     syntaxHighlight: false,
     rehypePlugins: [
