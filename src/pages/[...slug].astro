@@ -8,6 +8,7 @@ import { Image } from "astro:assets";
 import TableOfContents from "../components/toc/TableOfContents.astro";
 import Series from "../components/Series.astro";
 import type { InferGetStaticPropsType, GetStaticPaths } from "astro";
+import SeoHead from "../components/head/SeoHead.astro";
 
 export const getStaticPaths = (async () => {
   const posts = await getCollection("blog");
@@ -20,6 +21,8 @@ type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 const {
   readerTitle,
   readerDescription,
+  seoTitle,
+  seoDescription,
   coverImage,
   coverAlt,
   publishedDate,
@@ -32,6 +35,16 @@ const { Content, headings } = await Astro.props.render();
 <html lang="en">
   <head>
     <BaseHead />
+    <SeoHead
+      seoTitle={seoTitle}
+      seoDescription={seoDescription}
+      readerTitle={readerTitle}
+      coverImage={coverImage.src.split("/")[-1]!}
+      slug={Astro.url.toString()}
+      jsonLdType="BlogPosting"
+      jsonLdDatePublished={publishedDate.toISOString()}
+      jsonLdDateModified={updatedDate?.toISOString() ?? ""}
+    />
   </head>
 
   <body class="flex w-full flex-col items-center bg-base-100">

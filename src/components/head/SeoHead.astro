@@ -2,48 +2,94 @@
 import { BASE_SITE_NAME, X_HANDLE } from "../../consts";
 
 interface Props {
-  title: string;
-  description: string;
-  image?: string;
+  seoTitle: string;
+  seoDescription: string;
+  readerTitle?: string;
+  coverImage?: string;
   slug?: string;
-  type?: string;
+  jsonLdType?: "Blog" | "BlogPosting";
+  jsonLdDatePublished?: string;
+  jsonLdDateModified?: string;
 }
 
 const {
-  title,
-  description,
-  image = "/hungvu-tech-cover-image-1200x630.png",
+  seoTitle,
+  seoDescription,
+  readerTitle = "",
+  coverImage = "/hungvu-tech-cover-image-1200x630.png",
   slug = "",
-  type = "website",
+  jsonLdType = "Blog",
+  jsonLdDatePublished = new Date(),
+  jsonLdDateModified = new Date(),
 } = Astro.props;
 
 const siteUrl = new URL(slug, Astro.site);
-const imageUrl = new URL(image, Astro.site);
+const imageUrl = new URL(coverImage, Astro.site);
 ---
 
 <!-- Canonical URL -->
 <link rel="canonical" href={siteUrl} />
 
 <!-- Primary Meta Tags -->
-<title>{title}</title>
-<meta name="title" content={title} />
-<meta name="description" content={description} />
+<title>{seoTitle}</title>
+<meta name="title" content={seoTitle} />
+<meta name="description" content={seoDescription} />
 
 <!-- Open Graph / Facebook -->
-<meta property="og:title" content={title} />
-<meta property="og:description" content={description} />
+<meta property="og:title" content={seoTitle} />
+<meta property="og:description" content={seoDescription} />
 <meta property="og:url" content={siteUrl} />
 <meta property="og:site_name" content={BASE_SITE_NAME} />
 <meta property="og:locale" content="en_US" />
 <meta property="og:image" content={imageUrl} />
-<meta property="og:image:alt" content={description} />
-<meta property="og:type" content={type} />
+<meta property="og:image:alt" content={seoDescription} />
+<meta property="og:type" content="website" />
 
 <!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image" />
 <meta name="twitter:creator" content={X_HANDLE} />
-<meta property="twitter:title" content={title} />
-<meta property="twitter:description" content={description} />
+<meta property="twitter:title" content={seoTitle} />
+<meta property="twitter:description" content={seoDescription} />
 <meta property="twitter:url" content={siteUrl} />
 <meta property="twitter:image" content={imageUrl} />
-<meta property="twitter:image:alt" content={description} />
+<meta property="twitter:image:alt" content={seoDescription} />
+
+<script
+  type="application/ld+json"
+  set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": jsonLdType,
+    url: siteUrl,
+    headline: seoTitle,
+    alternativeHeadline: readerTitle,
+    description: seoDescription,
+    image: [imageUrl],
+    datePublished: jsonLdDatePublished,
+    dateModified: jsonLdDateModified,
+    // This uses BCP 47 standard, so hyphen (-) instead of underscore (_) in og:locale
+    inLanguage: "en-US",
+    isFamilyFriendly: "true",
+    copyrightHolder: [
+      {
+        "@type": "Person",
+        name: "Hung Vu",
+        url: "https://www.linkedin.com/in/hunghvu/",
+      },
+    ],
+    copyrightYear: new Date().getFullYear(),
+    author: [
+      {
+        "@type": "Person",
+        name: "Hung Vu",
+        url: "https://www.linkedin.com/in/hunghvu/",
+      },
+    ],
+    creator: [
+      {
+        "@type": "Person",
+        name: "Hung Vu",
+        url: "https://www.linkedin.com/in/hunghvu/",
+      },
+    ],
+  })}
+/>
