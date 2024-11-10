@@ -7,6 +7,7 @@ import FormattedDate from "../components/FormattedDate.astro";
 import { Image } from "astro:assets";
 import type { InferGetStaticPropsType, GetStaticPaths } from "astro";
 import SeoHead from "../components/head/SeoHead.astro";
+import { BASE_SITE_DESCRIPTION, BASE_SITE_NAME } from "../consts";
 
 type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 // File name must be [...page], not [page], so pagination can start
@@ -26,10 +27,7 @@ const { page } = Astro.props;
 <html lang="en">
   <head>
     <BaseHead />
-    <SeoHead
-      seoTitle="Hung Vu"
-      seoDescription="Food for thoughts on technologies."
-    />
+    <SeoHead seoTitle={BASE_SITE_NAME} seoDescription={BASE_SITE_DESCRIPTION} />
   </head>
 
   <body class="flex w-full flex-col items-center bg-base-100">

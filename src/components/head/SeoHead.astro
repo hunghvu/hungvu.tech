@@ -55,6 +55,14 @@ const imageUrl = new URL(coverImageSlug, Astro.site).href;
 <meta property="twitter:image" content={imageUrl} />
 <meta property="twitter:image:alt" content={seoDescription} />
 
+<link rel="sitemap" href="/sitemap-index.xml" />
+<link
+  rel="alternate"
+  type="application/rss+xml"
+  title={BASE_SITE_NAME}
+  href={new URL("rss.xml", Astro.site)}
+/>
+
 <script
   type="application/ld+json"
   set:html={JSON.stringify({
