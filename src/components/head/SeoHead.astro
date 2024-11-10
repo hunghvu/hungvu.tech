@@ -1,17 +1,28 @@
 ---
+import { BASE_SITE_NAME, X_HANDLE } from "../../consts";
+
 interface Props {
   title: string;
   description: string;
   image?: string;
+  slug?: string;
+  type?: string;
 }
 
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const {
+  title,
+  description,
+  image = "/hungvu-tech-cover-image-1200x630.png",
+  slug = "",
+  type = "website",
+} = Astro.props;
 
-const { title, description, image = "/blog-placeholder-1.png" } = Astro.props;
+const siteUrl = new URL(slug, Astro.site);
+const imageUrl = new URL(image, Astro.site);
 ---
 
 <!-- Canonical URL -->
-<link rel="canonical" href={canonicalURL} />
+<link rel="canonical" href={siteUrl} />
 
 <!-- Primary Meta Tags -->
 <title>{title}</title>
@@ -19,15 +30,20 @@ const { title, description, image = "/blog-placeholder-1.png" } = Astro.props;
 <meta name="description" content={description} />
 
 <!-- Open Graph / Facebook -->
-<meta property="og:type" content="website" />
-<meta property="og:url" content={Astro.url} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
-<meta property="og:image" content={new URL(image, Astro.url)} />
+<meta property="og:url" content={siteUrl} />
+<meta property="og:site_name" content={BASE_SITE_NAME} />
+<meta property="og:locale" content="en_US" />
+<meta property="og:image" content={imageUrl} />
+<meta property="og:image:alt" content={description} />
+<meta property="og:type" content={type} />
 
 <!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:url" content={Astro.url} />
+<meta name="twitter:creator" content={X_HANDLE} />
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
-<meta property="twitter:image" content={new URL(image, Astro.url)} />
+<meta property="twitter:url" content={siteUrl} />
+<meta property="twitter:image" content={imageUrl} />
+<meta property="twitter:image:alt" content={description} />
