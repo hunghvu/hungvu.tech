@@ -39,7 +39,7 @@ const { Content, headings } = await Astro.props.render();
       seoTitle={seoTitle}
       seoDescription={seoDescription}
       readerTitle={readerTitle}
-      coverImage={coverImage.src.split("/")[-1]!}
+      coverImageSlug={`_image?href=${coverImage.src}`}
       slug={Astro.url.toString()}
       jsonLdType="BlogPosting"
       jsonLdDatePublished={publishedDate.toISOString()}

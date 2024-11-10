@@ -5,7 +5,7 @@ interface Props {
   seoTitle: string;
   seoDescription: string;
   readerTitle?: string;
-  coverImage?: string;
+  coverImageSlug?: string;
   slug?: string;
   jsonLdType?: "Blog" | "BlogPosting";
   jsonLdDatePublished?: string;
@@ -16,15 +16,16 @@ const {
   seoTitle,
   seoDescription,
   readerTitle = "",
-  coverImage = "/hungvu-tech-cover-image-1200x630.png",
+  coverImageSlug = "/hungvu-tech-cover-image-1200x630.png",
   slug = "",
   jsonLdType = "Blog",
   jsonLdDatePublished = new Date(),
   jsonLdDateModified = new Date(),
 } = Astro.props;
-
-const siteUrl = new URL(slug, Astro.site);
-const imageUrl = new URL(coverImage, Astro.site);
+// href is implicitly used in string context, but just put it here
+// explicitly for clarity
+const siteUrl = new URL(slug, Astro.site).href;
+const imageUrl = new URL(coverImageSlug, Astro.site).href;
 ---
 
 <!-- Canonical URL -->
