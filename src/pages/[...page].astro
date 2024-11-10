@@ -9,7 +9,9 @@ import type { InferGetStaticPropsType, GetStaticPaths } from "astro";
 import SeoHead from "../components/head/SeoHead.astro";
 
 type Props = InferGetStaticPropsType<typeof getStaticPaths>;
-
+// File name must be [...page], not [page], so pagination can start
+// from "/", not "/1"
+// Reference: https://stackoverflow.com/questions/74888357/generate-astro-index-page-as-well-as-pagination
 export const getStaticPaths = (async ({ paginate }) => {
   const posts = (await getCollection("blog")).sort(
     // Latest article first
