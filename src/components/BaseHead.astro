@@ -1,5 +1,5 @@
 ---
-import '@fontsource/geist-sans';
+import "@fontsource/geist-sans";
 interface Props {
   title: string;
   description: string;
@@ -14,10 +14,10 @@ const { title, description, image = "/blog-placeholder-1.png" } = Astro.props;
 <!-- Global Metadata -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<!-- Only ico is scalable with size="any" -->
+<link rel="icon" href="/favicon.ico" sizes="any" />
+<link rel="apple-touch-icon" href="/apple-icon.png" sizes="180x180" />
 <meta name="generator" content={Astro.generator} />
-
-<!-- Font preloads -->
 
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />
