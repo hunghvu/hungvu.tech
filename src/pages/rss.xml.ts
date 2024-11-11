@@ -1,4 +1,4 @@
-import type { APIContext } from 'astro';
+import type { APIContext } from "astro";
 
 import rss from "@astrojs/rss";
 import { getCollection } from "astro:content";
