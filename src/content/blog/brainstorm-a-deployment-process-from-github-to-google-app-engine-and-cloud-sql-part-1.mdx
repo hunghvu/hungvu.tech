@@ -1,0 +1,103 @@
+---
+readerTitle: 'Deployment process from GitHub to Google App Engine and Cloud SQL (Part 1)'
+readerDescription: 'My initial approach to defining the necessary tools for a CI/CD pipeline.'
+coverImage: '../../assets/brainstorm-a-deployment-process-from-github-to-google-app-engine-and-cloud-sql-part-1/cover-image.webp'
+coverAlt: 'My initial approach to defining the necessary tools for a CI/CD pipeline.'
+publishedDate: 'February 05, 2022'
+series: 'Google technologies'
+seoTitle: 'Deployment process from GitHub to GAE and Cloud SQL (P1)'
+seoDescription: "I want to deploy a NodeJS 'Hello World' application from GitHub to Google App Engine and Cloud SQL. Where should I start?"
+---
+
+import BlogImage from '../../components/BlogImage.astro';
+
+This is more about describing my personal development and debugging experience, less of a step-by-step tutorial on the topic. Correction to any of the errors is welcome!
+
+## Problem Statement 🍀
+
+In my [last article](/from-the-local-development-environment-to-google-cloud-where-to-start), I decided to deploy my React, NestJS, PostgreSQL web application to Google App Engine and Cloud SQL. I have experience with Heroku Dynos, so I assume Google Cloud will have something similar. This time, I want to deploy a "Hello World" application from GitHub just to test out the features and validate my assumption. Where should I start?
+
+### Can I have a summary of the deployment process from GitHub to Heroku? 🤔
+
+You need to create a new app in Heroku.
+
+import image1 from '../../assets/brainstorm-a-deployment-process-from-github-to-google-app-engine-and-cloud-sql-part-1/heroku-ui-1.jpeg';
+
+<BlogImage imageMetadata={image1} alt='New app button in Heroku.' />
+
+In the Resources tab, add a database instance to your app using Heroku Add-ons.
+
+import image2 from '../../assets/brainstorm-a-deployment-process-from-github-to-google-app-engine-and-cloud-sql-part-1/heroku-ui-2.jpeg';
+
+<BlogImage imageMetadata={image2} alt='Add Heroku resources.' />
+
+Get database secrets either via Heroku CLI or from the Settings/Config Vars interface. In there, I can also add more environment variables to use during runtime for our application.
+
+import image3 from '../../assets/brainstorm-a-deployment-process-from-github-to-google-app-engine-and-cloud-sql-part-1/heroku-ui-3.jpeg';
+
+<BlogImage
+  imageMetadata={image3}
+  alt='Heroku environment variable configuration.
+Heroku environment variable configuration.'
+/>
+
+In the Deploy tab, configure GitHub as a Deployment method, enable Automatic Deploys, and Wait for CI to pass before deploy.
+
+import image4 from '../../assets/brainstorm-a-deployment-process-from-github-to-google-app-engine-and-cloud-sql-part-1/heroku-ui-4.webp';
+
+import image5 from '../../assets/brainstorm-a-deployment-process-from-github-to-google-app-engine-and-cloud-sql-part-1/heroku-ui-5.webp';
+
+<BlogImage
+  imageMetadata={image4}
+  alt='Heroku-GitHub connector
+Heroku-GitHub connector'
+/>
+<BlogImage
+  imageMetadata={image5}
+  alt='Start a Heroku deployment pipeline.
+Start a Heroku deployment pipeline.'
+/>
+
+Now, there should be a new Environments in your GitHub repository. This is created from a Heroku integration and it represents an automatic deployment workflow.
+
+### Great, GCP should provide something similar, right? 🤔
+
+**Unfortunately, no**. At least, I could not find any equal "few-click deployment" feature.
+
+### What are the alternatives? 🤔
+
+In GitHub, there is a thing called GitHub Actions. In short, it is a tool to trigger commands based on specific events like code push, pull request, merge, etc., a CI/CD tool in other words.
+
+Each workflow consists of multiple commands or smaller actions such as actions/checkout@v2 to check out the codebase. There are various pre-defined workflows that I can search for. Still, none matches our requirements. The only one from Google is for Google Kubernetes Engine deployment.
+
+import image6 from '../../assets/brainstorm-a-deployment-process-from-github-to-google-app-engine-and-cloud-sql-part-1/github-actions-1.webp';
+
+<BlogImage imageMetadata={image6} alt='Alternative deployment options.' />
+
+### If there is no pre-defined workflow, can I write one? 🤔
+
+Yes, I can! GitHub Actions can run regular terminal commands. Meanwhile, Google Cloud has a CLI called [gsutil tool](https://cloud.google.com/storage/docs/gsutil). I assume there should be a way to run the CLI with GitHub Actions.
+
+### How to run gsutil tool in GitHub Actions? 🤔
+
+In the process of finding the answer, I discovered that the small actions are pretty much open-source. I can also go directly to their respective code repositories and learn about them. To run gsutil, I will need a [setup-gcloud action](https://github.com/google-github-actions/setup-gcloud).
+
+### Okay, if gsutil is used to run barebone gcloud commands and is found from an open-source repository, maybe there is an action that abstracts away the command to further simplify the deployment process? 🤔
+
+Yes, there is a [deploy-appengine action](https://github.com/google-github-actions/deploy-appengine) that automates the whole App Engine deployment process. Indeed, it uses gcloud commands underneath too. Either way, both approaches need an [auth action](https://github.com/google-github-actions/auth) to authenticate to GCP before any task can be performed.
+
+### There are 2 approaches, using setup-gcloud or deploy-appengine, which should I use? 🤔
+
+I prefer to use deploy-appengine due to its simplicity. Down the road, I will consider tinkering with gcloud commands as it is a formal way to interact with GCP, and it offers a more granular control.
+
+Also a quick note, I have conflict comments on the actual maintainers of the deploy-appengine action. The action is in [Google GitHub Actions organization](https://github.com/google-github-actions), which means it should be managed by Google. The organization is also mentioned in [this article by Google](https://cloud.google.com/blog/products/identity-security/enabling-keyless-authentication-from-github-actions). However, from one of my conversations with the Google Cloud Support team for an unrelated matter, I brought up deploy-appengine action and they said (quoted): "Please note that the Github repository that you are following is a 3rd party and not maintained by Google so I cannot vouch its accuracy."
+
+### There should be something like deploy-appengine for Cloud SQL deployment, right? 🤔
+
+**Probably not**. I could not find anything similar. It appears for Cloud SQL, only using gsutil is viable. That said, it appears the deployment to Cloud SQL has to be done manually in my use case. I will discuss this in later posts.
+
+# Wrap Up 🍀
+
+I learned that a regular GCP deployment process is not as straightforward as Heroku. This gave me a new perspective on how a CI/CD process can be formed. In the next article, I will discuss more on my experience when first creating a workflow and initial configurations on GCP.
+
+I also do not mention much about secrets and environment variables, even though I brought that up in the Heroku deployment process. Google App Engine in fact handles it differently, and I will mention that next time too.
