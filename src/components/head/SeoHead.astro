@@ -1,5 +1,11 @@
 ---
-import { BASE_SITE_NAME, X_HANDLE } from "../../consts";
+import {
+  BASE_SITE_NAME,
+  LINKEDIN_URL,
+  SITE_OWNER_NAME,
+  TRAILING_SLASH_REGEX,
+  X_HANDLE,
+} from "../../consts";
 
 interface Props {
   seoTitle: string;
@@ -24,13 +30,18 @@ const {
 } = Astro.props;
 // href is implicitly used in string context, but just put it here
 // explicitly for clarity
-const trailingSlash = /\/$/;
-const siteUrl = new URL(slug, Astro.site).href.replace(trailingSlash, "");
-const coverImageUrl = new URL(coverImageSlug, Astro.site).href.replace(
-  trailingSlash,
+const siteUrl = new URL(slug, Astro.site).href.replace(
+  TRAILING_SLASH_REGEX,
   "",
 );
-const rssUrl = new URL("rss.xml", Astro.site).href.replace(trailingSlash, "");
+const coverImageUrl = new URL(coverImageSlug, Astro.site).href.replace(
+  TRAILING_SLASH_REGEX,
+  "",
+);
+const rssUrl = new URL("rss.xml", Astro.site).href.replace(
+  TRAILING_SLASH_REGEX,
+  "",
+);
 ---
 
 {/* Canonical URL */}
@@ -87,23 +98,23 @@ const rssUrl = new URL("rss.xml", Astro.site).href.replace(trailingSlash, "");
     copyrightHolder: [
       {
         "@type": "Person",
-        name: "Hung Vu",
-        url: "https://www.linkedin.com/in/hunghvu/",
+        name: SITE_OWNER_NAME,
+        url: LINKEDIN_URL,
       },
     ],
     copyrightYear: new Date().getFullYear(),
     author: [
       {
         "@type": "Person",
-        name: "Hung Vu",
-        url: "https://www.linkedin.com/in/hunghvu/",
+        name: SITE_OWNER_NAME,
+        url: LINKEDIN_URL,
       },
     ],
     creator: [
       {
         "@type": "Person",
-        name: "Hung Vu",
-        url: "https://www.linkedin.com/in/hunghvu/",
+        name: SITE_OWNER_NAME,
+        url: LINKEDIN_URL,
       },
     ],
   })}
