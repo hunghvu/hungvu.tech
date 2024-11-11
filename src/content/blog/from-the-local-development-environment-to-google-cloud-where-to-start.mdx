@@ -1,15 +1,15 @@
 ---
-readerTitle: "From the local development environment to Google Cloud Platform, where to start?"
-readerDescription: "My thought process of bring an application from a local to a cloud environment."
-coverImage: "../../assets/from-the-local-development-environment-to-google-cloud-where-to-start/cover-image.webp"
-coverAlt: "My thought process of bring an application from a local to a cloud environment."
-publishedDate: "February 04, 2022"
-series: "Google technologies"
-seoTitle: "Starting a NodeJS web app deployment to Google Cloud"
-seoDescription: "NodeJS, App Engine, Cloud SQL? What to consider and where to start?"
+readerTitle: 'From the local development environment to Google Cloud Platform, where to start?'
+readerDescription: 'My thought process of bring an application from a local to a cloud environment.'
+coverImage: '../../assets/from-the-local-development-environment-to-google-cloud-where-to-start/cover-image.webp'
+coverAlt: 'My thought process of bring an application from a local to a cloud environment.'
+publishedDate: 'February 04, 2022'
+series: 'Google technologies'
+seoTitle: 'Starting a NodeJS web app deployment to Google Cloud'
+seoDescription: 'NodeJS, App Engine, Cloud SQL? What to consider and where to start?'
 ---
 
-import BlogImage from "../../components/BlogImage.astro";
+import BlogImage from '../../components/BlogImage.astro';
 
 This is more about describing my personal development and debugging experience, less of a step-by-step tutorial on the topic. Correction to any of the errors is welcome!
 
@@ -48,7 +48,7 @@ This is a function as a service option. As the name suggests, it is to run singu
 
 ```ts showLineNumbers
 exports.yourFunction = (req, res) => {
-  res.status(200).send("Result");
+  res.status(200).send('Result');
 };
 ```
 
@@ -64,12 +64,9 @@ Well, the name says it all, this is a fully-managed Kubernetes service from Goog
 **Compute Engine (GCE)**
 The most barebone service, a virtual machine on the cloud. Essentially an empty computer and you need to configure everything from Operating Systems to Network, Storage usage, etc.
 
-import image1 from "../../assets/from-the-local-development-environment-to-google-cloud-where-to-start/google-computing-stack-as-of-february-2022.webp";
+import image1 from '../../assets/from-the-local-development-environment-to-google-cloud-where-to-start/google-cloud-1.webp';
 
-<BlogImage
-  imageMetadata={image1}
-  alt="Google computing stack as of February 2022."
-/>
+<BlogImage imageMetadata={image1} alt='Google computing stack as of February 2022.' />
 
 For a more detailed discussion, these will be great resources
 
@@ -93,12 +90,9 @@ Out of the three, Cloud Spanner is fully managed and geared toward enterprises d
 
 Only Cloud SQL is fully managed and suitable for small, personal use, so that will be my choice.
 
-import image2 from "../../assets/from-the-local-development-environment-to-google-cloud-where-to-start/google-relational-databases-platforms-and-use-cases.webp";
+import image2 from '../../assets/from-the-local-development-environment-to-google-cloud-where-to-start/google-cloud-2.webp';
 
-<BlogImage
-  imageMetadata={image2}
-  alt="Google relational databases platforms and use cases."
-/>
+<BlogImage imageMetadata={image2} alt='Google relational databases platforms and use cases.' />
 
 Source: <a href="https://cloud.google.com/blog/topics/developers-practitioners/your-google-cloud-database-options-explained">Your Google Cloud database options explained.</a>
 
