@@ -33,15 +33,15 @@ const coverImageUrl = new URL(coverImageSlug, Astro.site).href.replace(
 const rssUrl = new URL("rss.xml", Astro.site).href.replace(trailingSlash, "");
 ---
 
-<!-- Canonical URL -->
+{/* Canonical URL */}
 <link rel="canonical" href={siteUrl} />
 
-<!-- Primary Meta Tags -->
+{/* Primary Meta Tags */}
 <title>{seoTitle}</title>
 <meta name="title" content={seoTitle} />
 <meta name="description" content={seoDescription} />
 
-<!-- Open Graph / Facebook -->
+{/* Open Graph / Facebook */}
 <meta property="og:title" content={seoTitle} />
 <meta property="og:description" content={seoDescription} />
 <meta property="og:url" content={siteUrl} />
@@ -51,7 +51,7 @@ const rssUrl = new URL("rss.xml", Astro.site).href.replace(trailingSlash, "");
 <meta property="og:image:alt" content={seoDescription} />
 <meta property="og:type" content="website" />
 
-<!-- Twitter -->
+{/* Twitter */}
 <meta property="twitter:card" content="summary_large_image" />
 <meta name="twitter:creator" content={X_HANDLE} />
 <meta property="twitter:title" content={seoTitle} />
@@ -69,6 +69,7 @@ const rssUrl = new URL("rss.xml", Astro.site).href.replace(trailingSlash, "");
 />
 
 <script
+  is:inline
   type="application/ld+json"
   set:html={JSON.stringify({
     "@context": "https://schema.org",

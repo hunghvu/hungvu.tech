@@ -2,11 +2,14 @@
 import "@fontsource/geist-sans";
 ---
 
-<!-- Global Metadata -->
+{/* Global Metadata */}
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<meta name="google-site-verification" content="EGTdZytY_C05esF562wX0i-fpIShKgfypgbhQV3bPzU">
-<!-- Only ico is scalable with size="any" -->
+<meta
+  name="google-site-verification"
+  content="EGTdZytY_C05esF562wX0i-fpIShKgfypgbhQV3bPzU"
+/>
+{/* Only ico is scalable with size="any" */}
 <link rel="icon" href="/favicon.ico" sizes="any" />
 <link rel="apple-touch-icon" href="/apple-icon.png" sizes="180x180" />
 <meta name="generator" content={Astro.generator} />
@@ -26,7 +29,9 @@ import "@fontsource/geist-sans";
   themeChange();
 </script>
 
-<!-- Must be a global style to activate rehype plugin pretty code line counter -->
+{
+  /* Must be a global style to activate rehype plugin pretty code line counter */
+}
 <style is:global>
   code[data-line-numbers] {
     counter-reset: line;
@@ -57,18 +62,18 @@ import "@fontsource/geist-sans";
   }
 
   code {
-    /* No need to use overflow scroll, because that will offset scrollbar */
-    /* to the right and overlap with copy button */
-    /* Scrollbar is already enabled by default */
+    /* No need to use overflow scroll, because that will offset scrollbar 
+      to the right and overlap with copy button 
+      Scrollbar is already enabled by default */
     max-height: 36.25rem;
   }
 
-  // This is so we have a line wrap effect, for example
-  // const x = 123333333333333333333333333333  <= continue to the right edge
-  // 333333333333333333
-  // And not like this
-  // cost x =     <= unexpected line break
-  // 33333333333333333333333333333333
+  /* This is so we have a line wrap effect, for example
+    const x = 123333333333333333333333333333  <= continue to the right edge
+    333333333333333333
+    And not like this
+    cost x =     <= unexpected line break
+    33333333333333333333333333333333 */
   code > span {
     margin-right: 2rem;
   }

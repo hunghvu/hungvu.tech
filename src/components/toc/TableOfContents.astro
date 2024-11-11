@@ -8,8 +8,8 @@ const { headings } = Astro.props;
 
 <ul class="daisyui-menu w-full rounded-box bg-base-300">
   <li>
-    <!-- If using h2 for title, margin top and padding top will be -->
-    <!-- too large as they are controlled by prose and is not overridable -->
+    {/* If using h2 for title, margin top and padding top will be */}
+    {/* too large as they are controlled by prose and is not overridable */}
     <h2 class="daisyui-menu-title !mt-0">Table of Contents</h2>
     <HeadingContents headings={headings} currentDepth={2} />
   </li>
