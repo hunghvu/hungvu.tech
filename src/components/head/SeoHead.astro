@@ -24,8 +24,13 @@ const {
 } = Astro.props;
 // href is implicitly used in string context, but just put it here
 // explicitly for clarity
-const siteUrl = new URL(slug, Astro.site).href;
-const imageUrl = new URL(coverImageSlug, Astro.site).href;
+const trailingSlash = /\/$/;
+const siteUrl = new URL(slug, Astro.site).href.replace(trailingSlash, "");
+const coverImageUrl = new URL(coverImageSlug, Astro.site).href.replace(
+  trailingSlash,
+  "",
+);
+const rssUrl = new URL("rss.xml", Astro.site).href.replace(trailingSlash, "");
 ---
 
 <!-- Canonical URL -->
@@ -42,7 +47,7 @@ const imageUrl = new URL(coverImageSlug, Astro.site).href;
 <meta property="og:url" content={siteUrl} />
 <meta property="og:site_name" content={BASE_SITE_NAME} />
 <meta property="og:locale" content="en_US" />
-<meta property="og:image" content={imageUrl} />
+<meta property="og:image" content={coverImageUrl} />
 <meta property="og:image:alt" content={seoDescription} />
 <meta property="og:type" content="website" />
 
@@ -52,7 +57,7 @@ const imageUrl = new URL(coverImageSlug, Astro.site).href;
 <meta property="twitter:title" content={seoTitle} />
 <meta property="twitter:description" content={seoDescription} />
 <meta property="twitter:url" content={siteUrl} />
-<meta property="twitter:image" content={imageUrl} />
+<meta property="twitter:image" content={coverImageUrl} />
 <meta property="twitter:image:alt" content={seoDescription} />
 
 <link rel="sitemap" href="/sitemap-index.xml" />
@@ -60,7 +65,7 @@ const imageUrl = new URL(coverImageSlug, Astro.site).href;
   rel="alternate"
   type="application/rss+xml"
   title={BASE_SITE_NAME}
-  href={new URL("rss.xml", Astro.site)}
+  href={rssUrl}
 />
 
 <script
@@ -72,7 +77,7 @@ const imageUrl = new URL(coverImageSlug, Astro.site).href;
     headline: seoTitle,
     alternativeHeadline: readerTitle,
     description: seoDescription,
-    image: [imageUrl],
+    image: [coverImageUrl],
     datePublished: jsonLdDatePublished,
     dateModified: jsonLdDateModified,
     // This uses BCP 47 standard, so hyphen (-) instead of underscore (_) in og:locale
