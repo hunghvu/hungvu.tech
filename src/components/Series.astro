@@ -24,7 +24,7 @@ const postsInTheSameSeries = posts
           <span class="flex flex-row gap-4">
             {" "}
             {postsInTheSameSeries.length - index}.
-            <a href={post.slug}>{post.data.readerTitle}</a>
+            <a href={`/${post.slug}`}>{post.data.readerTitle}</a>
           </span>
         </li>
       ))
