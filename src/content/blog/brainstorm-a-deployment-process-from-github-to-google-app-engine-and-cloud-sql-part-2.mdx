@@ -58,7 +58,7 @@ import image2 from '../../assets/brainstorm-a-deployment-process-from-github-to-
 - App Engine will generate a default service account when it is first created. If a default service account is deleted, the deployment will fail (code 503). The username of the App Engine default service account follows this format: `YOUR_PROJECT_ID@appspot.gserviceaccount.com`. This account is used to manage the App Engine deployment process (steps such as install dependencies, build, manage service versions, etc.)
 - As of February 2022, Google is previewing [user-managed service accounts](https://cloud.google.com/appengine/docs/standard/nodejs/user-managed-service-accounts). That said, I have no luck in using a user-managed service account. The error below keeps popping up even though both the default App Engine accounts and my user-managed service account have the same roles.
 
-```
+``` text
 Error: 16 UNAUTHENTICATED: Failed to retrieve auth metadata with error: Could not refresh access token: Unsuccessful response status code. Request failed with status code 500
     at Object.callErrorFromStatus (/workspace/node_modules/@grpc/grpc-js/build/src/call.js:31:26)
     at Object.onReceiveStatus (/workspace/node_modules/@grpc/grpc-js/build/src/client.js:180:52)
@@ -136,7 +136,7 @@ GCP is the same but requires a bit more configuration to show proper log levels 
 
 Now, make sure my application is listening to port 8080 because App Engine uses that. My "Hello World" NestJS application works perfectly fine locally, even with port 8080, but it fails in an App Engine environment. Looking at GCP Log Explorer, there is a pattern below.
 
-```sh showLineNumbers
+``` text
 sh: 1: exec: nest: not found
 Start program failed: failed to detect app after start: ForAppStart()
 Container called exit(1).
