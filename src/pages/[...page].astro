@@ -15,7 +15,7 @@ type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 // Reference: https://stackoverflow.com/questions/74888357/generate-astro-index-page-as-well-as-pagination
 export const getStaticPaths = (async ({ paginate }) => {
   const posts = (await getCollection("blog")).sort(
-    // Latest article first
+    // Latest post first
     (a, b) => b.data.publishedDate.valueOf() - a.data.publishedDate.valueOf(),
   );
   return paginate(posts, { pageSize: 9 });

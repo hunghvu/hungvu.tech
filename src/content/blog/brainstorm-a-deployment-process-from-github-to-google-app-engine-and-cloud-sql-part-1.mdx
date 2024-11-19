@@ -1,7 +1,7 @@
 ---
 readerTitle: 'Deployment process from GitHub to Google App Engine and Cloud SQL (Part 1)'
 readerDescription: 'My initial approach to defining the necessary tools for a CI/CD pipeline.'
-coverImage: '../../assets/brainstorm-a-deployment-process-from-github-to-google-app-engine-and-cloud-sql-part-1/cover-image.webp'
+coverImage: '../../assets/blog/2/cover-image.webp'
 coverAlt: 'My initial approach to defining the necessary tools for a CI/CD pipeline.'
 publishedDate: 'February 05, 2022'
 series: 'Google technologies'
@@ -21,19 +21,19 @@ In my [last article](/from-the-local-development-environment-to-google-cloud-whe
 
 You need to create a new app in Heroku.
 
-import image1 from '../../assets/brainstorm-a-deployment-process-from-github-to-google-app-engine-and-cloud-sql-part-1/heroku-ui-1.jpeg';
+import image1 from '../../assets/blog/2/heroku-ui-1.jpeg';
 
 <BlogImage imageMetadata={image1} alt='New app button in Heroku.' />
 
 In the Resources tab, add a database instance to your app using Heroku Add-ons.
 
-import image2 from '../../assets/brainstorm-a-deployment-process-from-github-to-google-app-engine-and-cloud-sql-part-1/heroku-ui-2.jpeg';
+import image2 from '../../assets/blog/2/heroku-ui-2.jpeg';
 
 <BlogImage imageMetadata={image2} alt='Add Heroku resources.' />
 
 Get database secrets either via Heroku CLI or from the Settings/Config Vars interface. In there, I can also add more environment variables to use during runtime for our application.
 
-import image3 from '../../assets/brainstorm-a-deployment-process-from-github-to-google-app-engine-and-cloud-sql-part-1/heroku-ui-3.jpeg';
+import image3 from '../../assets/blog/2/heroku-ui-3.jpeg';
 
 <BlogImage
   imageMetadata={image3}
@@ -43,9 +43,9 @@ Heroku environment variable configuration.'
 
 In the Deploy tab, configure GitHub as a Deployment method, enable Automatic Deploys, and Wait for CI to pass before deploy.
 
-import image4 from '../../assets/brainstorm-a-deployment-process-from-github-to-google-app-engine-and-cloud-sql-part-1/heroku-ui-4.webp';
+import image4 from '../../assets/blog/2/heroku-ui-4.webp';
 
-import image5 from '../../assets/brainstorm-a-deployment-process-from-github-to-google-app-engine-and-cloud-sql-part-1/heroku-ui-5.webp';
+import image5 from '../../assets/blog/2/heroku-ui-5.webp';
 
 <BlogImage
   imageMetadata={image4}
@@ -70,7 +70,7 @@ In GitHub, there is a thing called GitHub Actions. In short, it is a tool to tri
 
 Each workflow consists of multiple commands or smaller actions such as actions/checkout@v2 to check out the codebase. There are various pre-defined workflows that I can search for. Still, none matches our requirements. The only one from Google is for Google Kubernetes Engine deployment.
 
-import image6 from '../../assets/brainstorm-a-deployment-process-from-github-to-google-app-engine-and-cloud-sql-part-1/github-actions-1.webp';
+import image6 from '../../assets/blog/2/github-actions-1.webp';
 
 <BlogImage imageMetadata={image6} alt='Alternative deployment options.' />
 

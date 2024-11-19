@@ -1,7 +1,7 @@
 ---
 readerTitle: 'Deployment process from GitHub to Google App Engine and Cloud SQL (Part 2)'
 readerDescription: "Let's learn a way to create a sample CI/CD pipeline and make the first GAE instance up and run."
-coverImage: '../../assets/brainstorm-a-deployment-process-from-github-to-google-app-engine-and-cloud-sql-part-2/cover-image.webp'
+coverImage: '../../assets/blog/3/cover-image.webp'
 coverAlt: 'My thought process of bring an application from a local to a cloud environment.'
 publishedDate: 'February 07, 2022'
 series: 'Google technologies'
@@ -23,7 +23,7 @@ Luckily, yes! However, it is not as clear as Heroku. I need to read [this offici
 
 App Engine itself has two variations: Standards and Flexible. Only the Standard version has a free offer. Meanwhile, the flexible version is more advanced and I do not need its features (e.g., Docker imaging, custom runtime, etc.), so the Standard version is my choice.
 
-import image1 from '../../assets/brainstorm-a-deployment-process-from-github-to-google-app-engine-and-cloud-sql-part-2/google-cloud-1.webp';
+import image1 from '../../assets/blog/3/google-cloud-1.webp';
 
 <BlogImage
   imageMetadata={image1}
@@ -39,7 +39,7 @@ This metric is counted across projects. Let's say I have two projects with App E
 
 ### Are there some core GCP concepts that I need to know beforehand? 🤔
 
-import image2 from '../../assets/brainstorm-a-deployment-process-from-github-to-google-app-engine-and-cloud-sql-part-2/google-cloud-2.webp';
+import image2 from '../../assets/blog/3/google-cloud-2.webp';
 
 <BlogImage imageMetadata={image2} alt='Google Cloud IAM logo.' />
 
@@ -58,7 +58,7 @@ import image2 from '../../assets/brainstorm-a-deployment-process-from-github-to-
 - App Engine will generate a default service account when it is first created. If a default service account is deleted, the deployment will fail (code 503). The username of the App Engine default service account follows this format: `YOUR_PROJECT_ID@appspot.gserviceaccount.com`. This account is used to manage the App Engine deployment process (steps such as install dependencies, build, manage service versions, etc.)
 - As of February 2022, Google is previewing [user-managed service accounts](https://cloud.google.com/appengine/docs/standard/nodejs/user-managed-service-accounts). That said, I have no luck in using a user-managed service account. The error below keeps popping up even though both the default App Engine accounts and my user-managed service account have the same roles.
 
-``` text
+```text
 Error: 16 UNAUTHENTICATED: Failed to retrieve auth metadata with error: Could not refresh access token: Unsuccessful response status code. Request failed with status code 500
     at Object.callErrorFromStatus (/workspace/node_modules/@grpc/grpc-js/build/src/call.js:31:26)
     at Object.onReceiveStatus (/workspace/node_modules/@grpc/grpc-js/build/src/client.js:180:52)
@@ -120,7 +120,7 @@ automatic_scaling:
 
 After this point, the workflow should work, Now, I have a simple but runnable CI/CD pipeline.
 
-import image3 from '../../assets/brainstorm-a-deployment-process-from-github-to-google-app-engine-and-cloud-sql-part-2/google-cloud-3.webp';
+import image3 from '../../assets/blog/3/google-cloud-3.webp';
 
 <BlogImage imageMetadata={image3} alt='App Engine instance status.' />
 
@@ -128,7 +128,7 @@ import image3 from '../../assets/brainstorm-a-deployment-process-from-github-to-
 
 In Heroku, by default, everything is shown in the log section, even statements such as `console.log()`.
 
-import image4 from '../../assets/brainstorm-a-deployment-process-from-github-to-google-app-engine-and-cloud-sql-part-2/google-cloud-4.webp';
+import image4 from '../../assets/blog/3/google-cloud-4.webp';
 
 <BlogImage imageMetadata={image4} alt='GAE application logs.' />
 
@@ -136,7 +136,7 @@ GCP is the same but requires a bit more configuration to show proper log levels 
 
 Now, make sure my application is listening to port 8080 because App Engine uses that. My "Hello World" NestJS application works perfectly fine locally, even with port 8080, but it fails in an App Engine environment. Looking at GCP Log Explorer, there is a pattern below.
 
-``` text
+```text
 sh: 1: exec: nest: not found
 Start program failed: failed to detect app after start: ForAppStart()
 Container called exit(1).
@@ -166,7 +166,7 @@ In other words, some secrets such as `workload_identity_provider` which is requi
 
 In Heroku, we can manually configure the environment variables
 
-import image5 from '../../assets/brainstorm-a-deployment-process-from-github-to-google-app-engine-and-cloud-sql-part-2/heroku-ui-1.webp';
+import image5 from '../../assets/blog/3/heroku-ui-1.webp';
 
 <BlogImage imageMetadata={image5} alt='Heroku environment variables configuration.' />
 

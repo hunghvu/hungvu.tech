@@ -7,7 +7,7 @@ const posts = await getCollection("blog");
 const postsInTheSameSeries = posts
   .filter((post) => post.data.series === series)
   .sort(
-    // Latest article first
+    // Latest post first
     (a, b) => b.data.publishedDate.valueOf() - a.data.publishedDate.valueOf(),
   );
 ---
