@@ -1,0 +1,119 @@
+---
+readerTitle: 'Free WordPress site with Google Cloud and Cloudflare '
+readerDescription: "Let's learn about a budget WordPress solution for small websites and businesses."
+coverImage: '../../assets/blog/4/cover-image.webp'
+coverAlt: "Let's learn about a budget WordPress solution for small websites and businesses."
+publishedDate: 'February 09, 2022'
+series: 'Google technologies'
+seoTitle: 'Free WordPress site with Google Cloud and Cloudflare '
+seoDescription: 'Using Google Cloud Platform and Cloudflare is a budget solution to securely and optimally host a small and fully featured WordPress website.'
+---
+
+import BlogImage from '../../components/BlogImage.astro';
+
+This is more about describing my personal development and debugging experience, less of a step-by-step tutorial on the topic. The article presents some key points and questions I faced when going through the project. Correction to any of the errors is welcome! ☺️
+
+## Problem statement 🍀
+
+The WordPress site is built using several plugins (e.g., Elementor). To use plugins, I need a Business plan on [wordpress.com](https://wordpress.com/), which costs $25 / month, an excessive amount for my use case. With that said, I need a more budget alternative, so where should I start?
+
+import image1 from '../../assets/blog/4/wordpress-1.webp';
+
+<BlogImage imageMetadata={image1} alt='WordPress.com managed hosting solution as of February 2022.' />
+
+### I have some experience with GCP, maybe I need to take a look at there first? 🤔
+
+Indeed, they do offer solutions.
+
+import image2 from '../../assets/blog/4/google-cloud-1.webp';
+
+<BlogImage imageMetadata={image2} alt='GCP free VPS tier as of February 2022.' />
+
+My goal is to have something similar to WordPress.com, a little to no-code environment. Interaction is via a GUI in the admin panel. Between the three, only Google Compute Engine (GCE) satisfies my need so I went with it.
+
+### What about the prices? 🤔
+
+Luckily, [Google offers a free tier for GCE](https://cloud.google.com/free/docs/free-cloud-features). In 2021, Google upgraded the specification of a free GCE instance from f1-micro to e2-micro, and this is plenty for my use case.
+
+import image3 from '../../assets/blog/4/google-cloud-2.webp';
+
+<BlogImage imageMetadata={image3} alt='GCE e2-micro specification as of February 2022.' />
+
+### GCE is a virtual machine instance, meaning I have to configure everything from the ground? 🤔
+
+Well, that's true in a sense, also a downside. Using a managed hosting service like WordPress.com meaning I also paid for all the backend management (software stack and server configuration). Going for a self-hosted route means I will need to do everything or do I?
+
+Normally, a mature platform will provide some sort of pre-configured packages. Here, I have [Google Cloud Marketplace](https://cloud.google.com/marketplace?hl=en). Just a normal search there using the keyword "WordPress" brings up several options. In my case, I choose WordPress Certified by Bitnami and Automattic. This package is free and will do most of the configuration for me. Besides, this package is cross-platform in a sense, so I will have the same experience when going to another cloud provider such as Amazon Web Service (AWS).
+
+import image4 from '../../assets/blog/4/bitnami-1.webp';
+
+<BlogImage imageMetadata={image4} alt='Bitnami and Automattic cross-platform image for WordPress VPS.' />
+
+**Note**, it seems there is no official way to update the installed stack, neither via GUI nor SSH. I need to delete a VM and create a new instance using the latest Bitnami package.
+
+### What do I need to manually configure? 🤔
+
+Here are some to consider.
+
+- Virtual machine specification setup.
+- Domain setup, IP setup, DNSSEC.
+- SSL setup.
+- HTTP/2 setup. The config is HTTP/1.1 by default.
+
+### Step 1, what about VM configurations? 🤔
+
+Using the configuration as specified in a free tier, I use
+
+- Zone: us-west1-a
+- Machine type: e2-micro
+- Boot disk: 30 GB, HDD
+
+The other settings are set at default. Accept terms of service and proceed to create an instance. This may take a few minutes. After it finishes, now I can go to a WordPress admin login using provided VM's external IP address.
+
+This is self-hosted, so I have the full features of a regular WordPress application. Plugins are usable now. Some specific features that are implemented on WordPress.com will not be here, proprietary I guess?
+
+### Step 2, how to maintain a static IP address and set up a domain name? 🤔
+
+- By default, an IP address of GCE is ephemeral, meaning it will change after each reset. I need a static IP address so my domain can consistently point to the correct location. To do so, go to VPC network / External IP addresses and reserve a static IP address for a GCE instance.
+- I need to register for a domain name. Most domain registrars also have DNS services. I then set up my domain to point to GCE static IP address. This is only an initial configuration.
+
+On the Cloudflare DNS page, there is a DNSSEC setup instruction. The setup is fairly straightforward, mainly just copying and pasting values.
+
+import image5 from '../../assets/blog/4/cloudflare-1.webp';
+
+<BlogImage imageMetadata={image5} alt='Cloudflare DNSSEC setup section.' />
+
+### Step 3, how to set up an SSL certificate? 🤔
+
+As of now, my website is insecure due to the lack of an SSL certificate. There are 2 options:
+
+- Buying a certificate from your domain registrar. Normally, this is unnecessary, unless you are a big client that requires proper SSL management and compliance for hundreds of domains, subdomains.
+- Using free Let's Encrypt SSL certification that can be registered via SSH. The instruction can be seen [here](https://www.youtube.com/watch?v=LDVQhN7zJvQ). Note, even the instruction is on Amazon Web Service (AWS), it is still a Bitnami stack, so the configurations are the same. All targeted subdomains must be registered, or it will cause SSL handshake error down the road (e.g., mapping *www* to *non-www* via CNAME record).
+
+Now, return to Cloudflare, and change an SSL mode to **Full (strict)**. Your website should be secure, and this can be checked via a padlock on the browser bar. Do not forget, Cloudflare still has many more services, and you can fine-tune them as needed.
+
+### Step 4, how to setup HTTP/2? 🤔
+
+HTTP/2 provides several more advantages over the HTTP/1.1 protocol. A more detailed discussion is in [this article](https://www.digitalocean.com/community/tutorials/http-1-1-vs-http-2-what-s-the-difference) from Digital Ocean, another big cloud provider. Most notably in my opinion is speed improvement, and it can be seen via the Lighthouse test.
+
+Bitnami has [an official document](https://docs.bitnami.com/aws/apps/wordpress/administration/enable-http2-apache/) on configuring Apache server with HTTP/2 (used by our Binami WordPress package).
+
+HTTP/2 support can be tested using [Key CDN website](https://tools.keycdn.com/http2-test) and it seems like mine was a success.
+
+import image6 from '../../assets/blog/4/key-cdn-1.webp';
+
+<BlogImage imageMetadata={image5} alt='HTTP/2 and ALPN Test result.' />
+
+### Why do I see some small charge in Billing Reports? I thought this is supposed to be free? 🤔
+
+Yes, the setup is free, that is if I'm staying in the provided quota. As in the graph below, there was some charge on my compute engine instance. I have not found the root cause, but I believe it is due to egress traffic to China or Australia (not-free egress destinations). After some small spikes, it returns to zero again. Maybe IP block is a choice if you are not serving customers in those regions.
+
+import image7 from '../../assets/blog/4/google-cloud-3.webp';
+
+<BlogImage imageMetadata={image7} alt='Minor cost incurring in GCP, but negligible.' />
+
+## Wrap up 🍀
+
+This time, I learn of one more way to save money, and also is a chance to play with the GCE service. Certainly, there are many more tasks before considering putting an application to production, however, I can migrate the old site to GCE using [All-in-One WP Migration](https://wordpress.org/plugins/all-in-one-wp-migration/) so there is not much to do.
+
+I would say, an unexpected, but important lesson is about the charge on "free" a GCE instance. That means I need to carefully monitor the billing under all circumstances. As of now, it seems GCP does not have an option to shut down services when the billing amount exceeds a threshold. Luckily, this is not a $1000 on me.
