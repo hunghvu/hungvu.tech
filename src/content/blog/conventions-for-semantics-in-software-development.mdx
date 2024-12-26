@@ -1,0 +1,99 @@
+---
+readerTitle: 'Semanticly crafting your code base'
+readerDescription: "Let's explore how to define conventions for your software project using a semantic approach."
+coverImage: '../../assets/blog/9/cover-image.webp'
+coverAlt: 'What are semantic commits, HTML semantic elements, and semantic versioning? How to organize your software project with semantics?'
+publishedDate: 'March 24, 2022'
+series: 'Google technologies'
+seoTitle: 'Semanticly crafting your code base'
+seoDescription: 'What are semantic commits, HTML semantic elements, and semantic versioning? How to organize your software project with semantics?'
+---
+
+import BlogImage from '../../components/BlogImage.astro';
+
+Have you ever spent hours creating conventions for your projects? After all, conventions become more important when there are multiple people working on a project. There needs to be common ground so the contributors can efficiently communicate. Besides, applying predefined rules will help the process of creating an automation pipeline down the road less of a trouble.
+
+> When I wrote this, only God and I understood what I was doing. Now, God only knows.
+>
+>  <cite>Karl Weierstrass</cite>
+
+To solve this, we have semantics. In terms of computer science, it is an academic concept and covers a broad range of topics. However, in the scope of this article, we define semantics as a way to make your work logical to not just God, but also another human being. We will discuss some general ways to create a human-readable context in your contribution.
+
+## Semantic commits / branches / pull requests
+
+Imagine there is a cooking recipe application and a new pull request for letting users add customized recipes to the cake section is opened. There can be different ways to form a commit message.
+
+``` showLineNumbers
+// Practically a feature description
+1. Allow users to add customized recipes to the cake section
+
+// Categorize the commit by adding a prefix "feat" (new feature)
+2. feat: Allow users to add customized recipes to the cake section
+
+// Categorize the commit by adding a prefix "feat" and scope "cake section"
+3. feat (cake section): Allow users to add customized recipes
+
+// Categorize the commit by adding a prefix <filename>
+4. cake.ts: Allow users to add customized recipes
+```
+
+import image1 from '../../assets/blog/9/commit-example-1.webp';
+
+<BlogImage imageMetadata={image1} alt='Conventional commit example.' />
+
+By categorizing the commit messages with predefined rules as in example (2), (3), and (4), the contributors can quickly have a sense of what the commit is about, especially when the commit message is usually collapsed in code editors or IDEs.
+
+
+[Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) should be a good place to start with semantic commits. Pull request titles or branch names can be adapted from the guide too.
+
+## Semantic elements / properties / variables
+
+These depend on languages and frameworks. There can be a common practice between them such as getters or setters naming in object-oriented programming. However, some are specific language features. For example, in HTML5, we have semantic elements.
+
+```html showLineNumbers
+<!-- Potentially ambiguous nested div hell -->
+<div class="">
+  <div class="">
+    <div class="">
+    </div>
+  </div>
+</div>
+
+<!-- Using semantics element, readable to both human and web crawler-->
+<section class="">
+  <article class="">
+    <div class="">
+    </div>
+  </article>
+</section>
+```
+
+Using HTML5 semantics elements can greatly improve readability and accessibility. The thing is, inappropriate usage can confuse other people because the elements have their own implication. These can be useful in a simple blog page, but for a complex interface like admin panel, where the tag `article` can be misleading, we might need to use general `div` instead.
+
+If you are in web development, try taking a look at [Mozilla's HTML elements reference](https://developer.mozilla.org/en-US/docs/Web/HTML/Element), probably there are many that you have never seen before.
+
+## Semantic versioning (SemVer)
+
+Perhaps everyone knows about this by now. For those who don't, SemVer is a way to define version number and solve dependency hell. It is widely used in the open-source community. SemVer `MAJOR.MINOR.PATCH` consists of:
+
+- Major version: Represents breaking changes
+- Minor version: Represents new functionalities with backward compatibility
+- Patch version: Represents bug fixes with backward compatibility
+
+The specification is in [SemVer official documentation](https://semver.org/).
+
+## Wrap up
+
+These are just general conventions and are widely acknowledged in the community. They are applicable in a production environment and a great way to start, but certainly, not a one-size-fits-all solution. If your team has already created an internal convention beforehand, then that is what you need to follow.
+
+If you find this article to be helpful, I have some more for you!
+
+- [Advanced GitHub Actions - Conditional Workflow](/advanced-github-actions-conditional-workflow)
+- [Can I use external SSD enclosures for Proxmox disks?](/can-i-use-external-ssd-enclosures-for-proxmox-disks)
+- [Is AMD GPU better than Nvidia on Linux? It depends](/is-amd-gpu-better-than-nvidia-on-linux)
+
+And, let's connect!
+
+- [LinkedIn](https://www.linkedin.com/in/hunghvu/)
+- [GitHub](https://github.com/hunghvu)
+- [X (formerly Twitter)](https://x.com/hunghvu_dev)
