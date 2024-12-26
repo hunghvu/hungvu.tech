@@ -1,0 +1,74 @@
+---
+readerTitle: 'Some tips to configure Google Cloud SQL'
+readerDescription: "And troubleshoot some SSL connection errors ..."
+coverImage: '../../assets/blog/8/cover-image.webp'
+coverAlt: "Useful tips to help you start configuring the database on your first Google Cloud SQL instance."
+publishedDate: 'February 25, 2022'
+series: 'Google technologies'
+seoTitle: 'Some tips to configure Google Cloud SQL'
+seoDescription: 'Useful tips to help you start configuring the database on your first Google Cloud SQL instance.'
+---
+
+Here are my two cents after trying out Google Cloud SQL so the information is purely from a newcomer perspective. Any correction to the errors is welcome. 🤗
+
+- Allow only connection to Cloud SQL instance via private IP in production and disable public IP, unless you have a good reason not to. This sounds kinda obvious to me, but I've seen many tutorials only show public IP connection.Depending on your backend hosting choice, private IP connection configuration might differ. For example, I use Serverless VPC Access to connect App Engine to Cloud SQL instance.
+- If public IP is disabled, you cannot connect to Cloud SQL instance from home or use Google Cloud terminal in the dashboard, even with Cloud SQL Auth proxy. Do not disable public IP if you're playing around using the terminal.Otherwise, Cloud SQL Auth proxy should be used to create a secure connection to a public Cloud SQL IP.
+- Always allow only SSL connection to Cloud SQL instance even if the connection is restricted to only private IP. You can never know if someone gains access to your infrastructure and sniff the traffic.
+- Additional change to backend codebase is required even if it is hosted on App Engine (connect to Cloud SQL via Serverless VPC AccesS). That sounds confusing as from Google official documentation.
+
+``` showLineNumbers
+SSL/TLS provides security when connecting to Cloud SQL. SSL/TLS is automatically provided when using: The Cloud SQL Auth proxy, The Java Socket Library, The built-in mechanisms in the App Engine environments. In these situations, self-managed SSL/TLS certificates are not required.
+```
+
+In the end, in TypeORM config, I need to use a Unix socket connection.
+
+```json showLineNumbers
+"extra": {
+   "socketPath": "/cloudsql/[project:region:instance]"
+ },
+"entities": [
+ "dist/**/*.entity{.ts,.js}"
+]
+// Make sure to enable Cloud SQL Admin API, or else you will face the error message
+// "CloudSQL warning: your action is needed to update your application and avoid 
+// potential disruptions ... ensure that the account has access to <socketPath above> 
+// ... Error 403: Cloud SQL Admin API has not been used in project ..."
+```
+
+The below were some errors I faced before reaching a solution.
+
+**Using ssl rejectUnauthorized.**
+
+``` showLineNumbers
+FATAL:  pg_hba.conf rejects connection for host ..., user ..., database ..., no encryption
+```
+
+**Using SSL certificates in the codebase, downloaded from Cloud SQL.**
+
+``` showLineNumbers
+// Error 1
+Error [ERR_TLS_CERT_ALTNAME_INVALID]: Hostname/IP does not match certificate's altnames: Host: localhost. is not cert's CN: ...
+
+// Error 2
+Error: unable to verify the first certificate
+```
+
+**Manually add Cloud SQL SSL certificates to App Engine.**
+
+``` showLineNumbers
+"Invalid certificate. `CertificateRawData` must contain a PEM encoded x.509 public key certificate, with header and footer included, and an unencrypted PEM encoded RSA private key, with header and footer included and with size at most 2048 bits. The requested private key and public certificate must match."
+```
+
+If you used ORM to create a database locally, you can dump to a SQL file using universal tool such as DBeaver or database-specific like pgAdmin. Before importing the SQL file to your Cloud SQL instance, remember to change all table owners to `cloudsqlsuperuser`.
+
+If you find this article to be helpful, I have some more for you!
+
+- [Advanced GitHub Actions - Conditional Workflow](/advanced-github-actions-conditional-workflow)
+- [Can I use external SSD enclosures for Proxmox disks?](/can-i-use-external-ssd-enclosures-for-proxmox-disks)
+- [What I learned when migrating hungvu.tech from IPv4 to IPv6 on AWS](/migration-from-ipv4-to-ipv6-on-aws)
+
+And, let's connect!
+
+- [LinkedIn](https://www.linkedin.com/in/hunghvu/)
+- [GitHub](https://github.com/hunghvu)
+- [X (formerly Twitter)](https://x.com/hunghvu_dev)
