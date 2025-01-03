@@ -1,0 +1,172 @@
+---
+readerTitle: 'Analysis of article trend on dev.to'
+readerDescription: "I built an application to analyze the trends on dev.to, so you can optimize your content there with a data-backed analysis."
+coverImage: '../../assets/blog/12/cover-image.webp'
+coverAlt: "I built an application to analyze the trends on dev.to, so you can optimize your content there with a data-backed analysis."
+publishedDate: 'April 27, 2022'
+seoTitle: 'Best publish time for blog engagement'
+seoDescription: 'How to maximize the impression of your technology blog post? Published time and tags are important factors to increase user engagement in your article.'
+---
+
+import BlogImage from '../../components/BlogImage.astro';
+
+In the past few years, [dev.to](https://dev.to/hunghvu) has become a big player in the international tech blogging community, with a focus on software development regardless of the industries. With audiences from all around the world, I find it to be an inclusive community with diverse user backgrounds and is surely a great place to visit during your dev journey.
+
+Despite having my own blog page, dev.to is where I have conversations with other members more often. Being a part of the community, I like to learn more about the trends to further improve the performance of my content. As dev.to is built on Forem, it has public APIs that can provide me data-backed guidance, and so, I created an open-source [Forem Analytics](https://foremanalytics.sdeproject.com/) web app for this very, well ..., analytic purpose.
+
+- Forem Analytics: https://foremanalytics.sdeproject.com/
+- GitHub: https://github.com/hunghvu/forem-analytics
+
+## Prepare the data 🧮️
+
+To learn about current trends, it is better to not include old articles (e.g., published years ago). Unfortunately, there is no API to get articles based on a date range. That said, I can get published articles sorted by published date. As of April 2022, dev.to has roughly 5000 new articles per month, the two-month worth of data is about 10000 articles, and so on.
+
+``` js
+// Total article = Number of pages x Number of articles per page
+fetch("https://dev.to/api/articles/latest?page=${i}&per_page=${articlesPerPage}")
+```
+
+dev.to uses heart (❤️), unicorn (🦄), and save (🔖) as basic metrics to measure the popularity of an article. They are reactions, but let's not forget the comments (💬) too since it is essential to proof of user engagement. There is no downvote system, so for the mentioned metrics, the higher the counts the better. With that said, I grouped the metrics into three different categories.
+
+- By the published time
+- By article estimate reading time
+- By tags
+
+You can freely request as much data point as you want. At least up to now, I have not faced any request limit restriction.
+
+import image1 from '../../assets/blog/12/forem-analytics-1.webp';
+
+<BlogImage imageMetadata={image1} alt='Choosing Forem-based communities to perform the analysis.' />
+
+## When should an article be published? 🔑
+
+Finding out the most active time of the userbase is a good way to improve content performance. If I post an article during midnight, most people have already gone to sleep and by the morning, it is already flushed by several other articles.
+
+That said, considering dev.to is an international platform, its users are from different time zones so just judging with my own local time is not a good generalization. To present the relationship between user engagement and article published time, heatmap is a great choice because it shows density at a glance.
+
+import image2 from '../../assets/blog/12/forem-analytics-2.webp';
+
+<BlogImage imageMetadata={image2} alt='Reactions summary by published time.' />
+
+import image3 from '../../assets/blog/12/forem-analytics-3.webp';
+
+<BlogImage imageMetadata={image3} alt='Comments summary by published time.' />
+
+
+The graphs are displayed with my browser's local time zone, which is PST in this case. The date was manipulated with `date-fns`, so it should be in your local time too. With a sample size of 14850, I have roughly 3 months of data, and using a Z-score of 3, some top-performing articles are removed. Interestingly enough, it appears the articles perform better between midnight to noon from Monday to Friday PST, about midday and after that in GMT, or is it? 🤔
+
+The calculation as of now is using summation, which is heavily affected by sample size per time slot. In other words, if 1000 articles are being posted at noon on Monday, it is likely to have a better total engagement counts than only 10 articles being posted on Sunday at midnight.
+
+Let's change the calculation method to mean and try to increase a minimal number of published articles per time slot to 30 to reduce the chance of one well-performed article affecting the average.
+
+You can customize calculation method, Z-score, and minimal sample size per group in the panel below.
+
+import image4 from '../../assets/blog/12/forem-analytics-4.webp';
+
+<BlogImage imageMetadata={image4} alt='Configuring analysis method using mean, z-score of 3, and minimum of 30 articles.' />
+
+And the results are:
+
+import image5 from '../../assets/blog/12/forem-analytics-5.webp';
+
+<BlogImage imageMetadata={image4} alt='Reactions summary by published time, with adjusted calculation.' />
+
+import image6 from '../../assets/blog/12/forem-analytics-6.webp';
+
+<BlogImage imageMetadata={image6} alt='Comments summary by published time, with adjusted calculation.' />
+
+It seems there is no clear trend with the mean calculation, but is solely based on the reactions summary, I guess Monday - Friday, 6 AM to noon (PST) seems to have consistent performance across the boards. Meanwhile, the weekend, especially Saturday, seems to have a lower engagement rate overall.
+
+## How long should an article be? 🔑
+
+This depends. If the audience is researching a solution to a complex problem, then a 15-minute article might not be long enough, but if they just want to know what JavaScript loop syntax is, maybe a less-than-1-minute article is more than sufficient. Let's see what the data says then.
+
+import image7 from '../../assets/blog/12/forem-analytics-7.webp';
+
+<BlogImage imageMetadata={image7} alt='Reactions summary by reading time.' />
+
+import image8 from '../../assets/blog/12/forem-analytics-8.webp';
+
+<BlogImage imageMetadata={image9} alt='Comments summary by reading time.' />
+
+
+I'm not so surprised to see it is right-skewed. Long articles require much more effort so not many people are going to write one. Short listicles are more of a common thing on dev.to in my experience. Unless there is one specific topic to dive in, then it is unlikely to have an article longer than 7 minutes (>=1500 words). However, to know that the reading time goes up to 100+ minutes, well ..., that is something. 🥶️
+
+Anyway, let's calculate by mean and change minimal number of published articles per given reading time to 30.
+
+import image9 from '../../assets/blog/12/forem-analytics-9.webp';
+
+<BlogImage imageMetadata={image9} alt='Reactions summary by reading time, with adjusted calculation.' />
+
+import image10 from '../../assets/blog/12/forem-analytics-10.webp';
+
+<BlogImage imageMetadata={image10} alt='Comments summary by reading time, with adjusted calculation.' />
+
+By increasing the minimal sample size per reading time group, I remove the statically insignificant data points. The reaction count seems to be increased along with reading time, which is to be expected. As said, long articles usually have their target audience in mind and are even SEO-optimized, so naturally, the engagement rate increases. This peaks at 13-minute with an average of 10.3 reactions, but I think 5-minute of reading time is a more reasonable length for most content creators out there.
+
+On dev.to, you can give 3 reactions to any article, even your own. By writing a 13-minute article, I guess you are likely to have at least 3 readers enjoying your article. In contrast, there seem to be no definitive trends in the comments count.
+
+## Which tags should you use? Which topics should you write about? 🔑
+
+Everyone can use up to 4 tags in an article, but first and foremost, they must be relevant to the article. Sometimes, many of them fit so you may not know which to choose. If that's the case, how about using a data-driven choice instead?
+
+Using the same data set, here is what we have judging by summation.
+
+import image11 from '../../assets/blog/12/forem-analytics-11.webp';
+
+<BlogImage imageMetadata={image11} alt='Reactions summary per tag name, by summation.' />
+
+import image12 from '../../assets/blog/12/forem-analytics-12.webp';
+
+<BlogImage imageMetadata={image12} alt='Comments summary per tag name, by summation.' />
+
+These are mostly generic web development and computer science tags. Undoubtedly, among the 4500+ tags, these are the most popular on dev.to. However, that creates the same problem as reading time (heavily skewed distribution). With that said, let's try finding the mean with at least 30 published articles per tag.
+
+import image13 from '../../assets/blog/12/forem-analytics-13.webp';
+
+<BlogImage imageMetadata={image13} alt='Reactions summary per tag name, by mean.' />
+
+import image14 from '../../assets/blog/12/forem-analytics-13.webp';
+
+<BlogImage imageMetadata={image14} alt='Comments summary per tag name, by mean.' />
+
+Now we only have about 140 tags left. Interestingly the top three tags this time are:
+
+- watercooler
+- a11y
+- discuss
+
+Come to think of it, two out of three are specifically designed to start a discussion/conversation (the recipe for engagement), so I guess it's normal for them to be at the top. I did not expect a11y to be there, but hey, accessibility has always been an important aspect of software development, right?
+
+Some other well-performed generic choices are:
+
+- todayilearned
+- career
+- tooling
+- writing
+
+## Wrap up 📈
+
+There you have it, a short data-backed analysis to start as a content creator on dev.to. However, should you listen to whatever I say here? Probably not, for a few reasons:
+
+- The analysis can certainly be biased or fall into fallacious interpretation traps. For example, is a sample size of 30 per group a reasonable choice?
+- Mistakes in implementation. Yes, I did not use any data analytics library so there is a chance an implementation is broken somewhere.
+
+All in all, the analysis can only be your assistance at best. You need to determine what your audience actually wants, be it topics, article structures, writing styles, and more. High-quality content is the determining factor to bring you success. 🔥
+
+You can always visit Forem Analytics to generate data at your convenience. It can provide data visualization not just for dev.to, but also for various other Forem communities like CodeNewbie, Wasm Builders, and more. Any contributions to the application are welcome!
+
+- Forem Analytics: https://foremanalytics.sdeproject.com/
+- GitHub: https://github.com/hunghvu/forem-analytics
+
+If you find this article to be helpful, I have some more for you!
+
+- [My checklist for bringing a website to production](/considerations-for-a-production-ready-website)
+- [Deploy a virtualized OpenWRT firewall in Harvester, how did it go?](/virtualize-openwrt-firewall-in-harvester-hci-cluster)
+- [ChromeOS Flex, have I just opened a can of worms?](/chromeos-flex-have-i-just-opened-a-can-of-worms)
+
+And, let's connect!
+
+- [LinkedIn](https://www.linkedin.com/in/hunghvu/)
+- [GitHub](https://github.com/hunghvu)
+- [X (formerly Twitter)](https://x.com/hunghvu_dev)
