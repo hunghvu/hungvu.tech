@@ -1,0 +1,78 @@
+---
+readerTitle: 'What is GitHub CLI?'
+readerDescription: "Bring GitHub to your beloved terminal."
+coverImage: '../../assets/blog/11/cover-image.webp'
+coverAlt: "Bring GitHub to your beloved terminal."
+publishedDate: 'April 14, 2022'
+seoTitle: 'What is GitHub CLI?'
+seoDescription: 'What is GitHub CLI? How is it different from Git CLI? What can GitHub CLI do? A quick introduction to GitHub command line interface.'
+---
+
+Probably you have been familiar with Git CLI, but have you ever heard of GitHub CLI?
+
+## What is GitHub CLI? How is it different from Git CLI? 🍀
+
+GitHub is a popular closed-source for-profit software development platform built on top of Git, a monetary-free and distributed version control system. GitHub is not limited to version control capability, it also includes CI/CD, project management tools, and several other services.
+
+Software engineer uses Git CLI for commands such as `git clone`, `git merge` to interact with a version control system locally. The local changes can then be pushed and hosted on GitHub. Meanwhile, GitHub CLI allows us to directly control the whole GitHub repository and other GitHub services from the command line, avoiding using a web browser and reducing context switching in our workflow.
+
+- A popular way to install Git CLI is using **git-scm**.
+- For GitHub CLI, you can install it from https://cli.github.com/.
+
+## What can GitHub CLI do? 🍀
+
+With many production-ready features (and more to come), you can use GitHub CLI with other tools (e.g., GitHub Actions) or scripting languages to create highly customized automated jobs. This greatly improves productivity and changes our traditional web GUI workflow (not to be confused with GitHub Actions workflow). Each command supports several different tasks and options. For example, in `gh auth`, we have `login` and `logout`.
+
+As of April 2022, there are 3 groups of commands in GitHub CLI.
+
+### The core commands
+
+```
+gh auth // Authenticate GitHub CLI and Git with GitHub.
+gh browse // Open your chosen GitHub repository in the web browser.    
+gh codespace // Manage your codespaces.       
+gh gist // Manage GitHub gits.
+gh issue // Manage GitHub issues.
+gh pr // Manage GitHub pull requests.
+gh release // Manage application releases.
+gh repo // Manage repository-level tasks (e.g., deletion, cloning).
+```
+
+### The GitHub Actions commands
+
+```
+gh run // List, view, and watch recent workflow runs from GitHub Actions.
+gh workflow // List, view, and run workflows in GitHub Actions.
+```
+
+### The additional commands
+
+```
+gh alias // Set command shortcuts.
+gh api // Send an authenticated HTTP request to GitHub API and show the response.
+gh completion // Generate shell completion scripts for GitHub CLI commands.
+gh config // Manage GitHub CLI configuration settings.
+gh extension // Manage GitHub CLI community-maintained extensions.
+gh gpg-key // Manage GPG keys registered with your GitHub account.
+gh label // Manage GitHub labels.
+gh search // Search across all GitHub.
+gh secret // Manage GitHub secrets in repositories or organizations.
+gh ssh-key // Manage SSH keys registered with your GitHub account.
+gh status // Shows your GitHub activities (issues, mentions, etc.)
+```
+
+## Wrap up 🍀
+
+Although GitHub CLI has just been released for a little more than 2 years, it now has core functionalities that usual GitHub users would use. If you love to live in a terminal space, it seems GitHub CLI would be an excellent solution for you.For more information about GitHub CLI, you can take a look at [GitHub CLI's official documentation](https://cli.github.com/manual/).
+
+If you find this article to be helpful, I have some more for you!
+
+- [Advanced GitHub Actions - Conditional Workflow](/advanced-github-actions-conditional-workflow)
+- [What is Bitwarden Enterprise, and how to set it up with Google SSO via OIDC?](/how-to-set-up-bitwarden-enterprise-sso-via-oidc-with-google)
+- [What I learned when migrating hungvu.tech from IPv4 to IPv6 on AWS](/migration-from-ipv4-to-ipv6-on-aws)
+
+And, let's connect!
+
+- [LinkedIn](https://www.linkedin.com/in/hunghvu/)
+- [GitHub](https://github.com/hunghvu)
+- [X (formerly Twitter)](https://x.com/hunghvu_dev)
