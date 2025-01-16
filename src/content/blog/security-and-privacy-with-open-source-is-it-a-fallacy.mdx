@@ -1,0 +1,81 @@
+---
+coverImage: '../../assets/blog/16/cover-image.webp'
+coverAlt: 'Open source can be a solution to ongoing security and privacy concerns. That said, you should be aware of the following before jumping the ship.'
+publishedDate: June 15, 2022
+readerTitle: 'Security via open-source, a common fallacy?'
+readerDescription: 'Open source can be a solution to ongoing security and privacy concerns. That said, you should be aware of the following before jumping the ship.'
+seoTitle: 'Security via open-source, a common fallacy?'
+seoDescription: 'As days go by, more people are going for open-source software for better cost, security, and privacy. It can be very secure, but there are pitfalls.'
+---
+
+As days go by, more people are going for open-source software. Many factors contribute to this movement, from the expansion of Big Tech data collection to the increase of cyber warfare around the globe. Open-source software can be a solution to these concerns, and I am one of the users too. No matter your background, there should be no barriers to joining the wave. That said, you might want to be aware of the following before making a decision.
+
+## Open source means privacy, a false sense?
+
+Personal data is valuable, whether it is sensitive or not, so there is an international market just for selling your data. The Big Tech has been known for this kind of practice, but not just them, [your daily coffee app can even know where you are at and doing at the moment](https://www.wired.com/story/tim-hortons-coffee-app-location-data-tracking/). Data collectors can use your information for their targeted tracking purpose or sell it to third parties. That said, at least these companies do not harm you. Things get worse when they suffer a data breach, and your information is exposed to malicious actors. Considering the extensive nature of modern data collection, who knows what the malicious actors are going to do with your data. After all, you are practically doxed at that point.
+
+With open-source software, you can determine whether the data collection mechanism is implemented by looking at the code base. In general, the open source community promotes privacy, and many of them have that as a focus, but nothing prevents software developers to have such mechanisms in place.
+
+In the case of [Audacity](https://www.engadget.com/audacity-privacy-policy-spyware-accusations-data-collection-210001803.html), a popular open-source audio-editing application, changes to its privacy policy in mid-2021 created an uproar. Whether the seriousness of these changes was blown out of proportion or not, the outcry died down eventually, and Audacity is still phoning home with its latest version in 2022.
+
+To me, telemetry is acceptable to a certain degree. It is really helpful to know some detail about user usage to improve my product, but the open-source community is really against it for an understandable reason. Perhaps, this is one reason why open-source software tends to have a worse user experience compared to a proprietary alternative, therefore hindering its adoption.
+
+
+## Open source means secure, but to whom?
+
+
+> "Given enough eyeballs, all bugs are shallow" - Linus's law
+
+With the increase in global cyber warfare, threats to online security have rapidly grown along the line. Open-source software fights this with transparency and lets the communities discover and patch exploits, and vice versa, closed-source software achieves the goal via obscurity.
+
+Now then, which is a better approach? This has been debatable for decades, and at least to me, there is no definitive answer. This aspect is all up to whoever maintains the software. Admittedly, with open source, the community help detects vulnerabilities promptly as everything is transparent, **that is if there is an *****active community***** in the first place**.
+
+> When can I have a reliable open-source anti-malware solution on Linux?
+
+As a normal user, do you have enough resources and capabilities to review the code base? If the answer is no, then how is it different than using closed-source software? Everything is effectively abstracted away, and you are just trusting that software maintainers are doing the job right. With that said, there are a few things to consider.
+
+- Are there many active (and experienced) contributors, so the vulnerabilities can be detected promptly?
+- Are the maintainers themselves well-versed in cybersecurity?
+- Is the project under active development?
+- Does it have a reasonable vulnerability disclosure policy and a good track record?
+
+For the reasons stated, I only use established projects which are backed by a dedicated community or a reputable organization (e.g., Firefox, VLC, Linux, LineageOS). It is not a de facto rule, but at least, I can comfortably say I know no more than these project maintainers.
+
+## A great monetarily free solution, or just a freemium?
+
+The free and open-source software (FOSS) community promotes free software, and indeed, many projects operate on free licenses (e.g., GNU, MIT). If you are into software development, then the power of open source can really be seen there. That said, many operate on a freemium model (require payment for full feature access), either open-core or partially open-source (e.g., MUI, SheetJS). In an extreme case, the open-source license can be too restrictive that prevent software usage in common scenarios, effectively making the software non-free. In these cases, it is advisable to consult attorneys before adopting the solutions.
+
+### Overhead of adapting solutions?
+
+In certain industries, specific software suites are considered a default standard. People have been using these software suites since their school time. The proprietary ecosystems tend to use undisclosed protocols, so they are not even compatible with open-source solutions which are built mostly on open standards. In a collaborative environment, if you break even one chain, it can create a cascading effect, and hence a dilemma. By being the sole adopter, *you can potentially increase overhead which leads to net negative results*. However, if there is no adopter, then the open-source solutions can never grow to compete with proprietary software.
+
+In the video below, Linus from the LMG and his team tried to use freemium (not entirely open-source) and move away from Adobe's proprietary ecosystem. In the end, that could not happen due to several factors as discussed.
+
+https://youtu.be/L9VysWRHPdI
+
+## Freedom is a solution to everything, a fallacy?
+
+Monetarily free is one aspect of open-source software, **but the main point is about free in freedom**. The source code is publicly available, so anyone can fork, modify, and redistribute legally under an open-source license (assuming the terms are followed). If you want more privacy, feel free to modify the software your way. If you want more security, feel free to review the code base for vulnerabilities and patch it yourself. If the current project is somehow burnt to the ground, you can try another project as they most likely are compatible with each other. Everything is under your control.
+
+With open source, everything is configurable, but the question about feasibility remains there. Do you have enough resources to learn a new technology stack? Do you have enough knowledge to modify its code base? What do you know about cybersecurity to patch the vulnerabilities? Software development is not an easy task, so most likely people do not have enough time to spend on tweaking around. Fortunately, the nature of open source allows unlimited contributors around the world to do the hard work for you, so as a newcomer, it is unlikely you have to do something yourself.
+
+With that said, you have choices and are not bound by the monopolistic approach of proprietary software. When something goes off, someone out there may fork the project and bring it a new life. That is great and all, but waiting for someone to stand up and maintain the fork is just as uncertain as it can be. Even if that happens, there is a question, can you entirely trust the strangers? If it is a corporate, then they are legally bound and want to keep you as a customer due to monetary incentives. By that alone, I believe they are safer than some random people on the Internet. After all, no one wants to suffer any supply chain attack at all.
+
+- [`node-ipc`'s maintainer embeds malware in its code base](https://www.lunasec.io/docs/blog/node-ipc-protestware/)
+- [Large-scale NPM packages supply chain attack](https://thehackernews.com/2022/03/a-threat-actor-dubbed-red-lili-has-been.html)
+
+## Wrap up
+
+Even when I daily drive Linux and other open-source solutions now, I still cannot confidently say it is bulletproof. Following common good practices can help me go further, but it is not the end of the road. I have seen open source become a trend (or even a buzzword) in recent years, and that was also what got me into this community. If you are the same, welcome! There are many benefits to using open-source software and I encourage you to try it out. Remember, as with everything on the Internet right now, treat all software with caution and use them wisely.
+
+If you find this article to be helpful, I have some more for you!
+
+- [Advanced GitHub Actions - Conditional Workflow ❓](advanced-github-actions-conditional-workflow)
+- [Can I use external SSD enclosures for Proxmox disks?](/can-i-use-external-ssd-enclosures-for-proxmox-disks)
+- [What I learned when migrating hungvu.tech from IPv4 to IPv6 on AWS](/migration-from-ipv4-to-ipv6-on-aws)
+
+And, let's connect!
+
+- [LinkedIn](https://www.linkedin.com/in/hunghvu/)
+- [GitHub](https://github.com/hunghvu)
+- [X (formerly Twitter)](https://x.com/hunghvu_dev)
