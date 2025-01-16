@@ -1,0 +1,176 @@
+---
+coverImage: '../../assets/blog/13/cover-image.webp'
+coverAlt: 'A comprehensive gude to making your asynchronous JavaScript code more manageable using Promise Chaining!'
+publishedDate: 'May 15, 2022'
+readerTitle: 'JavaScript Promise Chaining - Avoid Callback Hell'
+readerDescription: 'A comprehensive guide to making your asynchronous JavaScript code more manageable using Promise Chaining!'
+seoTitle: 'JavaScript Promise Chaining - Avoid Callback Hell'
+seoDescription: 'In this tutorial, you will learn about callback hell and how to avoid it using promise chaining in JavaScript.'
+---
+
+If you work in JavaScript web development, I guess you're already familiar with a `Promise` and have faced callback hell multiple times before. Promise chaining in JavaScript is one way to solve the callback hell issue, and we will discuss it in this article. However, let's recap a little bit for those who are not familiar with the concepts.
+
+## What is a JavaScript `Promise`?
+
+In JavaScript (ES6 and above), a `Promise` is an object representing the state and result of asynchronous operations such as an API call, or IO read/write. The states include *pending*, *fulfilled*, and *rejected*.
+
+- Pending: An operation is in progress, and no result has been returned.
+- Fulfilled: An operation was a success, and the result was returned.
+- Rejected: An operation was a failure, and the error was returned.
+
+A `Promise` has two methods: `then` and `catch`. The `then` method accepts a *callback* of an action to be initiated after a promise is fulfilled, meanwhile, the `catch` runs whenever a promise is rejected.
+
+``` ts showLineNumbers
+// Asynchronous API call operation
+getWeatherTodayPromise
+   .then((weatherForecast) => { // Fulfilled
+      // Synchronous operation
+      display(weatherForecast)
+   })
+   .catch((error) = > { // Rejected
+      console.error(error)
+   })
+```
+
+## What is callback hell?
+
+In short, it is when your callbacks have been nested multiple levels to the point it becomes unmanageable. This can happen in any programming language and is more common in asynchronous operations. *A deeply nested promise and callback in JavaScript is just one flavor of callback hell*, and examples in the article are based on this callback hell variance.
+
+``` ts showLineNumbers
+// A typical callback hell which involves multiple JavaScript promises
+firstPromise
+   .then(secondPromise
+      .then(thirdPromise
+         .then(...).catch(...)
+      ).catch(...)
+   ).catch(...)
+```
+
+Readability is one thing, but callback hell can cause other scoping issues. A typical one is error hiding (swallowing) when an error raised by an inner promise was not caught.
+
+``` ts showLineNumbers
+// Asynchronous API call operation
+getWeatherTodayPromise
+   .then((weatherForecast) => {
+      // Asynchronous IO operation
+      writeWeatherForecastToLogFilePromise(weatherForecast) // FAILED
+          ...
+         // Unlike try-catch, there is no outer "catch-all" solution
+         // You must have a "catch" at every nested promise
+         // Or else, the promise is not terminated, and the error information is lost
+         .catch((error) => {
+            // IO error is caught here
+            console.error("Inner promise", error)
+         })
+   })
+   .catch((error) = > {
+       // IO error is NOT caught here
+       console.error("Outer promise", error)
+   })
+```
+
+
+## What is promise chaining in JavaScript?
+
+You just learned a callback hell indicates unmanageable nested levels of callbacks. With that said, one way to solve the issue is to **make the callbacks NOT nested** anymore. Make it shallow!
+
+**Promise chaining** in JavaScript is when multiple `then` and `catch` methods are called successively to completely removes the nested levels, while still maintaining the intended outputs. You can say it is one way to refactor your codebase.
+
+``` ts showLineNumbers
+// Promise chaining
+firstPromise
+   .then(() => secondPromise)
+   .then(() => thirdPromise)
+   .then(...)
+   .catch(...)
+   .catch(...)
+   .catch(...)
+   .then(...)
+
+// A typical callback hell which involves multiple JavaScript promises
+firstPromise
+   .then(secondPromise
+      .then(thirdPromise
+         .then(...).catch(...)
+      ).catch(...)
+   ).catch(...)
+```
+
+If you are dealing with regular callback-based functions (NOT promises), you need to promisify the functions first to apply promise chaining. There are ways to do so, such as using an [`es6-promisify`](https://github.com/mikehall314/es6-promisify) library.
+
+## How does promise chaining work in JavaScript?
+
+Both `then` and `catch` are methods of a `Promise` object, so to create a chain, a callback in the `then` method must return a new `Promise`.
+
+``` ts showLineNumbers
+// Correct implementation
+// "() => something" is a shorthand for "() => {return something})
+const secondPromise = firstPromise.then(() => newPromise)
+secondPromise.then(() => anotherPromise).then(...)
+
+// Wrong implementation and an exception is raised
+firstPromise.then(() => null).then(...)
+```
+
+The result of a promise is carried to the next `then`.
+
+``` ts showLineNumbers
+getWeatherTodayPromise
+   .then(weatherForecastResult => writeWeatherForecastToLogFilePromise(weatherForecastResult))
+   // writeWeatherForecastToLogFilePromise(weatherForecastResult) if fulfilled will provide "ioWriteResult"
+   .then(ioWriteResult => Promise.all([
+      anotherPromise(ioWriteResult),
+      andSomethingElsePromise(),
+    ]))
+   .then(listOfResults => ...)
+```
+
+We can manually initiate and return a new `Promise` object to form promise chaining. Rather than doing tasks in one callback, you can apply this technique to segment the code base into smaller chunks.
+
+``` ts showLineNumbers
+firstPromise
+   .then(() => {
+       const isSuccess = synchronousOperation() // boolean
+       return isSuccess ? Promise.resolve("Success") : Promise.reject(new Error("404"))
+    })
+    .then((result) => console.log(result)) // Print "Success"
+    .catch(error) => console.error(error)) // Print an error with "404" message
+```
+
+A `then` method has a second and optional `onRejectedCallback` argument, but as we don't use it, whenever an exception is raised, the browser looks down the whole promise chain to find the first acceptable `catch` for a given error.By using promise chaining, you can have one outer "catch-all" solution like `try-catch`, so no more possibility of error swallowing. You can have a conditional statement in one `catch` for multiple errors, or you can segment them into multiple separated `catch` as shown below.
+
+``` ts showLineNumbers
+rejected5xxPromise
+   .catch(HTTP 4xx) // Browser: "Not here"
+   .catch(HTTP 5xx) // Browser: "Okay, this catches the 5xx error"
+   .catch(Other unexpected errors) // Skip
+```
+
+You can chain a `then` after `catch`. This means "always operate no matter what".
+
+``` ts showLineNumbers
+rejected5xxPromise
+   .catch(HTTP 5xx)
+   .then(console.log("This line is always printed out"))
+```
+
+## Wrap up
+
+JavaScript promise chaining is a simple but powerful feature to resolve a common nested callback issue (callback hell). To chain promises, there are two main points you need to remember.
+
+- Multiple `then` and `catch` can be called successively such as `promise.then(...).then(...).catch(...).catch(...)`.
+- A call back in the `then` method must return a new `Promise` object so the chain can be continued.
+
+The rule also applies to TypeScript. In ES2016 (a.k.a ES7), the `async/await` function was introduced and it makes our life even easier. That said, if you cannot use the ES7 feature for some reason, then promise chaining is a great choice to refactor your code base.
+
+If you find this article to be helpful, I have some more for you!
+
+- [Advanced GitHub Actions - Conditional Workflow](/advanced-github-actions-conditional-workflow)
+- [GitHub CLI in 3 minutes](https://hungvu.tech/github-cli-in-3-minutes)
+- [What I learned when migrating hungvu.tech from IPv4 to IPv6 on AWS](/migration-from-ipv4-to-ipv6-on-aws)
+
+And, let's connect!
+
+- [LinkedIn](https://www.linkedin.com/in/hunghvu/)
+- [GitHub](https://github.com/hunghvu)
+- [X (formerly Twitter)](https://x.com/hunghvu_dev)
