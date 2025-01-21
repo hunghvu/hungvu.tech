@@ -1,0 +1,352 @@
+---
+coverImage: '../../assets/blog/19/cover-image.webp'
+coverAlt: "Let's discuss the concept of headless CMS, the features to consider, and which headless CMS is a suitable choice for your portfolio and blog."
+publishedDate: "July 9, 2022"
+readerTitle: 'Headless CMS features comparison'
+readerDescription: "Let's discuss the concept of headless CMS, the features to consider, and which headless CMS is a suitable choice for your portfolio and blog."
+seoTitle: 'Headless CMS comparison and review'
+seoDescription: "This article is a beginner guide to the concept of headless CMS and helps you choose the best headless CMS to build your personal portfolio and blog page."
+---
+
+import BlogImage from '../../components/BlogImage.astro';
+
+Why do I want to find a headless content management system (headless CMS) to build my website for portfolio and blogging purposes? The blogging platforms like Hashnode, Dev, Hackernoon are certainly great places to start. They helped me write and published articles in minutes. That said, I would like to own my data and further, customize the website completely. This is only achievable by creating everything from the ground up, and it would be a fun side project for me so why not!
+
+I started blogging as a hobby, but over time, I realized owning a website is a great way to showcase my experience and opinions. This allows me to further my reach, establish a firm digital presence, and open a gateway to more opportunities. Depending on your niches, there are blogging platforms that help you bootstrap a blogging profile and bring you closers to the audience.
+
+With that said, this article presents my research on headless CMSs and my assessment of available solutions on the market with a focus on support for a blog and portfolio website. Via this article, you can learn about the concept of headless CMS, aspects to consider when choosing a headless CMS, feature comparisons between available CMSs on the market, and what are suitable solutions. This overview includes 12 different headless CMSs, both open-source and proprietary: Strapi, Directus, Sanity, Hygraph (previously named GraphCMS), Prismic, Ghost, Storyblok, Webiny, Contember, Payload, KeystoneJS, and Contentful. I am, by no means an expert in the world of headless CMSs, but hopefully, this is a decent starting point for you.
+
+Also, the follow-up article is available at [Strapi vs Directus vs Payload, Headless CMS Comparison](strapi-vs-directus-vs-payload-headless-cms-comparison).
+
+## What is a CMS?
+
+In software development, we can generally say there are three main components: a front end, a back end, and a database. The *front end* is a presentation layer so clients can interact with an application server, in other words, it is the user interface (e.g., static web page, mobile application interface). Meanwhile, business logic is processed on the back end (server), and the *database* is used to hold user data.
+
+Traditional CMSs usually use a monolithic architecture, hence it contains all these three components, and the front end is considered the **head** of CMS. Instead of building your product, traditional CMSs take care of everything for you. They provide pre-defined templates, from the presentation layer to security, data storage, user transactions, and many more. From social media, employee management, and whatnot, there is a pre-built CMS that serves your use cases.
+
+### What are the categories of CMSs?
+
+Generally, there are four different categories of CMSs:
+
+**Web-based CMSs (traditional CMSs)**
+
+- They are domain-specific CMSs and serve as a low-to-no-code solution. Website builders are prime examples of this category.
+- They are mostly closed-source and the least customizable in this list. That said, being almost no code required, web-based CMSs are the most user-friendly and can help non-technical users bootstrap their products in a relatively short amount of time.
+- The solutions in this category are mostly for enterprise content management (ECM), or web content management (WCM).
+
+**Web-based CMSs (but in a decoupled state)**
+
+- Still web-based CMSs, but the front end is removed, and contents are now served via APIs. This is their approach to becoming "headless". However, they are considered decoupled systems, not pure headless CMSs.
+
+**Pure headless CMSs**
+
+- When talking about *headless*, this means there is no presentation layer in place (**no head**) and all of the content (e.g., blog article) is distributed via endpoints (APIs). By design, pure headless CMSs are front-end agnostic, so there is freedom in choosing a front-end technology stack of your own. If you are interested in front-end technologies, I had written an article about this topic before: [Which front-end frameworks and libraries should you learn in 2022?](https://hungvu.tech/front-end-tech-stack-components)
+- From this category onward, more pre-built, open-source and developer-friendly CMSs appear. Inherently, flexibility in development is increased. These headless CMSs are generic by default, that said, some can specialize and optimize in certain verticals such as eCommerce, marketing, and so on.
+
+**Customized MACH-based CMSs**
+
+- MACH architecture stands for microservices, API first, cloud-native, and headless, and this category means you build up the whole CMS from the ground up.
+- This is the most powerful type of CMS but came at the cost of heavy development resources. For example, the social media that you are using right now are humongous CMSs composed of several different technologies and require different teams of experts to develop, deploy, and maintain.
+
+
+import image1 from '../../assets/blog/19/cms-1.webp';
+
+<BlogImage imageMetadata={image1} alt='Catergories of content management systems.' />
+
+Each category offers self-host, managed-host, and software as a service (SaaS) approaches, but user-friendly solutions towards the right in the diagram are mainly SaaS and vice versa. However, the current trend of the market seems to move toward the middle (grey area), and hence a blurry line is there. The next-gen headless CMSs offer a better user experience and become more focused on a certain vertical, while still maintaining their scalability, open, and developer-friendly nature. On the other hand, traditional monolithic CMSs are trying to be more modular and decoupled as a way to mitigate their downsides and attract a new wave of customers.
+
+As a web developer myself, a headless CMS would be a perfect choice for building a portfolio and blogging site. There is no need to create an extreme MACH-based CMS for such a small website. Besides, the further my website grows, the more advantages I can benefit from the headless CMS due to its customizability and developer-friendly nature.
+
+## Headless CMSs and decoupled CMSs are not entirely the same
+
+Headless may sound *decoupled* to you, and indeed it is, but a headless CMS is more of a subset of the decoupled system. Traditional CMSs can be used in a decoupled manner. For instance, WordPress can operate without the front end, or "headless", but there are two key distinctions:
+
+- The decoupled CMS itself has a built-in presentation layer by design, so since its inception, WordPress has assumed principles for designing the front end and what it can work with.
+- The decoupled CMS itself has pre-defined business logic, object definition, and architecture. They are not supposed to be changed or are relatively unintuitive to modify.
+
+Because of these, a traditional-but-decoupled CMS does not work well when you want to expand the views of your product, or migration to a different technology stack (e.g., on different operating systems). The **headless CMSs** solve this by:
+
+- Having no assumption of the front end.
+- Allowing developers to model their data schemas from the ground up.
+
+With the separation of concerns, the headless CMSs can be hosted in one place while the front end resides on another server, and changes on one do not affect the other. This freedom allows developers to use a headless CMS as a single source of truth for their multi-platform application, while still being able to optimize and deliver the data in a consistent and structured manner via APIs. Inherently, headless CMSs greatly improve other aspects such as modularity via microservices, scalability, performance, and security.
+
+## What to consider when choosing a headless CMS for your portfolio and blog?
+
+This is a contextual question as the answer varies depending on your requirements. Do you want the best performance? Do you want stricter user control? So on and so forth. From a non-expertise perspective, I would ignore most technical aspects for now. In reality, I doubt my website can push the CMS to its extreme anytime soon. Also, considering we have like millions of headless CMSs on the market, I only discuss some popular choices in the article. With that said, let's lay down some core questions to make the comparison:
+
+- Does it have a free plan?
+- Is it open-source?
+- How can we host it?
+- What types of content-query APIs does it support?
+- What types of text editor does it provide by default?
+- Does it have TypeScript support?
+- Does it have a media library?
+- Does it support plugins?
+- Does it support single sign-on (SSO)?
+- Does it support article scheduling?
+- Does it support internationalization?
+- Does it support any form of content backup or migration?
+- Does it support a single type? (This feature is rather important because a portfolio is usually a one-off page.)
+
+In the sections below, I will answer these questions in a FAQ format. The answers are based on their latest major version as of the time of writing.
+
+### Strapi
+
+You can checkout Strapi at [strapi.io](https://strapi.io/).
+
+- Does Strapi have a free plan? Yes, but with limited features (dual licenses).
+- Is Strapi open-source? Yes.
+- How can we host Strapi? We can either self-host (limited features) or use the Strapi Cloud service. The cloud service is being developed and is not generally available as of July 2022.
+- What types of content-query APIs does Strapi support? Both REST and GraphQL are supported.
+- What types of text editor does Strapi provide by default? Both Markdown and WYSIWYG editors are supported.
+- Does Strapi have TypeScript support? Yes, but it is in beta as of July 2022.
+- Does Strapi have a media library? Yes, and the media can be stored on your server or external storage service.
+- Does Strapi support plugins? Yes.
+- Does Strapi support single sign-on (SSO)? Yes, but it is [available only on their highest enterprise tier](https://strapi.io/blog/v3-5-sentry-plugin-sso-authentication). Only authentication is supported, not authorization.
+- Does Strapi support article scheduling? Yes, but it is not available by default. CRON task must be set up for this.
+- Does Strapi support internationalization? Yes.
+- Does Strapi support any form of content backup or migration? [No, at least not by default](https://docs.strapi.io/developer-docs/latest/getting-started/troubleshooting.html#does-strapi-handle-deploying-or-migrating-of-content).
+- Does Strapi support a single type? Yes.
+
+### Directus
+
+You can check out Directus at [directus.io](https://directus.io/).
+
+It is more of a data platform, like database clients (not focusing on content management). Directus can be used on top of the current database and act as a headless CMS.
+
+- Does Directus have a free plan? Yes.
+- Is Directus open-source? Yes.
+- How can we host Directus? We can either self-host or use Directus Cloud. The self-host is fully featured, meanwhile, Directus has a free cloud hosting option with a limited feature set.
+- What types of content-query APIs does Directus support? Both REST and GraphQL are supported.
+- What types of text editor does Directus provide by default? Both Markdown and WYSIWYG editors are supported.
+- Does Directus have TypeScript support? Yes.
+- Does Directus have a media library? Yes.
+- Does Directus support plugins? Yes.
+- Does Directus support single sign-on (SSO)? Yes.
+- Does Directus support article scheduling? Yes.
+- Does Directus support internationalization? Yes.
+- Does Directus support any form of content backup or migration? Yes, [Directus backup requires the whole database backup procedures (e.g., database dump)](https://docs.directus.io/self-hosted/upgrades-migrations/).
+- Does Directus support a single type? Yes, its equivalent is [Directus Items](https://docs.directus.io/reference/items/).
+
+### Sanity
+
+You can check out Sanity at [sanity.io](https://www.sanity.io/).
+
+- Does Sanity have a free plan? Yes, but with limited features.
+- Is Sanity open-source? Sanity is partially open-source.
+- How can we host Sanity? We can self-host Sanity Studio, which is an admin dashboard. However, all of the data resides on Sanity Cloud.
+- What types of content-query APIs does Sanity support? REST, GraphQL, and GROQ (an in-house query language) are supported.
+- What types of text editor does Sanity provide by default? The WYSIWYG editor is supported by default, but the Markdown one is available via an official plugin.
+- Does Sanity have TypeScript support? Yes, the Sanity Studio supports TypeScript out-of-the-box.
+- Does Sanity have a media library? No, but it is available via a third-party plugin.
+- Does Sanity support plugins? Yes.
+- Does Sanity support single sign-on (SSO)? Yes, [but this is only for the enterprise plan](https://www.sanity.io/docs/third-party-login).
+- Does Sanity support article scheduling? Yes, [but this is also a paid feature](https://www.sanity.io/docs/scheduling-api).
+- Does Sanity support internationalization? Yes.
+- Does Sanity support any form of content backup or migration? Yes, [you can export all documents to a JSON file](https://www.sanity.io/docs/export).
+- Does Sanity support a single type? Yes [(singleton page)](https://www.sanity.io/docs/create-a-link-to-a-single-edit-page-in-your-main-document-type-list), but it might not be straightforward to set up and maintain these.
+
+### Hygraph (previously named GraphCMS)
+
+You can check out Hygraph at [hygraph.com](https://hygraph.com/).
+
+- Does Hygraph/GraphCMS have a free plan? Yes, but with limited features.
+- Is GraphCMS open-source? No.
+- How can we host Hygraph/GraphCMS? Hygraph/GraphCMS is a proprietary SaaS, there is no self-host option.
+- What types of content-query APIs does Hygraph/GraphCMS support? Only GraphQL is supported in Hygraph.
+- What types of text editor does Hygraph/GraphCMS provide by default? Only the WYSIWYG editor is supported in Hygraph, that said, the content can be saved and queried in Markdown format.
+- Does Hygraph/GraphCMS have TypeScript support? Unknown, I could not find the answer from the Hygraph documents.
+- Does Hygraph/GraphCMS have a media library? Yes, Hygraph supports the media library.
+- Does Hygraph/GraphCMS support plugins? Yes, but Hygraph plugins seem to be in an early preview stage.
+- Does Hygraph/GraphCMS support single sign-on (SSO)? Yes, but Hygraph SSO is only for the enterprise plan.
+- Does Hygraph/GraphCMS support article scheduling? Yes, Hygraph supports article scheduling.
+- Does Hygraph/GraphCMS support internationalization? Yes, Hygraph supports internationalization.
+- Does Hygraph/GraphCMS support any form of content backup or migration? Yes, but your data will reside on the Hygraph/GraphCMS server. That said, [if you are an enterprise customer, you can contact them and ask for an off-site backup](https://hygraph.com/faq/security-governance-and-backups).
+- Does Hygraph/GraphCMS support a single type? No, [but the Hygraph singleton feature seems to be in development](https://feedback.hygraph.com/25).
+
+### Prismic
+
+You can check out Prismic at [prismic.io](https://prismic.io/).
+
+- Does Prismic have a free plan? Yes, but with limited features.
+- Is Prismic open-source? No.
+- How can we host Prismic? Prismic is a proprietary SaaS, there is no self-host option.
+- What types of content-query APIs does Prismic support? Both REST and GraphQL are supported.
+- What types of text editor does Prismic provide by default? Both WYSIWYG and Markdown editors are supported.
+- Does Prismic have TypeScript support? Yes.
+- Does Prismic have a media library? Yes.
+- Does Prismic support plugins? No.
+- Does Prismic support single sign-on (SSO)? Yes, but this is only for the enterprise plan.
+- Does Prismic support article scheduling? Yes.
+- Does Prismic support internationalization? Yes.
+- Does Prismic support any form of content backup or migration? Yes, but these are paid features. You can either have backups within Prismic Cloud or export to other storage services.
+- Does Prismic support a single type? Yes.
+
+### Ghost
+
+You can check out Ghost at [ghost.org](https://ghost.org/).
+
+- Does Ghost have a free plan? Technically, yes.
+- Is Ghost open-source? Yes.
+- How can we host Ghost?  We can either freely self-host (fully featured) or use the Ghost Cloud service. There is no free plan for the cloud host though.
+- What types of content-query APIs does Ghost support? Both GraphQL and REST are supported.
+- What types of text editor does Ghost provide by default? Both WYSIWYG and Markdown editors are supported.
+- Does Ghost have TypeScript support? Unknown.
+- Does Ghost have a media library? No.
+- Does Ghost support plugins? Yes.
+- Does Ghost support single sign-on (SSO)? No.
+- Does Ghost support article scheduling? Yes.
+- Does Ghost support internationalization? Yes.
+- Does Ghost support any form of content backup or migration? Yes, [you can export and import data in a single click (in JSON format)](https://ghost.org/help/the-importer/).
+- Does Ghost support a single type? Yes, its equivalent is [Ghost Pages](https://ghost.org/docs/publishing/#pages).
+
+### Storyblok
+
+You can check out Storyblok at [storyblok.com/home](https://www.storyblok.com/home).
+
+- Does Storyblok have a free plan? Yes, but with limited features.
+- Is Storyblok open-source?  No.
+- How can we host Storyblok? Storyblok is a proprietary SaaS, so only cloud hosting is available.
+- What types of content-query APIs does Storyblok support? Both GraphQL and REST are supported.
+- What types of text editor does Storyblok provide by default? By default, only the WYSIWYG editor is available, but you can import Markdown content.
+- Does Storyblok have TypeScript support? Yes.
+- Does Storyblok have a media library? Yes, its equivalent is Storyblok Assets Manager.
+- Does Storyblok support plugins? Yes.
+- Does Storyblok support single sign-on (SSO)? Yes, but this is only for the enterprise plan.
+- Does Storyblok support article scheduling? Yes.
+- Does Storyblok support internationalization? Yes.
+- Does Storyblok support any form of content backup or migration? Yes, [you can also export your content via APIs](https://www.storyblok.com/faq/how-to-export-and-import-a-translatable-version-of-my-content).
+- Does Storyblok support a single type? Unknown, I could not find a definitive answer from the documents.
+
+### Webiny
+
+*Note*: The detail has been updated based on feedback from the Webiny team.
+
+You can check out Webiny at [webiny.com](https://www.webiny.com/).
+
+- Does Webiny have a free plan? Yes, but with limited features (dual licenses).
+- Is Webiny open-source? Yes.
+- How can we host Webiny? Only self-host is available.
+- What types of content-query APIs does Webiny support? Only GraphQL is supported.
+- What types of text editor does Webiny provide by default? Only the WYSIWYG editor is supported.
+- Does Webiny have TypeScript support? Yes.
+- Does Webiny have a media library? Yes, its equivalent is a file manager layer on top of the Amazon S3 service.
+- Does Webiny support plugins? Yes.
+- Does Webiny support single sign-on (SSO)? Yes, but on the free plan, the developers need to write the integration themselves.
+- Does Webiny support article scheduling? Yes.
+- Does Webiny support internationalization? Yes.
+- Does Webiny support any form of content backup or migration? Yes, but this requires an infrastructure backup (e.g., database dump). [Migrating between versions can be impossible due to breaking changes](https://www.webiny.com/docs/release-notes/upgrade-webiny).
+- Does Webiny support a single type? Unknown, I could not find a definitive answer from the documents.
+
+### Contember
+
+*Note*: The detail has been updated based on feedback from the Contember team.
+
+You can check out Contember at [contember.com](https://www.contember.com/).
+
+- Does Contember have a free plan? Yes.
+- Is Contember open-source? Yes, [under Apache v2.0](https://www.apache.org/licenses/LICENSE-2.0).
+- How can we host Contember? We can either self-host (fully featured) or use managed hosting service Contember Cloud.
+- What types of content-query APIs does Contember support? Only GraphQL is supported.
+- What types of text editor does Contember provide by default? Only the WYSIWYG editor is supported.
+- Does Contember have TypeScript support? Yes.
+- Does Contember have a media library? Contember stores the uploads in the Amazon S3 service. The Media Library is currently available in pre-release versions of Contember Admin. It will be available in the next stable version of Contember Admin.
+- Does Contember support plugins? There is no plugin marketplace out-of-the-box. However, it is possible to modify the React admin dashboard to add additional features.
+- Does Contember support single sign-on (SSO)? Yes, and it is available in the open-source edition.
+- Does Contember support article scheduling? Yes, you can do this in your data model - just add "publish_at" to your article (or any other entity) and then you can add the access control list (ACL) rule for allowing access only to articles published in the past. Contember just released a new ACL API that's much easier to use: [Roles and ACL definition | Contember](https://docs.contember.com/guides/acl-definition).
+- Does Contember support internationalization? Yes. Contember has support for multiple languages in administration. You can see how to use it in the Multilingual CMS starter kit: [starter-kits/headless-multilingual-cms at main · contember/starter-kits · GitHub](https://github.com/contember/starter-kits/tree/main/headless-multilingual-cms)
+- Does Contember support any form of content backup or migration? Contember generates migrations for you so you can easily run multiple environments. When self-hosted you have a well-structured PostgreSQL database at your disposal. When you use the managed Contember Cloud, they take care of backups for you. But sometimes it's handy to have import and export available and that's something Contember is working on right now and will be available in Contember Cloud by the end of June.
+- Does Contember support a single type? Contember supports any data structure you need, including single type.
+
+### Payload CMS
+
+You can check out Payload CMS at [payloadcms.com](https://payloadcms.com/).
+
+- Does Payload CMS have a free plan? Yes.
+- Is Payload CMS open-source? Yes. Payload CMS just went open-source in late May 2022.
+- How can we host Payload CMS? We can self-host (fully featured). It seems to have an enterprise-managed-hosting plan, but it is being developed.
+- What types of content-query APIs does Payload CMS support? Both GraphQL and REST are supported.
+- What types of text editor does Payload CMS provide by default? Only the WYSIWYG editor is supported.
+- Does Payload CMS have TypeScript support? Yes.
+- Does Payload CMS have a media library? Yes.
+- Does Payload CMS support plugins? Yes.
+- Does Payload CMS support single sign-on (SSO)? It supports, but is not out-of-the-box. For the enterprise plan, the Payload CMS team implements SSO for you, but for the free plan, you have to do it yourself using the Payload CMS plugins mechanism.
+- Does Payload CMS support article scheduling? Yes, It is available via [Payload CMS Versions](https://payloadcms.com/docs/versions/overview).
+- Does Payload CMS support internationalization? Yes.
+- Does Payload CMS support any form of content backup or migration? It seems like there is no simple backup and migrating option. You have to perform operations on the infrastructure level.
+- Does Payload CMS support a single type? Unknown.
+
+### KeystoneJS
+
+You can check out KeystoneJS at [keystonejs.com](https://keystonejs.com/).
+
+- Does KeystoneJS have a free plan? Yes.
+- Is KeystoneJS open-source? Yes.
+- How can we host KeystoneJS? We can self-host (fully featured). There seems to be no first-party cloud or managed hosting service.
+- What types of content-query APIs does KeystoneJS support? Both GraphQL and REST are supported.
+- What types of text editor does KeystoneJS provide by default? Only the WYSIWYG editor is supported.
+- Does KeystoneJS have TypeScript support? Yes.
+- Does KeystoneJS have a media library? It seems [the media library or file management are not available as of now](https://github.com/keystonejs/keystone/discussions/7491).
+- Does KeystoneJS support plugins? Yes, but it seems the support is rather limited.
+- Does KeystoneJS support single sign-on (SSO)? Yes, but there is no clear guidance on the implementation that I am aware of.
+- Does KeystoneJS support article scheduling? Unknown.
+- Does KeystoneJS support internationalization? No, [it is being developed](https://keystonejs.com/updates/roadmap).
+- Does KeystoneJS support any form of content backup or migration? It seems like there is no simple backup and migrating option. You have to perform operations on the infrastructure level.
+- Does KeystoneJS support a single type? No, [it is being developed](https://keystonejs.com/updates/roadmap).
+
+### Contentful
+
+You can check out Contentful at [contentful.com](https://www.contentful.com/).
+
+- Does Contentful have a free plan? Yes.
+- Is Contentful open-source? No.
+- How can we host Contentful? Contentful is a proprietary SaaS, only cloud hosting is available.
+- What types of content-query APIs does Contentful support? Both GraphQL and REST are supported.
+- What types of text editor does Contentful provide by default? Both Markdown and WYSIWYG editors are supported.
+- Does Contentful have TypeScript support? Yes.
+- Does Contentful have a media library? Yes.
+- Does Contentful support plugins? Yes.
+- Does Contentful support single sign-on (SSO)? Yes, but this is only available on the enterprise plan.
+- Does Contentful support article scheduling? Yes.
+- Does Contentful support internationalization? Yes.
+- Does Contentful support any form of content backup or migration? Yes, [you can also create an off-site export](https://www.contentful.com/faq/backup-security-and-hosting/#can-i-backup-my-data-offsite).
+- Does Contentful support a single type? No, there seems to be a workaround to achieve the singleton feature, but it is not supported out-of-the-box.
+
+## Which headless CMS should you choose for your portfolio and blog?
+
+In the pictures above, you can see the summary of the feature comparison between 12 CMSs based on my research using their documents and marketing materials. Now, let's try to determine suitable CMSs for the portfolio and blog then.
+
+- I prefer the CMSs that are free and offer a self-host option. GraphCMS, Prismic, Storyblok, and Contentful are proprietary SaaS. Meanwhile, Sanity stores data on their server, so they are out. SaaS and managed hosting are certainly useful, but to me, it is even better to have freedom of choice.
+- I only have experience with REST APIs at the moment, so its support is a must. Therefore, Webiny and Contember are out. That said, I might try out GraphQL in the future, so it is great if the CMSs support both options.
+- Media library is a huge addition for maintenance and user experience in the long run. Ghost and KeystoneJS lack this feature, so they are out.
+
+This leaves only **Strapi, Directus, and Payload** left. Out of the three, it seems like only Directus has all of the checkmarks, however:
+
+- Directus admin UI is in Vue, while I am a React developer. This can potentially become an overhead to maintain.
+- Strapi has a much larger community.
+- Both Strapi and Payload CMS offer a React admin UI.
+- These three CMSs are fairly feature-parity.
+
+With that said, I cannot define the winners here. For the next steps, I will download and try out all these three headless CMSs, then write down deeper pros and cons comparisons between them. After all, my observation right now is only the tip of the iceberg, so there is not enough information for a satisfactory conclusion.
+
+## Wrap up
+
+This is my very first step in getting into the headless CMSs world. Via this article, we have discussed the role of CMSs in software development, the categories of CMSs, and what headless CMS is about. Besides, we have talked about the important features of CMSs, the comparison of available solutions on the market, and what are the suitable CMSs for your portfolio and blog. Writing everything down gives me a point of reference (like a specification document), and I wish this can give you a sense of starting point too.
+
+Now, which CMS would be your choice for a portfolio and blog site? Please let me know in the comment section below!
+
+If you find this article to be helpful, I have some more for you!
+
+- [Advanced GitHub Actions - Conditional Workflow ❓](advanced-github-actions-conditional-workflow)
+- [JavaScript Promise Chaining - Avoid Callback Hell](javascript-promise-chaining-avoid-callback-hell)
+- [GitHub CLI in 3 minutes ❓](github-cli-in-3-minutes)
+
+And, let's connect!
+
+- [LinkedIn](https://www.linkedin.com/in/hunghvu/)
+- [GitHub](https://github.com/hunghvu)
+- [X (formerly Twitter)](https://x.com/hunghvu_dev)
+
+
+
