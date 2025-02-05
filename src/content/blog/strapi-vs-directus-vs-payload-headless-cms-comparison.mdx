@@ -1,0 +1,134 @@
+---
+coverImage: ../../assets/blog/20/cover-image.webp
+coverAlt: After looking at a dozen headless CMSs for my upcoming blogfolio, I narrowed the choices to only Strapi v4, Directus v9, and Payload v1.
+publishedDate: July 26, 2022
+readerTitle: Strapi vs Directus vs Payload, which headless CMS is the best?
+readerDescription: After looking at a dozen headless CMSs for my upcoming blogfolio, I narrowed the choices to only Strapi v4, Directus v9, and Payload v1.
+seoTitle: Strapi vs Directus vs Payload, Headless CMS Comparison
+seoDescription: This article presents a comparison between Strapi, Directus, and Payload CMS to figure out the best headless CMS for web developers in 2022.
+---
+
+import BlogImage from '../../components/BlogImage.astro';
+
+After looking at a dozen headless content management systems (headless CMSs) for my upcoming blogfolio, I narrowed the choices to only **Strapi v4**, **Directus v9**, and **Payload v1**. This article presents a comparison between the three headless CMSs to figure out the most suitable solution. If you wonder why I chose these headless CMSs in the first place, my previous article [How to choose headless CMS for portfolio and blogs?](headless-cms-for-portfolio-and-blogs) is a walk-through of my initial research.
+
+Strapi, Directus, and Payload, which is the best headless CMS? To make the final decision, let's analyze the following aspects of these solutions.
+
+- Customizability
+- Security
+- Developer experience
+
+## Customizability
+
+Do remember, that all three CMSs are open-source under a permissive license so you can modify the codebase on your own. Therefore, customizability is technically endless. In the case of Payload, it is a _configuration-as-code_ CMS, so its admin UI is practically blank out-of-the-box. With these in mind, let's try to compare what the CMS officially supports.
+
+### Available plugins
+
+**Winner**: StrapiOne strong point of Strapi is its mature marketplace. It is accessible either via an admin interface or a website at [market.strapi.io](http://market.strapi.io). If you need an additional feature, there is a high chance it is already available as a plugin. That said, there is no one-click-install feature, installation is via `npm` only.
+
+import image from '../../assets/blog/20/comparison-1.webp';
+
+<BlogImage imageMetadata={image} alt='Strapi marketplace.' />
+
+**Draw**: Directus and PayloadEven though both Directus and Payload support plugins/extensions in their modular architecture, none has a marketplace. Regarding Directus, there is an extension marketplace, but it is still under development. You can check it out at [directus.market](https://directus.market/).
+
+import image2 from '../../assets/blog/20/comparison-2.webp';
+
+<BlogImage imageMetadata={image2} alt='Directus Cloud is coming soon.' />
+
+Meanwhile, the Payload marketplace will probably not be available anytime soon, but it is on the roadmap.
+
+> We will be maintaining a list of both official and community Payload plugins on our website very soon.
+> [From Payload plugins documentation](https://payloadcms.com/docs/plugins/overview)
+
+### Database
+
+**Winner**: DirectusDirectus supports several different flavors of SQL: PostgreSQL, MySQL, SQLite, OracleDB, CockroachDB, MariaDB, and MS-SQL. You can either use Directus as a wrapper on top of your existing database or use Directus to build a new database from the ground up. In a sense, Directus is an abstraction for your database (like an ORM, but with UI), and headless CMS is only one of its use cases. This [database introspection](https://docs.directus.io/getting-started/introduction/#how-it-works) nature gives you extreme flexibility when migrating with Directus, either in or out.
+
+import image3 from '../../assets/blog/20/comparison-3.webp';
+
+<BlogImage imageMetadata={image3} alt='Directus can stay on top of a SQL database.' />
+
+**Second place**: StrapiCurrently, Strapi v4 supports SQLite, PostgreSQL, MySQL, and MariaDB. However, it is fairly cumbersome to perform migrations between databases, and environments. From my research, it boils down to different approaches between Strapi and Directus. Strapi follows a "closed" source control approach (opinionated database generation, developers have no control), while Directus is a database-first platform. If you have any experience in solving Strapi migration problems, please let me know in the comment section down below. It would be great to have a technical explanation of why migration and backup have always been a downside of Strapi.
+
+**Questionable**: PayloadPayload only supports MongoDB at the moment. Depending on your use case, this might be a plus or vice versa. As Payload is a new player in the market, there are not sufficient documents and case studies so I can not form a conclusion on its database aspect. Payload v1 (production-ready) was just launched on July 19th, 2022.
+
+## Security
+
+Security is a highly specialized topic so I do not make a technical comparison on which solution is more secure. Instead, let's take a look at what security features they offer.
+
+### Authorization (access control)
+
+**Draw**: Directus and PayloadBoth Directus and Payload offer very respectable security control, at least one level above Strapi in my opinion. They have unlimited granular role-based access control, down to database field level. Permissions are configurable for both APIs and admin panel feature access. However, I think Payload is a bit better in this aspect as it also allows a wider range of configurations. If in Directus, you can use role-based access control to restrict permission of a user, then in Payload, you can even set permission from the perspective of an object. For example:In Directus, if you have an **editor role**, you can read an article with draft status (**field condition**): `if user.role == editor => read draft article`In Payload, every draft article (**field condition**) is only readable by users with **editor role**: `if article.status == draft => allow editor role to read`. This is the same permission as in the Directus example, just from a different perspective.
+
+import image4 from '../../assets/blog/20/comparison-4.webp';
+
+<BlogImage imageMetadata={image4} alt='Permission control in Directus.' />
+
+**Second place**: StrapiUnlike the other two solutions, Strapi only has API-level access control, so it is less granular. That is one thing, but Strapi also locks admin panel role addition and modification behind a paywall. With such an essential feature of a CMS being restricted like this, it is a huge downside in my opinion.
+
+import image5 from '../../assets/blog/20/comparison-5.webp';
+
+<BlogImage imageMetadata={image5} alt='Strapi features can be artificially limited.' />
+
+### Authentication
+
+**Winer**: PayloadPayload supports two-factor authentication, and a wide variety of strategies like OAuth 2, and LDAP, for both admin panel and front-end application. This is possible because Payload uses `passport.js` underneath, a very popular authentication library that supports more than 500 strategies. Do keep in mind that this was only introduced in the release of Payload v1, and there has not been much documentation around the feature, so this is a downside if you are going to build a large-scale project.
+
+**Draw**: Directus and StrapiOn the admin panel authentication side, Directus is relatively on par with Payload, but apparently, there is no clear way to implement public user registration. Meanwhile, Strapi does not support two-factor authentication or any other admin panel authentication strategies out-of-the-box. Strapi's single sign-on is a paid feature that is available only on the Gold plan. However, Strapi offers front-end authentication with many different identity providers. For example, if a user wants to register for an account on your ecommerce store, then the authentication flow is as below.That said, Directus and Strapi have been battle tested for much longer than Payload. It is reasonable if you put Directus and Strapi ahead of Payload just by this fact alone. Security has always been a critical aspect of software development after all, but I will put my trust in Payload this time.
+
+- User signs in with Google (or other identity providers) on the single-page application.
+- Google verifies the identity and returns an access token to the single-page application.
+- The single-page application makes a request to Strapi API with Google access token as payload.
+- Strapi creates an end-user account based on provided information (assuming you have configured the identity provider in Strapi beforehand).
+- You have just finished registering a new end-user account using Google sign-in.
+
+## Developer experience
+
+Unlike customizability and security, it is hard to give an objective review of developer experience. Experience is mostly subjective after all. With that in mind, there is no clear winner in this regard, and the comparison below is purely my subjective observation when testing the three CMSs.
+
+### Admin UI
+
+Out of the three, Directus is the most feature-packed out-of-the-box. If you are a no-code person, then Directus is certainly a great Vue-based option here. It even has a dedicated page for the user guide in the admin panel. That said, Strapi is still a good one if you are into a React ecosystem.
+
+import image6 from '../../assets/blog/20/comparison-6.webp';
+
+<BlogImage imageMetadata={image6} alt='Directus UI is full of features out of the box.' />
+
+In between the two, I much prefer Directus admin UI. It seems like Strapi is trying to be aesthetically pleasing to non-technical users but comes at the cost of having too much empty space and a lack of features, and I am not impressed by this.
+
+Payload, on the other hand, is sort of an outlier here. The whole nature of this CMS is to be code-first, so in a sense, it is not very beginner-friendly. The payload admin panel is mostly for entering content (e.g., blog article content), meanwhile, other settings such as permissions, webhooks, field definition, and so on are defined in the codebase. I suppose you either like this approach or don't, and there is no in-between.
+
+### Documentation
+
+There is not much to discuss this. Strapi is currently in the 4th version, while Directus is in the 9th version. While some argue they both have worse documentation compared to their previous versions, both are still mature projects so they have a large number of community resources. Meanwhile, Payload just had its first launch a few days ago, so there is a clear lack of resources and documentation compared to the other two solutions.
+
+### Maintainability (upgrade, migration, backup, deployment)
+
+This is briefly discussed in the _Customizability/Database_ section. From my research, the general consensus is that Strapi has very poor maintainability support. Why is it the case? I am not certain. It is great if you can help me answer this in the comment section down below. In contrast, it seems to be a breeze to maintain Directus as it is only a wrapper on top of an SQL database. You can either perform database-level operations or use features of Directus SDK to help the maintainability process.
+
+Still, both Strapi and Directus are no-code solutions, and configuring everything via UI might potentially create consistency issues down the road. In the case of Payload, it has configurations as code so everything can be granularly controlled in a CI/CD pipeline. With most settings and schemas effectively being defined in the codebase, it also reduces the troubles in dealing with low-level operations in the database.
+
+### Hosting
+
+By default, both Strapi and Directus require a separate Node.js instance so you cannot host them on the same server as your application. Strapi and Directus are fully-built applications on their own. However, I suppose it should be possible via a more advanced server configuration using reverse proxy. Between the two, Strapi should be easier to deploy, be it a simple VM, a docker instance, or others. This is because many hosting providers provide a one-click setup option for Strapi due to its popularity.
+
+Payload is different, it is more of a plugin to your existing application. In short, your Node.js now contains both the front-end and Payload as the back-end. That said, if you want complete separation of concerns, I suppose it is still possible to host them separately.
+
+## Conclusion
+
+Strapi, Directus, and Payload, which suits the purpose of building my blogfolio? After considering the three solutions in terms of customizability, security, and developer experience, Directus is logically a winner in my opinion. However, **I decide to give Payload a chance this time**. In general, Payload is on par with Directus in terms of functionality, but its code-first approach makes me want to give it a shot. As a newcomer on the market and just recently reached a stable release, Payload can potentially be a risky choice, but that is something I am willing to take.
+
+This article is a way to document my research on the current headless CMS market. As a newcomer, there is still much more to learn so I intentionally skip technical comparisons such as performance, scalability, edge cases, and so on. If you are looking for a solution for a large-scale project, hopefully, this article gives you a good starting point.
+
+If you find this article to be helpful, I have some more for you!
+
+- [Advanced GitHub Actions - Conditional Workflow ❓](advanced-github-actions-conditional-workflow)
+- [How To Choose The Best Headless CMS For Your Blogfolio?](headless-cms-for-portfolio-and-blogs)
+- [Better Security And Privacy With Free And Open-source Software, A Fallacy?](security-and-privacy-with-open-source-is-it-a-fallacy)
+
+And, let's connect!
+
+- [LinkedIn](https://www.linkedin.com/in/hunghvu/)
+- [GitHub](https://github.com/hunghvu)
+- [X (formerly Twitter)](https://x.com/hunghvu_dev)
