@@ -9,7 +9,7 @@ seoTitle: Free WordPress site with Google Cloud and Cloudflare
 seoDescription: Using Google Cloud Platform and Cloudflare is a budget solution to securely and optimally host a small and fully featured WordPress website.
 ---
 
-import BlogImage from '../../components/BlogImage.astro';
+import BlogPicture from '../../components/BlogPicture.astro';
 
 This is more about describing my personal development and debugging experience, less of a step-by-step tutorial on the topic. The article presents some key points and questions I faced when going through the project. Correction to any of the errors is welcome! ☺️
 
@@ -19,7 +19,7 @@ The WordPress site is built using several plugins (e.g., Elementor). To use plug
 
 import image1 from '../../assets/blog/4/wordpress-1.webp';
 
-<BlogImage imageMetadata={image1} alt='WordPress.com managed hosting solution as of February 2022.' />
+<BlogPicture imageMetadata={image1} alt='WordPress.com managed hosting solution as of February 2022.' />
 
 ### I have some experience with GCP, maybe I need to take a look at there first? 🤔
 
@@ -27,7 +27,7 @@ Indeed, they do offer solutions.
 
 import image2 from '../../assets/blog/4/google-cloud-1.webp';
 
-<BlogImage imageMetadata={image2} alt='GCP free VPS tier as of February 2022.' />
+<BlogPicture imageMetadata={image2} alt='GCP free VPS tier as of February 2022.' />
 
 My goal is to have something similar to WordPress.com, a little to no-code environment. Interaction is via a GUI in the admin panel. Between the three, only Google Compute Engine (GCE) satisfies my need so I went with it.
 
@@ -37,7 +37,7 @@ Luckily, [Google offers a free tier for GCE](https://cloud.google.com/free/docs/
 
 import image3 from '../../assets/blog/4/google-cloud-2.webp';
 
-<BlogImage imageMetadata={image3} alt='GCE e2-micro specification as of February 2022.' />
+<BlogPicture imageMetadata={image3} alt='GCE e2-micro specification as of February 2022.' />
 
 ### GCE is a virtual machine instance, meaning I have to configure everything from the ground? 🤔
 
@@ -47,7 +47,7 @@ Normally, a mature platform will provide some sort of pre-configured packages. H
 
 import image4 from '../../assets/blog/4/bitnami-1.webp';
 
-<BlogImage imageMetadata={image4} alt='Bitnami and Automattic cross-platform image for WordPress VPS.' />
+<BlogPicture imageMetadata={image4} alt='Bitnami and Automattic cross-platform image for WordPress VPS.' />
 
 **Note**, it seems there is no official way to update the installed stack, neither via GUI nor SSH. I need to delete a VM and create a new instance using the latest Bitnami package.
 
@@ -81,7 +81,7 @@ On the Cloudflare DNS page, there is a DNSSEC setup instruction. The setup is fa
 
 import image5 from '../../assets/blog/4/cloudflare-1.webp';
 
-<BlogImage imageMetadata={image5} alt='Cloudflare DNSSEC setup section.' />
+<BlogPicture imageMetadata={image5} alt='Cloudflare DNSSEC setup section.' />
 
 ### Step 3, how to set up an SSL certificate? 🤔
 
@@ -102,7 +102,7 @@ HTTP/2 support can be tested using [Key CDN website](https://tools.keycdn.com/ht
 
 import image6 from '../../assets/blog/4/key-cdn-1.webp';
 
-<BlogImage imageMetadata={image5} alt='HTTP/2 and ALPN Test result.' />
+<BlogPicture imageMetadata={image5} alt='HTTP/2 and ALPN Test result.' />
 
 ### Why do I see some small charge in Billing Reports? I thought this is supposed to be free? 🤔
 
@@ -110,7 +110,7 @@ Yes, the setup is free, that is if I'm staying in the provided quota. As in the 
 
 import image7 from '../../assets/blog/4/google-cloud-3.webp';
 
-<BlogImage imageMetadata={image7} alt='Minor cost incurring in GCP, but negligible.' />
+<BlogPicture imageMetadata={image7} alt='Minor cost incurring in GCP, but negligible.' />
 
 ## Wrap up 🍀
 

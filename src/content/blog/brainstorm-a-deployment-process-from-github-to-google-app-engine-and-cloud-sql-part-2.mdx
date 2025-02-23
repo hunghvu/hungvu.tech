@@ -9,7 +9,7 @@ seoTitle: Deployment process from GitHub to GAE and Cloud SQL (P2)
 seoDescription: Running locally does not mean it will work in a cloud environment, even the purpose is only to get an application up and running on GAE.
 ---
 
-import BlogImage from '../../components/BlogImage.astro';
+import BlogPicture from '../../components/BlogPicture.astro';
 
 The post will include a series of questions that I asked and answered myself to approach the solution. This is more about describing my personal experience, not a full tutorial on the topic so many steps and concept explanations will be omitted. Correction to any of the errors is welcome!
 
@@ -25,7 +25,7 @@ App Engine itself has two variations: Standards and Flexible. Only the Standard 
 
 import image1 from '../../assets/blog/3/google-cloud-1.webp';
 
-<BlogImage
+<BlogPicture
   imageMetadata={image1}
   alt='GCP free tier App Engine as of February 2022
 GCP free tier App Engine as of February 2022.'
@@ -41,7 +41,7 @@ This metric is counted across projects. Let's say I have two projects with App E
 
 import image2 from '../../assets/blog/3/google-cloud-2.webp';
 
-<BlogImage imageMetadata={image2} alt='Google Cloud IAM logo.' />
+<BlogPicture imageMetadata={image2} alt='Google Cloud IAM logo.' />
 
 - [Identity Access Management (IAM)](https://cloud.google.com/iam/docs/overview): Essentially, this is used to control user permissions and access to resources. It contains 3 main parts:
 
@@ -122,7 +122,7 @@ After this point, the workflow should work, Now, I have a simple but runnable CI
 
 import image3 from '../../assets/blog/3/google-cloud-3.webp';
 
-<BlogImage imageMetadata={image3} alt='App Engine instance status.' />
+<BlogPicture imageMetadata={image3} alt='App Engine instance status.' />
 
 ### We have an up and running App Engine now, but why do we have a 5xx error when reaching an endpoint? 🤔
 
@@ -130,7 +130,7 @@ In Heroku, by default, everything is shown in the log section, even statements s
 
 import image4 from '../../assets/blog/3/google-cloud-4.webp';
 
-<BlogImage imageMetadata={image4} alt='GAE application logs.' />
+<BlogPicture imageMetadata={image4} alt='GAE application logs.' />
 
 GCP is the same but requires a bit more configuration to show proper log levels and messages. Official documentation on this matter can be found [here](https://cloud.google.com/logging/docs/setup/nodejs).
 
@@ -168,7 +168,7 @@ In Heroku, we can manually configure the environment variables
 
 import image5 from '../../assets/blog/3/heroku-ui-1.webp';
 
-<BlogImage imageMetadata={image5} alt='Heroku environment variables configuration.' />
+<BlogPicture imageMetadata={image5} alt='Heroku environment variables configuration.' />
 
 **Unfortunately, Google App Engine does not have an equivalent feature**. However, there are 2 ways that I am aware of to workaround.
 

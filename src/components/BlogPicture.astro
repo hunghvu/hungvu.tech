@@ -1,5 +1,5 @@
 ---
-import { Image } from "astro:assets";
+import { Picture } from "astro:assets";
 
 type Props = {
   imageMetadata: ImageMetadata;
@@ -10,6 +10,6 @@ const { imageMetadata, alt } = Astro.props;
 ---
 
 <figure class="flex flex-col items-center justify-center">
-  <Image src={imageMetadata} alt={alt} class="rounded-box" />
+  <Picture src={imageMetadata} alt={alt} class="rounded-box" formats={["avif", "webp"]}/>
   <figcaption>{alt}</figcaption>
 </figure>

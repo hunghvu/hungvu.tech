@@ -4,7 +4,7 @@ import BaseHead from "../components/head/BaseHead.astro";
 import Footer from "../components/Footer.astro";
 import FormattedDate from "../components/FormattedDate.astro";
 import Header from "../components/Header.astro";
-import { Image } from "astro:assets";
+import { Picture } from "astro:assets";
 import TableOfContents from "../components/toc/TableOfContents.astro";
 import Series from "../components/Series.astro";
 import type { InferGetStaticPropsType, GetStaticPaths } from "astro";
@@ -51,8 +51,9 @@ const { Content, headings } = await Astro.props.render();
     <Header />
     <main class="flex w-full max-w-screen-xl flex-col items-center px-6 py-12">
       <article class="flex w-full flex-col items-center">
-        <Image
+        <Picture
           class="mb-6 h-auto w-full max-w-full rounded-2xl"
+          formats={["avif", "webp"]}
           src={coverImage}
           alt={coverAlt}
         />

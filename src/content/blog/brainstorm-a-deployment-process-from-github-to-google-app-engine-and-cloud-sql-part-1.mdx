@@ -9,7 +9,7 @@ seoTitle: Deployment process from GitHub to GAE and Cloud SQL (P1)
 seoDescription: I want to deploy a NodeJS 'Hello World' application from GitHub to Google App Engine and Cloud SQL. Where should I start?
 ---
 
-import BlogImage from '../../components/BlogImage.astro';
+import BlogPicture from '../../components/BlogPicture.astro';
 
 This is more about describing my personal development and debugging experience, less of a step-by-step tutorial on the topic. Correction to any of the errors is welcome!
 
@@ -23,19 +23,19 @@ You need to create a new app in Heroku.
 
 import image1 from '../../assets/blog/2/heroku-ui-1.jpeg';
 
-<BlogImage imageMetadata={image1} alt='New app button in Heroku.' />
+<BlogPicture imageMetadata={image1} alt='New app button in Heroku.' />
 
 In the Resources tab, add a database instance to your app using Heroku Add-ons.
 
 import image2 from '../../assets/blog/2/heroku-ui-2.jpeg';
 
-<BlogImage imageMetadata={image2} alt='Add Heroku resources.' />
+<BlogPicture imageMetadata={image2} alt='Add Heroku resources.' />
 
 Get database secrets either via Heroku CLI or from the Settings/Config Vars interface. In there, I can also add more environment variables to use during runtime for our application.
 
 import image3 from '../../assets/blog/2/heroku-ui-3.jpeg';
 
-<BlogImage
+<BlogPicture
   imageMetadata={image3}
   alt='Heroku environment variable configuration.
 Heroku environment variable configuration.'
@@ -47,12 +47,12 @@ import image4 from '../../assets/blog/2/heroku-ui-4.webp';
 
 import image5 from '../../assets/blog/2/heroku-ui-5.webp';
 
-<BlogImage
+<BlogPicture
   imageMetadata={image4}
   alt='Heroku-GitHub connector
 Heroku-GitHub connector'
 />
-<BlogImage
+<BlogPicture
   imageMetadata={image5}
   alt='Start a Heroku deployment pipeline.
 Start a Heroku deployment pipeline.'
@@ -72,7 +72,7 @@ Each workflow consists of multiple commands or smaller actions such as actions/c
 
 import image6 from '../../assets/blog/2/github-actions-1.webp';
 
-<BlogImage imageMetadata={image6} alt='Alternative deployment options.' />
+<BlogPicture imageMetadata={image6} alt='Alternative deployment options.' />
 
 ### If there is no pre-defined workflow, can I write one? 🤔
 
