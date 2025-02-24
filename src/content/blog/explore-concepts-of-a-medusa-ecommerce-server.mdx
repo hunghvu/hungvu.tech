@@ -93,7 +93,7 @@ The components are decoupled in Medusa. So, the Node.js eCommerce headless serve
 The usage of CORS variables is a way to solve this issue. By default, the headless server runs on port `9000`, the admin dashboard runs on port `7000` or `7001`, and the storefront is available at port `8000`. If you decide to change the origins of the front ends or deploy components to different environments, then the CORS values must be adjusted accordingly.
 
 
-``` showLineNumbers
+```
 # .env
 # CORS when consuming Medusa from admin
 ADMIN_CORS=http://localhost:7000
@@ -109,7 +109,7 @@ PostgreSQL is a mature open source relational database that has been adopted by 
 
 For connection string construction, please refer to [PostgreSQL official documentation](https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-CONNSTRING).
 
-``` showLineNumbers
+```
 # .env
 # CORS when consuming Medusa from admin
 ADMIN_CORS=http://localhost:7000
@@ -123,7 +123,7 @@ This is a connection string to the Redis instance.Redis is a high-performant ope
 
 For connection string, please refer to [this guide](https://github.com/lettuce-io/lettuce-core/wiki/Redis-URI-and-connection-details).
 
-``` showLineNumbers
+```
 # .env
 # Sample of typical Redis connection string format
 # redis://<REDIS_USER>:<PASSWORD>@<HOST>:<PORT_NUMBER>/<INSTANCE_NAME>

@@ -16,7 +16,7 @@ Here are my two cents after trying out Google Cloud SQL so the information is pu
 - Always allow only SSL connection to Cloud SQL instance even if the connection is restricted to only private IP. You can never know if someone gains access to your infrastructure and sniff the traffic.
 - Additional change to backend codebase is required even if it is hosted on App Engine (connect to Cloud SQL via Serverless VPC AccesS). That sounds confusing as from Google official documentation.
 
-``` showLineNumbers
+```
 SSL/TLS provides security when connecting to Cloud SQL. SSL/TLS is automatically provided when using: The Cloud SQL Auth proxy, The Java Socket Library, The built-in mechanisms in the App Engine environments. In these situations, self-managed SSL/TLS certificates are not required.
 ```
 
@@ -39,13 +39,13 @@ The below were some errors I faced before reaching a solution.
 
 **Using ssl rejectUnauthorized.**
 
-``` showLineNumbers
+```
 FATAL:  pg_hba.conf rejects connection for host ..., user ..., database ..., no encryption
 ```
 
 **Using SSL certificates in the codebase, downloaded from Cloud SQL.**
 
-``` showLineNumbers
+```
 // Error 1
 Error [ERR_TLS_CERT_ALTNAME_INVALID]: Hostname/IP does not match certificate's altnames: Host: localhost. is not cert's CN: ...
 
@@ -55,7 +55,7 @@ Error: unable to verify the first certificate
 
 **Manually add Cloud SQL SSL certificates to App Engine.**
 
-``` showLineNumbers
+```
 "Invalid certificate. `CertificateRawData` must contain a PEM encoded x.509 public key certificate, with header and footer included, and an unencrypted PEM encoded RSA private key, with header and footer included and with size at most 2048 bits. The requested private key and public certificate must match."
 ```
 
