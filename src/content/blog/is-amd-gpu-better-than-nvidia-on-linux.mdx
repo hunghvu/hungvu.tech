@@ -1,0 +1,185 @@
+---
+coverImage: ../../assets/blog/24/cover-image.webp
+coverAlt: I recently had a chance to try out AMD GPU on Linux, and to my surprise, it was not really a pleasant experience.
+publishedDate: October 24, 2023
+readerTitle: Is AMD GPU better than Nvidia on Linux? It depends
+readerDescription: I recently had a chance to try out AMD GPU on Linux, and to my surprise, it was not really a pleasant experience.
+seoTitle: Is AMD GPU better than Nvidia on Linux?
+seoDescription: AMD GPU driver installation on Linux is a rabbit hole with multiple errors like no linux-modules-extra installation candidate, rocm-llvm unmet dependencies.
+series: Homelab
+---
+
+import BlogPicture from '../../components/BlogPicture.astro';
+
+As a casual Nvidia-on-Linux user, I have had a fair share of problems with my GTX 1050 over the years. Nvidia's relationship with the Linux community is well known, so there is not much more to discuss. With that said, I decided to go with an AMD graphic card (GPU) for my new laptop, in the hope that it can better streamline my experience. However, that is not really the case at the moment, at least on Ubuntu-based distros, 22.04 and onwards.
+
+This article is about my experience enabling my AMD Vega 8 GPU features on PopOS 22.04 (Xorg). Correction to any information provided in the article is welcome!
+
+## What are the different layers of drivers in Linux?
+
+Generally said, there are three different layers in Linux.
+
+- **Kernel-level drivers**: These are usually included in the Linux kernel (but can also be installed down the road). The kernel-level drivers are at the bottom of the software stack. They have the highest privilege, run in allocated kernel-only memory space (kernel space driver), and allow OS to communicate with the hardware. For example, kernel-level drivers are `radeon`, `amdgpu`, and `amdgpu-pro`.
+- **Graphics API drivers**: They usually reside in a user space memory location (user space drivers). These drivers provide common APIs based on open standards such as OpenGL, Vulkan, and act as an intermediate layer so applications can utilize graphic cards. For example, `Mesa` is an open-source graphics API driver which implements OpenGL and Vulkan standards.
+- **Application-level drivers**: These user space drivers stay on the top of the software stack and provide an abstraction layer over graphics API drivers. To avoid the complexity of interacting with graphics APIs, application drivers provide a translation layer common for features such as minimizing screen or changing display resolution for the display server (Xorg in my case). For example, `xf86-video-<something>` such as `xf86-video-amdgpu`, and `xf86-video-modesetting` are application-level drivers.
+
+There is much more about the hierarchy and relationship between the layers, but they are outside of my domain. For the sake of this article, we only need to be aware of their categorization.
+
+### AMD GPU works out-of-the-box thanks to kernel-level drivers
+
+When everyone says "AMD GPU works out of the box on Linux", it is because AMD GPU kernel space drivers are open-source and included in the Linux kernel. The three common ones are `radeon`, `amdgpu`, and `amdgpu-pro`. One will be chosen and loaded based on the installed GPU. To check for a currently loaded kernel space GPU driver, use the following command:
+
+```
+lspci -k | grep -A 3 -E "(VGA|3D)"
+```
+
+This results in:
+
+
+```
+pop-os@pop-os:~$ lspci -k | grep -A 3 -E "(VGA|3D)"
+04:00.0 VGA compatible controller: Advanced Micro Devices, Inc. [AMD/ATI] Barcelo (rev c1)
+    Subsystem: Dell Device 0b38
+    Kernel driver in use: amdgpu
+    Kernel modules: amdgpu
+```
+
+Indeed, my GPU worked out of the box, but there was a catch. None of the "advanced" features such as Free Sync, 10-bit color, low latency, etc. could be enabled, at least not in a trivial way. In Windows, these features can be easily enabled using AMD Adrenalin.
+
+import image1 from '../../assets/blog/24/amdgpu-1.webp';
+
+<BlogPicture imageMetadata={image1} alt='AMD Adrenalin is a central place to tweak AMD GPU features in Windows.' />
+
+### Xorg requires a vendor-specific Device Dependent X (DDX) for advanced GPU features
+
+Xorg is a display server that is responsible for all GUI portions of the operating system and is essentially a base of the desktop environment itself. As mentioned, there is a translation layer so Xorg can communicate with graphics API underneath. In absence of vendor-specific DDX, there is a generic `xf86-video-modesetting` driver for this purpose. It can work with any GPU vendor, but GPU-specific features will be limited. For example, Free Sync on AMD GPU, G-Sync on Nvidia GPU, and so on.
+
+```
+# ~/.local/share/xorg/Xorg.0.log
+
+[26.451] (II) LoadModule: "modesetting"
+[26.452] (II) Loading /usr/lib/xorg/modules/drivers/modesetting_drv.so
+[26.475] (II) Module modesetting: vendor="X.Org Foundation"
+[26.475]     compiled for 1.21.1.3, module version = 1.21.1
+[26.475]     Module class: X.Org Video Driver
+[26.475]     ABI class: X.Org Video Driver, version 25.2
+```
+
+An attempt to enable these features (in `/etc/X11/xorg.conf.d/`) without a correct DDX installed beforehand may result in a non-bootable device. With that said, to enable my Vega 8 GPU features, I needed to install `xf86-video-amdgpu`.
+
+On a side note, using `apt list --installed` showed `xserver-xorg-video-<something>` on my system. I'm not certain about their relationship with `xf86-video-<something>`, so any explanation is appreciated.
+
+
+```
+pop-os@pop-os:~$ apt list --installed
+...
+xserver-xorg-video-all/jammy,now 1:7.7+23ubuntu2 amd64 [installed,automatic]
+xserver-xorg-video-amdgpu/jammy,now 22.0.0-1build1 amd64 [installed,automatic]
+...
+```
+
+### `xf86-video-amdgpu` has no official installation instruction
+
+[Here is an official repository of `xf86-video-amdgpu`](https://gitlab.freedesktop.org/xorg/driver/xf86-video-amdgpu/) and it has no installation instructions. I searched around a fair bit and landed on [this 2019 article from ubuntulog](https://ubunlog.com/en/llega-la-nueva-version-de-los-controladores-xf86-video-amdgpu-19-0-0/). That said, the approach does not work for me due to multiple dependency issues such as missing `libdrm` and `gdm3`. With that said, my next try is to use an installation package from the AMD website.
+
+## AMD GPU driver installer for PopOS 22.04 is broken (or any Ubuntu-based 22.04 distros)
+
+import image2 from '../../assets/blog/24/amdgpu-2.webp';
+
+<BlogPicture imageMetadata={image2} alt='AMD provides official driver support for Ubuntu (with proprietary binaries).' />
+
+On the AMD website, they have a selection of drivers for Linux distros. As PopOS is Ubuntu-based, I decided to use an AMD GPU driver for Ubuntu x86 64-Bit (22.04). It is a `deb` package, so installation should be easy enough, but no. AMD GPU driver installation process is no less of a rabbit hole compared to Nvidia counterpart (manual installation, not considering PopOS out-of-the-box support for Nvidia GPU).
+
+### Problem 1: PopOS is not supported by default
+
+The `deb` package is just a bundle of installation scripts along with necessary files. With that said, I needed to run the command `amdgpu-install` afterward to initiate a true driver installation.
+
+```
+pop-os@pop-os:~$ amdgpu-install
+Unsupported OS: /etc/os-release ID 'pop'
+```
+
+The installation does not support PopOS by default. Fair enough, because this is only marketed for Ubuntu (also Debian and Linux Mint, as you will see below), I needed to do some modifications to an installation script, which is located in `/usr/bin`.
+
+```
+# /usr/bin/amdgpu-install.sh
+# Run: sudo gedit amdgpu-install
+...
+case "$ID" in
+ubuntu|linuxmint|debian|pop) # add pop at the end (line 293 at the time of writing, or Ctrl-F to find) 
+    PKGUPDATE="apt-get update"
+    PKGMAN=apt-get
+    OS_CLASS=debian
+    :
+    ;;
+...
+```
+
+### Problem 2: Package `linux-modules-extra-5.18.10-76051810-generic` has no installation candidate
+
+Now the installer could run on PopOS, I ran `amdgpu-install` and an error below was shown.
+
+```
+...
+Package linux-modules-extra-5.18.10-76051810-generic is not available, but is referred to by another package.
+This may mean that the package is missing, has been obsoleted, or
+is only available from another source
+
+E: Package 'linux-modules-extra-5.18.10-76051810-generic' has no installation candidate
+```
+After a bit of lookup, it seems like an extra kernel content is included in a standard kernel in PopOS, meanwhile, `linux-modules-extra-...-generic` is only a virtual package, hence the error. I did try to play around with the kernel, but my machine ended up in a non-bootable state. After making my laptop bootable again, I decided if an installation script could be modified somehow. Therefore, I searched for references  `linux-modules-extra-...-generic` and commented on them.
+
+```
+# /usr/bin/amdgpu-install.sh
+# Run: sudo gedit amdgpu-install
+# Comment out the line belows, lines 411-414 at the time of writing, or Ctrl-F to find
+...
+if apt-cache show linux-modules-extra-$(uname -r) &>/dev/null
+then
+    PACKAGES=(${PACKAGES[*]} linux-modules-extra-$(uname -r))
+fi
+...
+```
+
+Great! Now that `no installation candidate` error went away, but then ...
+
+### Problem 3: `rocm-llvm` has unmet dependencies and does not support Ubuntu 22.04
+
+I reran `amdgpu-install`, then the error below was shown.
+
+```
+The following packages have unmet dependencies:
+rocm-llvm : Depends: python but it is not installable
+            Depends: libstdc++-5-dev but it is not installable or
+                    libstdc++-7-dev but it is not installable
+            Depends: libgcc-5-dev but it is not installable or
+                    libgcc-7-dev but it is not installable
+            Recommends: gcc-multilib but it is not going to be installed
+            Recommends: g++-multilib but it is not going to be installed
+E: Unable to correct problems, you have held broken packages.
+```
+
+Apparently, `rocm-llvm` is not compatible with Ubuntu 22.04. I stumbled on two issues discussing this matter [ROCm #1713](https://github.com/RadeonOpenCompute/ROCm/issues/1713) and [ROCm #1730](https://github.com/RadeonOpenCompute/ROCm/issues/1730). The installation problem has existed since the initial release of Ubuntu 22.04 in April 2022. Although [ROCm v5.3.0 provides support for Ubuntu 22.04](https://docs.amd.com/bundle/ROCm-Installation-Guide-v5.3/page/Introduction_to_ROCm_Installation_Guide_for_Linux.html), the change has not been made to the AMD GPU official driver installation package yet.
+
+I did not expect my hands-on experience to become like this, especially on an LTS release like Ubuntu/PopOS 22.04. This was the end of my installation attempt, and I decided to duo-boot into Windows for the time being.
+
+## Wrap up
+
+Is AMD GPU a great choice on Linux? I would say it still is. With AMD GPU, basic features are supported out of the box and you can do graphic-intensive tasks on your newly purchased device without issue. However, if you would like to have access to an advanced feature set, or do some specific task like machine learning, then I suppose you will not have an easy time until AMD furthers its support to different distros and patches such broken bugs in a timely manner.
+
+What is your experience with AMD GPU on Linux? Please let me know in the comment section below.
+
+If you find this article to be helpful, I have some more for you!
+
+- [How to back up Microsoft 365 with Synology Active Backup?](how-to-back-up-microsoft-365-with-synology-active-backup)
+- [How To Choose The Best Headless CMS For Your Blogfolio?](headless-cms-for-portfolio-and-blogs)
+- [Strapi vs Directus vs Payload, Headless CMS Comparison](strapi-vs-directus-vs-payload-headless-cms-comparison)
+
+And, let's connect!
+
+- [LinkedIn](https://www.linkedin.com/in/hunghvu/)
+- [GitHub](https://github.com/hunghvu)
+- [X (formerly Twitter)](https://x.com/hunghvu_dev)
+
+
+
