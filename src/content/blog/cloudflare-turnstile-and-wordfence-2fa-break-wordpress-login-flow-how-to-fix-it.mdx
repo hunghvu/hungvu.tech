@@ -1,0 +1,99 @@
+---
+coverImage: ../../assets/blog/26/cover-image.webp
+coverAlt: Cloudflare Turnstile and Wordfence 2FA should improve WP security but at the potential cost of locking you out of the admin dashboard.
+publishedDate: January 19, 2023
+readerTitle: Cloudflare Turnstile and Wordfence 2FA break WordPress login flow, how to fix it?
+readerDescription: Cloudflare Turnstile and Wordfence 2FA should improve WP security but at the potential cost of locking you out of the admin dashboard.
+seoTitle: Fix CAPTCHA block user access to WordPress
+seoDescription: Cloudflare Turnstile and Wordfence 2FA can lock you out of the admin panel with a bug causing login and human verification loops, here is a way to fix it.
+---
+
+import BlogPicture from '../../components/BlogPicture.astro';
+
+To tighten security on your WordPress website, you want a 2-factor authentication (2FA) mechanism to provide identity approximation, and a Captcha to prevent notorious bots from rampaging the `wp-admin` login page (or any other equivalent). With that said, there is **Wordfence**, a top player in WordPress security, which can provide a 2-factor authentication feature for your WordPress website. Along the line, you decided to utilize **Cloudflare Turnstile**, a recently released but promising Captcha service due to its user-friendly and more privacy focus approach. You enabled both of them as instructed, and decided to log out of your admin account to test out the services, but then ...
+
+## The problem
+
+On first look, the services seem to work. Cloudflare Turnstile appears on the login page and the login attempt leads to a 2-factor authentication on your screen. You type in the 2FA code and expect to be redirected to the WordPress dashboard, but the redirection turned out to be unexpected.
+
+import image1 from '../../assets/blog/26/cloudflare-turnstile-1.webp';
+
+<BlogPicture imageMetadata={image1} alt='Cloudflare Turnstile fails to recognize a real human user.' />
+
+You are redirected to the login page again, with an error message from Cloudflare Turnstile:* "Please verify that you are human."*
+
+You think the 2FA code was mistyped, or somehow the Cloudflare Turnstile accidentally misrecognize the request as a bot and decide to try again, but unfortunately, the result is the same. *At this point, you are stuck in a login loop and completely locked out of the WordPress admin dashboard.*
+
+## What happens when Cloudflare Turnstile is disabled?
+
+As the error message is from Cloudflare Turnstile, perhaps, disabling this Captcha service can solve the issue. However, with no access to the WordPress dashboard, you decide to disable it on the Cloudflare Dashboard instead. In the Cloudflare Turnstile Analytics dashboard, you see a noticeable spike in **blue values** - unsolved Captcha requests. The time stamp aligns with when you start facing the problem.
+
+import image2 from '../../assets/blog/26/cloudflare-turnstile-2.webp';
+
+<BlogPicture imageMetadata={image2} alt='Cloudflare Turstile statistics records a spike in unsolved CAPTCHA requests.' />
+
+The thing is, there is no trivial way to disable Cloudflare Turnstile here, so you decide to **rotate the secret key.** After the rotation, you still face the same loop on the WordPress login site. It might take a bit to propagate the change, or so you thought. That's correct, but after about 15 minutes, the change propagates and you see this Cloudflare Turnstile error message upon refreshing the WordPress login page: *"Invalid domain. Contact the Site Administrator if this problem persists."*
+
+Now, you cannot even go to the 2FA code screen. Your username and password cannot be submitted as Cloudflare Turnstile completely blocks the login process after secret key rotation due to security reasons. Somehow, the problem is now even worse than before.
+
+## Perform WordPress administrative operation but not via admin dashboard, is it possible?
+
+In the large picture, this can potentially be a problem with other Captcha services too. At the moment, the Wordfence 2FA and Cloudflare Turnstile are certainly incompatible and causing havoc. Disabling these services and reverting the WordPress site to a known and good state is the goal, but that seems to be impossible when being locked out of the admin dashboard, *or is it?*
+
+WordPress backup and restoration is trivial from the admin dashboard with the help of plugins, All-in-One WP Migration for example. This path is not available at the moment. Infrastructure snapshot restoration is another choice, but what if you don't have one? How about directly accessing and modifying WordPress content at the file system level? If your WordPress site is fully managed by a third party, you might have limited control of the web server. However, if an option is available from your WordPress hosting provider, or you are self-hosting, you can SSH directly to the server and modify your WordPress installation via an admin dashboard.
+
+## Resolve the login loop by disabling WordPress plugins via SSH
+
+Follow the previous article: [Host a free WordPress site with Google Cloud and Cloudflare](host-and-optimize-a-wordpress-site-for-almost-free-using-gcp-and-cloudflare), let's say your WordPress site is hosted on Google Cloud using WordPress Certified by Bitnami and Automattic on a Compute Engine, then there is an out-of-the-box and secure way to SSH to the web server via Google Cloud Compute Engine Dashboard (marked yellow in the picture below).
+
+import image3 from '../../assets/blog/26/cloudflare-turnstile-3.webp';
+
+<BlogPicture imageMetadata={image3} alt='SSH to Wordpress host in GCP dashboard.' />
+
+The secure SSH session is fully managed by Google Cloud, so you don't have to worry about any form of configuration. After a bit, the terminal of your virtual machine (Compute Engine). Your terminal may resemble or vice versa depending on the virtual machine configuration. For an out-of-the-box setup from Bitnami, it should be the same.
+
+import image4 from '../../assets/blog/26/cloudflare-turnstile-4.webp';
+
+<BlogPicture imageMetadata={image4} alt='Wordpress by Bitnami and Automattic terminal.' />
+
+The goal is to find out where WordPress plugins (Wordfence and Cloudflare Turnstile) reside on your web server and disable them from there. With that said, run the following commands:
+
+```
+# Move to where the plugin folder locates
+cd ../bitnami/stack/wordpress/wp-content
+# Rename an existing, "broken" folder to disable the plugins
+sudo mv plugins plugins-old
+```
+
+At this point, your plugins are all disabled, but no worries, they can be restored later. Don't close the SSH window, but let's put that aside for now. Then, go back to your WordPress admin login page (`wp-admin` or any other equivalents). As both Wordfence 2FA and Cloudflare Turnstile are disabled, you can log in to the WordPress admin dashboard without any problem. Once you are in the dashboard, your browser stores a login session and it survives page refresh, so do not log out of this step.
+
+Now, return to the Compute Engine SSH window, and run the following command.
+
+```
+sudo mv plugins-old plugins
+```
+
+By renaming the `plugins-old` folder back to the original one, now your WordPress site detects the existence of plugins and applies them accordingly, *including the problematic login loop bug*. A refresh of an admin dashboard can reflect the changes. **That said, as your login session is still there, you can simply go ahead and disable Wordfence 2FA and Cloudflare Turnstile in the WordPress admin dashboard.** The problem is solved, and the login loop is now gone!
+
+## Conclusion
+
+Wordfence and Cloudflare Turnstile are great services to up your WordPress security game. That said, with Wordfence 2FA specifically, there seem to be problems regarding its interaction with Captcha service in general, or at least, in a specific set of conditions.
+
+- [Incompatible with Wordfence 2FA Login Security](https://wordpress.org/support/topic/incompatible-with-wordfence-2fa-login-security/)
+- [2FA conflicts with reCAPTCHA plugins](https://wordpress.org/support/topic/2fa-conflicts-with-recaptcha-plugins/)
+
+Whether you can SSH to the web server is an obstacle, as in, you are using hosting on a fully managed provider. If you do have access, using SSH and directly modifying files on the web server, the issue can be resolved with relative ease. Hopefully, this tutorial help you recover the website in a matter of minutes.
+
+If you find this article to be helpful, I have some more for you!
+
+- [How to back up Microsoft 365 with Synology Active Backup?](how-to-back-up-microsoft-365-with-synology-active-backup)
+- [Is AMD GPU better than Nvidia on Linux? It depends 🐞](is-amd-gpu-better-than-nvidia-on-linux)
+- [Strapi vs Directus vs Payload, Headless CMS Comparison](strapi-vs-directus-vs-payload-headless-cms-comparison)
+
+And, let's connect!
+
+- [LinkedIn](https://www.linkedin.com/in/hunghvu/)
+- [GitHub](https://github.com/hunghvu)
+- [X (formerly Twitter)](https://x.com/hunghvu_dev)
+
+
