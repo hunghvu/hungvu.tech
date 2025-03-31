@@ -1,0 +1,95 @@
+---
+coverImage: ../../assets/blog/39/cover-image.png
+coverAlt: What to consider when migrating from IPv4 to IPv6 for a simple web server on AWS? It is more involved than just tweaking a few knobs.
+publishedDate: May 3, 2024
+readerTitle: What I learned when migrating hungvu.tech from IPv4 to IPv6 on AWS
+readerDescription: What to consider when migrating from IPv4 to IPv6 for a simple web server on AWS? It is more involved than just tweaking a few knobs.
+seoTitle: Migration from IPv4 to IPv6 on AWS, what to know about?
+seoDescription: What to consider when migrating from IPv4 to IPv6 for a simple web server on AWS? VPC, containers, database, reverse proxy, networking, and a lot more.
+---
+
+Starting from February 1st, 2024, Amazon Web Services (AWS) starts charging public IPv4 fees at the rate of $0.005 per IP per hour, or $3.6 per IP per month. Not a lot to me, but considering my AWS usage only has been around $6 per month, that is a 60% increase in price. How to cut costs? That was when I looked into public IPv6, which is free on AWS.
+
+This article is about my experience migrating [hungvu.tech](https://hungvu.tech) to IPv6 on AWS. Although this is not a tutorial, it can give you some insight into the findings during the migration. For the infrastructure as code, [you can visit my GitHub repository](https://github.com/hunghvu/hungvu.tech/tree/main/infras/iaac/aws).
+
+## Which parts of my technology stack are affected by the IPv6 migration?
+
+All of them.
+
+It was just switching a public IP, how hard could it be? Or so I thought. Unlike IPv4 which is universally supported, IPv6 support is still limited at many levels even though the protocol itself was introduced and standardized years ago. It is not just a software problem but is also an infrastructure issue. I like to loosely conceptualize my findings based on [the OSI model](https://en.wikipedia.org/wiki/OSI_model), which includes 7 different layers of abstractions in a network stack. I simplified the abstraction quite a bit though, from 7 layers to just "hardware, network" and "software". The below is how I associate my technology stack.
+
+- AWS (hardware, network, software)
+- My homelab (hardware, network)
+- Next.js, Payload CMS (Express), Node.js (software)
+- Caddy via [Caddy Docker Proxy](https://github.com/lucaslorentz/caddy-docker-proxy) (network).
+- Mongo DB Atlas, ghcr.io, and GitHub (network).
+- Cloudflare (network, and software).
+
+## Is my homelab network IPv6 compatible?
+
+Because my AWS infrastructure will soon utilize a public IPv6 address, I must be able to connect to AWS from my homelab. Technically, everything is accessible via web GUI, but that is only useful for an administration purpose. I also need to test and monitor my website from the lab, so without proper IPv6 support, that will not be possible. Luckily, my ISP (CenturyLink) does support IPv6, and with the help of an x86 OpenWRT router/firewall, my homelab infrastructure is dual-stack.
+
+## Does AWS support IPv6 across the services that I utilize?
+
+I needed to check whether the AWS services I utilized supported IPv6 or not. It was funny to think about this I must say, like, have I ever needed to check whether a service supports IPv4 before?
+
+- **EC2:** I looked into [AWS specifications](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-types.html). My instance is t4g.micro and it supports IPv6. In any case, it seems all instance types support IPv6 at the time of writing, so it should not be a problem.
+- **VPC:** It supports IPv6 in my region (US West - Oregon). AWS also offers a /56 CIDR block for IPv6, which will be helpful down the road because a smaller subnet can complicate the setup. I heard some other cloud providers offer a CIDR smaller than /100, which becomes an issue down the road when segmenting network and routing traffic.
+- **EC2 Instance Connect: **There are 2 different options, either an SSH connection via public IP, or an internal VPC network. At the time of writing, Instance Connect via public IP only supports IPv4. I think that is also the case for internal VPC network connections. However, my VPC still offers a private IPv4 address, so Instance Connect via the internal VPC network is usable.
+- **API for IaaC: **At least for Pulumi, it appears not all IPv6 settings are configurable. For example, I could not retrieve IPv6 automatically in the same way as IPv4 via Elastic IP, or I could not configure ICMPv6 ACL ([a similar issue is reported in the Terraform repository](https://github.com/hashicorp/terraform-provider-aws/issues/35526)).
+
+If you are interested in how I implemented AWS IaaC via Pulumi, [check out the hungvu.tech's repository](https://github.com/hunghvu/hungvu.tech/tree/main/infras/iaac/aws).
+
+## Do Next.js, Payload CMS (Express.js), and Node.js offer IPv6 support?
+
+I host both Next.js and Payload CMS (with Express.js underneath) on the same EC2 instance. They both support IPv6 out of the box. This means their server will listen and bind to an IPv6 address and its port. I am not too familiar with low-level networking programming, but I guess it is thanks to Node.js, which has supported IPv6 since the very beginning. Starting from Node.js v17 (released in 2021), IPv6 is even preferred in a dual-stack host, so I can say IPv6 is a first-class citizen here.
+
+## Can Caddy via Caddy Docker Proxy route IPv6 traffic?
+
+Caddy as a reverse proxy works with IPv6 because the service simply binds to all interfaces by default, nothing to complain about** **here, but here comes the unexpected. Out of the box, Caddy automatically provisions TLS certificates from either Zero SSL (primary public ACME CA), or Let's Encrypt (fall-back public ACME CA). However, *Zero SSL does not support IPv6 so all requests will fail. *Technically, this is not an issue, because Let's Encrypt supports IPv6. However, somehow my deployment bugged out so it did not fall back to Let's Encrypt. It took a while for me to figure out what went wrong.
+
+```
+# AAAA records
+
+https://acme.zerossl.com/v2/DV90: Not found
+https://acme-v02.api.letsencrypt.org/: 2606:4700:60:0:f53d:5624:85c7:3a2c
+```
+
+TLS provisioning issue aside, it appears Caddy Docker Proxy does not support IPv6 `upstream` out of the box. With the use of `upstream`, the Caddy Docker Proxy container will automatically detect the IP of containers in the same network (masquerade or not). However, I was not able to make it detect my services' IPv6 addresses. Eventually, I decided to just assign static IPv6 to each of my services and set up `reverse_proxy` accordingly. [The `docker-compose.yml` implementation is available at hungvu.tech's GitHub repository.](https://github.com/hunghvu/hungvu.tech/blob/main/infras/containers/docker-compose/aws/docker-compose-ipv6.yaml#L21)
+
+## How about MongoDB Atlas, ghcr.io, and GitHub?
+
+In case you do not know, MongoDB Atlas is a managed MongoDB service, while ghcr.io is GitHub's container registry service. Guess what?
+
+> "Atlas does not support connectivity via IPv6 addresses at this time."
+>
+> <cite>[MongoDB Atlas support's response to my question](https://www.mongodb.com/community/forums/t/does-mongodb-atlas-support-ipv6-only-client-for-m2-instance/276117)</cite>
+
+*They all do not support IPv6*. For my MongoDB cluster, I chose AWS `us-west` (the same as my other services), so clearly, the infrastructure is IPv6 compatible. This means the lack of IPv6 support is on the MongoDB Atlas side. Meanwhile, GitHub is the largest code collaboration platform as of 2024, and IPv6 is still not there yet... But hey, [ GitHub is working on IPv6 enablement now](https://www.githubstatus.com/incidents/5y8b8lsqbbyq), so maybe it will be ready by the end of this year.
+
+I do not want to move away from MongoDB Atlas right now, so I self-hosted the database solution instead. For the container registry though, I simply modified my GitHub Actions workflow and pointed the publish to Docker Hub, [which also just generally supported IPv6 in August 2023](https://www.docker.com/blog/docker-hub-registry-ipv6-support-now-generally-available/) (better late than never).
+
+## Cloudflare is not a bulletproof solution to migrate from IPv4 to IPv6
+
+My journey started with this article from Cloudflare: [Amazon's $2bn IPv4 tax — and how you can avoid paying it](https://blog.cloudflare.com/amazon-2bn-ipv4-tax-how-avoid-paying). It is a great article to have me explore the IPv6 side of Cloudflare, but it does not give a full picture of how the IPv4 to IPv6 migration happens from start to finish, and how complicated the process can be.
+
+Putting their article aside, Cloudflare has offered IPv6 support since 2011, so their IPv6 service and portfolio are way more than enough for my use case. Without their IPv6 compatibility service, it would potentially take more time for me to configure an equivalent NAT64 and further complicate the network stack. Most end users are still on IPv4 after all, and without proper IPv6 configuration on their end, they will not be able to access my website. Considering the IPv6 on the end-user side is out of my control, so it is better to leave Cloudflare, the perimeter, to do the hard labor here.
+
+## Conclusion: Did the IPv6 migration work out?
+
+In the end, I was able to fully migrate [hungvu.tech](https://hungvu.tech) from IPv4 to IPv6. It took me more or less 2 days though, so do remember to carefully plan for your production migration. Unfortunately, I was not able to bear the fruit of this migration, because my EC2 instance does not have enough resources to self-host MongoDB. At the time of writing, my website is hosted on the homelab. Technically speaking, utilizing homelab is a win-win situation for me, but I digress, that is a story for another day.
+
+Spending time learning more about IPv6 infrastructure and migration was a worthwhile experience for me, and I would suggest you try that out too!
+
+If you find this article to be helpful, I have some more for you!
+
+- [My checklist for bringing a website to production.](considerations-for-a-production-ready-website)
+- [PCI and GPU passthrough in Harvester HCI vs. Proxmox.](compare-pci-and-gpu-passthrough-in-harvester-hci-with-proxmox)
+- [Harvester HCI as a hypervisor, the new choice for homelab experiments.](is-harvester-a-good-hypervisor-for-a-beginner-my-hands-on-experience)
+- [A new way to search for OpenWRT-supported devices (modernize table of hardware).](https://hungvu.tech/lab/openwrt-table-of-hardware)
+
+And, let's connect!
+
+- [LinkedIn](https://www.linkedin.com/in/hunghvu/)
+- [GitHub](https://github.com/hunghvu)
+- [X (formerly Twitter)](https://x.com/hunghvu_dev)
