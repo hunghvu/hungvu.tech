@@ -1,0 +1,175 @@
+---
+
+coverImage: ../../assets/blog/35/cover-image.webp
+coverAlt: For my homelab, I have been a CenturyLink customer for a few months. Their customer service quality is ... worth a rant.
+publishedDate: September 9, 3023
+readerTitle: CenturyLink service is bad, here is why
+readerDescription: For my homelab, I have been a CenturyLink customer for a few months. Their customer service quality is ... worth a rant.
+seoTitle: CenturyLink service is bad, here is why
+seoDescription: For my homelab, I have been a CenturyLink customer for a few months. Their customer service quality is ... worth a rant.
+---
+
+As a new CenturyLink customer, I have had nothing but bad experiences from them. After gathering information from people working at CenturyLink, I have a speculation of why CenturyLink customer service is so bad nowadays. As in, they let the customer lose the Internet for a month or more.
+
+Please keep in mind the following is about the Customer Service side of CenturyLink (from tier 1 agent to management), not the Field Technicians. Your bad experience is mostly from the Customer Service side. *As a disclaimer, this is only my speculation from the information I have, so treat them with a grain of salt. You can also go to the CenturyLink subreddit to view other customer experiences.*
+
+## CenturyLink customer service organizational structure
+
+The customer service side of CenturyLink is divided into 3 departments:
+
+- **Billing department (*****CSC Prepaid/SimplePay*****):** They deal with questions regarding pricing, plans, billing, upselling services, and so on.
+- **Tech support department (*****Rpr CRIS Cons Data*****):** They are practically all tier 1 agents. All follow transcripted responses, with little to no practical network troubleshooting skills. I don’t think the concept of tier 2 or 3 even exists in their structure.
+- **Customer retention/Care department (CSC Care CRIS):** They deal with “tough” customers wanting to refund/cancel services. If you somehow reach this stage, you can get something back for your bad experience (e.g., discount, refund)
+
+When you first reach out, you likely will see the **Billing department**. If your questions gears toward solving Internet issues, the **Tech support department** comes into play. Here is where things go South, but we will go back to this in a little bit. The Tech support department has its script of how to deal with customers, along with canned responses. Anecdotal stories on Reddit tell me that dropping “tough” customer calls or putting those customers into long waiting queues are strategies in their book. If you use online chat, you have a higher chance of being transferred to the **Customer retention/Care department**. This is where “tough” customers can get their refunds, and benefits back. Also, this is where the conversation generally ends, either thanks to you accepting the agent's satisfactory answers, or the Care department abruptly ends the conversation because they “think” you are satisfied.
+
+## CenturyLink is going through some sort of internal restructuring
+
+In 2020, CenturyLink changed its brand to Lumen. From what I know, CenturyLink is now considered a subsidiary of Lumen. Recently, along with other technology players, CenturyLink/Lumen has been impacted by the mass layoff (2022, 2023, and to be continued). Initially, there are at least 3 sub-groups on the Customer service side, and each “owns” their customer base in CenturyLink. These groups are essentially isolated from each other, so one cannot access information of the other.
+
+Back when they had separate sub-groups, the communication between different departments (Billing, Tech support, and Customer retention) was already not the best. Now, the company turns them into one group only. During this transition period, everything is chaotic, for both the Field Technicians and customers. What does that mean?
+
+- Customer tickets get randomly closed due to miscommunication between people from different groups.
+- Appointments are unexpectedly rescheduled without notifying the customer or even retrieving their agreement because one group “thinks” that works better for their workflow.
+- When you contact the support agents, you likely will see a person from a group who does not “own” you. Therefore, they don’t have access to your information and will claim you don’t have an appointment (even though you did schedule), etc.
+- In between chat/call transfers, either the agent never read previous chat/call threads/notes, or they don’t have access to that view.
+- Field technicians cannot complete the troubleshooting, and installation, because of something the Customer service side did not tell them, or did not coordinate proper neighborhood infrastructure installation.
+
+Now, CenturyLink is migrating its existing customers to Quantum, a subsidiary of Lumen, another indicator that the transition is happening. The CenturyLink employees I talked to were surprised that a new customer like me is somehow registered to the CenturyLink system, which is internally considered "legacy". I guess this surprise reaction is partially due to the complicated cluster mentioned above.
+
+## I have lost my Internet for about a month
+
+As a part of my homelab, I decided to try out CenturyLink's Gigabit fiber service. I have a backup service, so this line is more of a toy to play with. Initially, to install the service, it took me more than a month with several technician visits. Why? I'm not sure, but all the technicians told me that the infrastructure was not enabled in my area (no light to the fiber distribution unit). That was certainly odd because I knew my neighbors had CenturyLink service. In any case, it was eventually resolved, and got my service installed, but only after I managed to get in touch with the management level at Lumen.
+
+Fast forward to about a month ago, the Internet just dropped in the middle of the day. I gave the benefit of the doubt and let it go by a few days, assuming that it was a regular outage. After all, the CenturyLink fiber line is simply my toy so it does not directly impact my workflow. Because the Internet never goes back **(Timeout waiting for PADO packets and no WAN light to the ONT)**, I started a month of back and forth with CenturyLink support to get my Internet fixed.
+
+Now, my Internet is fixed (kudos to R and G, you know who you are!), I also learned that my fiber cable was improperly spliced and connected to the distribution unit of my neighborhood. Interestingly, the technician said that I could never have Internet in the first place due to that issue. However, I did have the service for a while until it dropped. My guess is some other technicians were working with the fiber distribution unit and somehow messed up my line. The root cause is still a mystery.
+
+## Chat transcript with CenturyLink Customer Service
+
+This is a wall of text if you want to have a deeper look at my experience with CenturyLink. That said, I pretty much summarized the whole story within the sections above. Here are some snippets from transcripts of my conversations with CenturyLink agents.
+
+### Did my appointment exist in the first place?
+
+
+```
+Agent … successfully transferred the chat to button Rpr CRIS Cons Data
+( 7m 55s ) Agent: Hi, upon reviewing it seems like you are experiencing an internet service error, correct?
+( 8m 44s ) Hung Vu: 2 weeks, no Internet. I have an appointment for repair today. Just want to check the status and expected arrival time of the technician.
+( 10m 44s ) Agent: I see, let me go ahead and check your account here
+( 12m 23s ) Agent: Alright, the ticket is labeled on track so it means that techs are on their way now just keep your lines open so you will get notified immediately once they text or call
+( 13m 45s ) Hung Vu: Great, it's odd that I didn't receive any email or call before for appointment confirmation. It does not appear on my CenturyLink dashboard either. Your message relieves me!
+( 14m 25s ) Agent No worries, because I will page the tech so they can call or text you an hour before they arrive in the area
+( 14m 52s ) Agent: So maybe, you have any other additional information you want me to send to the tech?
+( 16m 20s ) Hung Vu: I'm not always at the front door. If the technician arrives and sees no one. It is best to call me at ... (main number) or ... (2nd number). I'm at home all day so will be able to open the door.
+( 17m 59s ) Agent: Alright, that is very helpful information, I will take note of that and send it to the tech
+```
+
+And, the technicians did not show up that day. My appointment somehow disappeared from their system, or should I say, the team responsible for my appointment does not have access to that view? Also, keep in mind I repeated my contact information and instructions in this chat session.
+
+```
+( 3m 8s ) Hung: I contacted again this morning and was confirmed by CenturyLink support. I have a chat transcript for that. However, I have not seen any sign or communication about the technician's arrival.
+…
+( 14m 24s ) Agent: I apologize for the inconvenience this may have caused you. Let me check that for you.
+( 18m 0s ) Agent: Upon checking here I don't see an open dispatch ticket.
+```
+
+Then, they offered to reschedule my appointment.
+
+```
+( 35m 37s ) Agent: OK, I'm done with the troubleshooting on my end but no luck, I'm unable to fix it remotely. As I am entering your dispatch.
+( 44m 45s ) Agent: I sent you a code by SMS to confirm your mobile number, Can you please provide me the code?
+( 46m 16s ) Hung: No code arrives. Just so you know, earlier this week, CenturyLink support tried the same thing with me but it did not work. They say the SMS system CenturyLink has is broken at the moment, so they use other means to set up my schedule.
+( 47m 19s ) Agent: There is no issue on my end right now, And I'm unable to proceed with the dispatch without the code, Can you please double-check?
+...
+( 50m 17s ) Hung: Please try other methods, because this will not work. I say it because it happened earlier this week already.
+...
+( 1h 13m 58s ) Agent: I'm done creating the ticket. Just a recap, you are scheduled Mon, Aug 28th 2023. The tech will arrive anytime between 8 AM to 5 PM but they will be updating you with a more specific time.
+...
+( 1h 15m 5s ) Hung: How can I even prove the ticket exists? Just in case the next CenturyLink supports say "Not showing on my screen",
+( 1h 16m 28s ) Hung: Just so you know, the appointment you just created does not even show up on my screen.
+```
+
+### The appointment date was unexpectedly changed without consulting the customer
+
+The next day, my appointment miraculously jumped to a few weeks after the expected date. This definitely will create an impact on customer workflow, especially when most repair appointments are during weekdays, and CenturyLink never provides a precise time window of technician arrival. In other words, customers might need to ask for a day off of work, and only to face a no-show event.
+
+```
+( 7m 36s ) Hung: An appointment I scheduled again yesterday after 2 hours of escalation is supposed to be tomorrow, and now it jumps to Sep 07.
+...
+( 20m 22s ) Agent: Hi, Hung. It seems like it is the earliest date we have but do not worry all of our tickets are worked as soon as possible. The commit time is the latest that the ticket will be worked. I can set up for you to receive a text message when the technician is on their way.
+( 20m 27s ) Agent: Please be notified that this date is the system default date and technicians will be coming on an earlier date than the default date. The date is just the date on the system which serves as an allowance to give the technician time in case there are other cables or equipment that need replacement, if we can complete this later or tomorrow until 8:45 PM, we will give you a heads up immediately.
+...
+( 28m 41s ) Agent: I understand how you feel and I have sorted out all the options to help you out with your concern if that still does not suffice the answer to your concern I will be glad to connect you to our care department.
+( 28m 49s ) Agent: Please stay on the line.
+Agent ... successfully transferred the chat to button CSC Care CRIS
+```
+
+### The customer retention team joined the chat
+
+Here was where the fun happened. After I expressed an intention to cancel the service, I was transferred and was able to retrieve certain information from the Care department regarding the current state of CenturyLink support lines.
+
+```
+( 39m 33s ) Agent: The repair appointment of 08/26 didn't solve the issue, correct?
+( 39m 37s ) Hung: Regarding the 26th appointment, can you let me know what ticket number was it?
+( 41m 21s ) Hung: Funny. I had an appointment on the 26th, but no one showed up. I escalate again with 2 hours of my time. The support agent and their "manager" did not see my 26th appointment on their end. In other words, they saw no appointment.
+( 41m 26s ) Hung: Now you see it.
+( 42m 24s ) Agent: Oh got it, Hung. Sorry for this bad experience and the bad information provided by the Tech team.
+( 43m 12s ) Hung: Good to hear. What is your team again? You seem to be way more knowledgeable than the Tech team you are referring to.
+( 44m 6s ) Agent: We are the Care team, Hung, Allow me please a couple of minutes to proceed with the refund, again sorry for this bad experience :(
+...
+( 51m 38s ) Hung: How were you able to see my appointment on the 26th? Which screen, website, app or procedure allowed you to do so? So I can let the Tech team know.
+( 53m 13s ) Agent: Yeah Hung I totally understand and again sorry for this situation. I can see that order in your account without a specific tool. The information about that appointment is... Context: Repair Appointment
+...
+Agent ... successfully transferred the chat to button Rpr CRIS Cons Data
+```
+
+### Tech support and Customer retention, a clash of information
+
+So now, the conversation shifted back to CenturyLink Tech support department, here is where things got spicy. Clearly, this shows that there is a limitation in what each support agent can do. The principle of least privilege is certainly a guideline to follow, but in this case, their specific implementation severely impacts internal communication and customer experience.
+
+```
+( 1h 9m 31s ) Hung: So it seems, after one night, my appointment was shifted from August 28th to September 7, huh?
+( 1h 10m 11s ) Hung: What was the reason for that?
+( 1h 10m 51s ) Agent: The date is just the date on the system which serves as an allowance to give the technician time in case there are other cables or equipment that need replacement, if we can complete this later today, late afternoon or tomorrow until 8:45 PM, we will give you a heads up immediately.
+( 1h 12m 12s ) Hung: I just heard this canned response about 30 minutes ago, but anyway, do you know why the technician did not show up to my appointment yesterday?
+( 1h 13m 33s ) Agent: Most of the time reason why we move the appointment is for the technician to get cables and equipment that are essential for a repair. Rest assured that I have tagged your rest assured I have tagged this for priority repair to ensure this will be taken care of with utmost urgency.
+( 1h 14m 56s ) Hung: So an appointment is shifted without even contacting the customer and asking for their approval, and availability beforehand?
+( 1h 16m 55s ) Agent: I'm sure that they notify you on the application but sometimes they only rely on the best contact number that is on the ticket apparently I don't see an contact number there so it means that they failed to notify you about it. Don't worry I've put your contact number on the ticket now
+( 1h 18m 6s ) Hung: Do you see any other note on my ticket? Because I gave very detailed instructions. Now you say that even my phone number does not show up.
+( 1h 19m 1s ) Agent: I see no notes here on my end but upon paging your tech I've put your contact number
+( 1h 20m 5s ) Hung: No note, huh? Guess I understand how CenturyLink operates now. Anyway, did you see anything specific, or communication regarding my appointment on the 26th?
+( 1h 20m 25s ) Hung: Yesterday's appointment (08/26).
+( 1h 22m 12s ) Agent: To be honest with you I'm just telling you what I see on my end and the date now is September 7th. And I cannot see the previous ticket on it ( 1h 22m 34s ) Hung: So, you cannot see any previous ticket?
+( 1h 23m 3s ) Hung: There is no "resolved", "archived" section or something similar on your end?
+( 1h 23m 52s ) Agent: Yes because we cannot create a new ticket if there is an existing ticket there is an old one so possibly the previous rep didn't detect any ticket
+( 1h 25m 32s ) Agent: Don't worry rest assured that you're current ticket is in good hands now and I've tagged your ticket as a priority is there anything else?
+( 1h 26m 24s ) Hung: Can you see my chat or contact activity to CenturyLink support? As in, you can see the communication thread to have a context to help troubleshoot.
+( 1h 27m 52s ) Agent: I see your previous chat however we cannot troubleshoot anymore if there is an open ticket now because the tech will do the job on it
+( 1h 28m 55s ) Hung: So you can review the previous chat thread right? If so, can I have a reference id for our current chat thread?
+( 1h 29m 20s ) Agent: Sure I can give you our case chat ID: ...
+( 1h 30m 16s ) Hung: Can you give me an ID of the chat threads that I had yesterday? One at around 8 AM, and one at around 3-5 PM?
+( 1h 30m 55s ) Agent: As much as I want to do that I cannot access that Hung but I've given you our case ID. Is there anything else?
+( 1h 31m 46s ) Hung: OK, my last question is. Does the chat ID you give me cover all of my conversations between transfers? Because I have met multiple agents before being transferred to you.
+( 1h 32m 4s ) Agent: Yup Hung
+( 1h 32m 25s ) Hung: You have been a great help and deserve 5 stars, Thank you for your help :)
+```
+
+This was the end of my lengthy back-and-forth attempts with the CenturyLink support.
+
+## Conclusion
+
+It is always bad when an Internet service provider monopolizes your area. In my case, CenturyLink is the only gigabit fiber plan available (940 Mbps to be exact). If there are any other gigabit plus symmetrical services, I suppose CenturyLink will have to gear up its games to compete with those services. How is CenturyLink Customer Service compared to other providers? I would say they are relatively the same depending on where you live. In my specific case, CenturyLink is the absolute worst in terms of inconsistencies and outages on the residential side.
+
+If you find this article to be helpful, I have some more for you!
+
+- [Virtualize TrueNAS with Harvester (and Kubevirt for VM management)](virtualize-truenas-with-harvester-and-kubevirt)
+- [Deploy a virtualized OpenWRT firewall in Harvester, how did it go?](virtualize-openwrt-firewall-in-harvester-hci-cluster)
+- [Is Harvester a good hypervisor for a beginner? My hands-on experience](is-harvester-a-good-hypervisor-for-a-beginner-my-hands-on-experience)
+
+And, let's connect!
+
+- [LinkedIn](https://www.linkedin.com/in/hunghvu/)
+- [GitHub](https://github.com/hunghvu)
+- [X (formerly Twitter)](https://x.com/hunghvu_dev)
+
