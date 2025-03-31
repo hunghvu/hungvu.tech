@@ -1,0 +1,134 @@
+---
+coverImage: ../../assets/blog/30/cover-image.webp
+coverAlt: Building a back end. Have you ever heard about headless CMS and BaaS? They might be what you are looking for.
+publishedDate: April 19, 2023
+readerTitle: Amplication vs Supabase vs Appwrite, for an effortless back end
+readerDescription: Building a back end. Have you ever heard about headless CMS and BaaS? They might be what you are looking for.
+seoTitle: Amplication vs Supabase vs Appwrite, free BaaS comparison
+seoDescription: Building the back end of your product requires a lot of effort. However, BaaS and headless CMS will ease that for you with Amplication, Subapase, and Appwrite.
+---
+
+import BlogPicture from '../../components/BlogPicture.astro';
+
+The modern web space is built up on time and resources of uncountable numbers of contributors over decades. There is a high chance that the tasks you are trying to achieve have been done by someone, somewhere.
+
+import image1 from '../../assets/blog/30/baas-comparison-1.webp';
+
+<BlogPicture imageMetadata={image1} alt='Dependency - XKCD #2347.' />
+
+When talking about websites, people think about the front end and the back end. Each has its own ecosystem and associate frameworks to build up the product, but you, as a developer, still need to tie everything together. This leads to a question, what if there is an existing product that helps you bind everything together out of the box? In the case of the back end, management systems such as headless content management systems, ecommerce management systems, or learning management systems are some examples. And besides, back-end-as-a-service also comes into play.
+
+This article focuses on a comparison between back-end-as-a-service and headless content management systems. It is a continuation of the previous two that dived into headless CMS, so if you are not aware of them, go ahead and check them out!
+
+- [Headless content management introduction](headless-cms-for-portfolio-and-blogs)
+- [Strapi vs Directus vs Payload, Headless content management comparison](strapi-vs-directus-vs-payload-headless-cms-comparison)
+
+## What is a headless content management system (headless CMS)?
+
+Imagine you are a creator, and you create content on a daily basis (e.g., similar to the article you are reading), at some points, you are going to have dozens if not hundreds, and more pieces in your pocket. To **centrally** manage them, you need a management system specifically designed for content in this case, and it is a headless CMS. In this case, the front-end team is responsible for the presentation layer, and they can retrieve information from the headless CMS to display, be it videos, images, text, and more.
+
+Unlike traditional CMS systems that combine content creation, storage, and delivery into a single software, a headless CMS separates content management from content delivery. In other words, it provides an API for developers to access the content, which can then be delivered through any platform or device, such as websites, mobile apps, or IoT devices. With a single source of truth, developers have no need to manually modify content in their code, and effectively, create a separation of concerns.
+
+This decoupling of the content management and delivery layers provides more flexibility and freedom to developers and content creators, allowing them to create and manage content independently of any specific presentation layer. It also enables developers to use their preferred front-end technologies and frameworks, giving them more control over the user interface and user experience.
+
+## What is Back-end-as-a-Service (BaaS)?
+
+BaaS is a type of service that provides developers with a complete server-side infrastructure for building and deploying applications across multiple platforms (e.g., desktop apps, websites, and mobile apps). It allows developers to focus on the client-side development of their applications, while the BaaS takes care of the back-end infrastructure. Usually, BaaS is a cloud service, but as time goes on, more self-hosted solutions have appeared on the market.
+
+A BaaS typically offers a set of pre-built services and features, such as user authentication, access control list, workflow, and most fundamentally, database management and creation. These services can be accessed through a web-based dashboard or an API, which developers can integrate into their applications. If you are familiar with the object-relational mapper, then in a sense, BaaS is a GUI version of that, plus a lot more functionalities to build a full-featured back-end.
+
+Using BaaS developers to accelerate the development process by reducing the amount of time and resources needed to build and maintain the back-end infrastructure. This can result in faster time-to-market for applications and lower development costs. BaaS also handle the scalability and availability of the back-end infrastructure, ensuring that the applications can handle high traffic and maintain high uptime.
+
+## What are the differences between headless CMS and BaaS?
+
+Both headless CMS and BaaS provide a battle-tested and full-featured back end out of the box. In fact, many of their functionalities overlap, so what makes the difference here?
+
+- **Focus: **Headless CMS focuses on providing a flexible content management system that can be used to manage content for different channels and platforms. This means their data usually are unstructured like articles, images, and videos. Besides, there is almost always a user-friendly dashboard (e.g., for creators) so it greatly reduces the learning curve for non-technical users.BaaS, meanwhile, focuses on providing a GUI approach (little to no code) to build a back end. The data can be unstructured, but more than often, BaaS is used to create a complex structured application data model for tasks such as transactions, user profiles, and so on. These data may not even be used on the front end, instead, the other back end is its user. BaaS targets developers, so end-users usually do not know about BaaS's existence.
+- **Customization: **Both headless CMS and BaaS are very customizable. However, headless CMS focuses more on content creation-relation functionalities out of the box such as a WYSIWYG editor and content modeling, so other behind-the-scenes business logic functionalities such as payment processing might need to be manually integrated. That said, many headless CMS has an existing method to integrate, via plugins for example. In contrast, BaaS as a full-featured package usually includes everything out of the box.
+- **Cost: **Both can provide cloud and self-hosted solutions. Usually, a self-hosted solution is only available when the product is open-source. When talking about cloud cost though, CMS, for the most part, follows a subscription per person model (e.g., $5/user/month). Meanwhile, the BaaS pricing model can vary a lot, from subscription, to pay per uptime, per request, and so on. Essentially, it is the same as traditional infrastructure-as-a-service cloud provides.
+
+## What are some open-source BaaS solutions?
+
+There are various BaaS providers on the market, but not many are open-source, so let's focus on them today.
+
+### Amplication
+
+Amplication is a relatively new open-source BaaS provider that aims to simplify the development process by providing a low-code platform for building and deploying applications. In fact, it just reached version 1.0 (production ready) in September 2022.
+
+Amplication supports PostgreSQL, MySQL, MongoDB, and a variety of integrations, but most notably, **it generates the whole back end with** a **human-readable NestJS codebase** for you. You do not run Amplication as a service (or use it as a dependency), instead, you use Amplication to generate codes for you. You own the code, and it can be hosted wherever you prefer. This feature is the one and only in an open-source market (so not counting proprietary products like AWS Amplify).
+
+Amplication provides both cloud and self-hosted solutions. There are a few points.
+
+- The price is fairly steep. Aside from a customized enterprise plan, only two plans Free and Pro exist. Free is slightly feature-limited, and Pro costs $320/month (billed annually) at the time of writing. This indicates that small business may not be their targetted segment.
+- It is unclear whether the self-hosted option is feature-limited.
+
+Also, if you are a business customer in a regulated sector, there is no public **Compliance** statement on their website, so you may need to reach out to their customer support first to confirm the clearance.
+
+However, as a relatively new platform, Amplication is still evolving and may not have all the features and integrations of more established BaaS providers. Still, it has the potential to be a leader in a low-code solution segment.
+
+import image2 from '../../assets/blog/30/baas-comparison-2.webp';
+
+<BlogPicture imageMetadata={image2} alt="Amplication's roadmap." />
+
+### Appwrite
+
+Appwrite is another open-source BaaS provider that offers a range of back-end services for building web and mobile applications. Coincidentally, its first production-ready version, v1.0, was also released back in September 2022. Appwrite provides features such as user authentication, database storage, file storage, serverless functions, and email sending.
+
+Unlike Amplication, you integrate Appwrite to your back end with SDK. This may sound confusing because BaaS should be responsible for the whole back end in the first place, isn't it? Yes, although it handles all business logic for your application, Appwrite is a dependency of your application that you have to manually initialize and configure. This is another form of BaaS.
+
+When talking about Appwrite, the product has three strengths. They might not be unique, but many other solutions do not have them all at the same time.
+
+- Support for multiple platforms and programming languages.
+- Serverless functions.
+- Real-time data subscription.
+
+That said, Appwrite abstracts the database, meaning it is handled internally and only the NoSQL-like interface is exposed, so you have less flexibility in this regard.
+
+Appwrite also provides both cloud and on-premise options. However, their cloud service is still in private beta, and there is no official pricing at the moment. The on-premise, or self-hosted, is free and full-featured, but certainly, it costs in the overhead maintenance.
+
+And the same Amplication, Appwrite does not have any public statement about **Compliance**, so you may have to reach out to their support for clarification on this matter.
+
+import image3 from '../../assets/blog/30/baas-comparison-3.webp';
+
+<BlogPicture imageMetadata={image3} alt="AppWrite's cloud is in private beta." />
+
+### Supabase
+
+Founded in 2020, in roughly the same period as Amplication and Appwrite, however, Supabase is arguably the most established open-source solution among the three. In a sense, Supabase is a direct equivalent and close to feature-parity with Appwrite, offering a self-hosted option, plus a mature cloud platform that offers enterprise support and an even greater amount of integrations. However, Supabase only supports PostgreSQL, the opposite of the NoSQL approach in Appwrite.
+
+Regarding the cloud platform price, Supabase has a Free plan, a Pro plan, and a customized Enterprise plan. There are a few points to mention.
+
+- Unlike Amplication, which generates code and you are responsible for the hosting solution, Supabase provides integration and hosting services for you. The Pro plan costs $25 per month per project. That said, this is a different pricing model compared to Amplication, so they are not comparable.
+- They also have add-ons for the subscription, and the compute instance can be customized to your need. These will change the subscription fee though.
+- Supabase does not seem to have usage caps on their Pro plan, so if you accidentally exceed the limit, prepare your pocket.
+
+On the topic of **Compliance**, Supabase has official support for SOC2 Type 2. There is no mention of other compliances, but they certainly do not support HIPAA and PCI (learned from their ToS and confirmed by a support agent).
+
+import image4 from '../../assets/blog/30/baas-comparison-4.webp';
+
+<BlogPicture imageMetadata={image4} alt='Supabase has support for certain industry compliances.' />
+
+## What are some open-source headless CMS?
+
+The articles below dive deep into 12 different solutions on the market. Do feel free to check them out if you are interested in this topic!
+
+- [Headless content management introduction](headless-cms-for-portfolio-and-blogs)
+- [Strapi vs Directus vs Payload, Headless content management comparison](strapi-vs-directus-vs-payload-headless-cms-comparison)
+
+## Wrap up
+
+The article gives you an introduction to the concept of headless CMS, BaaS, the differences between them, and some open-source BaaS solutions on the market. That said, this article is just an introduction to the topic, the tip of the iceberg you can say, so there is a lot more to learn about. If you notice, the three mentioned BaaS all have their trade-off, so make sure to do deeper research before you decide to commit to one solution. Hopefully, this article was able to help you be aware of these fascinating products, and successfully in improving your developer experience and productivity.
+
+If you find this article to be helpful, I have some more for you!
+
+- [ChromeOS Flex, have I just opened a can of worms?](chromeos-flex-have-i-just-opened-a-can-of-worms)
+- [How to set up Bitwarden Enterprise SSO via OIDC with Google?](how-to-set-up-bitwarden-enterprise-sso-via-oidc-with-google)
+- [Cloudflare Turnstile and Wordfence 2FA break WordPress login flow, how to fix it?](cloudflare-turnstile-and-wordfence-2fa-break-wordpress-login-flow-how-to-fix-it)
+- [Is AMD GPU better than Nvidia on Linux? It depends](is-amd-gpu-better-than-nvidia-on-linux)
+
+And, let's connect!
+
+- [LinkedIn](https://www.linkedin.com/in/hunghvu/)
+- [GitHub](https://github.com/hunghvu)
+- [X (formerly Twitter)](https://x.com/hunghvu_dev)
+
