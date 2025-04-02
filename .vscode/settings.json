@@ -2,24 +2,14 @@
   "editor.quickSuggestions": {
     "strings": true
   },
-  "typescript.tsdk": "node_modules\\typescript\\lib",
-  "editor.defaultFormatter": "rvest.vs-code-prettier-eslint",
-  "editor.formatOnPaste": false, // required 
-  "editor.formatOnType": false, // required
-  "editor.formatOnSave": true, // optional 
-  "editor.formatOnSaveMode": "file", // required to format on save
-  "files.autoSave": "onFocusChange", // optional but recommended
-  "vs-code-prettier-eslint.prettierLast": true,
-  "[dockerfile]": {
-    "editor.defaultFormatter": "ms-azuretools.vscode-docker"
-  },
-  "[dockercompose]": {
-    "editor.defaultFormatter": "ms-azuretools.vscode-docker"
-  },
-  "[postcss]": {
+  // Reference: https://github.com/ota-meshi/eslint-plugin-astro?tab=readme-ov-file#-editor-integrations
+  "eslint.validate": [
+    "javascript",
+    "astro", // Enable .astro
+    "typescript" // Enable .ts
+  ],
+  "prettier.documentSelectors": ["**/*.astro"],
+  "[astro]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[typescriptreact]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  } // set as "true" to run 'prettier' last not first
+  }
 }

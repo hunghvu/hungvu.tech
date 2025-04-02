@@ -1,0 +1,178 @@
+---
+readerTitle: Front-end technologies to explore
+readerDescription: The front-end ecosystem is massive, let's see what options are available out there.
+coverImage: ../../assets/blog/7/cover-image.webp
+coverAlt: The front-end ecosystem is massive, let's see what options are available out there.
+publishedDate: February 22, 2022
+seoTitle: Modern front-end technologies to explore
+seoDescription: Become a web developer with the best frontend frameworks and libraries in 2022, from React, Vue, to Svelte, MUI, PostCSS, Sass, Tailwind, and more.
+---
+
+When I first got into the front end, all I knew was HTML. Then, to make my webpage have a better design, I learned about CSS. Finally, I decided to add more interactive elements, and JavaScript was my solution. For a while, I thought these were all to know about. One day, I felt my code base was unmanageable, that was when I learned about single-page application frameworks and libraries. The technologies evolve rapidly, so being oblivious is a huge downside. Certainly, it is not easy or even impractical for a person to master all these technologies, but I believe everyone should know "*insert the name here*" exists on the market.
+
+In this article, I will present a non-exhaustive list of technologies that you should be aware of. Sometimes, one technology has a variation or a supported library which helps bind to another (e.g., Redux and React Redux). There are many on the list I have never used but knowing about their existence gives me choices when deciding on a tech stack and development plan.
+
+## Barebone HTML / CSS / JS 🔑
+
+The foundation of front-end development. This is a starting point for most developers, so there is not much to talk about.
+
+## Template engines 🔑
+
+They can be thought of as an extended version of HTML / JS. The main focus of a template engine is to mix HTML and JS, then return an HTML at runtime. In some cases, a template engine can have a dialect.
+
+Some notable solutions
+
+- EJS
+- Handlebars
+
+## CSS pre/post-processors 🔑
+
+CSS on steroids. The technology adds extra features to what a regular CSS provides and makes your life easier.
+
+Some notable solutions
+
+- Sass
+- Less
+- Stylus
+- PostCSS
+
+## Single-page application (SPA) frameworks and libraries 🔑
+
+This technology adds another layer of abstraction to barebone HTML / CSS / JS. The main focus is on handling the rendering aspect of a site. In the case of a full-fledge framework, many other features such as routing, state management, etc. are included too.
+
+Some notable solutions
+
+- React
+- Angular
+- Vue
+- Next
+- Svelte
+
+### SPA: Routing libraries 🔍
+
+Sometimes, a library such as React does not come with a specific feature (page routing in this case), so we need to add it manually. Or maybe, you just want to replace a bundled solution in the SPA framework.
+
+Some notable solutions
+
+- React Router
+- React Navigation
+- Svelte SPA Router
+
+### SPA: State management libraries 🔍
+
+Most libraries and frameworks come with a built-in state management solution, but in complex scenarios (e.g., scalability and global store), a third-party solution is preferred.
+
+Some notable solutions
+
+- Redux
+- Hookstate
+- NgRx
+
+### SPA: Build tools/module bundlers 🔍
+
+Most libraries and frameworks come with a built-in solution because they do not use regular HTML / CSS / JS syntax. A build tool exists to transpile and compile the current codebase to barebone HTML / CSS / JS. You can certainly replace a default one if necessary.
+
+Some notable solutions
+
+- Bable
+- Webpack
+- Vite
+
+## CSS frameworks 🔑
+
+Tired of creating elements for your website? The CSS frameworks provide pre-built elements to build a website. There are 2 main flavors that I'm aware of. Note, in terms of CSS, the term library and framework are somewhat interchangeable. I wonder why these are called frameworks without inversion of control. Anyway, that's off-topic. I mention this just so you won't be confused.
+
+### Component libraries 🔍
+
+They provide a fully-featured pre-built component. Do you want a carousel? They have it. Do you want a table that has a good performance for 1000+ rows and filter function? It is there for you.
+
+Many people dislike certain libraries because they make all websites look the same. That's reasonable but not entirely correct. The libraries usually allow you to fully customize the look of its component while fully maintaining its features (unstyled components), so it is not the library's fault.
+
+Some notable solutions
+
+- MUI
+- Bootstrap
+- Chakra UI
+
+### Utility-first frameworks 🔍
+
+They do not provide pre-built components such as buttons, tables, navbar, etc. However, this type of CSS framework provides pre-built CSS classes to customize the look of your elements. For example, it can make your table centered, have a bigger size, and use a different color. However, table scrolling, row state, pagination, etc. are up to you.
+
+Some notable solutions
+
+- Tailwind CSS
+- Tachyons CSS
+
+## Software as a service (SaaS) 🔑
+
+In software development, there are certain tasks that we may not want to do due to their complexity. In some cases, maybe it's because of compliance and regulation reasons. With that in mind, we have to find a third-party provider who provides the service and API to integrate into our website.
+
+### Authentication as a service 🔍
+
+Secure authentication is surely a complex topic. Normal developers may not have a full understanding of what is underneath because this topic gears toward cryptography and cybersecurity.
+
+Some notable solutions
+
+- Auth0
+- Firebase Auth
+- Google Identity Platform: Firebase Auth is built on this. However, Google Identity Platform is a Google Cloud service, so it supports more compliances and regulations.
+
+### Payment gateways as a service 🔍
+
+This captures your credit card information and sends it to payment processors in the back end. It involves money transactions and is highly regulated. Certainly, most people do not want to build such a service from scratch.
+
+Some notable solutions
+
+- Stripe
+- PayPal
+
+### Communication platform as a service 🔍
+
+This provides you with a solution to implement chat, voice call, and communication-related features.
+
+Some notable solutions
+
+- Twilio
+- Plivo
+
+## Little to no-code solutions 🔑
+
+I saw many developers (to be more specific, coders and software engineers) who don't like this side of the front end. To me, they are all tools to solve a problem so I have nothing against them.
+
+Imagine you want to set up a business website that can go online in a few days or so, and is also easy for the IT department to maintain down the road. With multiple features such as blogging or public forms, creating a full website from scratch might take a while and require specialized skills, but the little to no-code solutions may take only days or hours in comparison.
+
+### Content management systems 🔍
+
+This is more like a 50% code solution to build a simple website, but using plugins can make them become an almost no-code solution.
+
+Some notable solutions
+
+- WordPress
+- Shopify
+
+### Website builders 🔍
+
+Pretty much a no-code solution to set up a website. The elements are mostly dragged and dropped while inserting code is considered an advanced feature.
+
+Some notable solutions
+
+- Wix
+- Squarespace
+
+## Wrap up 🍀
+
+This is by no mean an exhaustive list of front-end frameworks and libraries but I believe it is a good starting point to showcase several solutions that exist on the market. One way to expand this list is simply by asking yourself a question: "Was task solved before?"
+
+Whatever the task is, be it as simple as text validation, to more advanced tasks like networking or animation, in a field in which you can hear a new JS framework announcement every other day, there is a high chance you will find a pre-built solution out there.
+
+If you find this article to be helpful, I have some more for you!
+
+- [Advanced GitHub Actions - Conditional Workflow](/advanced-github-actions-conditional-workflow)
+- [Free WordPress site with Google Cloud and Cloudflare ](/host-and-optimize-a-wordpress-site-for-almost-free-using-gcp-and-cloudflare)
+- [What I learned when migrating hungvu.tech from IPv4 to IPv6 on AWS](/migration-from-ipv4-to-ipv6-on-aws)
+
+And, let's connect!
+
+- [LinkedIn](https://www.linkedin.com/in/hunghvu/)
+- [GitHub](https://github.com/hunghvu)
+- [X (formerly Twitter)](https://x.com/hunghvu_dev)

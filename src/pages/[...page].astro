@@ -1,0 +1,144 @@
+---
+import "../styles/global.css";
+import BaseHead from "../components/head/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { getCollection } from "astro:content";
+import FormattedDate from "../components/FormattedDate.astro";
+import { Picture } from "astro:assets";
+import type { InferGetStaticPropsType, GetStaticPaths } from "astro";
+import SeoHead from "../components/head/SeoHead.astro";
+import { BASE_SITE_DESCRIPTION, BASE_SITE_NAME } from "../consts";
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+// File name must be [...page], not [page], so pagination can start
+// from "/", not "/1"
+// Reference: https://stackoverflow.com/questions/74888357/generate-astro-index-page-as-well-as-pagination
+export const getStaticPaths = (async ({ paginate }) => {
+  const posts = (await getCollection("blog")).sort(
+    // Latest post first
+    (a, b) => b.data.publishedDate.valueOf() - a.data.publishedDate.valueOf(),
+  );
+  return paginate(posts, { pageSize: 9 });
+}) satisfies GetStaticPaths;
+
+const { page } = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <BaseHead />
+    <SeoHead seoTitle={BASE_SITE_NAME} seoDescription={BASE_SITE_DESCRIPTION} />
+  </head>
+
+  <body class="flex w-full flex-col items-center bg-base-100">
+    <Header />
+    <main class="flex w-full max-w-(--breakpoint-xl) flex-col items-center px-6 py-12">
+      <section class="daisyui-card bg-base-300">
+        <div class="daisyui-card-body">
+          <h1 class="daisyui-card-title text-5xl">Hello, Tech Enthusiasts!</h1>
+          <p>
+            Welcome to my digital repository. This is where I log my own
+            learning experience. The topics range from software development,
+            configuraiton, review, to homelab setup. I hope you find something
+            useful here!
+          </p>
+        </div>
+      </section>
+
+      <section class="my-10 flex w-full flex-row justify-center">
+        <ul class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+          {
+            page.data.map((post) => (
+              <li class="col-span-1">
+                <a
+                  class="daisyui-card h-96 bg-base-100 shadow-xl"
+                  href={`/${post.slug}/`}
+                >
+                  <figure>
+                    <Picture
+                      class="max-h-[204px]"
+                      formats={["avif", "webp"]}
+                      src={post.data.coverImage}
+                      alt={post.data.coverAlt}
+                    />
+                  </figure>
+                  <div class="daisyui-card-body">
+                    <h3 class="daisyui-card-title">{post.data.readerTitle}</h3>
+                    <p>
+                      <FormattedDate date={post.data.publishedDate} />
+                    </p>
+                  </div>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+
+      <section class="daisyui-join grid grid-cols-5">
+        {
+          page.currentPage === 1 ? (
+            <a
+              href={page.url.first}
+              class="daisyui-btn daisyui-btn-disabled daisyui-join-item"
+            >
+              First
+            </a>
+          ) : (
+            <a href={page.url.first} class="daisyui-btn daisyui-join-item">
+              First
+            </a>
+          )
+        }
+        {
+          page.currentPage === 1 ? (
+            <a
+              href={page.url.prev}
+              class="daisyui-btn daisyui-btn-disabled daisyui-join-item"
+            >
+              Previous
+            </a>
+          ) : (
+            <a href={page.url.prev} class="daisyui-btn daisyui-join-item">
+              Previous
+            </a>
+          )
+        }
+
+        <button class="daisyui-btn daisyui-join-item"
+          >Page {page.currentPage} of {page.lastPage}</button
+        >
+        {
+          page.currentPage === page.lastPage ? (
+            <a
+              href={page.url.next}
+              class="daisyui-btn daisyui-btn-disabled daisyui-join-item"
+            >
+              Next
+            </a>
+          ) : (
+            <a href={page.url.next} class="daisyui-btn daisyui-join-item">
+              Next
+            </a>
+          )
+        }
+        {
+          page.currentPage === page.lastPage ? (
+            <a
+              href={page.url.last}
+              class="daisyui-btn daisyui-btn-disabled daisyui-join-item"
+            >
+              Last
+            </a>
+          ) : (
+            <a href={page.url.last} class="daisyui-btn daisyui-join-item">
+              Last
+            </a>
+          )
+        }
+      </section>
+    </main>
+    <Footer />
+  </body>
+</html>

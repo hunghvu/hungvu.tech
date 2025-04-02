@@ -1,0 +1,166 @@
+---
+readerTitle: How to run a web app on Google Cloud App Engine (GAE)?
+readerDescription: 3 ways to host a single-page application on Google App Engine.
+coverImage: ../../assets/blog/6/cover-image.webp
+coverAlt: 3 ways to host a single-page application on Google App Engine.
+publishedDate: February 17, 2022
+series: Google technologies
+seoTitle: Run a web app on Google Cloud App Engine
+seoDescription: With Google Cloud App Engine as a target deployment environment. Here are 3 ways to deploy and host my React app on GAE.
+---
+
+
+This is more about describing my personal development and debugging experience, less of a step-by-step tutorial on the topic. Correction to any of the errors is welcome!
+
+## Problem statement 🍀
+
+I have a React application with NestJS as the backend. Google App Engine is my target deployment environment. In my [Google App Engine deployment article](/brainstorm-a-deployment-process-from-github-to-google-app-engine-and-cloud-sql-part-2), I successfully made a dummy NodeJS application deployed to App Engine, however, that did not include the front end. Now, how should I host my single-page app there?
+
+My folder structure is as followed.
+
+```
+- root
+  - .github/workflows
+  - front-end
+  - back-end
+```
+
+## What are the approaches? 🤔
+
+There are 3 ways that I'm aware of.
+
+- Using two App Engine services and `dispatch.yaml`.
+- Using one App Engine service to host both React and NestJS apps.
+- Using one App Engine service to host NestJS app and another server to host static React files.
+
+## Using dispatch.yaml 🔑
+
+This can work when the back end and front end are loose couplings, and I want to utilize Google Identity Aware Proxy.
+
+### What is `dispatch.yaml`?
+
+It is a configuration file for **an App Engine** service. The term **service** here resembles **a Compute Engine instance** (not a direct equivalent though). A `dispatch.yaml` file overrides routing rules at an App Engine service level. Meaning, it is before a request reaches my API.
+
+### Usage
+
+Assuming my front end is deployed to service react at `react.uc.r.appspot.com/`, while back end is deployed to service api at `api.uc.r.appspot.com/`.
+
+``` yaml showLineNumbers
+# dispatch.yaml
+# Put this one in my 'front-end' folder
+# Assuming this is a configuration for service "react"
+# All requests to 'react.uc.r.appspot.com/api/*' are routed to 'api.uc.r.appspot.com/'
+dispatch:
+  - url: "react.uc.r.appspot.com/api/*"
+    service: api
+```
+
+### Advantages and disadvantages
+
+**Advantages**
+
+- No need to worry about same-origin issues (e.g., CORS), because the resources are served via the same domain.
+- Can separate the deployment of front-end and back-end (e.g., Creating a workflow that runs when only when files at a path are updated). Inherently increase redundancy and resiliency.
+- Reduce server load.
+- Both can be protected by Google Identity Aware Proxy.
+
+```
+# Sample of CORS error
+Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at ...
+```
+
+**Disadvantages**
+
+- Not applicable when a front end is heavily dependent on the back end, this will be further discussed in the next approach.
+- Might increase the cost since there are 2 App Engine services online.
+
+## A back end stores React assets and statically serves them 🔑
+
+Unlike the first approach, this one helps when the front end requires a resource from the back end at the first load. For example, my React app needs a CSRF token to work with my API. The CSRF token must be available when a user first reaches my website. To do so, my React app has to be served as static files from the NodeJS back end.
+
+### Usage
+
+The instruction below applies to the NestJS framework. My application is deployed to only one domain `back-end.uc.r.appspot.com`.
+
+In my GitHub workflow, I copied the static React files to the back-end folder after React build process is finished.
+
+``` yaml showLineNumbers
+# CI/CD pipeline
+steps: 
+  ...
+  - name: Build front-end
+      ...
+  - name: Copy front-end built to back-end folder
+    working-directory: front-end
+    run: |
+      mkdir -p ../back-end/assets
+      cp -R build ../back-end/assets
+```
+
+In `nest-cli.json`, use `compilerOptions` to copy React asset to NestJS dist build. Then, deploy only back-end folder to App Engine. React files are included and can be statically served.
+
+``` json showLineNumbers
+{
+  ...
+  "soruceRoot": "src",
+  "compilerOptions": {
+    "assets": ["../assets/"]
+  }
+}
+```
+
+### Advantages and Disadvantages
+
+**Advantages**
+
+- Reduce cost as there is only one App Engine service online.
+- No need to worry about same-origin issues (e.g., CORS), because the resources are served via the same domain.
+- Can be protected by Google Identity Aware Proxy.
+- Work with a tight coupling web application.
+
+**Disadvantages**
+
+- Increase server load as the whole single-page application lives on the same App Engine service.
+- Cannot separately deploy back end and front end. A change in one place requires a whole new deployment. Inherently decrease redundancy and resiliency.
+
+## Statically serve, but React files are hosted on another server 🔑
+A common strategy, using (e.g., Google Cloud Storage Buckets) which is optimized for hosting static files can greatly improve performance. You can further fine-tune the server to other aspects too.
+
+### Usage
+
+It's essentially the same as the second approach, but with different configurations depending on situations, so I don't dive into this. An example of serving static files from Google Cloud Storage Buckets using App Engine can be found at [official Google Cloud Documents](https://cloud.google.com/appengine/docs/standard/go/serving-static-files).
+
+### Advantages and Disadvantages
+
+**Advantages**
+
+- Better redundancy and resiliency.
+- Better performance and is easier to fine-tune.
+- Can separate the deployment of front-end and back-end (e.g., Creating a workflow that runs when only when files at a path are updated). Inherently increase redundancy and resiliency.
+    
+**Disadvantages**
+
+- Might face same-origin issues (e.g., CORS) because files are hosted on another domain.
+- Might not be able to activate Google Identity Aware Proxy for the front end.
+- Work with a tight coupling web application.
+- You need to have experience in using another static file hosting service, and using a different platform can decentralize your control.
+
+## Wrap Up 🍀
+
+In summary, I can
+
+- Using 2 App Engine services if my React app and back end are loose couplings.
+- Using App Engine to host back end, while using another service to host static files when I want even better performance, redundancy, resiliency.
+- Using 1 App Engine to host the whole single-page application if it is tightly coupled.
+
+If you find this article to be helpful, I have some more for you!
+
+- [Quantum Fiber W1700K teardown, board view, and UART pins](/quantum-fiber-w1700k-teardown-board-view-and-uart-pins)
+- [Deploy a virtualized OpenWRT firewall in Harvester, how did it go?](/virtualize-openwrt-firewall-in-harvester-hci-cluster)
+- [What I learned when migrating hungvu.tech from IPv4 to IPv6 on AWS](/migration-from-ipv4-to-ipv6-on-aws)
+
+And, let's connect!
+
+- [LinkedIn](https://www.linkedin.com/in/hunghvu/)
+- [GitHub](https://github.com/hunghvu)
+- [X (formerly Twitter)](https://x.com/hunghvu_dev)

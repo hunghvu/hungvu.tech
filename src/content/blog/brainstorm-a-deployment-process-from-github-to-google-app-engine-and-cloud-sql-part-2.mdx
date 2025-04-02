@@ -1,0 +1,196 @@
+---
+readerTitle: Deployment process from GitHub to Google App Engine and Cloud SQL (Part 2)
+readerDescription: Let's learn a way to create a sample CI/CD pipeline and make the first GAE instance up and run.
+coverImage: ../../assets/blog/3/cover-image.webp
+coverAlt: My thought process of bring an application from a local to a cloud environment.
+publishedDate: February 07, 2022
+series: Google technologies
+seoTitle: Deployment process from GitHub to GAE and Cloud SQL (P2)
+seoDescription: Running locally does not mean it will work in a cloud environment, even the purpose is only to get an application up and running on GAE.
+---
+
+import BlogPicture from '../../components/BlogPicture.astro';
+
+The post will include a series of questions that I asked and answered myself to approach the solution. This is more about describing my personal experience, not a full tutorial on the topic so many steps and concept explanations will be omitted. Correction to any of the errors is welcome!
+
+## Problem Statement 🍀
+
+With components discussed in [part 1](/brainstorm-a-deployment-process-from-github-to-google-app-engine-and-cloud-sql-part-1), I want to deploy a "Hello World" NodeJS application from GitHub to Google App Engine. Essentially, the back end will return a "Hello World" response upon reaching an endpoint. As it is for testing, I will try deploying only the back end, so both the front end and database are not involved.
+
+### Does GCP have some free options like Heroku? 🤔
+
+Luckily, yes! However, it is not as clear as Heroku. I need to read [this official document](https://cloud.google.com/free/docs/gcp-free-tier) to learn more about the offers. There is no indicator in the interface like Heroku.
+
+App Engine itself has two variations: Standards and Flexible. Only the Standard version has a free offer. Meanwhile, the flexible version is more advanced and I do not need its features (e.g., Docker imaging, custom runtime, etc.), so the Standard version is my choice.
+
+import image1 from '../../assets/blog/3/google-cloud-1.webp';
+
+<BlogPicture
+  imageMetadata={image1}
+  alt='GCP free tier App Engine as of February 2022
+GCP free tier App Engine as of February 2022.'
+/>
+
+### What does Instance Hours mean? 🤔
+
+After a while, if there is no HTTP call to an App Engine instance, it will sleep. During this period, Instance Hours will not be counted.
+
+This metric is counted across projects. Let's say I have two projects with App Engine enabled, assuming both serve requests 24/7. In one day, I use 48 Instance Hours. We have 28 hours of free usage per day, so only 20 hours is charged. Anyway, this quota is more than enough for my use case.
+
+### Are there some core GCP concepts that I need to know beforehand? 🤔
+
+import image2 from '../../assets/blog/3/google-cloud-2.webp';
+
+<BlogPicture imageMetadata={image2} alt='Google Cloud IAM logo.' />
+
+- [Identity Access Management (IAM)](https://cloud.google.com/iam/docs/overview): Essentially, this is used to control user permissions and access to resources. It contains 3 main parts:
+
+  - **Principal**: Indicate an end-user, service account, or group of entities. The username is an email address.
+  - **Roles**: It resembles a hierarchy in any organization. A manager will have more privileges compared to an intern and so on. In other words, a role itself contains a set of permission.
+  - **Policy**: A collection of role binding, which binds one or more principals to individual roles.
+
+- [Service accounts](https://cloud.google.com/iam/docs/service-accounts): Some services in GCP can be treated as an individual, which is equivalent to an end-user. In other words, a service account represents a specific GCP service. That service uses a provided entity to access another service just like end-users.
+
+### Time to enable App Engine for the project, what do I need to know? 🤔
+
+- App Engine region **cannot** be changed. Also, unlike other services such as Google Compute Engine (GCE), I cannot just delete App Engine and set up everything again. I need to **delete the whole project** instead.
+- It seems there is no concept of "instance" in App Engine (even though Instance Hours exists!!!). In GCE, we can create multiple VM instances. However, in App Engine, there are services, which is somewhat equivalent to GCE instances, but it is not as configurable. App Engine configuration is applied via a yaml file.
+- App Engine will generate a default service account when it is first created. If a default service account is deleted, the deployment will fail (code 503). The username of the App Engine default service account follows this format: `YOUR_PROJECT_ID@appspot.gserviceaccount.com`. This account is used to manage the App Engine deployment process (steps such as install dependencies, build, manage service versions, etc.)
+- As of February 2022, Google is previewing [user-managed service accounts](https://cloud.google.com/appengine/docs/standard/nodejs/user-managed-service-accounts). That said, I have no luck in using a user-managed service account. The error below keeps popping up even though both the default App Engine accounts and my user-managed service account have the same roles.
+
+```text
+Error: 16 UNAUTHENTICATED: Failed to retrieve auth metadata with error: Could not refresh access token: Unsuccessful response status code. Request failed with status code 500
+    at Object.callErrorFromStatus (/workspace/node_modules/@grpc/grpc-js/build/src/call.js:31:26)
+    at Object.onReceiveStatus (/workspace/node_modules/@grpc/grpc-js/build/src/client.js:180:52)
+    at Object.onReceiveStatus (/workspace/node_modules/@grpc/grpc-js/build/src/client-interceptors.js:365:141)
+    at Object.onReceiveStatus (/workspace/node_modules/@grpc/grpc-js/build/src/client-interceptors.js:328:181)
+    at /workspace/node_modules/@grpc/grpc-js/build/src/call-stream.js:182:78
+    at processTicksAndRejections (node:internal/process/task_queues:78:11)
+```
+
+### Talking about a CI/CD workflow on GitHub, what will it contain? 🤔
+
+There are 2 core parts authentication to GCP and App Engine deployment. Authentication is performed using [`auth`](https://github.com/google-github-actions/auth), while a deployment uses [`deploy-appengine`](https://github.com/google-github-actions/deploy-appengine).
+There are 2 ways to perform authentication, using [Service Account Key JSON](https://cloud.google.com/iam/docs/creating-managing-service-account-keys) or [Workload Identity Federation](https://cloud.google.com/iam/docs/workload-identity-federation). The former is much more straightforward but less secure. To achieve the JSON key, I need to download one from GCP and store it in GitHub Secrets. At some point in the process, I may accidentally commit the key or expose the file to unauthorized personnel. There are various risks with a JSON key, so I will go with Workload Identity Federation instead.
+
+### How to set up Workload Identity Federation (WIF) in GCP? 🤔
+
+[This article from Google](https://cloud.google.com/blog/products/identity-security/enabling-keyless-authentication-from-github-actions) provides an explanation (using gsutil tool). The gcloud commands map one to one to the GUI, so I used the GUI instead.
+
+### Seems like something is missing. Which account should I connect to the WIF pool? 🤔
+
+ndeed, a necessary account is not created at this point. When running a workflow on GitHub, essentially it produces a VM to automate the tasks. Let's think about it, if I use `gsutil` on the local machine, I need to authenticate with my account. My local machine will use my identity. In other words, I need a GCP account so the VM created by the workflow can use.
+
+That account must be usable by `deploy-appengine` action, so we need a service account with the following roles.
+
+- App Engine Admin
+- Service Account User
+- Storage Admin
+- Cloud Build Editor
+
+### Have I reached a deployable state? 🤔
+
+Not quite, a yaml configuration file for App Engine deployment is still missing. The official documentation can be found [here](https://cloud.google.com/appengine/docs/standard/reference/app-yaml). A sample file structure is like this.
+
+```yaml showLineNumbers
+# app.yaml, manually created
+runtime: nodejs16
+handlers:
+  - url: /.*
+    script: auto
+    secure: always
+```
+
+The provided code above is enough to make `deploy-appengine` work. If checking at the configuration preview in the App Engine panel, Versions section (after a successful deployment), it seems `deploy-appengine` adds several more key-value pairs to a deployed yaml file. For example,
+
+```yaml showLineNumbers
+# app.yaml, created by deploy-appengine
+runtime: nodejs16
+env: standard
+handlers:
+  - url: /.*
+    script: auto
+    secure: always
+  - url: .*
+    script: auto
+automatic_scaling:
+  - min_idle_instances: automatic
+    max_idle_instances: automatic
+```
+
+After this point, the workflow should work, Now, I have a simple but runnable CI/CD pipeline.
+
+import image3 from '../../assets/blog/3/google-cloud-3.webp';
+
+<BlogPicture imageMetadata={image3} alt='App Engine instance status.' />
+
+### We have an up and running App Engine now, but why do we have a 5xx error when reaching an endpoint? 🤔
+
+In Heroku, by default, everything is shown in the log section, even statements such as `console.log()`.
+
+import image4 from '../../assets/blog/3/google-cloud-4.webp';
+
+<BlogPicture imageMetadata={image4} alt='GAE application logs.' />
+
+GCP is the same but requires a bit more configuration to show proper log levels and messages. Official documentation on this matter can be found [here](https://cloud.google.com/logging/docs/setup/nodejs).
+
+Now, make sure my application is listening to port 8080 because App Engine uses that. My "Hello World" NestJS application works perfectly fine locally, even with port 8080, but it fails in an App Engine environment. Looking at GCP Log Explorer, there is a pattern below.
+
+```text
+sh: 1: exec: nest: not found
+Start program failed: failed to detect app after start: ForAppStart()
+Container called exit(1).
+```
+
+`nest: not found` here may indicate a `nest` command in `@nestjs/cli`, so I moved the package from `devDependencies` to `dependencies`. That is not enough to solve the problem. In a production environment, the files are compiled and stored in `dist` folder. I attempted to change `"start"` script to `"start": "node dist/main.js"` and it works this time. Well, the new `"start"` is actually a default `"start:prod"`provided by NestJS.
+
+### Why is the 5xx error still here? 🤔
+
+When looking at Log Explorer, I notice the pattern is as followed.
+
+```
+No entry point specified, using default entry point: /serve
+Starting app
+...
+Quitting on terminated signal
+Start program failed: user application failed with exit code -1 (refer to stdout/stderr logs for more detail): signal: terminated
+```
+
+After some digging, it appears I have to add `"gcp-build": "npm run build"` to `package.json`. It seems this step is run whenever the build and deploy process happens. What makes me wonder is, why was the deployment a success? It should fail if that script was missing. Instead, it immediately crashes App Engine when a request comes. I'm still not certain why that is the case.
+
+### Great, now I have a working "Hello World" endpoint. However, is this enough for a more complex application? 🤔
+
+In GitHub, we have GitHub Secrets to store environment variables. However, they are only available to VMs created for workflow in GitHub. Using `deploy-appengine`, the action will first upload files to GCP, then the rest happen inside the GCP environment. GitHub Secrets are not available there.
+
+In other words, some secrets such as `workload_identity_provider` which is required for the `auth` action in GitHub workflow. Meanwhile, runtime-required secrets and variables need to stay in the GCP environment, but how?
+
+In Heroku, we can manually configure the environment variables
+
+import image5 from '../../assets/blog/3/heroku-ui-1.webp';
+
+<BlogPicture imageMetadata={image5} alt='Heroku environment variables configuration.' />
+
+**Unfortunately, Google App Engine does not have an equivalent feature**. However, there are 2 ways that I am aware of to workaround.
+
+**Using `app.yaml` In the configuration file**, we can declare environment variables. A very big problem is these are plain text and can be seen freely in GCP Debugger. This is a serious security issue and there are many [discussions](https://stackoverflow.com/questions/22669528/securely-storing-environment-variables-in-gae-with-app-yaml) on this too. In my opinion, we should never store secrets in there, only insensitive environment variables are allowed, such as a PORT number. Below is an **insecure example**:
+
+```yaml showLineNumbers
+COPY runtime: nodejs16
+env_variables:
+  DATBASE_PASSWORD: MyPassword
+```
+
+**Using [Secret Manager](https://cloud.google.com/secret-manager)**: From this one, I learned that it is possible to get secrets asynchronously, which also means it is more complex to set up though. Secret Manager is a different service, not included in App Engine. Therefore, an App Engine default service account needs a Secret Manager Secret Accessor role to read the secrets.
+
+## Wrap Up 🍀
+
+It is important to remember that local and cloud are two different environments. Running locally does not mean it will work in a cloud environment, even the purpose is only to get an application up and running on GAE (no complex cloud architecture design involved). Initially, I thought only GAE and Cloud SQL will be used, and look what we have now.
+
+- App Engine (GAE)
+- Cloud SQL
+- Secret Manager
+- Cloud Build
+- IAM / Workload Identity Federation
+- Cloud Logging
+
+I guess it will only be more down the road, but we will see.

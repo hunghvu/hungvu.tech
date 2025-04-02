@@ -1,0 +1,33 @@
+---
+import { getCollection } from "astro:content";
+
+type Props = { series: string };
+const { series } = Astro.props;
+const posts = await getCollection("blog");
+const postsInTheSameSeries = posts
+  .filter((post) => post.data.series === series)
+  .sort(
+    // Latest post first
+    (a, b) => b.data.publishedDate.valueOf() - a.data.publishedDate.valueOf(),
+  );
+---
+
+<ul class="daisyui-menu w-full rounded-box bg-base-300">
+  <li>
+    <h2 class="daisyui-menu-title my-0!">Series: {series}</h2>
+  </li>
+  <div class="daisyui-divider"></div>
+  <div class="h-64 overflow-y-scroll">
+    {
+      postsInTheSameSeries.map((post, index) => (
+        <li>
+          <span class="flex flex-row gap-4">
+            {" "}
+            {postsInTheSameSeries.length - index}.
+            <a href={`/${post.slug}`}>{post.data.readerTitle}</a>
+          </span>
+        </li>
+      ))
+    }
+  </div>
+</ul>

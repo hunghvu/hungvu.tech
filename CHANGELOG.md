@@ -1,5 +1,18 @@
 # Changelog
 
+## [2.0] - 2025-01-04
+
+- Simplify and migrate from Payload v2 + NextJS + Turborepo to just Astro as a static site generator (zero JS).
+- Now support pagination for home page.
+- Background is no longer animated. The animation in v1 heavily consumes CPU cycles on browser without GPU acceleration.
+- Support table of contents.
+- Support dark and light mode.
+- Support RSS.
+- Code block now has line numbers, height restriction, and is scrollable, to avoid a wall of text.
+- Migrate from a PrimeReact (JS-heavy) to DaisyUI (essentially a lightweight CSS utility).
+- The web design is now generic, KISS essentially.
+- Remove OpenWRT ToH page because of low traffic and it makes the site JS-heavy.
+
 ## [1.2] - 2024-02-25
 
 - This version focuses on delivering the website's "Lab" section. The "Lab" is a collection of mini projects the author wants to experiment on. This time, it is an OpenWRT table of hardware.
@@ -9,7 +22,7 @@
 ### Features
 
 - Add footer. ([#72](https://github.com/hunghvu/hungvu.tech/issues/72))
-- Add OpenWRT Table of Hardware (full details) that is updated every 24 hours. This involves several issues. Please take a look at the milestone for a better overview. 
+- Add OpenWRT Table of Hardware (full details) that is updated every 24 hours. This involves several issues. Please take a look at the milestone for a better overview.
 
 ### Optimization
 
@@ -54,8 +67,6 @@
 ### Features
 
 - Use of a neutral theme for the website (no light/dark mode), with the use of animated SVG. ([#92](https://github.com/hunghvu/hungvu.tech/issues/92))
-
-
 
 ## [1.0] - 2023-12-17
 

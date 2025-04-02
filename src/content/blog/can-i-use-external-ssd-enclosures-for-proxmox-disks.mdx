@@ -1,0 +1,140 @@
+---
+coverImage: ../../assets/blog/37/cover-image.png
+coverAlt: Expanding your Proxmox storage and ZFS pool with external SSD enclosures is feasible and stable enough for homelab use but with some catches.
+publishedDate: March 2, 2024
+readerTitle: Can I use external SSD enclosures for Proxmox disks?
+readerDescription: Expanding your Proxmox storage and ZFS pool with external SSD enclosures is feasible and stable enough for homelab use but with some catches.
+seoTitle: Can I use external SSD enclosures for Proxmox disks?
+seoDescription: Expanding your Proxmox storage and ZFS pool with external SSD enclosures is feasible and stable enough for homelab use but with some catches.
+series: Homelab
+---
+
+import BlogPicture from '../../components/BlogPicture.astro';
+
+While experimenting with the storage configuration of my Proxmox node in my homelab, I wondered what the experience would be if I utilized my spare SSD-to-USB enclosures to expand storage. Normally, hypervisor products are appliances so the underlying OS is relatively locked down. Using external USB storage might not be possible with these appliances at all. However, Proxmox allows free root access to its Debian distro underneath, so I expect the drives to be mountable without any issues.
+
+## Part list
+
+For internal storage, drives connect to the CPU through a SATA/SAS controller, motherboard chipset, or direct PCIe lanes. However, for external SSD-to-USB enclosures, the drives connect to the SATA/NVMe-to-USB controller within the SSD enclosure, and then to the USB hub controller of the server. Regardless of which SSD enclosure you purchase, its SATA/NVMe-to-USB controller likely comes from either ASMedia or Realtek. Therefore, I decided it would be interesting to test out both. For this experiment, I used:
+
+- Alxum AX-S207A: An NVMe SSD enclosure with an ASMedia ASM2362 NVMe-to-USB controller (10 Gbps).
+- Orico AM2-C3-2N: An NVMe SSD enclosure with a Realtek RTL9210 NVMe-to-USB controller (10 Gbps). There is no suffix, indicating that it is neither RTL9210A nor RTL9210B on paper; the controller is simply RTL9210.
+
+These SSD enclosures were directly attached to the back of my MSI B660M Mortar Wifi DDR4 motherboard (with an Intel I7 13700k CPU installed). The MSI motherboard features 5 Gbps, 10 Gbps, and 20 Gbps USB ports, but I only tested the 10 Gbps and 20 Gbps ports (or USB 3.2 Gen 2 and USB 3.2 Gen 2x2, according to these USB-IF naming conventions).
+
+- The three 10 Gbps USB ports are powered by the Genesys GL3590 USB hub controller and all share a single 10 Gbps uplink.
+- The one 20 Gbps port is powered by the B660 chipset, offering a full 20 Gbps uplink.
+
+Last but not least, the SSDs I utilized were four Intel Optane P1600x 118 GB. Why? There was no specific reason; they were simply spare parts I had available.
+
+## Hardware Configuration
+
+In my opinion, the controller (or the internals) is more important than the enclosure model, unless the vendor has somehow compromised the implementation. For technical clarity, I will refer to the enclosures by their associated controllers. Among the four Intel Optane SSDs, two were installed directly on the motherboard: one had access to the direct-to-CPU PCIe lane, and the other was routed via the B660 chipset. The remaining two SSDs were installed in SSD enclosures, providing a variety of configurations to test.
+
+- **Configuration 1:** Two Intel Optane P1600x 118 GB drives in ASM2362 enclosures, both using 10 Gbps USB ports.
+- **Configuration 2:** Similar to Configuration 1, but one enclosure connects to a 10 Gbps port and the other to a 20 Gbps port.
+- **Configuration 3:** One Intel Optane drive in an ASM2362 enclosure and the other in an RTL9210 enclosure, both using 10 Gbps ports.
+- **Configuration 4:** Similar to Configuration 3, but the ASM2362 enclosure connects to a 10 Gbps port and the RTL9210 to a 20 Gbps port.
+- **Configuration 5:** Similar to Configuration 3, but the ASM2362 enclosure connects to a 20 Gbps port and the RTL9210 to a 10 Gbps port.
+- **Configuration 6: **Two Intel Optane P1600x 118 GB drives in RTL9210 enclosures, both using 10 Gbps ports.
+- **Configuration 7:** Similar to Configuration 6, but one enclosure connects to a 10 Gbps port and the other to a 20 Gbps port.
+
+Why so many test cases? Hardware can exhibit unique behaviors when interfaced with specific components. While protocols are standardized, eliminating most issues, there are anecdotes of hardware, like GPUs, exhibiting bugs when plugged into certain PCIe slots. Hence, I explored every possible combination in this experiment.
+
+## Software Configuration
+
+The experiment was conducted on Proxmox v8.1.3. With four drives (two internal and two external), I opted to create a ZFS pool with one VDEV in RaidZ1. I chose RaidZ1, the least safe configuration, to observe behavior in potentially the worst-case scenario.
+
+The point of failure would have been the external drives. These could fail at any moment, necessitating a time-consuming reconfiguration. Had I selected RaidZ2, which tolerates up to two failed drives within a VDEV, even if the external drives all failed, my pool would remain intact. Although this redundancy is theoretically advantageous, it could obscure minor errors that I aimed to explore in this experiment.
+
+Previously, on a different system, I utilized two ASM2362 enclosures as a mirrored metadata VDEV in a TrueNAS Scale experiment, which proceeded without noticeable trivial bugs or performance degradation. Given that TrueNAS Scale is also Debian-based, like Proxmox, I surmised that Proxmox could similarly manage the external enclosures. Well, to some extent...
+
+## The results
+
+Let's go over my observations.
+
+### ASMedia ASM2362 enclosures always error out and were not usable even after ASMedia firmware changes
+
+This outcome was surprising to me, especially since these specific enclosures worked fine on a TrueNAS Scale system I had mentioned earlier. However, this discrepancy is understandable given that everything about the two experiments was different. My TrueNAS Scale experiment was conducted on a bare metal AMD system ([the same one discussed in virtualizing TrueNAS system](virtualize-truenas-with-harvester-and-kubevirt)), while the Proxmox experiment was carried out on an Intel system. Regardless, the error rendered the Disks page of Proxmox inaccessible, displaying a permanent spinning circle, and sometimes it even caused the PVE dashboard to crash or made the node fail to shut down, reboot, or boot (particularly at the initramfs stage).
+
+If relevant, I also have a handy Windows To Go installation, which is only functional with the RTL9210 enclosure on the Intel system. Although the ASM236 enclosure is operational, the latency is extremely high—for example, it takes more than 10 minutes to boot and similarly over 10 minutes to reach the login screen. This behavior may be related to the USB errors observed in Proxmox, though I'm not certain.
+
+import image1 from '../../assets/blog/37/ssd-proxmox-1.png';
+
+<BlogPicture imageMetadata={image1} alt='USB enumaration, power cycle, address acceptance, and timeout errors (code -62, -71).' />
+
+import image2 from '../../assets/blog/37/ssd-proxmox-2.png';
+
+<BlogPicture imageMetadata={image2} alt='Unable to read config index 0 descriptor/start: -61 error.' />
+
+### Realtek RTL9210 enclosures were buggy but worked fine after a firmware change
+
+Initially, my RTL9210 enclosures were operating on firmware version 4.30.23, built on 2022-07-19. Unfortunately, they did not perform well with Proxmox. Sometimes, the devices would disappear after a reboot, and at other times, they would generate numerous errors in `dmesg`. After conducting some research and coming across the Station-Driver forum discussion, I concluded that a firmware upgrade might resolve these issues. Consequently, I upgraded to version 1.32.87 (build date: 2023-08-29), specifically for the Realtek RTL9210B – note the suffix 'B'. This upgrade eliminated all the previously encountered buggy behaviors.
+
+In the future, I may write an article about the firmware upgrade process, as it took me an hour or two to sift through Station-Driver forum discussions to grasp the procedure.
+
+import image3 from '../../assets/blog/37/ssd-proxmox-3.png';
+
+<BlogPicture imageMetadata={image3} alt='Error 5, type 2 with RTL9210 controller pre-firmware upgrade.' />
+
+import image4 from '../../assets/blog/37/ssd-proxmox-4.png';
+
+<BlogPicture imageMetadata={image4} alt='RTL 9210 enclosures experienced over-current condition error on firmware v4.30.23.' />
+
+### Genesys GL3590 USB hub controller (10 Gbps port) cannot handle any two external enclosures at once.
+
+When using two RTL9210 enclosures, having one plugged into a 10 Gbps port and the other into a 20 Gbps port allowed my ZFS pool to remain operational. This setup enabled my Windows 11 VM to achieve more than 30 days of uptime. However, attempting to connect both enclosures to two 10 Gbps ports led to issues. It appeared that the Genesys GL3590 USB hub controller struggled with this configuration, resulting in connection errors.
+
+Regarding the Windows To Go installation previously mentioned, performance was significantly better when using the 20 Gbps port. This port benefits from a dedicated PCIe lane that facilitates direct communication with the CPU. In contrast, disk performance is severely degraded when utilizing the 10 Gbps port. While it's unclear whether this is a hardware or software issue, I think it is a hardware limitation, correlating with my observation in the Proxmox environment. The following are some of the errors observed when connecting two RTL9210 enclosures to the 10 Gbps ports.
+
+import image5 from '../../assets/blog/37/ssd-proxmox-5.png';
+
+<BlogPicture imageMetadata={image5} alt='Connect-debounced failed error on the Genesys GL3590 USB hub controller.' />
+
+import image6 from '../../assets/blog/37/ssd-proxmox-6.png';
+
+<BlogPicture imageMetadata={image6} alt='Various types of device, I/O, buffer, timeout errors when using two 10 Gbps port at the same time.' />
+
+### If one external enclosure fails, it is best to have the failure happen on the 10 Gbps port
+
+ZFS RaidZ1 can tolerate up to one drive failure. If a failure occurs, it is most likely to be in the external enclosures. However, more common than hardware issues are connection issues, such as loose USB connections. Therefore, I simulated a failure by simply unplugging one external enclosure. As a reminder, only the scenario in which one RTL9210 enclosure is plugged into a 10 Gbps port and the other into a 20 Gbps port worked. With that in mind, I noticed that if the failure occurs on a 10 Gbps USB port, my ZFS pool continues to perform as expected. Conversely, if the failure occurs on a 20 Gbps USB port, then random issues may arise.
+
+The issues varied, but they resembled what was shown in other sections of this article. Interestingly, the likelihood of experiencing random issues when the enclosure is not plugged into the 20 Gbps port varies. If the enclosure is unplugged before booting, or during the shutdown/reboot process, the pool is likely to fail, leading to a system stuck in the shutdown/reboot/boot sequence. However, if the system is running and the enclosure is unplugged, sometimes my ZFS pool continues to operate, and sometimes it degrades immediately.
+
+import image7 from '../../assets/blog/37/ssd-proxmox-7.png';
+
+<BlogPicture imageMetadata={image7} alt='Failed to start and import ZFS pool due to drive failure.' />
+
+### Performance-wise, there was an inconsistency
+
+Delving into storage performance is beyond my expertise, so drawing any definitive conclusions was challenging. From what I understand, virtualized storage performance can be influenced by multiple factors due to the various layers of abstraction and configuration inherent in virtualization. One observation I made was that performance fluctuated when the OS drive was under heavy use.
+
+My OS drive offers around of usable space. When conducting tests with CrystalDiskMark at smaller test sizes (below 16 GB per run), performance appeared relatively stable. This stability is likely because Proxmox and ZFS were able to cache all the data, resulting in speeds of around 20 GB/s. However, when I increased the test size to 32 GB with 9 runs, performance inconsistencies began to emerge, occasionally causing the Windows 11 VM to freeze until the tests concluded. I believe these inconsistencies were due to a combination of factors, including hardware limitations (like the data access patterns to USB and bottlenecks) and software configurations (like storage tuning). Below are some images highlighting the observed inconsistencies. These runs were not consecutive, so will see differences in usable storage.
+
+import image8 from '../../assets/blog/37/ssd-proxmox-8.png';
+
+<BlogPicture imageMetadata={image8} alt='High performance with small test size.' />
+
+import image9 from '../../assets/blog/37/ssd-proxmox-9.png';
+
+<BlogPicture imageMetadata={image9} alt='Storage performance inconsistencies starts showing up at 32gb, 9 runs.' />
+
+import image10 from '../../assets/blog/37/ssd-proxmox-10.png';
+
+<BlogPicture imageMetadata={image10} alt='Low measured performance, possibly due to cache saturation and external SSD enclosures access, leading to OS freeze during the run.' />
+
+## Conclusion
+
+Following this experiment, my conclusion is that utilizing external storage for a ZFS pool in Proxmox is indeed feasible. Would I recommend it? Not particularly for valuable data or in a production environment. However, in the context of a homelab—where the expectation is that things might break down eventually—it was an enjoyable experience to explore the possibility of expanding Proxmox storage with external SSD enclosures. I did not delve into and troubleshoot the underlying causes of errors, as my goal was merely to observe behaviors in this experiment. Perhaps I'll conduct a more thorough investigation in a future article. Until next time!
+
+If you find this article to be helpful, I have some more for you!
+
+- [What to consider for a production-ready blog website?](considerations-for-a-production-ready-website)
+- [OpenWRT as an x86 virtualized firewall in Harvester HCI.](virtualize-openwrt-firewall-in-harvester-hci-cluster)
+- [Harvester HCI as a hypervisor, the new choice for homelab experiments.](is-harvester-a-good-hypervisor-for-a-beginner-my-hands-on-experience)
+
+And, let's connect!
+
+- [LinkedIn](https://www.linkedin.com/in/hunghvu/)
+- [GitHub](https://github.com/hunghvu)
+- [X (formerly Twitter)](https://x.com/hunghvu_dev)
