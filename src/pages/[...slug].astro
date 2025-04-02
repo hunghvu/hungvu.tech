@@ -58,8 +58,8 @@ const { Content, headings } = await Astro.props.render();
           src={coverImage}
           alt={coverAlt}
         />
+        {/* Remove backtick, reference: https://github.com/tailwindlabs/tailwindcss-typography/issues/135#issuecomment-991251524 */}
         <div
-          {/* Remove backtick, reference: https://github.com/tailwindlabs/tailwindcss-typography/issues/135#issuecomment-991251524 */}
           class="prose prose-sm w-full break-words sm:prose-base lg:prose-lg dark:prose-invert
                  prose-code:before:content-none prose-code:after:content-none"
         >
