@@ -1,4 +1,5 @@
 ---
+import "../styles/global.css";
 import Footer from "../components/Footer.astro";
 import BaseHead from "../components/head/BaseHead.astro";
 import SeoHead from "../components/head/SeoHead.astro";
@@ -20,7 +21,7 @@ const { error } = Astro.props;
 
   <body class="flex w-full flex-col items-center bg-base-100">
     <Header />
-    <main class="flex w-full max-w-screen-xl flex-col items-center px-6 py-12 prose prose-sm sm:prose-base lg:prose-lg dark:prose-invert
+    <main class="flex w-full max-w-(--breakpoint-xl) flex-col items-center px-6 py-12 prose prose-sm sm:prose-base lg:prose-lg dark:prose-invert
                  prose-code:before:content-none prose-code:after:content-none">
       <!-- An open-source static page, no worry about leaking sensitive information. -->
       <h1>500: {error instanceof Error ? error.message : "Unknown error"}</h1>

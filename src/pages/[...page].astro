@@ -1,4 +1,5 @@
 ---
+import "../styles/global.css";
 import BaseHead from "../components/head/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
@@ -32,7 +33,7 @@ const { page } = Astro.props;
 
   <body class="flex w-full flex-col items-center bg-base-100">
     <Header />
-    <main class="flex w-full max-w-screen-xl flex-col items-center px-6 py-12">
+    <main class="flex w-full max-w-(--breakpoint-xl) flex-col items-center px-6 py-12">
       <section class="daisyui-card bg-base-300">
         <div class="daisyui-card-body">
           <h1 class="daisyui-card-title text-5xl">Hello, Tech Enthusiasts!</h1>
