@@ -97,17 +97,17 @@ const { page } = Astro.props;
               href={page.url.prev}
               class="daisyui-btn daisyui-btn-disabled daisyui-join-item"
             >
-              Previous
+              Prev
             </a>
           ) : (
             <a href={page.url.prev} class="daisyui-btn daisyui-join-item">
-              Previous
+              Prev
             </a>
           )
         }
 
         <button class="daisyui-btn daisyui-join-item"
-          >Page {page.currentPage} of {page.lastPage}</button
+          >{page.currentPage}/{page.lastPage}</button
         >
         {
           page.currentPage === page.lastPage ? (
