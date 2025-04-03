@@ -1,0 +1,121 @@
+---
+import {
+  BASE_SITE_NAME,
+  LINKEDIN_URL,
+  SITE_OWNER_NAME,
+  TRAILING_SLASH_REGEX,
+  X_HANDLE,
+} from "../../consts";
+
+interface Props {
+  seoTitle: string;
+  seoDescription: string;
+  readerTitle?: string;
+  coverImageSlug?: string;
+  slug?: string;
+  jsonLdType?: "Blog" | "BlogPosting";
+  jsonLdDatePublished?: string;
+  jsonLdDateModified?: string;
+}
+
+const {
+  seoTitle,
+  seoDescription,
+  readerTitle = "",
+  coverImageSlug = "/hungvu-tech-cover-image-1200x630.png",
+  slug = "",
+  jsonLdType = "Blog",
+  jsonLdDatePublished = new Date(),
+  jsonLdDateModified = new Date(),
+} = Astro.props;
+// href is implicitly used in string context, but just put it here
+// explicitly for clarity
+const siteUrl = new URL(slug, Astro.site).href.replace(
+  TRAILING_SLASH_REGEX,
+  "",
+);
+const coverImageUrl = new URL(coverImageSlug, Astro.site).href.replace(
+  TRAILING_SLASH_REGEX,
+  "",
+);
+const rssUrl = new URL("rss.xml", Astro.site).href.replace(
+  TRAILING_SLASH_REGEX,
+  "",
+);
+---
+
+{/* Canonical URL */}
+<link rel="canonical" href={siteUrl} />
+
+{/* Primary Meta Tags */}
+<title>{seoTitle}</title>
+<meta name="title" content={seoTitle} />
+<meta name="description" content={seoDescription} />
+
+{/* Open Graph / Facebook */}
+<meta property="og:title" content={seoTitle} />
+<meta property="og:description" content={seoDescription} />
+<meta property="og:url" content={siteUrl} />
+<meta property="og:site_name" content={BASE_SITE_NAME} />
+<meta property="og:locale" content="en_US" />
+<meta property="og:image" content={coverImageUrl} />
+<meta property="og:image:alt" content={seoDescription} />
+<meta property="og:type" content="website" />
+
+{/* Twitter */}
+<meta property="twitter:card" content="summary_large_image" />
+<meta name="twitter:creator" content={X_HANDLE} />
+<meta property="twitter:title" content={seoTitle} />
+<meta property="twitter:description" content={seoDescription} />
+<meta property="twitter:url" content={siteUrl} />
+<meta property="twitter:image" content={coverImageUrl} />
+<meta property="twitter:image:alt" content={seoDescription} />
+
+<link rel="sitemap" href="/sitemap-index.xml" />
+<link
+  rel="alternate"
+  type="application/rss+xml"
+  title={BASE_SITE_NAME}
+  href={rssUrl}
+/>
+
+<script
+  is:inline
+  type="application/ld+json"
+  set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": jsonLdType,
+    url: siteUrl,
+    headline: seoTitle,
+    alternativeHeadline: readerTitle,
+    description: seoDescription,
+    image: [coverImageUrl],
+    datePublished: jsonLdDatePublished,
+    dateModified: jsonLdDateModified,
+    // This uses BCP 47 standard, so hyphen (-) instead of underscore (_) in og:locale
+    inLanguage: "en-US",
+    isFamilyFriendly: "true",
+    copyrightHolder: [
+      {
+        "@type": "Person",
+        name: SITE_OWNER_NAME,
+        url: LINKEDIN_URL,
+      },
+    ],
+    copyrightYear: new Date().getFullYear(),
+    author: [
+      {
+        "@type": "Person",
+        name: SITE_OWNER_NAME,
+        url: LINKEDIN_URL,
+      },
+    ],
+    creator: [
+      {
+        "@type": "Person",
+        name: SITE_OWNER_NAME,
+        url: LINKEDIN_URL,
+      },
+    ],
+  })}
+/>

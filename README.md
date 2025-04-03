@@ -1,109 +1,65 @@
 # Blogfolio @hungvu.tech
 
-
-## Main services
-
-
-This monorepo currently contains 2 core services: `cms` (front end), and `web` (back end).
-
-
-**About `cms`**
-
+## Core services
 
 Powered by:
 
+- Astro: Static site generator supporting Markdown format.
+- Ubuntu: Host operating system.
+- Proxmox: Hypervisor.
+- Cloudflare tunnel: Reverse proxy with dynamic DNS.
+- Caddy: Web server
 
-- PayloadCMS: A configuration as code content management system.
-- Express.js: A web application framework utilized by PayloadCMS.
-- React: A front-end library for the admin dashboard.
-- MongoDB: A document database utilized by PayloadCMS.
-- Bree: A job scheduler for repetitive tasks (CronJobs).
+## Setup instruction
 
+1. Clone repository to web server VM.
+2. Install [nvm](https://github.com/nvm-sh/nvm), then the latest Node LTS, and `pnpm`.
+3. Build the repository to create `dist`.
+4. Dowload [Caddy binary](https://caddyserver.com/download) to the VM using `wget`. No extra Caddy plugins needed.
+5. Install Caddy as system service using [the official guide](https://caddyserver.com/docs/running#manual-installation).
+6. Create `Caddyfile` at `etc/caddy/Caddyfile`.
+7. Run Caddy with `sudo systemctl start caddy`, and monitor live log with `sudo journalctl -xefu caddy`.
+8. Enable ports 80 and 443 with `sudo ufw allow 80` and `sudo ufw allow 443`.
+9. Install `cloudflared` agent, either as a binary or Docker service.
+10. Within Cloudflare web UI, configure tunnel so it points toward Caddy VM.
+11. If cloudflared is on a different VM, then point to web server IP, otherwise, use `localhost` or `127.0.0.1`.
+12. Enable `No TLS Verify` option within tunnel UI. Because we use a cert from Caddy CA. This is good enough for local traffic between cloudflared and Caddy. Otherwise, there will be an error `ERR Request failed error="Unable to reach the origin service. The service may be down or it may not be responding to traffic from cloudflared: tls: failed to verify certificate: x509: certificate signed by unknown authority`
+13. Copy Astro `dist` to `/var/lib/caddy`, because the official guide instructs Caddy to run as a `caddy` user, which has no read permission to `home`. However, it can read `/var/lib/caddy`. Without this folder move, there will be an error `"msg":"open /home/.../dist: permission denied"`
+14. Now the website is live!
 
-**About `web`**
+### Sample Caddyfile
 
+```
+{
+        debug
+        skip_install_trust
+}
 
-Powered by:
+hungvu.tech, server IP, localhost, 127.0.0.1 {
+        tls internal
+        root * /var/lib/caddy/dist
+        file_server
+        encode zstd gzip
+}
+```
+**Note**
+`skip_install_trust` to avoid sudo promt on startup. While `tls internal` is for locally trusted cert.
 
+```
+"msg":"installing root certificate (you might be prompted for password)","path":"storage:pki/authorities/local/root.crt"
+"msg":"warning: \"certutil\" is not available, install \"certutil\" with \"apt install libnss3-tools\" or \"yum install nss-tools\" and try again"
+"msg":"define JAVA_HOME environment variable to use the Java trust"
+```
 
-- Next.js: A React meta-framework.
-- PrimeReact: Battery-powered component library, mainly used for its JS functionalities.
-- Tailwind: A utility CSS library, for styling purposes, and can be integrated with PrimeReact.
-
-
-## Infrastructure
-
-
-The website [hungvu.tech](https://hungvu.tech) is hosted on the following platforms:
-
-
-- Amazon Web Service (AWS): An EC2 instance (EC2 t4g.micro, ARM x64) is used for `cms`, `web`, and reverse proxy.
-- Cloudflare: The domain, object storage (R2), DNS, firewall, and caching are handled here.
-- MongoDB Atlas: A managed database solution for the `cms`.
-
-
-Also:
-
-
-- Docker: To containerize all services
-- Caddy (also containerized): A reverse proxy to handle all traffic.
-- Pulumi: An infrastructure as code service to config all mentioned platforms.
-
-
-## Environment variables
-
-
-All environment variables of `web` are configured in its Dockerfile. Meanwhile, the `cms` requires the following environment variables:
-
-
-Database:
-
-
-- PAYLOAD_MONGODB_DBNAME
-- PAYLOAD_MONGODB_URI
-
-
-Payload service:
-
-
-- PAYLOAD_BACK_END_DOMAIN
-- PAYLOAD_FRONT_END_DOMAIN
-- PAYLOAD_PORT
-- PAYLOAD_PUBLIC_SERVER_URL
-- PAYLOAD_SECRET
-
-
-S3 service (Cloudflare R2 in this case):
-
-
-- PAYLOAD_S3_ACCESS_KEY_ID
-- PAYLOAD_S3_BUCKET
-- PAYLOAD_S3_ENDPOINT
-- PAYLOAD_S3_REGION
-- PAYLOAD_S3_SECRET_ACCESS_KEY
-
-
-# How to run
-
-
-1. Clone the repository.
-2. Create an `env.production.local` at the same location as the `docker-compose.yml` file.
-3. Fill out the environment file, and alter the variables accordingly in Dockerfile, and `docker-compose.yml`.
-4. Create an external Docker network with `docker network create blogfolio`.
-5. Use `docker-compose up -d --build` to build and run the containers.
 
 
 ## Author
 
-
 Hung Vu:
 
-
- - LinkedIn: https://www.linkedin.com/in/hunghvu/
- - GitHub: https://github.com/hunghvu
-
+- LinkedIn: https://www.linkedin.com/in/hunghvu/
+- GitHub: https://github.com/hunghvu
 
 ## License
 
-
-Copyright &copy; 2024 Huu Hung Vu, All Rights Reserved.
+Copyright &copy; 2025 Huu Hung Vu, All Rights Reserved.

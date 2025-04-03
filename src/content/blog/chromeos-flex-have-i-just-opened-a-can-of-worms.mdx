@@ -1,0 +1,192 @@
+---
+coverImage: ../../assets/blog/29/cover-image.webp
+coverAlt: I decided to try out the bleeding edge ChromeOS Flex, and what have I found...
+publishedDate: March 11, 2023
+readerTitle: ChromeOS Flex, have I just opened a can of worms?
+readerDescription: I decided to try out the bleeding edge ChromeOS Flex, and what have I found...
+seoTitle: ChromeOS Flex vs. Linux? You may want to wait.
+seoDescription: I decided to try out the bleeding edge ChromeOS Flex, and what have I found...
+series: Google technologies
+---
+
+I have never been a Linux guru, but as a casual user, I love playing around with the operating system from time to time. At one point, I decided that Pop!_OS (or PopOS) is a stopping point after a long distro-hopping journey. It's a great all-in-one package with several core features ready to go out of the box: Desktop customization, dedicated GPU supports, Bluetooth codec supports, and whatnot, you name it! I'm satisfied with PopOS, and I still do, but a question eventually arose.
+
+When coming to laptop usage, 95% of my time is spent on the browser. I boot up the laptop, open Firefox, search the web, consume media, and write articles like what you are reading now. For other more intensive tasks like gaming, coding and so on, my PC is responsible for them. Do I need a full-fledged highly customizable operating system for the laptop? Probably not, so ChromeOS came to my mind. In July 2022, Google announced a general availability for ChromeOS Flex (formerly CloudReady), a version that can be installed on non-Chromebook devices (any computer, in other words). In a sense, ChromeOS Flex is bleeding edge so it is expected to be somewhat unstable at the beginning, and I decided to wait until early 2023 to try it out, and here I am.
+
+## Why did ChromeOS come to my mind?
+
+- **Minimalism**: ChromeOS sacrifices lots of customizability but provides a decent set of Google applications out of the box. Chrome is in the name of the OS itself, so that alone covers 95% of my usage. Considering I have been working with different IT systems daily, I suppose having to tweak some Linux configurations outside of work hours is not that desirable. Don't get me wrong, playing around with technology has always been my hobby, but there is a line for when I just need to get things done, and ChromeOS provides that simple and minimalistic experience. That said, Linux on ChromeOS (or Crostini) is there, so I can always fire up the Linux environment if needed.
+
+- **Lightweight**: The minimalistic approach inherently means no bloatware comes with ChromeOS. It consumes about 20 GB of storage and 1.7 GB of RAM out-of-the-box. Nothing spectacular though, as PopOS is relatively the same. Both ChromeOS and Linux blow Windows 10/11 out of water because Microsoft somehow makes their OS consume more than 60 GB and storage and around 6 GB of RAM with a fresh installation. Technically, this resource consumption is negligible to my laptop specification (AMD Ryzen 7 5825U CPU, Solidigm P41 Plus 2TB SSD, and 64GB of RAM), but it is always better to remove those data-harvesting programs when possible.
+
+- **Security**: When considering a fresh installation, ChromeOS is arguably more secure than PopOS or other Linux distros. Minimalism greatly reduces the attack surface and ChromeOS was designed with security in mind using sandboxing and limited user write access. I'm by no means an expert on cybersecurity matters, but there are lots of resources online regarding this topic, and [Security in Chrome OS](https://chromium.googlesource.com/chromiumos/docs/+/master/security/chromeos_security_whitepaper.md) is an example.
+
+## And my first try? Well, it was worse than I expected
+
+Living on the edge is nothing new to me, eventually, things will work out. That is, assuming the fundamentals are satisfied, at least to a certain degree. The stable, beta, and canary versions are 110, 111, and 112 respectively at the time of writing. In my case, I tried out ChromeOS Flex using all those versions on three different laptop models (from Dell, HP, and Asus), and all exhibited breaking bugs in one way or another. What were they then?
+
+### Network chipset compatibility
+
+At the moment, ChromeOS Flex does not support Intel AX210 and Mediatek MT7921 wireless modules. Unfortunately, two of my laptops have these so I could not even start the OS installation process because ChromeOS Flex requires Internet to set up. That said, these are documented in *ChromeOS Flex Help - Known Issues*, so it is acceptable to me. However, being a PC hobbyist, I have a plethora of computer components lying around, so I decided to try other modules which yielded the following results.
+
+- Intel AC3168 (unknown revision): Recognized
+- Intel AC7265 (unknown revision): Bluetooth was recognized, but no Wi-Fi
+- Intel AX200 (unknown revision): Recognized
+- Realtek - wireless module (missing label, unknown model): Unrecognized
+- Realtek RTL8118 - USB to 1 Gbe ethernet: Rev 3000 was recognized, while rev3100 was a hit or miss (might be due to USB implementation)
+
+These are widely used wireless chipsets and have long been supported in the Linux mainline kernel. Clearly, ChromeOS Flex needs to address these somehow.
+
+### Other miscellaneous hardware compatibilities
+
+Unlike network chipset which has only a few big players on the market such as Intel, Mediatek, Qualcomm, and Broadcom, other components of the laptops are from more obscure providers and have a lot of variations. Using the PopOS's latest version (kernel v6.1 at the moment), there are still certain compatibility issues, so I suppose it is understandable for ChromeOS Flex to stay behind in this aspect. For example.
+
+- The touch function of a laptop screen did not work during an initial OS installation but is fine after getting to the desktop.
+- The touchpad, meanwhile, worked in the OS installation phase but became unusable after getting to the desktop. There were also times the touchpad worked fine from start to finish, but got disabled in a lock screen. Generally said, it was a hit or miss.
+- Speakers had the same issue as the touchpad.
+- The fingerprint was completely not supported on the three laptops I tried.
+- No tablet mode detection when the screen passes a 180-degree angle (e.g., no rotation, no auto on-screen keyboard).
+
+### Somewhat lackluster in user experience
+
+Although using a minimal OS is my goal, ChromeOS Flex is missing certain features that reduce my overall experience. They are not breaking deals though, but worth mentioning. For example.
+
+- Chrome tabs do not close after the browser exits, and there is no option to decide whether to keep tabs between sessions. Apparently, ChromeOS Flex simply does not support this, and the user must right-click on a browser tab, and then choose to *close other tabs* before exiting the browser. It is an oversight in my opinion.
+- Website scroll speed is very inconsistent, as in, the acceleration kept jumping around. It seems this was once reported in Chromium Issue 836258, but it is not viewable anymore.
+- ChromeOS Flex has worse settings than PopOS, such as no main monitor resolution, no time to sleep, no sleep button, and no Bluetooth codec adjustment.
+- No trivial way to enable the tablet mode, which is commonly used when a laptop is a 2-in-1 type. The workaround I found was to enable the ASH shortcut flag in Chrome then press CTRL+ALT+SHIFT+T to enter and exit the tablet mode.
+- There is a disassociation between mouse action and touch gestures in tablet mode. For example, swiping right means return but it is only doable with a touch gesture, not with a mouse cursor.
+- Even inside the tablet mode, the on-screen keyboard does not automatically open when typing and must be manually turned on (and off) in Settings. This creates a blockage when a user switches between desktop and tablet mode frequently.
+- Non-standard way to enable an extra keyboard for special characters. Keyboards in other operating systems tend to reserve SHIFT for capitalization or expand options of one key, and an extra keyboard can be accessed using a special button at the corner. Meanwhile, SHIFT is used to switch keyboard types in ChromeOS Flex.
+
+The list goes on, but again, not that big of a deal. Then, I found a serious issue with ChromeOS Flex which can potentially harm my laptops in the long run, and that was...
+
+### Completely broken sleep system
+
+Using a laptop, I rarely shut down the machine, rather, sleep is my usual choice. Why? It is simply about convenience, what is better than just opening the lid and all your applications is there in their previous state? And yet, Chrome OS completely broke my laptop's sleep functionality. There are three types of breaking bugs.
+
+- **The laptop cannot wake up from sleep:** I'm away from the keyboard or close the lid, and the laptop goes to sleep (screen off, keyboard-led off, fan spin down, no battery drain). However, when trying to turn it on, the fan spins, and the keyboard LED lights up, but no screen. In this case, the screen is completely off (no backlight), and HDMI output does not provide a display signal. Only forcing the shutdown by pressing the power button can exit this state.
+- **The laptop cannot go to the sleep state:** I'm closing the lid, and the laptop *does not* go to sleep (screen off, keyboard-led off, fan either spins down or keeps rotating, battery drains even faster than usual).
+- **The laptop is unresponsive after waking up:** On one of my laptops that uses HDD, when the laptop goes to sleep (as expected) and wakes up. It is normal in the lock screen, but after singing, the user inputs (keystroke, mouse movement) are delayed for more than 1 minute, which effectively renders the laptop unusable. I have to force shutdown with the power button to exit this state. This persists through HDD replacement, but the problem disappears when using an SSD.
+
+Here is the best part, these problems randomly happen but at a very high frequency, likely more than 80% of the time. I consider them harmful to my system because repetitive behaviors like force shutting down (unsafe shutdown) and battery drain can potentially corrupt the OS or even degrade the hardware over time.
+
+Are these isolated issues that only happen to my laptops? Maybe, but I could not identify the root cause.
+
+## Wrap up
+
+ChromeOS Flex, in my opinion, is still very worth a try and I like what it offers at the very early phase like now. Lightweight, security, and minimalism, these aspects can bring your device a new life, be it a powerful machine or one that has been in storage for years. Feature-wise, it is expected to not be comparable to a full-fledged operating system such as PopOS, and that is completely fine to me. Without the very broken sleep functionality, I may have continued my journey with ChromeOS Flex and its ecosystem, but for now, I have to postpone the plan. I wonder, a year from now, what will Chrome OS Flex become?
+
+If you find this article to be helpful, I have some more for you!
+
+- [How to set up Bitwarden Enterprise SSO via OIDC with Google?](how-to-set-up-bitwarden-enterprise-sso-via-oidc-with-google)
+- [Cloudflare Turnstile and Wordfence 2FA break WordPress login flow, how to fix it?](cloudflare-turnstile-and-wordfence-2fa-break-wordpress-login-flow-how-to-fix-it)
+- [How to back up Microsoft 365 with Synology Active Backup?](how-to-back-up-microsoft-365-with-synology-active-backup)
+
+And, let's connect!
+
+- [LinkedIn](https://www.linkedin.com/in/hunghvu/)
+- [GitHub](https://github.com/hunghvu)
+- [X (formerly Twitter)](https://x.com/hunghvu_dev)
+
+**Bonus, here was what I found in the log for type one (wall of text, with my educated guess on their meaning). In this scenario, I opened the laptop and signed in, then let it stay there (not open any program or do anything) until the sleep kicks in.**
+
+``` showLineNumbers
+# Starting to go sleep.
+2023-03-02T05:21:13.976131Z INFO powerd: [suspend_delay_controller.cc(99)] Got notification that delay 67305475 (shill) is ready for suspend request 67305473 from :1.8
+2023-03-02T05:21:13.977835Z INFO powerd: [suspend_delay_controller.cc(99)] Got notification that delay 67305476 (chrome) is ready for suspend request 67305473 from :1.37
+2023-03-02T05:21:13.977901Z INFO powerd: [suspend_delay_controller.cc(254)] Notifying observers that suspend is ready
+2023-03-02T05:21:13.978472Z INFO powerd: [suspender.cc(739)] Starting suspend
+# Is this error relevant? Or just a vague message?
+2023-03-02T05:21:13.978682Z ERROR powerd: [suspend_configurator.cc(75)] Failed to write deep to /sys/power/mem_sleep: Invalid argument (22)
+2023-03-02T05:21:14.054817Z INFO powerd: [main.cc(408)] Running "/usr/bin/powerd_setuid_helper --action=suspend --suspend_wakeup_count_valid --suspend_wakeup_count=72"
+# Sleep for about 8 minutes, then wake up.
+2023-03-02T05:29:56.150638Z INFO powerd: [daemon.cc(960)] powerd_suspend returned 0
+2023-03-02T05:29:56.152115Z INFO powerd: [wakeup_device.cc(67)] Device /sys/devices/platform/i8042/serio0 had event_count 65 before suspend and 66 after resume
+2023-03-02T05:29:56.152227Z INFO powerd: [dark_resume.cc(35)] User triggered wake
+2023-03-02T05:29:56.152250Z INFO powerd: [suspender.cc(627)] Finishing request 67305473 successfully after 8m42s
+2023-03-02T05:29:56.153198Z INFO powerd: [state_controller.cc(1157)] Updated settings: dim=5m quick_dim=1m screen_off=5m30s lock=5m40s quick_lock=0s idle_warn=0s idle=6m30s (suspend) lid_closed=suspend use_audio=1 use_video=1 wake_locks=
+# The laptop is on now, and screen is going to light up.
+2023-03-02T05:29:56.153237Z INFO powerd: [state_controller.cc(133)] Undimming screen
+2023-03-02T05:29:56.153253Z INFO powerd: [state_controller.cc(133)] Turning screen on
+2023-03-02T05:29:56.153319Z INFO powerd: [display_power_setter.cc(75)] Asking DisplayService to turn all displays on
+# ERROR!!! The screen cannot turn on!
+2023-03-02T05:29:56.480391Z ERROR powerd: [object_proxy.cc(622)] Failed to call method: org.chromium.DisplayServiceInterface.SetPower: object_path= /org/chromium/DisplayService: org.freedesktop.DBus.Error.NoReply: Message recipient disconnected from message bus without replying
+2023-03-02T05:29:56.480475Z INFO powerd: [internal_backlight_controller.cc(781)] Setting brightness to 95 (63%) over 0 ms
+2023-03-02T05:29:56.488015Z INFO powerd: [bluetooth_controller.cc(97)] Writing "auto" to /sys/devices/pci0000:00/0000:00:08.1/0000:04:00.4/usb3/3-3/power/control succeeded
+# Another crypted error.
+2023-03-02T05:29:56.488073Z ERROR powerd: [cros_ec_device_event.cc(29)] Failed to open /dev/cros_ec: No such file or directory (2)
+2023-03-02T05:29:56.488473Z INFO powerd: [daemon.cc(1662)] Received updated external policy: ac_dim=30s ac_screen_off=40s ac_lock=50s ac_idle_warn=0s ac_idle=8m30s battery_dim=30s battery_screen_off=40s battery_lock=50s battery_idle_warn=0s battery_idle=6m30s ac_idle=suspend battery_idle=suspend lid_closed=suspend use_audio=1 use_video=1 presentation_factor=1 user_activity_factor=1 wait_for_initial_user_activity=0 force_nonzero_brightness_for_user_activity=1 (Prefs)
+2023-03-02T05:29:56.488573Z INFO powerd: [state_controller.cc(1157)] Updated settings: dim=30s quick_dim=0s screen_off=40s lock=50s quick_lock=0s idle_warn=0s idle=6m30s (suspend) lid_closed=suspend use_audio=1 use_video=1 wake_locks=
+2023-03-02T05:29:56.489603Z INFO powerd: [suspend_delay_controller.cc(134)] Unregistering suspend delay 67305476 (chrome) due to D-Bus client :1.37 going away
+2023-03-02T05:29:56.489659Z INFO powerd: [suspend_delay_controller.cc(134)] Unregistering dark suspend delay 67338241 (chrome) due to D-Bus client :1.37 going away
+# Battery is at 79% (note, this is a new laptop battery, and performs well in PopOS).
+2023-03-02T05:29:56.490001Z INFO powerd: [daemon.cc(1213)] On battery at 79% (displayed as 81%), 2.826/3.600Ah at 0.456A, 0s until empty (calculating)
+2023-03-02T05:29:56.490444Z INFO powerd: [udev.cc(500)] Removing device /sys/devices/platform/i8042/serio1/input/input5/event11
+2023-03-02T05:29:56.491477Z INFO powerd: [daemon.cc(1753)] Session state changed to stopped
+2023-03-02T05:29:56.491627Z INFO powerd: [state_controller.cc(1157)] Updated settings: dim=30s quick_dim=0s screen_off=40s lock=50s quick_lock=0s idle_warn=0s idle=6m30s (suspend) lid_closed=suspend use_audio=1 use_video=1 wake_locks=
+2023-03-02T05:29:56.493120Z INFO powerd: [wakeup_source_identifier.cc(137)] Stopped monitoring wakeup path /sys/devices/platform/i8042/serio1 for wake events
+2023-03-02T05:29:56.493151Z INFO powerd: [udev.cc(500)] Removing device /sys/devices/platform/i8042/serio1/input/input5
+2023-03-02T05:29:56.511177Z INFO powerd: [suspend_delay_controller.cc(88)] Unregistering suspend delay 67305477 (Pause VMs while suspended) on behalf of :1.134
+2023-03-02T05:29:56.945571Z INFO powerd: [daemon.cc(1197)] D-Bus org.chromium.SessionManager ownership changed to :1.170
+2023-03-02T05:29:57.057971Z INFO powerd: [suspend_delay_controller.cc(73)] Registering suspend delay 67305478 (chrome) of 5000 ms on behalf of :1.171
+2023-03-02T05:29:57.058236Z INFO powerd: [suspend_delay_controller.cc(73)] Registering dark suspend delay 67338243 (chrome) of 5000 ms on behalf of :1.171
+# Pressing the power button again, in an attempt to wake up screen. This parts seems to indicate it. Pay attention to the timestamp.
+2023-03-02T05:29:57.113615Z INFO powerd: [daemon.cc(1643)] Chrome is using normal display mode
+2023-03-02T05:29:57.137056Z INFO powerd: [daemon.cc(1200)] D-Bus org.chromium.DisplayService ownership changed to :1.171
+2023-03-02T05:29:57.137088Z INFO powerd: [display_power_setter.cc(75)] Asking DisplayService to turn all displays on
+# And the display is still off, while the whole computer is (supposedly running)
+2023-03-02T05:30:02.139349Z WARNING powerd: [bus.cc(644)] Bus::SendWithReplyAndBlock took 5002ms to process message: type=method_call, path=/org/chromium/DisplayService, interface=org.chromium.DisplayServiceInterface, member=SetPower
+2023-03-02T05:30:02.139379Z ERROR powerd: [object_proxy.cc(622)] Failed to call method: org.chromium.DisplayServiceInterface.SetPower: object_path= /org/chromium/DisplayService: org.freedesktop.DBus.Error.NoReply: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+2023-03-02T05:30:02.139443Z INFO powerd: [daemon.cc(1204)] D-Bus org.chromium.PrivacyScreenService ownership changed to :1.171
+# Battery drops after 5 second.
+2023-03-02T05:30:02.148549Z INFO powerd: [daemon.cc(1213)] On battery at 78% (displayed as 81%), 2.822/3.600Ah at 2.408A, 3h48m44s until empty (3h45m44s until shutdown)
+# These screen-related errors may indicate something.
+2023-03-02T05:30:05.142901Z ERROR powerd: [object_proxy.cc(622)] Failed to call method: org.chromium.PrivacyScreenService.GetPrivacyScreenSetting: object_path= /org/chromium/PrivacyScreenService: org.freedesktop.DBus.Error.NoReply: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+2023-03-02T05:30:05.142930Z ERROR powerd: [daemon.cc(1435)] D-Bus method call to GetPrivacyScreenSetting failed
+2023-03-02T05:30:21.493067Z ERROR powerd: [object_proxy.cc(622)] Failed to call method: org.chromium.MlDecisionService.ShouldDeferScreenDim: object_path= /org/chromium/MlDecisionService: org.freedesktop.DBus.Error.ServiceUnknown: The name org.chromium.MlDecisionService was not provided by any .service files
+2023-03-02T05:30:21.493097Z ERROR powerd: [dim_advisor.cc(181)] D-Bus method call to org.chromium.MlDecisionService.ShouldDeferScreenDim failed
+2023-03-02T05:30:26.492176Z INFO powerd: [state_controller.cc(126)] Dimming screen after 30s
+2023-03-02T05:30:26.492201Z INFO powerd: [internal_backlight_controller.cc(781)] Setting brightness to 26 (35.1246%) over 200 ms
+2023-03-02T05:30:32.157441Z INFO powerd: [daemon.cc(1213)] On battery at 78% (displayed as 80%), 2.804/3.600Ah at 2.194A, 2h32m9s until empty (2h29m9s until shutdown)
+2023-03-02T05:30:36.495411Z INFO powerd: [state_controller.cc(126)] Turning screen off after 40s
+2023-03-02T05:30:36.495438Z INFO powerd: [internal_backlight_controller.cc(781)] Setting brightness to 0 (0%) over 200 ms
+# A screen off request?
+2023-03-02T05:30:36.695850Z INFO powerd: [display_power_setter.cc(75)] Asking DisplayService to turn all displays off
+2023-03-02T05:30:41.700939Z WARNING powerd: [bus.cc(644)] Bus::SendWithReplyAndBlock took 5005ms to process message: type=method_call, path=/org/chromium/DisplayService, interface=org.chromium.DisplayServiceInterface, member=SetPower
+# It seems the request somehow fails. Note, the screen been off till now while the laptop has been running (fan spins, keyboard lights up).
+2023-03-02T05:30:41.700965Z ERROR powerd: [object_proxy.cc(622)] Failed to call method: org.chromium.DisplayServiceInterface.SetPower: object_path= /org/chromium/DisplayService: org.freedesktop.DBus.Error.NoReply: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+2023-03-02T05:30:46.496482Z INFO powerd: [state_controller.cc(126)] Locking screen after 50s
+2023-03-02T05:30:46.497000Z ERROR powerd: [object_proxy.cc(622)] Failed to call method: org.chromium.SessionManagerInterface.LockScreen: object_path= /org/chromium/SessionManager: org.chromium.SessionManagerInterface.SessionDoesNotExist: Attempt to lock screen outside of user session.
+# Battery drops again just after 1 minute, this is unusual.
+2023-03-02T05:31:02.166440Z INFO powerd: [daemon.cc(1213)] On battery at 77% (displayed as 80%), 2.786/3.600Ah at 2.069A, 1h54m48s until empty (1h51m48s until shutdown)
+2023-03-02T05:31:32.176555Z INFO powerd: [daemon.cc(1213)] On battery at 77% (displayed as 79%), 2.768/3.600Ah at 2.198A, 1h30m41s until empty (1h27m41s until shutdown)
+2023-03-02T05:31:57.360460Z INFO powerd: [suspend_delay_controller.cc(134)] Unregistering suspend delay 67305478 (chrome) due to D-Bus client :1.171 going away
+2023-03-02T05:31:57.360489Z INFO powerd: [suspend_delay_controller.cc(134)] Unregistering dark suspend delay 67338243 (chrome) due to D-Bus client :1.171 going away
+# The battery drops seems really fast even with screen off, isn't it? This may indicate certain hardware components are underload and drains the battery.
+2023-03-02T05:32:02.188245Z INFO powerd: [daemon.cc(1213)] On battery at 76% (displayed as 79%), 2.751/3.600Ah at 1.086A, 1h21m1s until empty (1h18m1s until shutdown)
+2023-03-02T05:32:32.200221Z INFO powerd: [daemon.cc(1213)] On battery at 76% (displayed as 79%), 2.742/3.600Ah at 1.111A, 1h32m39s until empty (1h29m39s until shutdown)
+2023-03-02T05:33:02.212217Z INFO powerd: [daemon.cc(1213)] On battery at 76% (displayed as 78%), 2.733/3.600Ah at 1.116A, 1h45m29s until empty (1h42m29s until shutdown)
+2023-03-02T05:33:32.224203Z INFO powerd: [daemon.cc(1213)] On battery at 76% (displayed as 78%), 2.724/3.600Ah at 1.097A, 2h35s until empty (1h57m35s until shutdown)
+2023-03-02T05:34:02.236210Z INFO powerd: [daemon.cc(1213)] On battery at 75% (displayed as 78%), 2.715/3.600Ah at 1.109A, 2h23m57s until empty (2h20m57s until shutdown)
+2023-03-02T05:34:32.248213Z INFO powerd: [daemon.cc(1213)] On battery at 75% (displayed as 77%), 2.706/3.600Ah at 0.953A, 2h26m37s until empty (2h23m37s until shutdown)
+2023-03-02T05:35:02.260236Z INFO powerd: [daemon.cc(1213)] On battery at 75% (displayed as 77%), 2.698/3.600Ah at 1.095A, 2h27m8s until empty (2h24m8s until shutdown)
+2023-03-02T05:35:32.272206Z INFO powerd: [daemon.cc(1213)] On battery at 75% (displayed as 77%), 2.689/3.600Ah at 1.088A, 2h27m26s until empty (2h24m26s until shutdown)
+2023-03-02T05:36:02.284024Z INFO powerd: [daemon.cc(1213)] On battery at 74% (displayed as 77%), 2.680/3.600Ah at 0.955A, 2h30m40s until empty (2h27m40s until shutdown)
+2023-03-02T05:36:26.496102Z INFO powerd: [state_controller.cc(1347)] Ready to perform idle action (suspend) after 6m30s
+2023-03-02T05:36:26.496195Z INFO powerd: [suspender.cc(575)] Starting request 67305474
+2023-03-02T05:36:26.598662Z INFO powerd: [bluetooth_controller.cc(84)] Writing "on" to /sys/devices/pci0000:00/0000:00:08.1/0000:04:00.4/usb3/3-3/power/control succeeded
+2023-03-02T05:36:26.598754Z INFO powerd: [daemon.cc(837)] Reading wakeup count from /sys/power/wakeup_count
+2023-03-02T05:36:26.598856Z INFO powerd: [daemon.cc(841)] Read wakeup count 92
+2023-03-02T05:36:26.598880Z INFO powerd: [suspend_delay_controller.cc(151)] Announcing suspend request 67305474 with 3 pending delay(s) and 0 outstanding delay(s) from previous request
+2023-03-02T05:36:26.599324Z ERROR powerd: [cros_ec_device_event.cc(29)] Failed to open /dev/cros_ec: No such file or directory (2)
+2023-03-02T05:36:26.600370Z INFO powerd: [suspend_delay_controller.cc(99)] Got notification that delay 67305473 (Bluetooth Manager) is ready for suspend request 67305474 from :1.4
+2023-03-02T05:36:26.600946Z INFO powerd: [suspend_delay_controller.cc(99)] Got notification that delay 67305474 (trunksd) is ready for suspend request 67305474 from :1.6
+2023-03-02T05:36:26.601620Z INFO powerd: [suspend_delay_controller.cc(99)] Got notification that delay 67305475 (shill) is ready for suspend request 67305474 from :1.8
+2023-03-02T05:36:26.601700Z INFO powerd: [suspend_delay_controller.cc(254)] Notifying observers that suspend is ready
+# Request to sleep again, which it should not be at this moment as I keep pressing the keyboards. That said, aside from special keys like power, keyboard backlight adjust, etc. I could not confirm whether my keystroke are registered.
+2023-03-02T05:36:26.602362Z INFO powerd: [suspender.cc(739)] Starting suspend
+# And it fails?
+2023-03-02T05:36:26.602558Z ERROR powerd: [suspend_configurator.cc(75)] Failed to write deep to /sys/power/mem_sleep: Invalid argument (22)
+2023-03-02T05:36:26.630702Z INFO powerd: [main.cc(408)] Running "/usr/bin/powerd_setuid_helper --action=suspend --suspend_wakeup_count_valid --suspend_wakeup_count=92"
+```

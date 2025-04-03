@@ -1,0 +1,102 @@
+---
+readerTitle: From the local development environment to Google Cloud Platform, where to start?
+readerDescription: My thought process of bring an application from a local to a cloud environment.
+coverImage: ../../assets/blog/1/cover-image.webp
+coverAlt: My thought process of bring an application from a local to a cloud environment.
+publishedDate: February 04, 2022
+series: Google technologies
+seoTitle: Starting a NodeJS web app deployment to Google Cloud
+seoDescription: NodeJS, App Engine, Cloud SQL? What to consider and where to start?
+---
+
+import BlogPicture from '../../components/BlogPicture.astro';
+
+This is more about describing my personal development and debugging experience, less of a step-by-step tutorial on the topic. Correction to any of the errors is welcome!
+
+## Problem statement 🍀
+
+I have a working full-stack web application. It performs perfectly well in the local environment, but now, I want to make this available on the Internet, on Google Cloud Platform (GCP) to be exact. Where to start? For this example, my stack consists of React for the front end, NestJS for the back end, and PostgreSQL for the database. React app is statically served.
+
+### What will be the criteria for my decision? 🤔
+
+There are some goals I want to achieve.
+
+- Considering I'm still new to the cloud field, I do not want to configure many things. Limited user management is preferred.
+- I just want to make an application online for now. Security is prioritized, but there is no need for other aspects like scalability, redundancy, disaster recovery, performance.
+- My stack requires a NodeJS server to run the NestJS back-end codebase and statically serve the React front-end. Meaning both resources must be on one server, and have the same domain.
+
+### To run a web application on GCP, which cloud services are required? 🤔
+
+We have 3 separate parts of the application here: front-end, back-end, and database. That means we need something to handle these three. GCP has hundreds of services and terminologies. That will be confusing, or will it?
+
+### Okay, there are front-end and back-end, so there must be something to host these two components, right? 🤔
+
+As of February 2022, Google Cloud has 5 different options.
+
+- Cloud Functions
+- App Engine
+- Cloud Run
+- Kubernetes Engine
+- Compute Engine
+
+This is like an abstraction stack, the bottom is closer to the physical hardware level. In other words, Cloud Functions will require less configuration (fully managed by Google, serverless) compared to a Compute Engine setup (completely self-managed).
+
+### So there are five options. What do they do? Can I have a TLDR of their features? 🤔
+
+**Cloud Functions**
+This is a function as a service option. As the name suggests, it is to run singular or multiple functions. Cloud Functions is fully managed by Google. There is no need to initialize an application, declare a listening port, etc. For example, you will only write something like
+
+```ts showLineNumbers
+exports.yourFunction = (req, res) => {
+  res.status(200).send('Result');
+};
+```
+
+**App Engine (GAE)**
+This is a platform as a service option, so it resembles other cloud providers such as Heroku. GAE is fully managed by Google. Unlike Cloud Functions, this is where you need to have a fully prepared codebase beforehand. A typical choice when thinking about deploying your application to the cloud.
+
+**Cloud Run**
+This is a container as a service option. Fully managed by Google, scalable to thousands of instances, and pay per CPU and memory usage. That said, you're responsible for maintaining the containers.
+
+**Kubernetes Engine (GKE)**
+Well, the name says it all, this is a fully-managed Kubernetes service from Google. Kubernetes is essentially used to manage containers on large scales. Cloud Run containers can be used with (GKE). This will require resources and skills to orchestrate the containers, not really set and forget.
+
+**Compute Engine (GCE)**
+The most barebone service, a virtual machine on the cloud. Essentially an empty computer and you need to configure everything from Operating Systems to Network, Storage usage, etc.
+
+import image1 from '../../assets/blog/1/google-cloud-1.webp';
+
+<BlogPicture imageMetadata={image1} alt='Google computing stack as of February 2022.' />
+
+For a more detailed discussion, these will be great resources
+
+https://www.youtube.com/watch?v=wzPmgWJ5fpU
+
+https://www.youtube.com/watch?v=q_5AgiI7KFQ
+
+### Okay, what will be suitable for my use case then? 🤔
+
+Between the five options, Cloud Functions and App Engine are on the side of fully managed by Google, while the other three are more of a hybrid to self-managed options. Only App Engine can be used with my existing code base, so it will be my choice.
+
+### App Engine will be for both front end and back end. Then, what is for PostgreSQL database? 🤔
+
+PostgreSQL is relational, and Google currently has 3 options for this.
+
+- Cloud Spanner
+- Cloud SQL
+- Bare Metal
+
+Out of the three, Cloud Spanner is fully managed and geared toward enterprises due to its massive scalability, and Bare Metal requires manual configurations (seems like it only supports the Enterprise Oracle database too, correct me if I'm wrong). There can be more options if we consider Compute Engine or Container solutions, but we will skip these for reasons as stated.
+
+Only Cloud SQL is fully managed and suitable for small, personal use, so that will be my choice.
+
+import image2 from '../../assets/blog/1/google-cloud-2.webp';
+
+<BlogPicture imageMetadata={image2} alt='Google relational databases platforms and use cases.' />
+
+Source: <a href="https://cloud.google.com/blog/topics/developers-practitioners/your-google-cloud-database-options-explained">Your Google Cloud database options explained.</a>
+
+## Wrap up 🍀
+
+Great, so all three components are covered, now we only need to somehow push the code there then? Not at all, figuring out what to use is one thing, how to use them is another matter. It appears we will need even more cloud services to have a proper and secure deployment.
+The chosen services above are fully-managed, but they are only relative to other services in the same category. The upcoming posts will discuss other services necessary for a web application on GCP and matters to consider in a deployment pipeline.

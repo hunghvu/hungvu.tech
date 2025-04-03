@@ -1,0 +1,1571 @@
+---
+coverImage: ../../assets/blog/40/cover-image.png
+coverAlt: I have a chance to get my hand dirty with the Quantum Fiber W1700K, so it is teardown time!
+publishedDate: October 1, 2024
+readerTitle: Quantum Fiber W1700K teardown, board view, and UART pins
+readerDescription: I have a chance to get my hand dirty with the Quantum Fiber W1700K, so it is teardown time!
+seoTitle: Quantumm Fiber W1700K teardown, board view, and UART pins
+seoDescription: In this article, I will show the internal and boot environment of Quantumm Fiber W1700K (also known as Gemtek MXFF-W1700k).
+series: Homelab
+---
+
+import BlogPicture from '../../components/BlogPicture.astro';
+
+Recently, new Quantum Fiber customer (or existing customer, but migrated from CenturyLink) are eligible to receive a WIFI 7 access point up on service installation. In this article, I will show the internal and boot environment of Quantumm Fiber W1700K (also known as Gemtek MXF-W1700K).
+
+## Board Images
+
+import image1 from '../../assets/blog/40/w1700k-openwrt-1.jpg';
+
+<BlogPicture imageMetadata={image1} alt='Top view of Quantum Fiber W1700K access point.' />
+
+import image2 from '../../assets/blog/40/w1700k-openwrt-2.jpg';
+
+<BlogPicture imageMetadata={image2} alt='Bottom view of Quantum Fiber W1700K access point.' />
+
+import image3 from '../../assets/blog/40/w1700k-openwrt-3.jpg';
+
+<BlogPicture imageMetadata={image3} alt='Wireless chipset view - Mediatek MT7996AV 2344-BHHSH BTTNWS54 (also known as Mediatek Filogic 680).' />
+
+import image4 from '../../assets/blog/40/w1700k-openwrt-4.jpg';
+
+<BlogPicture imageMetadata={image4} alt='Wireless chipset view - Mediatek MT 7977BN 2345-BHHAL DTTP2W50' />
+
+import image5 from '../../assets/blog/40/w1700k-openwrt-5.jpg';
+
+<BlogPicture imageMetadata={image5} alt='Wireless chipset view - Mediatek MT7977AN 2338-BHHAL DTTNUH56' />
+
+import image6 from '../../assets/blog/40/w1700k-openwrt-6.jpg';
+
+<BlogPicture imageMetadata={image6} alt='Wireless chipset view - Mediatek MT7976GN 2343-CMSL BTP3HX76' />
+
+import image7 from '../../assets/blog/40/w1700k-openwrt-7.jpg';
+
+<BlogPicture imageMetadata={image7} alt='Switch chipset view - Two Realtek RTL8261N NGCH8H3 GN31' />
+
+import image8 from '../../assets/blog/40/w1700k-openwrt-8.jpg';
+
+<BlogPicture imageMetadata={image8} alt='CPU and memory view - Airoha AN7581GT 2333-ZAHHSH ATTNKK80 and two ESMT M16U8G16512A CSW1-NLB R20M001 333' />
+
+import image9 from '../../assets/blog/40/w1700k-openwrt-9.jpg';
+
+<BlogPicture imageMetadata={image9} alt='NAND flash view - Winbond 25N04KVZE1R 2339 6338M0018' />
+
+import image10 from '../../assets/blog/40/w1700k-openwrt-10.jpg';
+
+<BlogPicture imageMetadata={image10} alt='Antenna view - 2.4 GHz and 5 GHz' />
+
+import image11 from '../../assets/blog/40/w1700k-openwrt-11.jpg';
+
+<BlogPicture imageMetadata={image11} alt='Antenna view - 6 GHz' />
+
+## My thoughts on Quantum Fiber W1700K
+
+Access point wise, I think the hardware is top of the line at the time of writing, which is still an early day of WiFi 7. There is 512 MB of storage, 2 GB of RAM, 2x 10 Gbe and 2x 1 Gbe LAN ports, beefy heatsink, what else can I ask for? Maybe PoE, so I can get rid of its chonky 12V 5A power supply? That said, the CPU is an interesting choice to me. Generally, I prefer the CPU to be either Mediatek or Qualcomm as they are widely supported by OpenWRT, but Airoha?
+
+After a little bit of digging, it seems Airoha is a subsidiary of Mediatek. In fact, they advertise their native SDK of AN7581 series officially supports OpenWRT too ([link](https://www.airoha.com/products/p/zRV6ssXbhlCIYyNl)). Also, the upcoming OpenWRT release with kernel 6.6 already had Airoha target updated ([link](https://github.com/openwrt/openwrt/issues/15192)), and that is a good sign. However, I don't think OpenWRT supports Airoha AN7581 line up in the main branch right now.
+
+Since I brought up the topic of OpenWRT, you may already guess. Yes, the Quantum Fiber W1700K access point runs on a customized OpenWRT. With stock firmware, the device is unmanageable, if not useless. The best I can do is to contact Quantum Fiber support and asks them to remotely configure the device. Even their field technician had trouble installing it and needed help from their internal support team to remotely configure my device on day 1.
+
+## How to access the device
+
+import image12 from '../../assets/blog/40/w1700k-openwrt-12.png';
+
+<BlogPicture imageMetadata={image12} alt='Serial console pins at the bottom left of Quantum Fiber W1700K board.' />
+
+Upon initial investigation, I notice there are exposed pins at the bottom left of this board. After testing the pins with multimeter, they are actually TTL serial console pins. From left to right, there are 5 pins:
+
+- Pin 1: TX (connect to white/RX wire of USB to TTL RS232 serial cable).
+- Pin 2: GND (connect to black/GND wire of USB to TTL RS232 serial cable).
+- Pin 3: VCC 3.3 volts (left unplugged, because red/VCC wire of USB to TTL RS232 serial cable, 5 volts, will damage the board).
+- Pin 4: Unused (no voltage at all)
+- Pin 5: RX (connect to green/TX wire of USB to TTL RS232 serial cable).
+
+**Side note**: If the USB to TTL cable is using Prolific 2303/23xx chipset, try using a version lower than v1.7.0 (the latest is v4.3.0). The Prolific chipset is usually faked, and Prolific developers make faked devices incompatible in new versions of their driver. If using PuTTY as a serial terminal, set Flow to None so keyboard is registered. Baud rate is 115200.
+
+## Serial console access - Boot commands
+
+Below is a snippet of me playing around with the uBoot commands. Some notable information are.
+
+- The access points runs on a customized OpenWRT v21.02.1 rev. r16325-88151b8303 (end of life in May 2023).
+- The vendor name is ECONET, which is a pre-Mediatek name of Airoha. There is a thread on OpenWRT about them ([link](https://forum.openwrt.org/t/openwrt-support-for-zyxel-pmg5617ga-first-gpon-support/144231/95)).
+- Some important commands are accessible, such as `editenv`, `flash`, `tftpboot`, `bootm`.
+
+``` showLineNumbers
+U-boot version: 2.0
+Hit any key to stop autoboot:  0
+ECNT> ?
+?       - alias for 'help'
+base    - print or set address offset
+bdinfo  - print Board Info structure
+boot    - boot default, i.e., run 'bootcmd'
+bootd   - boot default, i.e., run 'bootcmd'
+bootm   - boot application image from memory
+chpart  - change active partition
+cmp     - memory compare
+coninfo - print console devices and information
+cp      - memory copy
+crc32   - checksum calculation
+dcache  - enable or disable data cache
+echo    - echo args to console
+editenv - edit environment variable
+efuse   - efuse - efuse command
+
+env     - environment handling commands
+exit    - exit script
+false   - do nothing, unsuccessfully
+fdt     - flattened device tree utility commands
+fip_test- fip_test - test command
+
+flash   - flash - flash command
+
+go      - start application at address 'addr'
+gpio    - query and control gpio pins
+help    - print command description/usage
+icache  - enable or disable instruction cache
+imginfo - imginfo - Show tclinux.bin version command
+
+iminfo  - print header information for application image
+imxtract- extract a part of a multi-image
+itest   - return true/false on integer compare
+loadb   - load binary file over serial line (kermit mode)
+loads   - load S-Record file over serial line
+loadx   - load binary file over serial line (xmodem mode)
+loady   - load binary file over serial line (ymodem mode)
+loop    - infinite loop on address range
+md      - memory display
+mdio    - MDIO utility commands
+mii     - MII utility commands
+mm      - memory modify (auto-incrementing address)
+mtd     - mtd - mtd  command
+
+mtdparts- define flash/nand partitions
+mw      - memory write (fill)
+nm      - memory modify (constant address)
+ping    - send ICMP ECHO_REQUEST to network host
+printenv- print environment variables
+reset   - Perform RESET of the CPU
+run     - run commands in an environment variable
+saveenv - save environment variables to persistent storage
+setenv  - set environment variables
+showvar - print local hushshell variables
+sleep   - delay execution for some time
+source  - run script from memory
+sr_test - sr_test - test command
+
+test    - minimal test like /bin/sh
+tftpboot- boot image via network using TFTP protocol
+true    - do nothing, successfully
+version - print monitor, compiler and linker version
+ECNT> base
+          Base Address: 0x00000000
+ECNT> bdinfo
+            arch_number = 0x00001D63
+boot_params = 0x80000100
+DRAM bank   = 0x00000000
+-> start    = 0x80000000
+-> size     = 0x80000000
+eth0name    = ecnt_eth
+ethaddr     = 00:AA:BB:01:23:40
+current eth = ecnt_eth
+ip_addr     = 192.168.0.1
+baudrate    = 115200 bps
+TLB addr    = 0xFFFF0000
+relocaddr   = 0xFFDB7000
+reloc off   = 0x7DFB7000
+irq_sp      = 0x00000000
+sp start    = 0xFDDB2EA0
+ECNT> coninfo
+List of available devices:
+serial   80000003 SIO stdin stdout stderr
+ecnt_uart 00000003 .IO
+ECNT> env
+env - environment handling commands
+
+Usage:
+env default [-f] -a - [forcibly] reset default environment
+env default [-f] var [...] - [forcibly] reset variable(s) to their default values
+env delete [-f] var [...] - [forcibly] delete variable(s)
+env edit name - edit environment variable
+env export [-t | -b | -c] [-s size] addr [var ...] - export environment
+env import [-d] [-t | -b | -c] addr [size] - import environment
+env print [-a | name ...] - print environment
+env run var [...] - run commands in an environment variable
+env save - save environment
+env set [-f] name [arg ...]
+
+ECNT> env print -a
+arch=arm
+baudrate=115200
+board=an7581_evb
+board_name=an7581_evb
+bootcmd=flash imgread 2048;bootm
+bootdelay=4
+bootfile=tclinux.bin
+bootflag=1
+console=ttyS0,115200n8 earlycon
+country_code=ff
+cpu=armv8
+dsl_gpio=0b
+ethact=ecnt_eth
+ethaddr=00:AA:BB:01:23:40
+ether_gpio=0c
+fdt_high=0xac000000
+fw_port=0
+fwupd_state=0
+fwupd_type=7
+internet_gpio=02
+ipaddr=192.168.0.1
+kernel_filename=tclinux.bin
+loadaddr=0x81800000
+multi_upgrade_gpio=0b020400000000000000000000000000
+onu_type=2
+power_gpio=1515
+product_name=xPON ONU
+qdma_init=61bb
+root=/dev/mtdblock4 ro
+sdram_conf=0x00108893
+serdes_ethernet=11
+serdes_pon=23
+serdes_sel=0
+serdes_usb1=00
+serdes_usb2=01
+serdes_wifi1=00
+serdes_wifi2=00
+serverip=192.168.0.205
+snmp_sysobjid=1.2.3.4.5
+soc=an7581
+stderr=serial
+stdin=serial
+stdout=serial
+ubi.mtd=system
+uboot_filename=tcboot.bin
+vendor=ecnt
+vendor_name=ECONET Technologies Corp.
+ver=U-Boot 2014.04-rc1 (Jun 12 2024 - 08:14:34) AXON 2.0
+version=2.0
+
+Environment size: 1035/16380 bytes
+ECNT> gpio
+gpio - query and control gpio pins
+
+Usage:
+gpio <input|set|clear|toggle> <pin>
+- input/set/clear/toggle the specified pin
+gpio status [<bank> | <pin>]
+ECNT> gpio status
+gpio - query and control gpio pins
+
+Usage:
+gpio <input|set|clear|toggle> <pin>
+- input/set/clear/toggle the specified pin
+gpio status [<bank> | <pin>]
+ECNT> imginfo
+get_tclinux_img_version, read trx magic(0x32524448) error.
+Read first tclinux.bin from flash 0x602000 error.
+get_tclinux_img_version, read trx magic(0x32524448) error.
+Read second tclinux.bin from flash 0x4602000 error.
+imginfo - imginfo - Show tclinux.bin version command
+
+
+Usage:
+imginfo imginfo usage:
+imginfo
+
+ECNT> iminfo
+
+## Checking Image at 81800000 ...
+   FIT image found
+   FIT description: Kernel image with single Linux kernel, rootfs and FDT blob
+    Image 0 (fdt@1)
+     Description:  ECONET Flattened Device Tree blob
+     Type:         Flat Device Tree
+     Compression:  uncompressed
+     Data Start:   0x818000fc
+     Data Size:    13307 Bytes = 13 KiB
+     Architecture: AArch64
+    Image 1 (kernel@1)
+     Description:  ECONET Linux kernel
+     Type:         Kernel Image
+     Compression:  lzma compressed
+     Data Start:   0x81803574
+     Data Size:    3543006 Bytes = 3.4 MiB
+     Architecture: AArch64
+     OS:           Linux
+     Load Address: 0x80088000
+     Entry Point:  0x80088000
+     Hash algo:    sha1
+     Hash value:   e023ffd1aeb7175ca9796abd6a8a6d2548593fe9
+    Image 2 (filesystem@1)
+     Description:  ECONET Root File System
+     Type:         Unknown Image
+     Compression:  Unknown Compression
+     Data Start:   0x81b64650
+     Data Size:    40632320 Bytes = 38.8 MiB
+## Checking hash(es) for FIT Image at 81800000 ...
+   Hash(es) for Image 0 (fdt@1):
+   Hash(es) for Image 1 (kernel@1): sha1 error!
+Bad hash value for 'hash@1' hash node in 'kernel@1' image node
+Bad hash in FIT image!
+ECNT> md
+md - memory display
+
+Usage:
+md [.b, .w, .l, .q] address [# of objects]
+ECNT> printenv
+arch=arm
+baudrate=115200
+board=an7581_evb
+board_name=an7581_evb
+bootcmd=flash imgread 2048;bootm
+bootdelay=4
+bootfile=tclinux.bin
+bootflag=1
+console=ttyS0,115200n8 earlycon
+country_code=ff
+cpu=armv8
+dsl_gpio=0b
+ethact=ecnt_eth
+ethaddr=00:AA:BB:01:23:40
+ether_gpio=0c
+fdt_high=0xac000000
+fw_port=0
+fwupd_state=0
+fwupd_type=7
+internet_gpio=02
+ipaddr=192.168.0.1
+kernel_filename=tclinux.bin
+loadaddr=0x81800000
+multi_upgrade_gpio=0b020400000000000000000000000000
+onu_type=2
+power_gpio=1515
+product_name=xPON ONU
+qdma_init=61bb
+root=/dev/mtdblock4 ro
+sdram_conf=0x00108893
+serdes_ethernet=11
+serdes_pon=23
+serdes_sel=0
+serdes_usb1=00
+serdes_usb2=01
+serdes_wifi1=00
+serdes_wifi2=00
+serverip=192.168.0.205
+snmp_sysobjid=1.2.3.4.5
+soc=an7581
+stderr=serial
+stdin=serial
+stdout=serial
+ubi.mtd=system
+uboot_filename=tcboot.bin
+vendor=ecnt
+vendor_name=ECONET Technologies Corp.
+ver=U-Boot 2014.04-rc1 (Jun 12 2024 - 08:14:34) AXON 2.0
+version=2.0
+
+Environment size: 1035/16380 bytes
+ECNT> showvar
+HUSH_VERSION=0.01
+ECNT> version
+
+U-Boot 2014.04-rc1 (Jun 12 2024 - 08:14:34) AXON 2.0
+aarch64-openwrt-linux-gnu-gcc (OpenWrt GCC 10.2.0 r16325-88151b8303) 10.2.0
+GNU ld (GNU Binutils) 2.34
+ECNT> mtd
+0x00000000-0x00200000 : "bootloader"
+0x00200000-0x00400000 : "uenv"
+0x00400000-0x00600000 : "dsd"
+0x00600000-0x009633b2 : "kernel"
+0x009634b0-0x030334b0 : "rootfs"
+0x00600000-0x04600000 : "tclinux"
+0x04600000-0x04964652 : "kernel_slave"
+0x04964750-0x07034750 : "rootfs_slave"
+0x04600000-0x08600000 : "tclinux_slave"
+0x08600000-0x1be00000 : "system"
+ECNT> 
+```
+
+## Serial console access - Boot log
+
+With stock firmware version WXK001-05.00.30.64, I have an unrestricted access to the uBoot environment. However, at the end of boot sequence, my keystroke is not registered anymore. I am not sure if this is intentional or not, but because of that, I have not been able to explore the OS environment.
+
+At the moment, this stock firmware is nowhere to be found online, so I was not able to download and play around with the binary. In any case, I will post a follow up if there is something new coming out of this interesting access point. Below is the boot log, I hope it becomes useful, somehow.
+
+``` showLineNumbers
+Secure key exist
+
+AN7581DRAMC V0.8
+pkg_type is BGA1
+MPLL setting done !!!
+dram_type = PCDDR4, data_rate = 2666
+DIV mode = 1
+APHY RG Setting
+DelayCellTimex100 (cell=974)
+MRW RK0 MR#2 = 0x30
+MRW RK0 MR#3 = 0x200
+MRW RK0 MR#1 = 0x101
+MRW RK0 MR#4 = 0x800
+MRW RK0 MR#5 = 0x400
+MRW RK0 MR#6 = 0xce0
+MRW RK0 MR#6 = 0xce0
+MRW RK0 MR#6 = 0xc60
+MRW RK0 MR#0 = 0xf44
+[Dramc] PCDDR AC Timing update
+DRVP driving setting info: 41
+ODTP driving setting info: 41
+DRVN driving setting info: 41
+ODTN driving setting info: 41
+MRW RK0 MR#2 = 0x30
+MRW RK0 MR#1 = 0x181
+MRW RK0 MR#1 = 0x101
+MRW RK0 MR#2 = 0x30
+MRW RK0 MR#3 = 0x204
+MRW RK0 MR#3 = 0x200
+MRW RK0 MR#6 = 0xcc0
+MRW RK0 MR#6 = 0xcc0
+MRW RK0 MR#6 = 0xc40
+MRW RK0 MR#6 = 0xcc0
+MRW RK0 MR#6 = 0xcc2
+MRW RK0 MR#6 = 0xc42
+MRW RK0 MR#6 = 0xcc0
+MRW RK0 MR#6 = 0xcc4
+MRW RK0 MR#6 = 0xc44
+MRW RK0 MR#6 = 0xcc0
+MRW RK0 MR#6 = 0xcc6
+MRW RK0 MR#6 = 0xc46
+MRW RK0 MR#6 = 0xcc0
+MRW RK0 MR#6 = 0xcc8
+MRW RK0 MR#6 = 0xc48
+MRW RK0 MR#6 = 0xcc0
+MRW RK0 MR#6 = 0xcca
+MRW RK0 MR#6 = 0xc4a
+MRW RK0 MR#6 = 0xcc0
+MRW RK0 MR#6 = 0xccc
+MRW RK0 MR#6 = 0xc4c
+MRW RK0 MR#6 = 0xcc0
+MRW RK0 MR#6 = 0xcce
+MRW RK0 MR#6 = 0xc4e
+MRW RK0 MR#6 = 0xcc0
+MRW RK0 MR#6 = 0xcd0
+MRW RK0 MR#6 = 0xc50
+MRW RK0 MR#6 = 0xcc0
+MRW RK0 MR#6 = 0xcd2
+MRW RK0 MR#6 = 0xc52
+MRW RK0 MR#6 = 0xcc0
+MRW RK0 MR#6 = 0xcd4
+MRW RK0 MR#6 = 0xc54
+MRW RK0 MR#6 = 0xcc0
+MRW RK0 MR#6 = 0xcd6
+MRW RK0 MR#6 = 0xc56
+MRW RK0 MR#6 = 0xcc0
+MRW RK0 MR#6 = 0xcd8
+MRW RK0 MR#6 = 0xc58
+MRW RK0 MR#6 = 0xcc0
+MRW RK0 MR#6 = 0xcda
+MRW RK0 MR#6 = 0xc5a
+MRW RK0 MR#6 = 0xcc0
+MRW RK0 MR#6 = 0xcdc
+MRW RK0 MR#6 = 0xc5c
+MRW RK0 MR#6 = 0xcc0
+MRW RK0 MR#6 = 0xcde
+MRW RK0 MR#6 = 0xc5e
+MRW RK0 MR#6 = 0xcc0
+MRW RK0 MR#6 = 0xce0
+MRW RK0 MR#6 = 0xc60
+MRW RK0 MR#6 = 0xcc0
+MRW RK0 MR#6 = 0xce2
+MRW RK0 MR#6 = 0xc62
+MRW RK0 MR#6 = 0xcc0
+MRW RK0 MR#6 = 0xce4
+MRW RK0 MR#6 = 0xc64
+MRW RK0 MR#6 = 0xcc0
+MRW RK0 MR#6 = 0xce6
+MRW RK0 MR#6 = 0xc66
+MRW RK0 MR#6 = 0xcc0
+MRW RK0 MR#6 = 0xce8
+MRW RK0 MR#6 = 0xc68
+MRW RK0 MR#6 = 0xcc0
+MRW RK0 MR#6 = 0xcea
+MRW RK0 MR#6 = 0xc6a
+MRW RK0 MR#6 = 0xcc0
+MRW RK0 MR#6 = 0xcec
+MRW RK0 MR#6 = 0xc6c
+MRW RK0 MR#6 = 0xcc0
+MRW RK0 MR#6 = 0xcee
+MRW RK0 MR#6 = 0xc6e
+MRW RK0 MR#6 = 0xcc0
+MRW RK0 MR#6 = 0xcf0
+MRW RK0 MR#6 = 0xc70
+MRW RK0 MR#6 = 0xcc0
+MRW RK0 MR#6 = 0xcf2
+MRW RK0 MR#6 = 0xc72
+MRW RK0 MR#6 = 0xcc0
+MRW RK0 MR#6 = 0xcf2
+MRW RK0 MR#6 = 0xc72
+BG num = 2
+DRAM FLOW DONE!!!
+Secure key exist
+L2C_type:256K_L2C+256K_SRAM
+L1D cache size: 32 KB (with set/asso/line==128/4/64)
+L1I cache size: 32 KB (with set/asso/line==256/2/64)
+L2U cache size: 256 KB (with set/asso/line==256/16/64)
+
+
+U-Boot 2014.04-rc1 (Jun 12 2024 - 08:14:34) AXON 2.0
+
+DRAM:  2 GiB
+AN7581GT
+Now running in RAM - U-Boot at: ffdb7000
+spi_nand_probe: mfr_id=0xef, dev_id=0xaa 0x23
+Set ECC threshold = 0x60
+Support SPI NAND erase statistic.
+Using Flash ECC.
+Detected SPI NAND Flash :  _SPI_NAND_DEVICE_ID_W25N04K, Flash Size=0x20000000
+bmt pool size: 250
+BMT & BBT Init Success
+In:    serial
+Out:   serial
+Err:   serial
+CPU0: found redistributor 0 region 0:00000000ffe31028
+Net:   ecnt_eth
+               Uip activated
+No "gpio_active_high" at env file
+
+Not found TC Phy
+Not found TC Phy
+Not found TC Phy
+Not found TC Phy
+ETH VER = ETH.2.2.1-R
+pr_idac = 0x100 ,RO_FL_Out = 0xffff
+cdr_pr_idac_tmp = 0x100
+pr_idac = 0x200 ,RO_FL_Out = 0xff36
+cdr_pr_idac_tmp = 0x200
+pr_idac = 0x300 ,RO_FL_Out = 0xcbf6
+cdr_pr_idac_tmp = 0x300
+pr_idac = 0x400 ,RO_FL_Out = 0xab8d
+cdr_pr_idac_tmp = 0x400
+pr_idac = 0x500 ,RO_FL_Out = 0x958c
+pr_idac = 0x600 ,RO_FL_Out = 0x85bc
+pr_idac = 0x700 ,RO_FL_Out = 0x7a0b
+pr_idac = 0x480 ,RO_FL_Out = 0x9fb1
+cdr_pr_idac_tmp = 0x480
+pr_idac = 0x4c0 ,RO_FL_Out = 0x9a72
+cdr_pr_idac_tmp = 0x480
+pr_idac = 0x4a0 ,RO_FL_Out = 0x9d0b
+cdr_pr_idac_tmp = 0x480
+pr_idac = 0x490 ,RO_FL_Out = 0x9e52
+cdr_pr_idac_tmp = 0x480
+pr_idac = 0x488 ,RO_FL_Out = 0x9f06
+cdr_pr_idac_tmp = 0x488
+pr_idac = 0x48c ,RO_FL_Out = 0x9e94
+cdr_pr_idac_tmp = 0x488
+pr_idac = 0x48a ,RO_FL_Out = 0x9ecd
+cdr_pr_idac_tmp = 0x488
+pr_idac = 0x489 ,RO_FL_Out = 0x9ee9
+cdr_pr_idac_tmp = 0x489
+sel_cdr_pr_idac = 0x489
+RO_state_freqdet = 0x0
+AN mode
+set mac reg init
+usxgmii_pcs_int en 1
+USXGMII_10G exit
+U-boot version: 2.0
+Hit any key to stop autoboot:  0
+==> bootflag = 1, fwupd_state = 0
+
+bootflag==1 --> booting from second image
+Reading kernel...
+bootm flag=0, states=70f
+## Loading kernel from FIT Image at 81800000 ...
+   Using 'conf@1' configuration
+   Trying 'kernel@1' kernel subimage
+     Description:  ECONET Linux kernel
+     Type:         Kernel Image
+     Compression:  lzma compressed
+     Data Start:   0x81803574
+     Data Size:    3543006 Bytes = 3.4 MiB
+     Architecture: AArch64
+     OS:           Linux
+     Load Address: 0x80088000
+     Entry Point:  0x80088000
+     Hash algo:    sha1
+     Hash value:   e023ffd1aeb7175ca9796abd6a8a6d2548593fe9
+   Verifying Hash Integrity ... sha1+ OK
+## Loading fdt from FIT Image at 81800000 ...
+   Using 'conf@1' configuration
+   Trying 'fdt@1' fdt subimage
+     Description:  ECONET Flattened Device Tree blob
+     Type:         Flat Device Tree
+     Compression:  uncompressed
+     Data Start:   0x818000fc
+     Data Size:    13307 Bytes = 13 KiB
+     Architecture: AArch64
+   Verifying Hash Integrity ... OK
+   Booting using the fdt blob at 0x818000fc
+   Uncompressing Kernel Image ... OK
+   Loading Device Tree to 00000000abff9000, end 00000000abfff3fa ... OK
+
+Starting kernel ...
+
+[    0.000000] Booting Linux on physical CPU 0x0000000000 [0x410fd034]
+[    0.000000] Linux version 5.4.55 (jenkins@jenkins-node-02) (gcc version 10.2.0 (OpenWrt GCC 10.2.0 r16325-88151b8303)) #0 SMP Wed Jun 26 13:14:01 2024
+[    0.000000] Machine model: econet,en7581
+[    0.000000] earlycon: ecnt0 at MMIO 0x000000001fbf0000 (options '')
+[    0.000000] printk: bootconsole [ecnt0] enabled
+[    0.000000] QDMA LAN buffer_size = 0x400000
+[    0.000000] qdma_lan_res_phy_addr = 0xffbf0000
+[    0.000000] QDMA WAN buffer_size = 0x500000
+[    0.000000] qdma_wan_res_phy_addr = 0xff6f0000
+[    0.000000] ppe_res_phy_addr = 0xff1f0000
+[    0.000000] [npu_wifi_offload_set_pkt_buf_addr]npu_pkt_buf_addr=bd3fffc0:bd3fffc0
+[    0.000000] npu_pkt_buffer memblock_alloc:bd3fffc0,buf_size=2c00000
+npu_ba_node memblock_alloc:bd1fffc0,buf_size=200000
+[npu_wifi_offload_set_tx_pkt_buf_addr]npu_tx_pkt_buf_addr=b97fffc0:b97fffc0
+[    0.000000] npu_tx_pkt_buffer 7581 memblock_alloc:b97fffc0, buf_size=3a00000
+On node 0 totalpages: 523968
+[    0.000000] psci: probing for conduit method from DT.
+[    0.000000] psci: PSCIv1.1 detected in firmware.
+[    0.000000] psci: Using standard PSCI v0.2 function IDs
+[    0.000000] psci: MIGRATE_INFO_TYPE not supported.
+[    0.000000] psci: SMC Calling Convention v1.0
+[    0.000000] percpu: Embedded 20 pages/cpu s43352 r8192 d30376 u81920
+[    0.000000] Detected VIPT I-cache on CPU0
+[    0.000000] CPU features: detected: GIC system register CPU interface
+[    0.000000] Built 1 zonelists, mobility grouping on.  Total pages: 515777
+[    0.000000] Kernel command line: sdram_conf=0x00108893 vendor_name=ECONET Technologies Corp. product_name=xPON ONU ubi.mtd=system ethaddr=00:AA:BB:01:23:40 snmp_sysobjid=1.2.3.4.5 country_code=ff ether_gpio=0c power_gpio=1515 dsl_gpio=0b internet_gpio=02 multi_upgrade_gpio=0b020400000000000000000000000000 onu_type=2 qdma_init=61bb root=/dev/mtdblock7 ro console=ttyS0,115200n8 earlycon bootflag=1 serdes_sel=0 serdes_pon=23 serdes_ethernet=11 serdes_wifi1=00 serdes_wifi2=00 serdes_usb1=00 serdes_usb2=01 tclinux_info=0x0,0x2000,0x0,0x2000,0x0,0x2a24b9b,0x5574,0x360fde,0x366650,0x26c0000
+[    0.000000] printk: log_buf_len individual max cpu contribution: 4096 bytes
+[    0.000000] printk: log_buf_len total cpu_extra contributions: 12288 bytes
+[    0.000000] printk: log_buf_len min size: 16384 bytes
+[    0.000000] printk: log_buf_len: 32768 bytes
+[    0.000000] printk: early log buf free: 13572(82%)
+[    0.000000] Dentry cache hash table entries: 262144 (order: 9, 2097152 bytes, linear)
+[    0.000000] Inode-cache hash table entries: 131072 (order: 8, 1048576 bytes, linear)
+[    0.000000] mem auto-init: stack:off, heap alloc:off, heap free:off
+[    0.000000] software IO TLB: mapped [mem 0xb57ff000-0xb97ff000] (64MB)
+[    0.000000] Memory: 1855584K/2095872K available (7646K kernel code, 406K rwdata, 1760K rodata, 2048K init, 1016K bss, 240288K reserved, 0K cma-reserved)
+[    0.000000] SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=4, Nodes=1
+[    0.000000] rcu: Hierarchical RCU implementation.
+[    0.000000] rcu: RCU calculated value of scheduler-enlistment delay is 10 jiffies.
+[    0.000000] NR_IRQS: 64, nr_irqs: 64, preallocated irqs: 64
+[    0.000000] GICv3: GIC: Using split EOI/Deactivate mode
+[    0.000000] GICv3: 256 SPIs implemented
+[    0.000000] GICv3: 0 Extended SPIs implemented
+[    0.000000] GICv3: Distributor has no Range Selector support
+[    0.000000] GICv3: 16 PPIs implemented
+[    0.000000] GICv3: no VLPI support, no direct LPI support
+[    0.000000] GICv3: CPU0: found redistributor 0 region 0:0x0000000009080000
+[    0.000000] random: get_random_bytes called from start_kernel+0x298/0x40c with crng_init=0
+[    0.000000] arch_timer: cp15 timer(s) running at 25.00MHz (phys).
+[    0.000000] clocksource: arch_sys_counter: mask: 0xffffffffffffff max_cycles: 0x5c40939b5, max_idle_ns: 440795202646 ns
+[    0.000003] sched_clock: 56 bits at 25MHz, resolution 40ns, wraps every 4398046511100ns
+[    0.008062] printk: console [ttyS0] enabled
+[    0.008062] printk: console [ttyS0] enabled
+[    0.016319] printk: bootconsole [ecnt0] disabled
+[    0.016319] printk: bootconsole [ecnt0] disabled
+[    0.025537] Calibrating delay loop (skipped), value calculated using timer frequency.. 50.00 BogoMIPS (lpj=250000)
+[    0.035855] pid_max: default: 32768 minimum: 301
+[    0.040557] Mount-cache hash table entries: 4096 (order: 3, 32768 bytes, linear)
+[    0.047842] Mountpoint-cache hash table entries: 4096 (order: 3, 32768 bytes, linear)
+[    0.056632] ASID allocator initialised with 32768 entries
+[    0.061941] rcu: Hierarchical SRCU implementation.
+[    0.066734] gic-its@09020000: unable to locate ITS domain
+[    0.072091] gic-its@09020000: Unable to locate ITS domain
+[    0.077573] smp: Bringing up secondary CPUs ...
+[    0.082257] Detected VIPT I-cache on CPU1
+[    0.082279] GICv3: CPU1: found redistributor 1 region 0:0x00000000090a0000
+[    0.082304] CPU1: Booted secondary processor 0x0000000001 [0x410fd034]
+[    0.082667] Detected VIPT I-cache on CPU2
+[    0.082684] GICv3: CPU2: found redistributor 2 region 0:0x00000000090c0000
+[    0.082700] CPU2: Booted secondary processor 0x0000000002 [0x410fd034]
+[    0.083043] Detected VIPT I-cache on CPU3
+[    0.083058] GICv3: CPU3: found redistributor 3 region 0:0x00000000090e0000
+[    0.083073] CPU3: Booted secondary processor 0x0000000003 [0x410fd034]
+[    0.083133] smp: Brought up 1 node, 4 CPUs
+[    0.139135] SMP: Total of 4 processors activated.
+[    0.143820] CPU features: detected: 32-bit EL0 Support
+[    0.148941] CPU features: detected: CRC32 instructions
+[    0.154102] CPU features: emulated: Privileged Access Never (PAN) using TTBR0_EL1 switching
+[    0.162396] CPU: All CPU(s) started at EL2
+[    0.166492] alternatives: patching kernel code
+[    0.173378] clocksource: jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 19112604462750000 ns
+[    0.183059] futex hash table entries: 1024 (order: 4, 65536 bytes, linear)
+[    0.190529] NET: Registered protocol family 16
+[    0.195758] DMA: preallocated 256 KiB pool for atomic allocations
+[    0.208106]
+[    0.208106] l2c_sram_size:0x40000
+[    0.212717]
+[    0.212717] en7581_serdes_common_phy_probe
+[    0.218363] common platform_get_irq 138
+[    0.222091] serdes_common_phy->G3_ana2L_phy_rg_base= ffffffc010043000
+[    0.228523] serdes_common_phy->G3_pma0_phy_rg_base= ffffffc010045000
+[    0.234855] serdes_common_phy->G3_pma1_phy_rg_base= ffffffc01004d000
+[    0.241193] serdes_common_phy->xfi_ana_pxp_phy_rg_base= ffffffc010055000
+[    0.247872] serdes_common_phy->xfi_pma_phy_rg_base= ffffffc01005d000
+[    0.254214] serdes_common_phy->pon_ana_pxp_phy_rg_base= ffffffc010065000
+[    0.260893] serdes_common_phy->pon_pma_phy_rg_base= ffffffc01006d000
+[    0.267234] serdes_common_phy->multi_sgmii_base= ffffffc010075000
+[    0.275420] Initializing Ecnt Event Netlink Socket
+[    0.280149] Initializing Econet Event Netlink Socket nl_sk = (____ptrval____)
+[    0.292002] ecnt-hsdma 1fa01800.dma-controller: Econet HSDMA driver registered
+[    0.299151] iommu: Default domain type: Translated
+[    0.304100] usbcore: registered new interface driver usbfs
+[    0.309430] usbcore: registered new interface driver hub
+[    0.314741] usbcore: registered new device driver usb
+[    0.319904] pps_core: LinuxPPS API ver. 1 registered
+[    0.324686] pps_core: Software ver. 5.3.6 - Copyright 2005-2007 Rodolfo Giometti <giometti@linux.it>
+[    0.333822] PTP clock support registered
+[    0.338044] NET: Registered protocol family 8
+[    0.342222] NET: Registered protocol family 20
+[    0.346853] clocksource: Switched to clocksource arch_sys_counter
+[    0.353197] thermal_sys: Registered thermal governor 'step_wise'NET: Registered protocol family 2
+[    0.362617] tcp_listen_portaddr_hash hash table entries: 1024 (order: 2, 16384 bytes, linear)
+[    0.371007] TCP established hash table entries: 16384 (order: 5, 131072 bytes, linear)
+[    0.378977] TCP bind hash table entries: 16384 (order: 6, 262144 bytes, linear)
+[    0.386368] TCP: Hash tables configured (established 16384 bind 16384)
+[    0.392833] UDP hash table entries: 1024 (order: 3, 32768 bytes, linear)
+[    0.399449] UDP-Lite hash table entries: 1024 (order: 3, 32768 bytes, linear)
+[    0.406698] NET: Registered protocol family 1
+[    0.410903] PCI: CLS 0 bytes, default 64
+[    0.415315] ETH xsgmii_drv_probe
+[    0.418381] sgmii:int_id: 0
+[    0.421146] xsgmii_get_base
+[    0.424009]
+[    0.424009] common_phy Get_Base:0x1fa7a000
+[    0.429571]
+[    0.429571] common_phy Get_Base:0x1fa7b000
+[    0.435151] sgmii:int_name: eth_usxgmii
+[    0.438957] irq = 8c
+[    0.441110] ETH_xsgmii region= 5,8,8
+[    0.444672] ETH_xsgmii->pcs1_base= 0xffffffc010d7d900
+[    0.449709] ETH_xsgmii->pcs2_base= 0xffffffc010e01a00
+[    0.454739] ETH_xsgmii->an_base=   0xffffffc010e03000
+[    0.459777] ETH_xsgmii->ra_base=   0xffffffc010e05000
+[    0.464808] ETH_xsgmii->multi_sgmii_base=   0xffffffc010e0d000
+[    0.470627] xsgmii_init: start
+[    0.473662] eth_usxgmii_fpga
+[    0.476526] usxgmii: sgmii_serdes_sel: exit!
+[    0.480928] XPON xsgmii_drv_probe
+[    0.484079] sgmii:int_id: 0
+[    0.486862] xsgmii_get_base
+[    0.489722]
+[    0.489722] common_phy Get_Base:0x1fa8a000
+[    0.495277]
+[    0.495277] common_phy Get_Base:0x1fa8b000
+[    0.500836]
+[    0.500836] common_phy Get_Base:0x1fa84000
+[    0.506406] sgmii:int_name: xpon_usxgmii
+[    0.510298] XOPN_xsgmii region= 4
+[    0.513594] XOPN_xsgmii->pcs1_base= 0xffffffc010e15900
+[    0.518719] XOPN_xsgmii->pcs2_base= 0xffffffc010e1da00
+[    0.523836] XOPN_xsgmii->an_base=   0xffffffc010e25000
+[    0.528961] XOPN_xsgmii->ra_base=   0xffffffc010e2d000
+[    0.534079] XOPN_xsgmii->multi_sgmii_base=   0xffffffc010075000
+[    0.539990] XOPN_xsgmii->phya_base = 0xffffffc010065000
+[    0.545190] XOPN_xsgmii->pma_base = 0xffffffc01006d000
+[    0.550314] xsgmii_init: start
+[    0.553349] xpon_usxgmii_fpga
+[    0.556300] usxgmii: sgmii_serdes_sel: exit!
+[    0.560644] USB xsgmii_drv_probe
+[    0.563786] sgmii:int_name: sgmii_usb0
+[    0.567504] sgmii:int_id: 0
+[    0.570284] irq = 8d
+[    0.572448] usb_xsgmii->pcs2_base= 0xffffffc010e35a00
+[    0.577486] usb_xsgmii->an_base=   0xffffffc010e3d000
+[    0.582517] usb_xsgmii->ra_base=   0xffffffc010e45000
+[    0.587555] usb_xsgmii->phya_base=   0xffffffc010e4d000
+[    0.592760] usb_xsgmii->multi_sgmii_base=   0xffffffc010e55000
+[    0.598578] xsgmii_init: start
+[    0.601612] eth_usxgmii_fpga
+[    0.604478] usxgmii: sgmii_serdes_sel: exit!
+[    0.608816] PCIE2L xsgmii_drv_probe Caller =(____ptrval____)
+[    0.614374] xsgmii_get_base
+[    0.617244]
+[    0.617244] common_phy Get_Base:0x1fa5a000
+[    0.622794]
+[    0.622794] common_phy Get_Base:0x1fa5b000
+[    0.628353]
+[    0.628353] common_phy Get_Base:0x1fa5c000
+[    0.633938] sgmii:int_name: p2l_usxgmii
+[    0.637729] sgmii:int_id: 0
+[    0.640508] irq = 8b
+[    0.642672] p0_xsgmii region= a
+[    0.645798] p0_xsgmii->pcs1_base[0]= 0xffffffc010e5d900
+[    0.651010] p0_xsgmii->pcs2_base[0]= 0xffffffc010e65a00
+[    0.656215] p0_xsgmii->an_base[0]=   0xffffffc010e6d000
+[    0.661427] p0_xsgmii->ra_base[0]=   0xffffffc010e75000
+[    0.666631] p0_xsgmii->multi_sgmii_base[0]=   0xffffffc010e7d000
+[    0.672624] p0_xsgmii->phya_base[0]= 0xffffffc010043000
+[    0.677833] p0_xsgmii->pma_base[0]= 0xffffffc010045000
+[    0.682951] p0_xsgmii->pcs1_base[1]= 0xffffffc010e85900
+[    0.688163] p0_xsgmii->pcs2_base[1]= 0xffffffc010e8da00
+[    0.693367] p0_xsgmii->an_base[1]=   0xffffffc010e95000
+[    0.698579] p0_xsgmii->ra_base[1]=   0xffffffc010e9d000
+[    0.703784] p0_xsgmii->multi_sgmii_base[1]=   0xffffffc010eed000
+[    0.709777] p0_xsgmii->pma_base[1]= 0xffffffc01004d000
+[    0.714894] xsgmii_init: start
+[    0.717935] pcie_usxgmii_fpga
+[    0.720884] usxgmii: sgmii_serdes_sel: exit!
+[    0.725183] xsgmii_proc_init
+[    0.728169] TC3162 hardware watchdog module loaded.
+[    0.733264] [gsw ptp] ecnt_ptp_drv_probe
+[    0.737092] [1588v2 ptp] ecnt_gsw_ptp_base          : 0xffffffc0110ce000
+[    0.743688] [1588v2 ptp] ecnt_ptp->gsw_ptp_base     : 0xffffffc0110ce000
+[    0.750378] [1588v2 ptp] ecnt_ptp->xfi_ptp_base     : 0xffffffc010f05500
+[    0.757060] [1588v2 ptp] ecnt_ptp->xfi_pon_ptp_base : 0xffffffc010f0d500
+[    0.763741] [1588v2 ptp] ecnt_ptp->irq[0] : 0x80
+[    0.768431] [1588v2 ptp] ecnt_ptp->irq[1] : 0x81
+[    0.773115] [1588v2 ptp] ecnt_ptp->irq[2] : 0x82
+[    0.778172] ecnt-npu 1e800000.npu: ecnt_npu use 1GB DMA for coherent map
+[    0.784967] irq-0: 132 irq-1: 133
+[    0.784967] (ecnt_pon_phy_probe) probe start
+[    0.792546] (ecnt_pon_phy_probe) rg_base1= 0x11076000
+[    0.797578] (ecnt_pon_phy_probe) rg_base2= 0x10f75000
+[    0.802598] (ecnt_pon_phy_probe) rg_base3= 0x10f7d000
+[    0.807634]
+[    0.807634] common_phy Get_Base:0x1fa7a000
+[    0.813185]
+[    0.813185] common_phy Get_Base:0x1fa7b000
+[    0.818744]
+[    0.818744] common_phy Get_Base:0x1fa8a000
+[    0.824296]
+[    0.824296] common_phy Get_Base:0x1fa8b000
+[    0.829949] [i2c] ecnt_i2c_drv_probe
+[    0.833482] [crypto_k] res->name:crypto_k@1fb70000
+[    0.838191] [crypto_k] res->start:0x1fb70000 ===
+[    0.842785] [crypto_k] res->end:0x1fb70803 ===
+[    0.847216] [crypto_k] ecnt_crypto_k->base:0xffffffc010f8d000
+[    0.853018] [trng] ecnt_trng_drv_probe
+[    0.856897] test_uc:(____ptrval____) test_c:(____ptrval____) cpu_top->base:(____ptrval____)
+[    0.865125] [apb_timer] ecnt_timer_drv_probe
+[    0.869334] [timer] ecnt_timer->irq: 88
+[    0.873174] [timer] res->name:apb_timer1@1fbf0100
+[    0.877970]
+[    0.877970] i2c_slave init(ecnt_i2c_slave_drv_probe) done
+[    0.884851] [i2s] ecnt_i2s_drv_probe
+[    0.888359] irq-0: 142 irq-0: 143
+[    0.888359] pbus_monitor init(ecnt_pbus_monitor_drv_probe) done
+[    0.897754] ssusb2 phy driver version: 7581.0.20220519
+[    0.902858] 7581 Thermal PHY probe Start
+[    0.906689] 7581 Thermal Sensor address probe done
+[    0.911464] thermal_phy addr:ffffffc010fed000[thermal] thermal_phy->irq: 145
+[    0.919130] workingset: timestamp_bits=46 max_order=19 bucket_order=0
+[    0.929873] squashfs: version 4.0 (2009/01/31) Phillip Lougher
+[    0.935622] jffs2: version 2.2. (NAND) © 2001-2006 Red Hat, Inc.
+[    0.955443] io scheduler mq-deadline registered
+[    0.959804] io scheduler kyber registered
+[    0.964514] PCIe phy driver version: 7581.10.20230911
+[    0.964514]  reset CDR if idacf value not match
+[    0.974000]
+[    0.974000] common_phy Get_Base:0x1fa5a000
+[    0.979544]
+[    0.979544] common_phy Get_Base:0x1fa5b000
+[    0.985094]
+[    0.985094] common_phy Get_Base:0x1fa5c000
+[    0.990653] PCIe_phy_drv_probe finish
+[    0.994388] 7581 wifi_serdes_select: enter PCIe_port_num=0 !
+[    0.999947] 7581 wifi_serdes_select: exit serdes_ret=0 ret=0 !
+[    1.005762] mtk-pcie 1fc00000.pcie0: host bridge /pcie0@1fc00000 ranges:
+[    1.012454] mtk-pcie 1fc00000.pcie0:   MEM 0x20000000..0x23ffffff -> 0x20000000
+[    1.019753]
+[    1.019753] =====pcie_parse_port=11===base_num=0===port->reg_base=1fc00000===========
+[    1.019753] =====pcie_parse_port=22===base_num=0===port->reg_base=1fc00000===========
+[    1.019753] =====pcie_parse_port=33==ecnt_pcie->mac0_base=ffffffc0112c0000=0=0========
+[    1.044734] ===EN7581 Pbus for PCIe 01 init===
+[    1.044734] ========pcie_probe====0x1fbe3400=20000000===========
+[    1.044734] ========pcie_probe====0x1fbe3408=21000000===========
+[    1.044734] ========pcie_probe====0x1fbe3404=ff000000===========
+[    1.044734] ========pcie_probe====0x1fbe340c=ff000000===========
+[    1.044734] ========pcie_probe====after pbus setting=======
+[    1.044734] ========pcie_probe====0x1fbe3400=20000000===========
+[    1.044734] ========pcie_probe====0x1fbe3408=24000000===========
+[    1.044734] ========pcie_probe====0x1fbe3404=fc000000===========
+[    1.044734] ========pcie_probe====0x1fbe340c=fc000000===========
+[    1.044734] ========pcie_probe==before==0x1fa2018c=0===========
+[    1.044734] ========pcie_probe==after==0x1fa2018c=3===========
+[    1.114356] ===EN7581 PCIe init port01===
+[    1.220372] pcie 3 phy init.
+[    1.476305] lane0 gen3 cdr_pr_idac_tmp= 0x4e3
+[    1.732990] lane1 gen3 cdr_pr_idac_tmp= 0x54d
+[    1.989874] lane0 gen2 cdr_pr_idac_tmp= 0x50c
+[    2.246628] lane1 gen2 cdr_pr_idac_tmp= 0x57d
+[    2.261044] lane_0 apply ro_idacf = 50c
+[    2.264695] lane_1 apply ro_idacf = 57d
+[    2.439472] lane0
+[    2.441224] 02310us, lane0: 0x1
+[    2.444348] 02596us, lane0: 0x2
+[    2.447486] 07154us, lane0: 0x5
+[    2.450598] 07156us, lane0: 0x7
+[    2.453723] 07158us, lane0: 0x9
+[    2.456853] 07160us, lane0: 0xb
+[    2.459973] 07162us, lane0: 0xe
+[    2.463098] 07168us, lane0: 0xd
+[    2.466223] 07188us, lane0: 0xc
+[    2.469352] 12158us, lane0: 0xf
+[    2.472473] 12160us, lane0: 0x10
+[    2.475684] lane1
+[    2.477599] 02308us, lane1: 0x1
+[    2.480719] 02596us, lane1: 0x2
+[    2.483844] 03010us, lane1: 0x4
+[    2.486973] 03016us, lane1: 0x5
+[    2.490094] 07154us, lane1: 0x7
+[    2.493219] 07156us, lane1: 0x0
+[    2.496344] 18850us, lane1: 0x1
+[    2.499473] 49226us, lane1: 0x0
+[    2.502594] 49228us, lane1: 0x1
+[    2.505719] 62784us, lane1: 0x0
+[    2.508848] 62786us, lane1: 0x1
+[    2.511969] 66794us, lane1: 0x0
+[    2.515094] 66796us, lane1: 0x1
+[    2.518223] 102854us, lane1: 0x0
+[    2.521431] 102856us, lane1: 0x1
+[    3.332853] debug check 1fc00154 = 0x1901 , 1fc00150 = 1003c01f, 1fc00018 = 20000302
+[    3.340517] debug check 1fc20154 = 0x1a01 , 1fc20150 = 1000003, 1fc20018 = 20000100
+[    3.348234] serdes_ret = 0 ,2lane or no PCIe,don't need relink
+[    3.354139] mtk-pcie 1fc00000.pcie0: pcie rc 0 linkup success
+[    3.359870] mtk-pcie 1fc00000.pcie0: set MEM trans window[0]: cpu_addr = 0x20000000, pci_addr = 0x20000000, size = 0x4000000
+[    3.371194] mtk-pcie 1fc00000.pcie0: PCI host bridge to bus 0000:00
+[    3.377320] pci_bus 0000:00: root bus resource [bus 00-ff]
+[    3.382780] pci_bus 0000:00: root bus resource [mem 0x20000000-0x23ffffff]
+[    3.389659] pci 0000:00:00.0: [14c3:6899] type 01 class 0x060400
+[    3.395642] pci 0000:00:00.0: reg 0x10: [mem 0x00000000-0x00007fff 64bit]
+[    3.402440] pci 0000:00:00.0: PME# supported from D0 D3hot D3cold
+[    3.409177] pci 0000:00:00.0: bridge configuration invalid ([bus 00-00]), reconfiguring
+[    3.417074] pci 0000:01:00.0: [14c3:7990] type 00 class 0x028000
+[    3.423013] pci 0000:01:00.0: reg 0x10: [mem 0x00000000-0x001fffff 64bit pref]
+[    3.430206] pci 0000:01:00.0: reg 0x18: [mem 0x00000000-0x00007fff 64bit]
+[    3.437038] pci 0000:01:00.0: PME# supported from D0 D3hot D3cold
+[    3.443652] pci_bus 0000:01: busn_res: [bus 01-ff] end is updated to 01
+[    3.450117] pci 0000:00:00.0: BAR 9: assigned [mem 0x20000000-0x201fffff 64bit pref]
+[    3.457820] pci 0000:00:00.0: BAR 8: assigned [mem 0x20200000-0x202fffff]
+[    3.464586] pci 0000:00:00.0: BAR 0: assigned [mem 0x20300000-0x20307fff 64bit]
+[    3.471887] pci 0000:01:00.0: BAR 0: assigned [mem 0x20000000-0x201fffff 64bit pref]
+[    3.479614] pci 0000:01:00.0: BAR 2: assigned [mem 0x20200000-0x20207fff 64bit]
+[    3.486904] pci 0000:00:00.0: PCI bridge to [bus 01]
+[    3.491843] pci 0000:00:00.0:   bridge window [mem 0x20200000-0x202fffff]
+[    3.498618] pci 0000:00:00.0:   bridge window [mem 0x20000000-0x201fffff 64bit pref]
+[    3.506409] ecnt_register_hook fail, pcie_api_hook already registered
+[    3.512765] pcie ecnt_dev_fe_api_op register fail
+[    3.517452] 7581 wifi_serdes_select: enter PCIe_port_num=1 !
+[    3.523092] 7581 wifi_serdes_select: exit serdes_ret=0 ret=0 !
+[    3.528915] mtk-pcie 1fc20000.pcie1: host bridge /pcie1@1fc20000 ranges:
+[    3.535600] mtk-pcie 1fc20000.pcie1:   MEM 0x24000000..0x27ffffff -> 0x24000000
+[    3.542923]
+[    3.542923] =====pcie_parse_port=11===base_num=0===port->reg_base=1fc20000===========
+[    3.542923] =====pcie_parse_port=22===base_num=1===port->reg_base=1fc20000===========
+[    3.542923] =====pcie_parse_port=33==ecnt_pcie->mac0_base=ffffffc0112c0000=ffffffc02eb60000=0========
+[    3.569188] ===nothing to do for port1 solely===
+[    3.676817] mtk-pcie 1fc20000.pcie1: PCIe link down, ltssm reg val: 0x1000003
+[    3.683868] mtk-pcie 1fc20000.pcie1: PCI host bridge to bus 0001:00
+[    3.690036] pci_bus 0001:00: root bus resource [bus 00-ff]
+[    3.695497] pci_bus 0001:00: root bus resource [mem 0x24000000-0x27ffffff]
+[    3.702374] pci 0001:00:00.0: [14c3:6899] type 01 class 0x060400
+[    3.708366] pci 0001:00:00.0: reg 0x10: [mem 0x00000000-0x00007fff 64bit]
+[    3.715147] pci 0001:00:00.0: PME# supported from D0 D3hot D3cold
+[    3.721860] pci 0001:00:00.0: bridge configuration invalid ([bus 00-00]), reconfiguring
+[    3.780183] pci_bus 0001:01: busn_res: [bus 01-ff] end is updated to 01
+[    3.786630] pci 0001:00:00.0: BAR 0: assigned [mem 0x24000000-0x24007fff 64bit]
+[    3.793918] pci 0001:00:00.0: PCI bridge to [bus 01]
+[    3.798926] ecnt_register_hook fail, pcie_api_hook already registered
+[    3.854920] pcie ecnt_dev_fe_api_op register fail
+[    3.859605] 7581 wifi_serdes_select: enter PCIe_port_num=2 !
+[    3.865244] 7581 wifi_serdes_select: exit serdes_ret=1 ret=0 !
+[    3.871068] mtk-pcie 1fc40000.pcie2: host bridge /pcie2@1fc40000 ranges:
+[    3.877757] mtk-pcie 1fc40000.pcie2:   MEM 0x28000000..0x2bffffff -> 0x28000000
+[    3.885072]
+[    3.885072] =====pcie_parse_port=11===base_num=1===port->reg_base=1fc40000===========
+[    3.885072] =====pcie_parse_port=22===base_num=2===port->reg_base=1fc40000===========
+[    3.885072] =====pcie_parse_port=33==ecnt_pcie->mac0_base=ffffffc0112c0000=ffffffc02eb60000=ffffffc02eba0000========
+[    3.912644] ===EN7581 Pbus for PCIe 2 init===
+[    3.912644] ========pcie_probe====0x1fbe3410=22000000===========
+[    3.912644] ========pcie_probe====0x1fbe3414=ff000000===========
+[    3.912644] ========pcie_probe====after pbus setting=======
+[    3.912644] ========pcie_probe====0x1fbe3410=28000000===========
+[    3.912644] ========pcie_probe====0x1fbe3414=fc000000===========
+[    3.912644] ========pcie_probe==before==0x1fa2018c=3===========
+[    3.912644] ========pcie_probe==after==0x1fa2018c=7===========
+[    3.958216] ===EN7581 PCIe init port2===
+[    4.912798] mtk-pcie 1fc40000.pcie2: pcie rc 2 linkup success
+[    4.918367] mtk-pcie 1fc40000.pcie2: set MEM trans window[0]: cpu_addr = 0x28000000, pci_addr = 0x28000000, size = 0x4000000
+[    4.929640] mtk-pcie 1fc40000.pcie2: PCI host bridge to bus 0002:00
+[    4.935810] pci_bus 0002:00: root bus resource [bus 00-ff]
+[    4.941284] pci_bus 0002:00: root bus resource [mem 0x28000000-0x2bffffff]
+[    4.948152] pci 0002:00:00.0: [14c3:6899] type 01 class 0x060400
+[    4.954135] pci 0002:00:00.0: reg 0x10: [mem 0x00000000-0x00007fff 64bit]
+[    4.960931] pci 0002:00:00.0: PME# supported from D0 D3hot D3cold
+[    4.967609] pci 0002:00:00.0: bridge configuration invalid ([bus 00-00]), reconfiguring
+[    4.975499] pci 0002:01:00.0: [14c3:7991] type 00 class 0x028000
+[    4.981462] pci 0002:01:00.0: reg 0x10: [mem 0x00000000-0x001fffff 64bit pref]
+[    4.988645] pci 0002:01:00.0: reg 0x18: [mem 0x00000000-0x00007fff 64bit]
+[    4.995485] pci 0002:01:00.0: PME# supported from D0 D3hot D3cold
+[    5.001501] pci 0002:01:00.0: 4.000 Gb/s available PCIe bandwidth, limited by 5 GT/s x1 link at 0002:00:00.0 (capable of 15.752 Gb/s with 8 GT/s x2 link)
+[    5.015798] pci_bus 0002:01: busn_res: [bus 01-ff] end is updated to 01
+[    5.022263] pci 0002:00:00.0: BAR 9: assigned [mem 0x28000000-0x281fffff 64bit pref]
+[    5.029967] pci 0002:00:00.0: BAR 8: assigned [mem 0x28200000-0x282fffff]
+[    5.036730] pci 0002:00:00.0: BAR 0: assigned [mem 0x28300000-0x28307fff 64bit]
+[    5.044034] pci 0002:01:00.0: BAR 0: assigned [mem 0x28000000-0x281fffff 64bit pref]
+[    5.051761] pci 0002:01:00.0: BAR 2: assigned [mem 0x28200000-0x28207fff 64bit]
+[    5.059050] pci 0002:00:00.0: PCI bridge to [bus 01]
+[    5.063987] pci 0002:00:00.0:   bridge window [mem 0x28200000-0x282fffff]
+[    5.070763] pci 0002:00:00.0:   bridge window [mem 0x28000000-0x281fffff 64bit pref]
+[    5.079287] ttyS0 at I/O 0xbfbf0000 (irq = 0, base_baud = 7200) is a TC3162
+ECNT ring buffer init success
+[    5.088958] Init UART(s), still need to trun on for using.ttyS20 at I/O 0xffffffc02eb45300 (irq = 105, base_baud = 7200) is a TC3162
+[    5.100887] ttyS30 at I/O 0xffffffc02eb4d000 (irq = 106, base_baud = 57600) is a TC3162
+[    5.108854] ttyS40 at I/O 0xffffffc02eb55600 (irq = 107, base_baud = 7200) is a TC3162
+[    5.116738] ttyS50 at I/O 0xffffffc02eb57700 (irq = 108, base_baud = 7200) is a TC3162
+[    5.129264] brd: module loaded
+[    5.132456] msdc_drv_probe 2065
+[    5.135426] mtk-msdc: probe of 1fa0e000.mmc failed with error -22
+[    5.141749] ecnt-snor snor: ecnt_snor_drv_probe failed to init spi nfi
+[    5.148116] ecnt-snor: probe of snor failed with error -1
+[    5.153593] IS_SPIFLASH=0x0, IS_NANDFLASH=0x1, (0xBFA10114)=0x6)
+[    5.159495] spi_nand_probe: mfr_id=0xef, dev_id=0xaa 0x23
+[    5.164881] Set ECC threshold = 0x60
+[    5.168518] Support SPI NAND erase statistic.
+[    5.172760] Using Flash ECC.
+[    5.175625] Detected SPI NAND Flash :  _SPI_NAND_DEVICE_ID_W25N04K, Flash Size=0x20000000
+[    5.183780] spi nand flash
+[    5.186538] tc3162: flash device 0x02000000 at 0x00000000
+[    5.191862] EN7512 mtd init: spi nand probe enter
+[    5.196535] [spi_nand_setup] : Enter
+[    5.200464] spi_nand_protocol_reset
+[    5.203791] nand: device found, Manufacturer ID: 0xef, Chip ID: 0xaa
+[    5.210116] nand: Winbond  _SPI_NAND_DEVICE_ID_W25N04K
+[    5.215235] nand: 512 MiB, SLC, erase size: 128 KiB, page size: 2048, OOB size: 128
+[    5.222879] nand: NAND_ECC_NONE selected by board driver. This is not recommended!
+[    5.230432] nand_scan_ident ok
+[    5.233463] [spi_nand_setup]: chip size =  0x20000000, erase_shift=0x11
+[    5.324337] bmt pool size: 250
+[    5.328348] BMT & BBT Init Success
+[    5.331671]
+[    5.331671] parsing <2m[bootloader],2m[uenv],2m[dsd],64m[tclinux],64m[tclinux_slave],312m[system]>
+[    5.342090] partition 9: name <system>, offset ffffffff, size 13800000, mask flags 0
+[    5.349805] partition 8: name <tclinux_slave>, offset ffffffff, size 4000000, mask flags 0
+[    5.358052] partition 5: name <tclinux>, offset ffffffff, size 4000000, mask flags 0
+[    5.365772] partition 2: name <dsd>, offset ffffffff, size 200000, mask flags 0
+[    5.373068] partition 1: name <uenv>, offset ffffffff, size 200000, mask flags 0
+[    5.380448] partition 0: name <bootloader>, offset ffffffff, size 200000, mask flags 0
+[    5.388350] Creating 10 MTD partitions on "EN7512-SPI_NAND":
+[    5.393987] 0x000000000000-0x000000200000 : "bootloader"
+[    5.399778] 0x000000200000-0x000000400000 : "uenv"
+[    5.404793] 0x000000400000-0x000000600000 : "dsd"
+[    5.409726] 0x000000600000-0x000000602100 : "kernel"
+[    5.414514] mtd: partition "kernel" doesn't end on an erase/write block -- force read-only
+[    5.423193] 0x000000602100-0x000000612100 : "rootfs"
+[    5.427990] mtd: partition "rootfs" doesn't start on an erase/write block boundary -- force read-only
+[    5.437602] 0x000000600000-0x000004600000 : "tclinux"
+[    5.442991] 0x000004600000-0x000004966652 : "kernel_slave"
+[    5.448314] mtd: partition "kernel_slave" doesn't end on an erase/write block -- force read-only
+[    5.457494] 0x000004966750-0x000007036750 : "rootfs_slave"
+[    5.462804] mtd: partition "rootfs_slave" doesn't start on an erase/write block boundary -- force read-only
+[    5.473006] 0x000004600000-0x000008600000 : "tclinux_slave"
+[    5.478927] 0x000008600000-0x00001be00000 : "system"
+[    5.484661]
+[    5.484661] rootfs_slavelibphy: Fixed MDIO Bus: probed
+[    5.491360] PPP generic driver version 2.4.5
+[    5.495645] PPP BSD Compression module registered
+[    5.500285] PPP Deflate Compression module registered
+[    5.505313] NET: Registered protocol family 24
+[    5.509931] USB driver version: 7581.2.20230918
+[    5.516348] port 1 u2_slew_rate_cal_7581
+[    5.522100] FM_OUT value = 109(0x0000006D)
+[    5.527015] SR calibration value = 5
+[    5.530407] port 2 u2_slew_rate_cal_7581
+[    5.536353] FM_OUT value = 107(0x0000006B)
+[    5.541273] SR calibration value = 5
+[    5.566836] xhci-hcd 1fab0000.xhci: xHCI Host Controller
+[    5.571982] xhci-hcd 1fab0000.xhci: new USB bus registered, assigned bus number 1
+[    5.581096] xhci-hcd 1fab0000.xhci: irq 134, io mem 0x1fab0000
+[    5.587121] hub 1-0:1.0: USB hub found
+[    5.590712] hub 1-0:1.0: 1 port detected
+[    5.594788] xhci-hcd 1fab0000.xhci: xHCI Host Controller
+[    5.599939] xhci-hcd 1fab0000.xhci: new USB bus registered, assigned bus number 2
+[    5.607439] usb usb2: We don't know the algorithms for LPM for this host, disabling LPM.
+[    5.615713] hub 2-0:1.0: USB hub found
+[    5.619304] hub 2-0:1.0: 1 port detected
+[    5.623445] usb controller 2, u3_not_support
+[    5.627716] usb serdes is not USB, don't init u3
+[    8.656823] xhci-hcd 1fad0000.xhci: xHCI Host Controller
+[    8.661965] xhci-hcd 1fad0000.xhci: new USB bus registered, assigned bus number 3
+[    8.669562] xhci-hcd 1fad0000.xhci: irq 135, io mem 0x1fad0000
+[    8.675560] hub 3-0:1.0: USB hub found
+[    8.679169] hub 3-0:1.0: 1 port detected
+[    8.683228] xhci-hcd 1fad0000.xhci: xHCI Host Controller
+[    8.688374] xhci-hcd 1fad0000.xhci: new USB bus registered, assigned bus number 4
+[    8.695873] usb usb4: We don't know the algorithms for LPM for this host, disabling LPM.
+[    8.704161] hub 4-0:1.0: USB hub found
+[    8.707751] hub 4-0:1.0: 1 port detected
+[    8.711932] usbcore: registered new interface driver cdc_acm
+[    8.717421] cdc_acm: USB Abstract Control Model driver for USB modems and ISDN adapters
+[    8.725457] usbcore: registered new interface driver usbserial_generic
+[    8.731927] usbserial: USB Serial support registered for generic
+[    8.737926] usbcore: registered new interface driver cypress_m8
+[    8.743813] usbserial: USB Serial support registered for DeLorme Earthmate USB
+[    8.751022] usbserial: USB Serial support registered for HID->COM RS232 Adapter
+[    8.758313] usbserial: USB Serial support registered for Nokia CA-42 V2 Adapter
+[    8.765607] usbcore: registered new interface driver ftdi_sio
+[    8.771335] usbserial: USB Serial support registered for FTDI USB Serial Device
+[    8.778885] ptp_arht_init().231 ptp: failed to allocate device region
+[    8.785734] hidraw: raw HID events driver (C) Jiri Kosina
+[    8.791079] usbcore: registered new interface driver usbhid
+[    8.796509] usbhid: USB HID core driver
+[    8.800714] nf_conntrack_rtsp v0.7 loading
+[    8.804654] nf_conntrack_rtcp v0.7 loading
+[    8.808718] port #0: 8027
+[    8.811344] nf_nat_rtsp v0.7 loading
+[    8.814996] IPv4 over IPsec tunneling driver
+[    8.819536] ipt_CLUSTERIP: ClusterIP Version 0.8 loaded successfully
+[    8.825713] Initializing XFRM netlink socket
+[    8.830348] NET: Registered protocol family 10
+[    8.835425] Segment Routing with IPv6
+[    8.839071] sit: IPv6, IPv4 and MPLS over IPv4 tunneling driver
+[    8.845461] NET: Registered protocol family 17
+[    8.849754] NET: Registered protocol family 15
+[    8.854209] Bridge firewalling registered
+[    8.858180] l2tp_core: L2TP core driver, V2.0
+[    8.862487] l2tp_ppp: PPPoL2TP kernel driver, V2.0
+[    8.867264] 8021q: 802.1Q VLAN Support v1.8
+[    8.871432] lib80211: common routines for IEEE802.11 drivers
+[    8.877821] ubi0: attaching mtd9
+[   10.198356] ubi0: scanning is finished
+[   10.210101] ubi0: attached mtd9 (name "system", size 312 MiB)
+[   10.215670] ubi0: PEB size: 131072 bytes (128 KiB), LEB size: 126976 bytes
+[   10.222552] ubi0: min./max. I/O unit sizes: 2048/2048, sub-page size 2048
+[   10.229302] ubi0: VID header offset: 2048 (aligned 2048), data offset: 4096
+[   10.236241] ubi0: good PEBs: 2496, bad PEBs: 0, corrupted PEBs: 0
+[   10.242323] ubi0: user volume: 3, internal volumes: 1, max. volumes count: 128
+[   10.249528] ubi0: max/mean erase counter: 5/2, WL threshold: 4096, image sequence number: 2623193700
+[   10.258643] ubi0: available PEBs: 834, total reserved PEBs: 1662, PEBs reserved for bad PEB handling: 70
+[   10.268111] ubi0: background thread "ubi_bgt0d" started, PID 76
+[   10.268146] hctosys: unable to open rtc device (rtc0)
+[   10.279225] tc3162ser_startup
+[   10.285294] VFS: Mounted root (squashfs filesystem) readonly on device 31:7.
+[   10.292790] Freeing unused kernel memory: 2048K
+[   10.346866] Run /sbin/init as init process
+[   10.812099] init: Console is alive
+[   10.815426] TC3162 hardware watchdog initialized
+[   10.820000] init: - watchdog -
+[   12.040087] kmodloader: loading kernel modules from /etc/modules-boot.d/*
+[   12.082390] gpio_button_hotplug: loading out-of-tree module taints kernel.
+[   12.092360] SCSI subsystem initialized
+[   12.099137] usbcore: registered new interface driver usb-storage
+[   12.105171] kmodloader: done loading kernel modules from /etc/modules-boot.d/*
+[   12.127011] init: - preinit -
+insmod module_sel.ko
+[   12.464600] module_sel: module license 'unspecified' taints kernel.
+[   12.470726] Disabling lock debugging due to kernel taint
+insmod tcledctrl.ko
+[   12.476370] ecnt_register_cpu_interrupts
+[   12.480269] MT751x LED driver init
+[   12.488032] led path:/userfs/7581gtled.conf
+[   12.521653] random: procd: uninitialized urandom read (4 bytes read)
+insmod tccicmd.ko
+[   12.538088] tccicmd V1.1.0.0 (2024:06:26-16:03:40)
+[   12.542764] ERROR!Create /etc/fwTCver.conf fail!
+insmod sif.ko
+[   12.550679]
+[   12.550679] SIFMaster 0.1 init
+[   12.555211] ===== Interface 0 is ON =====
+[   12.559232]
+[   12.559232] Register sifm cmd
+insmod fe_core.ko
+insmod ifc.ko
+insmod qdma_lan.ko
+[   12.584814] macType = 0
+[   12.587119] flashQdmaInit = 0xbb
+[   12.628846] gpQdmaPriv->hwFwdBuffAddr = 0xffffff807fbf0000, hwFwdBuffAddr = 0xffbf0000
+insmod eth.ko
+[   12.645666] ether.c:v1.00-NAPI 29.Mar.2015
+[   12.649658] eth0 (uninitialized): netif_napi_add() called with weight 128
+[   12.656364] eth0: FE MAC Ethernet address: 00:AA:BB:01:23:40
+[   12.664207] Use Internal switch ,type 10
+insmod eth_ephy.ko
+[   12.678509] tcPhyVerLookUp 2764 94C1
+[   12.681997]  7581 Ge,
+[   12.684386] , port_num = 0, ephy_addr = 9, ephy_addr_base = 0x9
+[   12.690433]  [tcPhyInit] in  [tcPhyInit] out , r31 = (9, 0x0)
+[   12.780819]   GE Rext AnaCal Done! (4)(0x1c)
+[   12.785836]   GE Rext AnaCal Done! (4)(0x1c)
+[   12.799272]   GE R45 AnaCal zcal_idx(before table) (dec: 27) (hex: 0x1b)
+[   12.805963]   GE R45 AnaCal Done! (cnt:5)(after table) ([7][6:0]:0x70) ([6:0]:0xf0)
+[   12.820599]   GE R45 AnaCal zcal_idx(before table) (dec: 28) (hex: 0x1c)
+[   12.827295]   GE R45 AnaCal Done! (cnt:4)(after table) ([7][6:0]:0x6c) ([6:0]:0xec)
+[   12.843063]   GE R45 AnaCal zcal_idx(before table) (dec: 27) (hex: 0x1b)
+[   12.849760]   GE R45 AnaCal Done! (cnt:5)(after table) ([7][6:0]:0x70) ([6:0]:0xf0)
+[   12.865531]   GE R45 AnaCal zcal_idx(before table) (dec: 27) (hex: 0x1b)
+[   12.872226]   GE R45 AnaCal Done! (cnt:5)(after table) ([7][6:0]:0x70) ([6:0]:0xf0)
+[   12.888181]  GE Tx offset AnaCal Done! (3)(0x22)
+[   12.901064]  GE Tx offset AnaCal Done! (5)(0x24)
+[   12.910526]  GE Tx offset AnaCal Done! (2)(0x21)
+[   12.921128]  GE Tx offset AnaCal Done! (3)(0x22)
+[   12.954445]  GE Tx amp AnaCal Done! (19) (0xd)
+[   12.982673]  GE Tx amp AnaCal Done! (17) (0xf)
+[   13.016601]  GE Tx amp AnaCal Done! (22) (0xa)
+[   13.045975]  GE Tx amp AnaCal Done! (18) (0xe)
+[   13.069299] tcPhyVerLookUp 2764 94C1
+[   13.072776]  7581 Ge,
+[   13.075166] , port_num = 1, ephy_addr = 10, ephy_addr_base = 0x9
+[   13.081287]  [tcPhyInit] in  [tcPhyInit] out , r31 = (10, 0x0)
+[   13.173608]   GE R45 AnaCal zcal_idx(before table) (dec: 27) (hex: 0x1b)
+[   13.180312]   GE R45 AnaCal Done! (cnt:5)(after table) ([7][6:0]:0x70) ([6:0]:0xf0)
+[   13.194939]   GE R45 AnaCal zcal_idx(before table) (dec: 28) (hex: 0x1c)
+[   13.201635]   GE R45 AnaCal Done! (cnt:4)(after table) ([7][6:0]:0x6c) ([6:0]:0xec)
+[   13.217406]   GE R45 AnaCal zcal_idx(before table) (dec: 27) (hex: 0x1b)
+[   13.224097]   GE R45 AnaCal Done! (cnt:5)(after table) ([7][6:0]:0x70) ([6:0]:0xf0)
+[   13.239872]   GE R45 AnaCal zcal_idx(before table) (dec: 27) (hex: 0x1b)
+[   13.246562]   GE R45 AnaCal Done! (cnt:5)(after table) ([7][6:0]:0x70) ([6:0]:0xf0)
+[   13.261382]  GE Tx offset AnaCal Done! (2)(0x2)
+[   13.278731]  GE Tx offset AnaCal Done! (9)(0x28)
+[   13.289333]  GE Tx offset AnaCal Done! (3)(0x22)
+[   13.299931]  GE Tx offset AnaCal Done! (3)(0x22)
+[   13.326411]  GE Tx amp AnaCal Done! (13) (0x13)
+[   13.354731]  GE Tx amp AnaCal Done! (17) (0xf)
+[   13.381820]  GE Tx amp AnaCal Done! (16) (0x10)
+[   13.399876]  GE Tx amp AnaCal Done! (8) (0x18)
+[   13.423192] tcPhyVerLookUp 2764 94C1
+[   13.426674]  7581 Ge,
+[   13.429067] , port_num = 2, ephy_addr = 11, ephy_addr_base = 0x9
+[   13.435180]  [tcPhyInit] in  [tcPhyInit] out , r31 = (11, 0x0)
+[   13.527508]   GE R45 AnaCal zcal_idx(before table) (dec: 27) (hex: 0x1b)
+[   13.534201]   GE R45 AnaCal Done! (cnt:5)(after table) ([7][6:0]:0x70) ([6:0]:0xf0)
+[   13.549976]   GE R45 AnaCal zcal_idx(before table) (dec: 27) (hex: 0x1b)
+[   13.556666]   GE R45 AnaCal Done! (cnt:5)(after table) ([7][6:0]:0x70) ([6:0]:0xf0)
+[   13.572442]   GE R45 AnaCal zcal_idx(before table) (dec: 27) (hex: 0x1b)
+[   13.579138]   GE R45 AnaCal Done! (cnt:5)(after table) ([7][6:0]:0x70) ([6:0]:0xf0)
+[   13.594907]   GE R45 AnaCal zcal_idx(before table) (dec: 27) (hex: 0x1b)
+[   13.601601]   GE R45 AnaCal Done! (cnt:5)(after table) ([7][6:0]:0x70) ([6:0]:0xf0)
+[   13.622115]  GE Tx offset AnaCal Done! (7)(0x26)
+[   13.633860]  GE Tx offset AnaCal Done! (4)(0x4)
+[   13.643239]  GE Tx offset AnaCal Done! (2)(0x21)
+[   13.651560]  GE Tx offset AnaCal Done! (1)(0x20)
+[   13.675760]  GE Tx amp AnaCal Done! (11) (0x15)
+[   13.705219]  GE Tx amp AnaCal Done! (18) (0xe)
+[   13.730028]  GE Tx amp AnaCal Done! (14) (0x12)
+[   13.757201]  GE Tx amp AnaCal Done! (16) (0x10)
+[   13.780657] tcPhyVerLookUp 2764 94C1
+[   13.784139]  7581 Ge,
+[   13.786529] , port_num = 3, ephy_addr = 12, ephy_addr_base = 0x9
+[   13.792649]  [tcPhyInit] in  [tcPhyInit] out , r31 = (12, 0x0)
+[   13.884971]   GE R45 AnaCal zcal_idx(before table) (dec: 27) (hex: 0x1b)
+[   13.891670]   GE R45 AnaCal Done! (cnt:5)(after table) ([7][6:0]:0x70) ([6:0]:0xf0)
+[   13.907441]   GE R45 AnaCal zcal_idx(before table) (dec: 27) (hex: 0x1b)
+[   13.914131]   GE R45 AnaCal Done! (cnt:5)(after table) ([7][6:0]:0x70) ([6:0]:0xf0)
+[   13.929907]   GE R45 AnaCal zcal_idx(before table) (dec: 27) (hex: 0x1b)
+[   13.936597]   GE R45 AnaCal Done! (cnt:5)(after table) ([7][6:0]:0x70) ([6:0]:0xf0)
+[   13.952373]   GE R45 AnaCal zcal_idx(before table) (dec: 27) (hex: 0x1b)
+[   13.959065]   GE R45 AnaCal Done! (cnt:5)(after table) ([7][6:0]:0x70) ([6:0]:0xf0)
+[   13.978441]  GE Tx offset AnaCal Done! (6)(0x25)
+[   13.989037]  GE Tx offset AnaCal Done! (3)(0x3)
+[   13.998410]  GE Tx offset AnaCal Done! (2)(0x2)
+[   14.010063]  GE Tx offset AnaCal Done! (4)(0x23)
+[   14.039958]  GE Tx amp AnaCal Done! (16) (0x10)
+[   14.070548]  GE Tx amp AnaCal Done! (19) (0xd)
+[   14.101055]  GE Tx amp AnaCal Done! (19) (0xd)
+[   14.130425]  GE Tx amp AnaCal Done! (18) (0xe)
+[   14.155888] port = 9
+[   14.158066] 1e_12 = 0x340d 1e_16 = 0x340d 1e_17 = 0xf0f 1e_18 = 0xf0f 1e_19 = 0xa0a 1e_20 = 0xa0a 1e_21 = 0xe0e 1e_22 = 0xe0e
+[   14.169524] 1e_174 = 0xf0ec 1e_175 = 0xf0f0
+[   14.173863] 1e_12 = 0x600d 1e_16 = 0xa418 1e_17 = 0x1a0f 1e_18 = 0x291a 1e_19 = 0x1c0a 1e_20 = 0xa1c 1e_21 = 0x1f0e 1e_22 = 0xe1f
+[   14.185670] 1e_174 = 0xfffb 1e_175 = 0xe8e8
+[   14.195163] port = 10
+[   14.197432] 1e_12 = 0x4c13 1e_16 = 0x4c13 1e_17 = 0xf0f 1e_18 = 0xf0f 1e_19 = 0x1010 1e_20 = 0x1010 1e_21 = 0x1818 1e_22 = 0x1818
+[   14.209238] 1e_174 = 0xf0ec 1e_175 = 0xf0f0
+[   14.213576] 1e_12 = 0x7813 1e_16 = 0xc41e 1e_17 = 0x180f 1e_18 = 0x2a18 1e_19 = 0x2010 1e_20 = 0x1020 1e_21 = 0x2918 1e_22 = 0x1829
+[   14.225557] 1e_174 = 0xfffb 1e_175 = 0xe8e8
+[   14.235050] port = 11
+[   14.237320] 1e_12 = 0x5415 1e_16 = 0x5415 1e_17 = 0xe0e 1e_18 = 0xe0e 1e_19 = 0x1212 1e_20 = 0x1212 1e_21 = 0x1010 1e_22 = 0x1010
+[   14.249125] 1e_174 = 0xf0f0 1e_175 = 0xf0f0
+[   14.253462] 1e_12 = 0x8015 1e_16 = 0xc420 1e_17 = 0x190e 1e_18 = 0x2919 1e_19 = 0x2212 1e_20 = 0x1222 1e_21 = 0x2210 1e_22 = 0x1022
+[   14.265445] 1e_174 = 0xffff 1e_175 = 0xe8e8
+[   14.274937] port = 12
+[   14.277207] 1e_12 = 0x4010 1e_16 = 0x4010 1e_17 = 0xd0d 1e_18 = 0xd0d 1e_19 = 0xd0d 1e_20 = 0xd0d 1e_21 = 0xe0e 1e_22 = 0xe0e
+[   14.288665] 1e_174 = 0xf0f0 1e_175 = 0xf0f0
+[   14.293002] 1e_12 = 0x6010 1e_16 = 0xac18 1e_17 = 0x190d 1e_18 = 0x2719 1e_19 = 0x1d0d 1e_20 = 0xd1d 1e_21 = 0x1c0e 1e_22 = 0xe1c
+[   14.304811] 1e_174 = 0xffff 1e_175 = 0xe8e8
+insmod qdma_wan.ko
+[   14.387384] macType = 0
+[   14.389653] flashQdmaInit = 0xbb
+[   14.402495] gpQdmaPriv->hwFwdBuffAddr = 0xffffff807f6f0000, hwFwdBuffAddr = 0xff6f0000
+[   14.412934] fe resource init start
+[   14.426032] Ralink HW NAT Module Enabled
+[   14.429941] you need to modify struct FoeEntryExtKernel in soft_dma.h                        when you modifyied struct FoeEntryExt!HWNAT Module enabled with Type:L2B/IPv4/IPv6/DS-LITE/6RD, foeSize:80B, sram_foeNum:16384, dram_foeNum:16384
+[   14.449154] IP check use Black List
+[   14.462927] [npu_wifi_offload_set_force_to_cpu_flag]isForceToCpu=0:0
+Failed to find gre_hw_offload. Maybe i[   14.475379] 7581 L2TP VPN offload module init
+[   14.478259] random: fast init done
+t is a built in module ?
+Failed to find vxlan_hw_offload. Maybe it is a built in module ?
+7581 reset rtk_phy
+insmod mdio_arht.ko
+[   15.541351] libphy: ARHT MDIO bus: probed
+[   15.609428] [rtl826xb_probe] rtl8261n addr:5
+[   15.613921] [rtl826xb_probe] phyid 0x2:0x1ccaf3
+[   15.650076] [rtl826xb_probe] rtl8261n addr:8
+[   15.654563] [rtl826xb_probe] phyid 0x2:0x1ccaf3
+insmod ae_wan.ko
+[   15.664151] [ae_wan_dev_register] ae_wan phy addr:8
+[   15.669309] Realtek RTL8261N mdio-bus--1:08: rtkphy_config_init:72 [RTL8261N/RTL826XB] phy_id: 0x1CCAF3 PHYAD:8
+[   16.068486] [rtkphy_config_init,133] SDS 0x07, 0x10 : 0x8003
+[   16.074639] [rtkphy_config_init,135] SDS 0x06, 0x12 : 0xA4
+[   16.080431] [rtkphy_config_init,148] sds link [DOWN] (0xC)
+[   16.085936] Realtek RTL8261N mdio-bus--1:08: attached PHY driver [Realtek RTL8261N] (mii_bus:phy_addr=mdio-bus--1:08, irq=POLL)
+[   16.097450] ae wan mac driver init
+[   16.184137] Int init
+[   16.186147] xsgmii 0 int enable 0
+[   16.191511] ae wan mac driver init OK
+insmod secureupgra[   16.197193] ae_wan ae_wan ae_wan: Link is Down
+de[   16.201735]
+[   16.201735] secure_upgrade init.
+secure_upgrade init done.
+ko
+insmod lro_wan.ko
+[   16.213747] lro_module_init
+insmod lro_lan.ko
+[   16.220328] lro_module_init
+insmod hsgmii_lan.ko
+[   16.311504] [xsi_dev_register] hsgmii_lan phy addr:5
+[   16.316735] Realtek RTL8261N mdio-bus--1:05: rtkphy_config_init:72 [RTL8261N/RTL826XB] phy_id: 0x1CCAF3 PHYAD:5
+[   16.691864] [rtkphy_config_init,133] SDS 0x07, 0x10 : 0x8003
+[   16.698021] [rtkphy_config_init,135] SDS 0x06, 0x12 : 0xA4
+[   16.703813] [rtkphy_config_init,148] sds link [UP] (0x100D)
+[   16.709405] Realtek RTL8261N mdio-bus--1:05: attached PHY driver [Realtek RTL8261N] (mii_bus:phy_addr=mdio-bus--1:05, irq=POLL)
+[   16.720961] xsi mac driver init
+[   16.725017] xsi_mac_api_logic_reset:356, error xfi_if_sts!
+[   16.731368] xsi mac driver init OK
+/bin/sh /etc/hsgmi[   16.736780] hsgmii_lan_eth hsgmii_lan_eth eth0.8: Link is Down
+i_init.sh
+uci: Entry not found
+SerDes-PON=USXGMII
+uci: Invalid argument
+npu_offload enable
+insmod npu.ko
+[   21.927984] copy NPU binary:/userfs/npu_rv32.bin(88900 Bytes) to 0xffffffc011800000
+[   21.960141] copy NPU binary:/userfs/npu_data.bin(2724 Bytes) to 0xffffffc011400000
+[C0]core freq at 800 MHz
+[C0]timer_init: Timer clk is running at 200 Mhz
+[C0]np_skb_init(): SRAM is allocated to 3e871912
+[C0]npu_L2C_init()NPU use L2 cache
+[   22.]69798] [npu_wif]_offload_get_pkt_buf_addr]npu_pkt_b]f_addr=bd3fffc0]
+                                                                            ore4_main
+[C2]timer_isr  Store Value 10001[C0]pkt_buf_addr=bd3fffc0
+[   22.082440] [npu_wifi_offload_get_tx_pkt_buf_addr]npu_tx_pkt_buf_addr=b97fffc0
+[   22.089707] isForceToCpu=0
+[C0]isForceToCpu=false
+[C0]core0_wifi_init_wrapper finish
+[   24.856813] monitor value xxxxxxx
+insmod hostadpt.ko
+[   37.111729] host adaptor init:L951dscpDmaAddr =add00000 pHostadptTX_BASE[0]2f2dd000 pHostadptTX_BASE[1]2f311000 208
+[C0](core0_main) just return, because QDMA d   37.126037] tso_lan: tso_v2.c [236]: dscpDmaAddr =f7f80000
+insmod tso2.ko[   37.132670] tso_lan: tso_v2.c [303]: diPtr->dscpIdx = 0
+[   37.137867] tso_alloc_skb_payload_from_sram:1165 skb_payload_from_sram_addr:0X1e800000
+[   37.145770] tso_proc_init.
+
+insmod speedtest.ko
+[   37.154565] offset of skb->data:270 skb->mark:a0 skb->dev:10 skb->ppe_magic:156 skb->users:27c
+[   37.163020] size of skb struct 288
+[   37.166466] offset of net_device->flags:218
+[   37.170723] size of net_device struct 880
+[   37.176365] counter_base[0]=ffffffc010f37438(1e868438)
+[   37.181540] counter_base[1]=ffffffc010f39050(1e868050)
+[   37.186733] counter_base[2]=ffffffc010f3f820(1e868820)
+insmod axon_quicktest.ko
+[   37.196899] Axon QuickTest module  Version: 1.1-1
+[   37.209278] qt_device_event: lo (5) -> NETDEV_REGISTER
+[   37.214237] qt_device_event: ip_vti0 (5) -> NETDEV_REGISTER
+[   37.219806] qt_device_event: sit0 (5) -> NETDEV_REGISTER
+[   37.225087] qt_device_event: ip6tnl0 (5) -> NETDEV_REGISTER
+[   37.230648] qt_device_event: lan_int2_if (5) -> NETDEV_REGISTER
+[   37.236545] qt_device_event: lan_int3_if (5) -> NETDEV_REGISTER
+[   37.242452] qt_device_event: lan_int4_if (5) -> NETDEV_REGISTER
+[   37.248355] qt_device_event: eth0 (5) -> NETDEV_REGISTER
+[   37.253646] qt_device_event: eth0.1 (5) -> NETDEV_REGISTER
+[   37.259119] qt_device_event: eth0.2 (5) -> NETDEV_REGISTER
+[   37.264583] qt_device_event: eth0.3 (5) -> NETDEV_REGISTER
+[   37.270055] qt_device_event: eth0.4 (5) -> NETDEV_REGISTER
+[   37.275521] qt_device_event: nas10 (5) -> NETDEV_REGISTER
+[   37.280906] qt_device_event: wan_int2_if (5) -> NETDEV_REGISTER
+[   37.286809] qt_device_event: wan_int3_if (5) -> NETDEV_REGISTER
+[   37.292708] qt_device_event: wan_int4_if (5) -> NETDEV_REGISTER
+[   37.298615] qt_device_event: ae_wan (5) -> NETDEV_REGISTER
+[   37.304080] qt_device_event: lro_wan_dev (5) -> NETDEV_REGISTER
+[   37.309992] qt_device_event: lro_lan_dev (5) -> NETDEV_REGISTER
+[   37.315885] qt_device_event: eth0.8 (5) -> NETDEV_REGISTER
+Press the [f] key and hit [enter] to enter failsafe mode
+Press the [1], [2], [3] or [4] key and hit [enter] to select the debug level
+BootupBl                            : Info: Completed pulling hash/dsd/calibration/certs
+Rogue file cleanup: Removing file './etc/map/restirct_steer_config'
+Rogue file cleanup: Removing file './etc/map/1905d.cfg'
+Rogue file cleanup: Removing file './etc/map/wts_bss_info_config'
+Rogue file cleanup: Removing file './etc/map/sp_rule.cfg'
+Rogue file cleanup: Removing file './etc/map/mapd_default.cfg'
+Rogue file cleanup: Removing file './etc/map/mapd_cfg'
+Rogue file cleanup: Removing file './etc/dhcp.reserv'
+Rogue file cleanup: Removing file './etc/wpa_supplicant_apclix0_MTK_MAP.conf'
+Rogue file cleanup: Removing file './etc/default/anld/anld_sun_path'
+Rogue file cleanup: Removing file './etc/default/anld/anld.conf'
+Rogue file cleanup: Removing directory './etc/default/anld'
+Rogue file cleanup: Removing directory './etc/default'
+Rogue file cleanup: Removing file './etc/special_hostname.conf'
+Rogue file cleanup: Removing file './etc/wpa_supplicant_apcli0_MTK_MAP.conf'
+Rogue file cleanup: Removing file './etc/wapp_main_inf.conf'
+Rogue file cleanup: Removing file './etc/wpa_supplicant_apclii0_MTK_MAP.conf'
+Rogue file cleanup: Removing file './etc/lighttpd/lighttpd.conf'
+Rogue file cleanup: Removing file './etc/ethernet_cfg.txt'
+Rogue file cleanup: Restoring file './etc/uci-defaults/50-migrate-rpcd-ubus-sock.sh'
+Rogue file cleanup: Restoring file './etc/uci-defaults/14_migrate-dhcp-release'
+Rogue file cleanup: In progress..
+warning: skip line without = Default
+warning: skip line without =
+warning: skip line without = Default
+warning: skip line without =
+warning: skip line without = Default
+warning: skip line without =
+debug: search_dev_and_profile_l1: MT7990.1.2=/etc/wireless/mediatek/mt7990.b1.dat
+debug: search_dev_and_profile_l1: MT7990.1.1=/etc/wireless/mediatek/mt7990.b0.dat
+debug: search_dev_and_profile_l1: MT7990.1.3=/etc/wireless/mediatek/mt7990.b2.dat
+debug: mtwifi called!
+warning: skip line without = Default
+warning: skip line without =
+warning: skip line without = Default
+warning: skip line without =
+debug: search_dev_and_profile_l1: MT7990.1.2=/etc/wireless/mediatek/mt7990.b1.dat
+debug: search_dev_and_profile_l1: MT7990.1.1=/etc/wireless/mediatek/mt7990.b0.dat
+debug: search_dev_and_profile_l1: MT7990.1.3=/etc/wireless/mediatek/mt7990.b2.dat
+debug: mtwifi_up: ifconfig ra0 up
+[C0]PCIe_Port_Type = 2 !!!
+[C0]got MSDU PG packet pool address:bd1fffc0
+[C0]NPU tx init. band:0 Version: NPU_TLB7.3.283.2400-32 pcie_type:2
+[C0][NPU] txring_desc_phy_base addr=3e814020 band_idx=0
+[C0]npu_set_tx_ring_buf_space_phy_base_eagle, fp addr=ad9e0000, uncache=3e816020 band_idx=5
+[C0]=======================
+[C0]NPU rx init. band:2 Version: NPU_TLB7.3.283.2400-32
+[C0]=======================
+[C0]npu_eagle_rx_init() special handling: band is changed to BAND1
+[C0][NPU]  npu_rx_slow_path_queue_init...band:1
+[C0][NPU] Enter(2.4G) npu_npu_init_rxd_band1_eagle, band_idx=1, rx_ring_size=1024
+[C0]=======================
+[C0]NPU rx init. band:0 Version: NPU_TLB7.3.283.2400-32
+[C0]=======================
+[C0][NPU]  npu_rx_slow_path_queue_init...band:0
+[C0][NPU] Enter npu_npu_init_rxd_band0_eagle, band_idx=0, rx_ring_size=1536
+[C0]run np_skb_tx_force_reset()
+[C0]np_skb_set_tx_buf_state() enter
+[C0]finish run np_skb_tx_force_reset() total_buf_in_tdmaRx:2048(2048)
+[C0]PCIe_Port_Type = 2 !!!
+[C0]NPU tx init. band:2 Version: NPU_TLB7.3.283.2400-32 pcie_type:2
+[C0]npu_eagle_tx_init() special handling: band is changed to BAND1
+[C0][NPU] txring_desc_phy_base addr=3e834040 band_idx=2
+[C0]npu_set_tx_ring_buf_space_phy_base_eagle, fp addr=adb80000, uncache=3e838040 band_idx=7
+[C0]=======================
+[C0]NPU rx init. band:2 Version: NPU_TLB7.3.283.2400-32
+[C0]=======================
+[C0]npu_eagle_rx_init() special handling: band is changed to BAND1
+[C0][NPU]  npu_rx_slow_path_queue_init...band:1
+[C0][NPU] Enter(2.4G) npu_npu_init_rxd_band1_eagle, band_idx=1, rx_ring_size=1024
+[C0]Tx ring0 CIDX:0 DIDX:0
+[C0]Txd0 00000000 80000000 00000000 00000000
+[C0]Txd1 00000000 80000000 00000000 00000000
+[C0]Txd2 00000000 80000000 00000000 00000000
+[C0]Txd509 00000000 80000000 00000000 00000000
+[C0]Txd510 00000000 80000000 00000000 00000000
+[C0]Txd511 00000000 80000000 00000000 00000000
+[C0]Tx ring1 CIDX:0 DIDX:0
+[C0]Txd0 00000000 80000000 00000000 00000000
+[C0]Txd1 00000000 80000000 00000000 00000000
+[C0]Txd2 00000000 80000000 00000000 00000000
+[C0]Txd1021 00000000 80000000 00000000 00000000
+[C0]Txd1022 00000000 80000000 00000000 00000000
+[C0]Txd1023 00000000 80000000 00000000 00000000
+[C0]NPU got init done in host
+[C6]start eagle_handle_ind_cmd_ring_part1
+[C5]start eagle_handle_ind_cmd_ring_part2
+[C4]start eagle_wifi_tx_done_loop_func
+[C3]start npu_tx_rx_slow_path_handle
+[C2]start eagle_band0_band1_tx_fast_path
+[C1]start eagle_handle_rro_refill_msdu_ring
+debug: add ra0 into br-lan
+debug: add apcli0 into br-lan
+debug: add ra1 into br-lan
+warning: skip line without = Default
+warning: skip line without =
+debug: search_dev_and_profile_l1: MT7990.1.2=/etc/wireless/mediatek/mt7990.b1.dat
+debug: search_dev_and_profile_l1: MT7990.1.1=/etc/wireless/mediatek/mt7990.b0.dat
+debug: search_dev_and_profile_l1: MT7990.1.3=/etc/wireless/mediatek/mt7990.b2.dat
+debug: mtwifi called!
+warning: skip line without = Default
+warning: skip line without =
+warning: skip line without = Default
+warning: skip line without =
+debug: search_dev_and_profile_l1: MT7990.1.2=/etc/wireless/mediatek/mt7990.b1.dat
+debug: search_dev_and_profile_l1: MT7990.1.1=/etc/wireless/mediatek/mt7990.b0.dat
+debug: search_dev_and_profile_l1: MT7990.1.3=/etc/wireless/mediatek/mt7990.b2.dat
+debug: mtwifi_up: ifconfig rai0 up
+[C0]Tx ring0 CIDX:2 DIDX:2
+[C0]Txd0 ad9c0000 804c4048 b9bfffc0 00000000
+[C0]Txd1 ad9c0100 804c4048 b9c007c0 00000000
+[C0]Txd2 00000000 80000000 00000000 00000000
+[C0]Txd509 00000000 80000000 00000000 00000000
+[C0]Txd510 00000000 80000000 00000000 00000000
+[C0]Txd511 00000000 80000000 00000000 00000000
+[C0]Tx ring1 CIDX:0 DIDX:0
+[C0]Txd0 00000000 80000000 00000000 00000000
+[C0]Txd1 00000000 80000000 00000000 00000000
+[C0]Txd2 00000000 80000000 00000000 00000000
+[C0]Txd1021 00000000 80000000 00000000 00000000
+[C0]Txd1022 00000000 80000000 00000000 00000000
+[C0]Txd1023 00000000 80000000 00000000 00000000
+[C0]NPU got init done in host
+debug: add rai0 into br-lan
+debug: add apclii0 into br-lan
+debug: add rai1 into br-lan
+warning: skip line without = Default
+warning: skip line without =
+debug: search_dev_and_profile_l1: MT7990.1.2=/etc/wireless/mediatek/mt7990.b1.dat
+debug: search_dev_and_profile_l1: MT7990.1.1=/etc/wireless/mediatek/mt7990.b0.dat
+debug: search_dev_and_profile_l1: MT7990.1.3=/etc/wireless/mediatek/mt7990.b2.dat
+debug: mtwifi called!
+warning: skip line without = Default
+warning: skip line without =
+warning: skip line without = Default
+warning: skip line without =
+debug: search_dev_and_profile_l1: MT7990.1.2=/etc/wireless/mediatek/mt7990.b1.dat
+debug: search_dev_and_profile_l1: MT7990.1.1=/etc/wireless/mediatek/mt7990.b0.dat
+debug: search_dev_and_profile_l1: MT7990.1.3=/etc/wireless/mediatek/mt7990.b2.dat
+debug: mtwifi_up: ifconfig rax0 up
+[C0]Tx ring0 CIDX:2 DIDX:2
+[C0]Txd0 ad9c0000 804c4048 b9bfffc0 00000000
+[C0]Txd1 ad9c0100 804c4048 b9c007c0 00000000
+[C0]Txd2 00000000 80000000 00000000 00000000
+[C0]Txd509 00000000 80000000 00000000 00000000
+[C0]Txd510 00000000 80000000 00000000 00000000
+[C0]Txd511 00000000 80000000 00000000 00000000
+[C0]Tx ring1 CIDX:3 DIDX:3
+[C0]Txd0 adb40000 804c4048 b9c00fc0 00000000
+[C0]Txd1 adb40100 804c4048 b9c017c0 00000000
+[C0]Txd2 adb40200 804c4048 b9c01fc0 00000000
+[C0]Txd1021 00000000 80000000 00000000 00000000
+[C0]Txd1022 00000000 80000000 00000000 00000000
+[C0]Txd1023 00000000 80000000 00000000 00000000
+[C0]NPU got init done in host
+debug: add rax0 into br-lan
+debug: add apclix0 into br-lan
+debug: add rax1 into br-lan
+Version: WXK001-05.00.30.64
+bootflag: 1 state: 0 type: UNKNOWN date: 09/21/2024 time 11:27 PM
+root: Reboot reason: Power On Reset
+bootloader version: 2.0
+```
+
+## Wrap up
+
+If you find this article to be helpful, I have some more for you!
+
+- [Is Harvester a good hypervisor for a beginner? My hands-on experience](is-harvester-a-good-hypervisor-for-a-beginner-my-hands-on-experience)
+- [What I learned when migrating hungvu.tech from IPv4 to IPv6 on AWS?](migration-from-ipv4-to-ipv6-on-aws)
+- [Is AMD GPU better than Nvidia on Linux? It depends 🐞](is-amd-gpu-better-than-nvidia-on-linux)
+
+And, let's connect!
+
+- [LinkedIn](https://www.linkedin.com/in/hunghvu/)
+- [GitHub](https://github.com/hunghvu)
+- [X (formerly Twitter)](https://x.com/hunghvu_dev)

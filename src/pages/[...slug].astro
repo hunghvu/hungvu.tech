@@ -1,0 +1,88 @@
+---
+import "../styles/global.css";
+import { getCollection } from "astro:content";
+import BaseHead from "../components/head/BaseHead.astro";
+import Footer from "../components/Footer.astro";
+import FormattedDate from "../components/FormattedDate.astro";
+import Header from "../components/Header.astro";
+import { Picture } from "astro:assets";
+import TableOfContents from "../components/toc/TableOfContents.astro";
+import Series from "../components/Series.astro";
+import type { InferGetStaticPropsType, GetStaticPaths } from "astro";
+import SeoHead from "../components/head/SeoHead.astro";
+
+export const getStaticPaths = (async () => {
+  const posts = await getCollection("blog");
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: post,
+  }));
+}) satisfies GetStaticPaths;
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+const {
+  readerTitle,
+  readerDescription,
+  seoTitle,
+  seoDescription,
+  coverImage,
+  coverAlt,
+  publishedDate,
+  updatedDate,
+  series,
+} = Astro.props.data;
+const { Content, headings } = await Astro.props.render();
+---
+
+<html lang="en">
+  <head>
+    <BaseHead />
+    <SeoHead
+      seoTitle={seoTitle}
+      seoDescription={seoDescription}
+      readerTitle={readerTitle}
+      coverImageSlug={`_image?href=${coverImage.src}`}
+      slug={Astro.url.toString()}
+      jsonLdType="BlogPosting"
+      jsonLdDatePublished={publishedDate.toISOString()}
+      jsonLdDateModified={updatedDate?.toISOString() ?? ""}
+    />
+  </head>
+
+  <body class="flex w-full flex-col items-center bg-base-100">
+    <Header />
+    <main class="flex w-full max-w-(--breakpoint-xl) flex-col items-center px-6 py-12">
+      <article class="flex w-full flex-col items-center">
+        <Picture
+          class="mb-6 h-auto w-full max-w-full rounded-2xl"
+          formats={["avif", "webp"]}
+          src={coverImage}
+          alt={coverAlt}
+        />
+        {/* Remove backtick, reference: https://github.com/tailwindlabs/tailwindcss-typography/issues/135#issuecomment-991251524 */}
+        <div
+          class="prose prose-sm w-full break-words sm:prose-base lg:prose-lg dark:prose-invert
+                 prose-code:before:content-none prose-code:after:content-none"
+        >
+          <p class="text-center">
+            Posted on: <FormattedDate date={publishedDate} />{
+              updatedDate && (
+                <>
+                  - Updated on: <FormattedDate date={updatedDate} />
+                </>
+              )
+            }
+          </p>
+          <h1 class="text-center">{readerTitle}</h1>
+          <p class="text-center">{readerDescription}</p>
+          <hr />
+          {headings.length > 1 ? <TableOfContents headings={headings} /> : null}
+          <br />
+          <Content />
+          <br />
+          {series ? <Series series={series} /> : null}
+        </div>
+      </article>
+      <Footer />
+    </main>
+  </body>
+</html>

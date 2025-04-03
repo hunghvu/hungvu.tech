@@ -1,0 +1,87 @@
+---
+coverImage: ../../assets/blog/17/cover-image.webp
+coverAlt: After months of waiting, Next.js finally releases several changes note-worthy changes with the 12.2 release.
+publishedDate: June 28, 2022
+readerTitle: 'Next.js 12.2 Release: Stable Middleware, On-demand ISR, and more'
+readerDescription: After months of waiting, Next.js finally releases several changes note-worthy changes with the 12.2 release.
+seoTitle: Next.js 12.2 Release
+seoDescription: Next.js 12.2 introduces breaking changes in Middleware, On-Demand ISR, Images, and more upgrades to Edge functions like Edge API Routes, SSR, and more!
+series: News
+---
+
+import BlogPicture from '../../components/BlogPicture.astro';
+
+With the release of Next.js 12.2, the following new features arrive:
+
+**Stable**
+
+- Middleware
+- On-demand Incremental Static Regeneration (ISR)
+
+**Experimental**
+
+- Edge API Routes
+- Edge Server-side Rendering (SSR)
+- SWC Plugins
+- `next/future/image`
+- `next/image` remote patterns
+
+**Miscellaneous**
+
+- Vercel Edge Middleware for Next.js reaches the generally available stage (GA)
+
+## Middleware
+
+Released in October 2021 (Next.js 12.0) and has been in beta since then, Next.js Middleware is now stable. This release includes many breaking changes to the APIs. You can follow the migration guide below to upgrade.
+
+- [Next.js middleware (GA) upgrade guide](https://nextjs.org/docs/messages/middleware-upgrade-guide)
+
+## On-demand Incremental Static Regeneration (ISR)
+
+Released in February 2022 (Next.js 12.1) and has been in beta since then, Next.js On-demand ISR is now stable. This feature allows you to create and update static pages after build time down to the per-page level without taking down the whole page to rebuild. This is useful for dynamic content such as a blogging website with a headless CMS.
+
+## The Edge
+
+Traditionally, the code base is fully run on the origin servers. Depending on the location of the application servers (regional or multi-regional), user locations, and server configuration, the performance and latency can be an issue. With the lightweight Edge runtime, many components have been offloaded to the globally distributed Edge infrastructure (e.g., Content Delivery Network - CDN), which drastically improves user experience.
+
+### Edge API Routes
+
+Now is available in an experimental stage, the Edge API Routes provide a faster startup time and lower latency. Being run on the Edge runtime, these API routes do not have access to native Node.js API (e.g. file IO), however, they are capable of using standard web APIs and streaming server responses.
+
+### Edge Server-side Rendering
+
+Now is available in an experimental stage, the Edge Server-side rendering offloads a traditional task to the Edge infrastructure and greatly improves website performance and responsiveness. Combined with React 18, you can stream server-rendering pages at global scope or per-page basis.
+
+### Edge Middleware
+
+Released in October 2021 (Next.js 12.0) and has been in beta since then, Edge middleware is now generally available. This framework-agnostic feature allows you to run middleware functions to modify requests before serving them to the Edge Network Cache (where the website content resides). With Edge Middleware, tasks such as authentication, localization, and more can be done at the Edge infrastructure.
+
+## SWC Plugins
+
+Now is available in an experimental stage. SWC, a Rust program, is used by the Next.js compiler to minify and compile your JavaScript code. With Next.js 12.2, SWC plugins can be used to improve your development experience and workflow.
+
+## Miscellaneous improvements to `next/image`
+
+### Disable `next/image` optimization
+
+Image optimization is required to be supported by the hosting environment. However, users now can disable the optimization while still using the `next/image` component. This is very helpful for those who want to export a static page and host it on third-party infrastructure.
+
+### Remote patterns
+
+Now is available in an experimental stage. This feature allows you to use wildcards and define only remote images from certain domains to be optimized.
+
+### Release `next/future/image`
+
+Now is available in an available stage. This is a preview of the upcoming `next/image` component which is built to improve performance and solve the several pain points of the current version (mainly due to the opinionated nature when the component was first released).
+
+If you find this article to be helpful, I have some more for you!
+
+- [Quantum Fiber W1700K teardown, board view, and UART pins](/quantum-fiber-w1700k-teardown-board-view-and-uart-pins)
+- [ChromeOS Flex, have I just opened a can of worms?](/chromeos-flex-have-i-just-opened-a-can-of-worms)
+- [Backup and encrypt Microsoft 365 with Synology Active Backup](/how-to-back-up-microsoft-365-with-synology-active-backup)
+
+And, let's connect!
+
+- [LinkedIn](https://www.linkedin.com/in/hunghvu/)
+- [GitHub](https://github.com/hunghvu)
+- [X (formerly Twitter)](https://x.com/hunghvu_dev)

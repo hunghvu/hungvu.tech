@@ -1,0 +1,35 @@
+---
+import "../styles/global.css";
+import Footer from "../components/Footer.astro";
+import BaseHead from "../components/head/BaseHead.astro";
+import SeoHead from "../components/head/SeoHead.astro";
+import Header from "../components/Header.astro";
+import { BASE_SITE_NAME, BASE_SITE_DESCRIPTION } from "../consts";
+
+interface Props {
+  error: unknown;
+}
+
+const { error } = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <BaseHead />
+    <SeoHead seoTitle={BASE_SITE_NAME} seoDescription={BASE_SITE_DESCRIPTION} />
+  </head>
+
+  <body class="flex w-full flex-col items-center bg-base-100">
+    <Header />
+    <main class="flex w-full max-w-(--breakpoint-xl) flex-col items-center px-6 py-12 prose prose-sm sm:prose-base lg:prose-lg dark:prose-invert
+                 prose-code:before:content-none prose-code:after:content-none">
+      <!-- An open-source static page, no worry about leaking sensitive information. -->
+      <h1>500: {error instanceof Error ? error.message : "Unknown error"}</h1>
+      <p>
+        <a href="https://github.com/hunghvu/hungvu.tech/issues">Report bug on Github</a> or <a href="/">Return to home page</a>
+      </p>
+    </main>
+    <!-- No need to make footer stick to the bottom. Just a barebone 404 page is enough. -->
+    <Footer />
+  </body>
+</html>
