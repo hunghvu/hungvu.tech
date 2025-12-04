@@ -8,15 +8,15 @@ seoTitle: What are GitHub Actions?
 seoDescription: GitHub Actions allows you to automate workflow with GitHub internal and external events, GitHub Actions workflow, runner, workflow job, and reusable action.
 ---
 
-import BlogPicture from '../../components/BlogPicture.astro';
+import BlogPicture from "../../components/BlogPicture.astro";
 
 ## What is GitHub Actions? 🍀
 
 I guess you are familiar with GitHub at this point. Is it more than a version control system to you? As you can see in the image, there is an **Actions** tab which leads to the **GitHub Actions** feature. What is it, you may ask?
 
-import image1 from '../../assets/blog/10/github-actions-1.webp';
+import image1 from "../../assets/blog/10/github-actions-1.webp";
 
-<BlogPicture imageMetadata={image1} alt='GitHub Actions tab.' />
+<BlogPicture imageMetadata={image1} alt="GitHub Actions tab." />
 
 GitHub Actions is an automation platform that contains **workflows**, and the workflows can be triggered manually, on schedule, or based on different **events**. It can create a CI/CD pipeline to build, test and deploy your code base. However, as a mature automation platform, it can run arbitrary system commands, so its capability is NOT limited to a CI/CD pipeline.
 
@@ -34,9 +34,12 @@ GitHub Actions consists of 5 core components:
 
 How are they related? An event triggers a workflow, which contains multiple jobs. A runner executes a job, and one job can have multiple actions. By the way, I'm not certain why one component is named action while the platform is already named GitHub Actions, that just sounds confusing. 🤦‍♂️
 
-import image2 from '../../assets/blog/10/github-actions-2.webp';
+import image2 from "../../assets/blog/10/github-actions-2.webp";
 
-<BlogPicture imageMetadata={image2} alt='GitHub Actions component relationship overview.' />
+<BlogPicture
+  imageMetadata={image2}
+  alt="GitHub Actions component relationship overview."
+/>
 
 ### What is an event? 🔑
 
@@ -47,12 +50,14 @@ Whenever something happens, it is an event, literally. You may wonder what can b
 
 ### What is a workflow? 🔑
 
-This is something "big" that you want to achieve, a configurable automated process defined by a `yaml` file that resides in the `/.github/workflows` folder. Do you want an end-to-end test process? It can be named *e2e test*. An example of the MUI repository below might give you a better visualization of the GitHub Actions workflow feature.
+This is something "big" that you want to achieve, a configurable automated process defined by a `yaml` file that resides in the `/.github/workflows` folder. Do you want an end-to-end test process? It can be named _e2e test_. An example of the MUI repository below might give you a better visualization of the GitHub Actions workflow feature.
 
-import image3 from '../../assets/blog/10/github-actions-3.webp';
+import image3 from "../../assets/blog/10/github-actions-3.webp";
 
-<BlogPicture imageMetadata={image3} alt='Workflows that are used at Material UI.' />
-
+<BlogPicture
+  imageMetadata={image3}
+  alt="Workflows that are used at Material UI."
+/>
 
 ### What is a runner? 🔑
 
@@ -70,18 +75,17 @@ In GitHub Actions workflow, there are jobs that consist of sequential (and skipp
 
 Due to its sequential nature, a step is dependent on the previous one. If a previous step modifies an environment, then the later steps are affected by the changes. If one step fails or executes an `exit` command with a failed signal, the workflow will be canceled.
 
+import image4 from "../../assets/blog/10/github-actions-4.webp";
 
-import image4 from '../../assets/blog/10/github-actions-4.webp';
-
-<BlogPicture imageMetadata={image4} alt='GitHub Actions steps in action.' />
+<BlogPicture imageMetadata={image4} alt="GitHub Actions steps in action." />
 
 ### What is an action? 🔑
 
 If a job is a group of tasks, then an action is a task. An action is repetitive and complex in nature that is created using languages that can be compiled to JavaScript or using bash script in a container. There is a whole [marketplace](https://github.com/marketplace?type=actions) that you can a suitable action in there.
 
-import image5 from '../../assets/blog/10/github-actions-5.webp';
+import image5 from "../../assets/blog/10/github-actions-5.webp";
 
-<BlogPicture imageMetadata={image5} alt='GitHub Actions marketplace.' />
+<BlogPicture imageMetadata={image5} alt="GitHub Actions marketplace." />
 
 ## Wrap up 🍀
 

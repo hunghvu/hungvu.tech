@@ -9,7 +9,7 @@ seoDescription: I decided to try out the bleeding edge ChromeOS Flex, and what h
 series: Google technologies
 ---
 
-I have never been a Linux guru, but as a casual user, I love playing around with the operating system from time to time. At one point, I decided that Pop!_OS (or PopOS) is a stopping point after a long distro-hopping journey. It's a great all-in-one package with several core features ready to go out of the box: Desktop customization, dedicated GPU supports, Bluetooth codec supports, and whatnot, you name it! I'm satisfied with PopOS, and I still do, but a question eventually arose.
+I have never been a Linux guru, but as a casual user, I love playing around with the operating system from time to time. At one point, I decided that Pop!\_OS (or PopOS) is a stopping point after a long distro-hopping journey. It's a great all-in-one package with several core features ready to go out of the box: Desktop customization, dedicated GPU supports, Bluetooth codec supports, and whatnot, you name it! I'm satisfied with PopOS, and I still do, but a question eventually arose.
 
 When coming to laptop usage, 95% of my time is spent on the browser. I boot up the laptop, open Firefox, search the web, consume media, and write articles like what you are reading now. For other more intensive tasks like gaming, coding and so on, my PC is responsible for them. Do I need a full-fledged highly customizable operating system for the laptop? Probably not, so ChromeOS came to my mind. In July 2022, Google announced a general availability for ChromeOS Flex (formerly CloudReady), a version that can be installed on non-Chromebook devices (any computer, in other words). In a sense, ChromeOS Flex is bleeding edge so it is expected to be somewhat unstable at the beginning, and I decided to wait until early 2023 to try it out, and here I am.
 
@@ -27,7 +27,7 @@ Living on the edge is nothing new to me, eventually, things will work out. That 
 
 ### Network chipset compatibility
 
-At the moment, ChromeOS Flex does not support Intel AX210 and Mediatek MT7921 wireless modules. Unfortunately, two of my laptops have these so I could not even start the OS installation process because ChromeOS Flex requires Internet to set up. That said, these are documented in *ChromeOS Flex Help - Known Issues*, so it is acceptable to me. However, being a PC hobbyist, I have a plethora of computer components lying around, so I decided to try other modules which yielded the following results.
+At the moment, ChromeOS Flex does not support Intel AX210 and Mediatek MT7921 wireless modules. Unfortunately, two of my laptops have these so I could not even start the OS installation process because ChromeOS Flex requires Internet to set up. That said, these are documented in _ChromeOS Flex Help - Known Issues_, so it is acceptable to me. However, being a PC hobbyist, I have a plethora of computer components lying around, so I decided to try other modules which yielded the following results.
 
 - Intel AC3168 (unknown revision): Recognized
 - Intel AC7265 (unknown revision): Bluetooth was recognized, but no Wi-Fi
@@ -51,7 +51,7 @@ Unlike network chipset which has only a few big players on the market such as In
 
 Although using a minimal OS is my goal, ChromeOS Flex is missing certain features that reduce my overall experience. They are not breaking deals though, but worth mentioning. For example.
 
-- Chrome tabs do not close after the browser exits, and there is no option to decide whether to keep tabs between sessions. Apparently, ChromeOS Flex simply does not support this, and the user must right-click on a browser tab, and then choose to *close other tabs* before exiting the browser. It is an oversight in my opinion.
+- Chrome tabs do not close after the browser exits, and there is no option to decide whether to keep tabs between sessions. Apparently, ChromeOS Flex simply does not support this, and the user must right-click on a browser tab, and then choose to _close other tabs_ before exiting the browser. It is an oversight in my opinion.
 - Website scroll speed is very inconsistent, as in, the acceleration kept jumping around. It seems this was once reported in Chromium Issue 836258, but it is not viewable anymore.
 - ChromeOS Flex has worse settings than PopOS, such as no main monitor resolution, no time to sleep, no sleep button, and no Bluetooth codec adjustment.
 - No trivial way to enable the tablet mode, which is commonly used when a laptop is a 2-in-1 type. The workaround I found was to enable the ASH shortcut flag in Chrome then press CTRL+ALT+SHIFT+T to enter and exit the tablet mode.
@@ -66,7 +66,7 @@ The list goes on, but again, not that big of a deal. Then, I found a serious iss
 Using a laptop, I rarely shut down the machine, rather, sleep is my usual choice. Why? It is simply about convenience, what is better than just opening the lid and all your applications is there in their previous state? And yet, Chrome OS completely broke my laptop's sleep functionality. There are three types of breaking bugs.
 
 - **The laptop cannot wake up from sleep:** I'm away from the keyboard or close the lid, and the laptop goes to sleep (screen off, keyboard-led off, fan spin down, no battery drain). However, when trying to turn it on, the fan spins, and the keyboard LED lights up, but no screen. In this case, the screen is completely off (no backlight), and HDMI output does not provide a display signal. Only forcing the shutdown by pressing the power button can exit this state.
-- **The laptop cannot go to the sleep state:** I'm closing the lid, and the laptop *does not* go to sleep (screen off, keyboard-led off, fan either spins down or keeps rotating, battery drains even faster than usual).
+- **The laptop cannot go to the sleep state:** I'm closing the lid, and the laptop _does not_ go to sleep (screen off, keyboard-led off, fan either spins down or keeps rotating, battery drains even faster than usual).
 - **The laptop is unresponsive after waking up:** On one of my laptops that uses HDD, when the laptop goes to sleep (as expected) and wakes up. It is normal in the lock screen, but after singing, the user inputs (keystroke, mouse movement) are delayed for more than 1 minute, which effectively renders the laptop unusable. I have to force shutdown with the power button to exit this state. This persists through HDD replacement, but the problem disappears when using an SSD.
 
 Here is the best part, these problems randomly happen but at a very high frequency, likely more than 80% of the time. I consider them harmful to my system because repetitive behaviors like force shutting down (unsafe shutdown) and battery drain can potentially corrupt the OS or even degrade the hardware over time.
@@ -91,7 +91,7 @@ And, let's connect!
 
 **Bonus, here was what I found in the log for type one (wall of text, with my educated guess on their meaning). In this scenario, I opened the laptop and signed in, then let it stay there (not open any program or do anything) until the sleep kicks in.**
 
-``` showLineNumbers
+```showLineNumbers
 # Starting to go sleep.
 2023-03-02T05:21:13.976131Z INFO powerd: [suspend_delay_controller.cc(99)] Got notification that delay 67305475 (shill) is ready for suspend request 67305473 from :1.8
 2023-03-02T05:21:13.977835Z INFO powerd: [suspend_delay_controller.cc(99)] Got notification that delay 67305476 (chrome) is ready for suspend request 67305473 from :1.37

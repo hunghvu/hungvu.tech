@@ -9,7 +9,7 @@ seoTitle: Starting a NodeJS web app deployment to Google Cloud
 seoDescription: NodeJS, App Engine, Cloud SQL? What to consider and where to start?
 ---
 
-import BlogPicture from '../../components/BlogPicture.astro';
+import BlogPicture from "../../components/BlogPicture.astro";
 
 This is more about describing my personal development and debugging experience, less of a step-by-step tutorial on the topic. Correction to any of the errors is welcome!
 
@@ -48,7 +48,7 @@ This is a function as a service option. As the name suggests, it is to run singu
 
 ```ts showLineNumbers
 exports.yourFunction = (req, res) => {
-  res.status(200).send('Result');
+  res.status(200).send("Result");
 };
 ```
 
@@ -64,9 +64,12 @@ Well, the name says it all, this is a fully-managed Kubernetes service from Goog
 **Compute Engine (GCE)**
 The most barebone service, a virtual machine on the cloud. Essentially an empty computer and you need to configure everything from Operating Systems to Network, Storage usage, etc.
 
-import image1 from '../../assets/blog/1/google-cloud-1.webp';
+import image1 from "../../assets/blog/1/google-cloud-1.webp";
 
-<BlogPicture imageMetadata={image1} alt='Google computing stack as of February 2022.' />
+<BlogPicture
+  imageMetadata={image1}
+  alt="Google computing stack as of February 2022."
+/>
 
 For a more detailed discussion, these will be great resources
 
@@ -90,9 +93,12 @@ Out of the three, Cloud Spanner is fully managed and geared toward enterprises d
 
 Only Cloud SQL is fully managed and suitable for small, personal use, so that will be my choice.
 
-import image2 from '../../assets/blog/1/google-cloud-2.webp';
+import image2 from "../../assets/blog/1/google-cloud-2.webp";
 
-<BlogPicture imageMetadata={image2} alt='Google relational databases platforms and use cases.' />
+<BlogPicture
+  imageMetadata={image2}
+  alt="Google relational databases platforms and use cases."
+/>
 
 Source: <a href="https://cloud.google.com/blog/topics/developers-practitioners/your-google-cloud-database-options-explained">Your Google Cloud database options explained.</a>
 

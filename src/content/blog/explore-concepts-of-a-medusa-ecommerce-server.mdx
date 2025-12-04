@@ -8,19 +8,22 @@ seoTitle: Explore concepts of a Medusa eCommerce server
 seoDescription: This article will take you through Medusa's architecture and give you a general overview of the Medusa server to better understand how it works.
 ---
 
-import BlogPicture from '../../components/BlogPicture.astro';
+import BlogPicture from "../../components/BlogPicture.astro";
 
 [Medusa](https://github.com/medusajs/medusa) is the leading open source Node.js eCommerce platform for JavaScript developers. It provides similar core functionality as Shopify out-of-the-box, while its open abstraction-based and headless architecture makes customizations and maintenance much easier to handle for developers as businesses' needs evolve.
 
 Most of the heavy lifting job has been done by Medusa so that you can achieve a production-ready store in a short amount of time. Medusa's abstract architecture also allows developers to extend and customize the platform to fit their use case hassle-free.
 
-*This article was my contribution to *[*the Medusa blog.*](https://medusajs.com/blog/beginner-guide-to-node-js-ecommerce-platform-understanding-the-medusa-server/)
+_This article was my contribution to _[_the Medusa blog._](https://medusajs.com/blog/beginner-guide-to-node-js-ecommerce-platform-understanding-the-medusa-server/)
 
 ## Medusa Architecture Overview
 
-import image1 from '../../assets/blog/18/medusa-1.webp';
+import image1 from "../../assets/blog/18/medusa-1.webp";
 
-<BlogPicture imageMetadata={image1} alt='Three main components of a Medusa project.' />
+<BlogPicture
+  imageMetadata={image1}
+  alt="Three main components of a Medusa project."
+/>
 
 Medusa's complete architecture consists of three main components: Headless Node.js eCommerce Server, Admin Dashboard, and Storefront. The modular and headless architecture makes all three components completely separated and deployable to different environments without any restriction.To understand more what each component is:
 
@@ -51,13 +54,11 @@ Medusa relies mainly on Node.js to be installed on your system. You need version
 
 To install the Medusa server, you need to use the Medusa CLI tool. You can install the Medusa CLI tool with the following command:
 
-
 ```
 npm install -g @medusajs/medusa-cli
 ```
 
 Then, install a Medusa server with the following command:
-
 
 ```
 medusa new my-medusa-store --seed
@@ -67,11 +68,11 @@ Your server now resides in the `my-medusa-store` folder. The `--seed` option cre
 
 ## What is `my-medusa-store` made of?
 
-If you have worked with *NestJS* or *Angular* before, the folder structure might seem familiar. Navigate to `my-medusa-store`, and you can see the content below.
+If you have worked with _NestJS_ or _Angular_ before, the folder structure might seem familiar. Navigate to `my-medusa-store`, and you can see the content below.
 
-import image2 from '../../assets/blog/18/medusa-2.webp';
+import image2 from "../../assets/blog/18/medusa-2.webp";
 
-<BlogPicture imageMetadata={image2} alt='Inside my-medusa-store folder.' />
+<BlogPicture imageMetadata={image2} alt="Inside my-medusa-store folder." />
 
 For starters, the four main directories and files you want to focus on are `data`, `dist`, `src`, and `medusa-config.js`.
 
@@ -91,7 +92,6 @@ By default, the server contains the following variables.
 The components are decoupled in Medusa. So, the Node.js eCommerce headless server, admin dashboard, and storefront can have different origins (e.g., different domains, or different ports on the same domain). This causes [Avoid Cross-Origin Resource Sharing (CORS)](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) and blocks communication between components.
 
 The usage of CORS variables is a way to solve this issue. By default, the headless server runs on port `9000`, the admin dashboard runs on port `7000` or `7001`, and the storefront is available at port `8000`. If you decide to change the origins of the front ends or deploy components to different environments, then the CORS values must be adjusted accordingly.
-
 
 ```
 # .env
@@ -136,7 +136,7 @@ In many eCommerce solutions, extending the functionalities often requires a dedi
 
 Since Medusa is a Node.js eCommerce platform, a plugin is basically an NPM package. After installation, put the name of your plugin (package) in the `plugins`variable and you are good to go. From here on out, the plugins can use all other Medusa services and even access the database.
 
-``` ts showLineNumbers
+```ts showLineNumbers
 const plugins = [
   `plugin-without-options`,
   {
@@ -169,26 +169,25 @@ By conventions, endpoints for admin are prefixed with `admin`, while endpoints f
 
 For example:
 
-
-``` ts showLineNumbers
-/** 
+```ts showLineNumbers
+/**
  * Author: Hung Vu
- * /src/api/index.js 
+ * /src/api/index.js
  */
 
-import { Router } from "express"
+import { Router } from "express";
 
 export default () => {
-  const router = Router()
+  const router = Router();
 
   router.get("/admin/hello", (req, res) => {
     res.json({
       message: "Welcome to Your Store!",
-    })
-  })
+    });
+  });
 
-  return router
-}
+  return router;
+};
 ```
 
 Implementation of APIs requires a certain degree of Express knowledge and is not discussed in this article. To dive deeper into endpoints in Medusa, check out the documentation on [how to create endpoints](https://docs.medusajs.com/development/endpoints/create).
@@ -201,15 +200,14 @@ Now that you know the Medusa server can create custom endpoints, let's revisit t
 
 As stated, a protected API is required so only your partner can access the private inventory, and you know where the API is implemented, but where does the "private inventory access" feature reside?
 
-Following the [SOLID principle](https://en.wikipedia.org/wiki/SOLID) where an S represents **single responsibility**, files in `/src/api` are controllers responsible for managing HTTP requests/responses and deciding what portion of the code should be called upon.On the other hand, *private inventory access* is considered a service. Services in Medusa reside in `/src/services`. They represent one specific entity and functionalities related to it.
+Following the [SOLID principle](https://en.wikipedia.org/wiki/SOLID) where an S represents **single responsibility**, files in `/src/api` are controllers responsible for managing HTTP requests/responses and deciding what portion of the code should be called upon.On the other hand, _private inventory access_ is considered a service. Services in Medusa reside in `/src/services`. They represent one specific entity and functionalities related to it.
 
 An example of a service:
 
-
-``` ts showLineNumbers
-/** 
+```ts showLineNumbers
+/**
  * Author: Hung Vu
- * /src/services/privateInventoryAccess.js 
+ * /src/services/privateInventoryAccess.js
  */
 
 import { BaseService } from "medusa-interfaces"
@@ -225,21 +223,23 @@ export default PrivateInventoryAccessService
 
 Services can be accessed anywhere on your Medusa server. For example, to use `PrivateInventoryAccessService` in an endpoint:
 
-``` ts showLineNumbers
-/** 
+```ts showLineNumbers
+/**
  * Author: Hung Vu
- * /src/api/index.js 
+ * /src/api/index.js
  */
 
 // File name of service is "privateInventoryAccess.js", so its registration name
 // is a camel-cased version: "privateInventoryAccessService"
 //
 // The service is accessible via req.scope.resolve(serviceRegistrationName)
-const privateInventoryAccessService = req.scope.resolve("privateInventoryAccessService")
+const privateInventoryAccessService = req.scope.resolve(
+  "privateInventoryAccessService",
+);
 
 res.json({
   unreleasedProducts: privateInventoryAccessService.getUnreleasedProducts(),
-})
+});
 ```
 
 For a complete tutorial on service creation, you can start with [official Medusa documentation](https://docs.medusajs.com/advanced/backend/services/create-service).
@@ -258,7 +258,7 @@ You can check out the [full list of events in Medusa's documentation](https://do
 
 Here's an example of a subscriber:
 
-``` ts showLineNumbers
+```ts showLineNumbers
 /**
  * Author: Hung Vu
  * /src/subscribers/orderPlacementLogger.js
@@ -281,7 +281,7 @@ For a complete tutorial on subscribers and how they work check out [Medusa's doc
 
 ## Next Steps
 
-This article should help you have a grasp of the Medusa server fundamentals. However, there's still much more that you can do with Medusa. 
+This article should help you have a grasp of the Medusa server fundamentals. However, there's still much more that you can do with Medusa.
 
 If you find this article to be helpful, I have some more for you!
 

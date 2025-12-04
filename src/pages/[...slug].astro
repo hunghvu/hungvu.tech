@@ -48,9 +48,11 @@ const { Content, headings } = await Astro.props.render();
     />
   </head>
 
-  <body class="flex w-full flex-col items-center bg-base-100">
+  <body class="bg-base-100 flex w-full flex-col items-center">
     <Header />
-    <main class="flex w-full max-w-(--breakpoint-xl) flex-col items-center px-6 py-12">
+    <main
+      class="flex w-full max-w-(--breakpoint-xl) flex-col items-center px-6 py-12"
+    >
       <article class="flex w-full flex-col items-center">
         <Picture
           class="mb-6 h-auto w-full max-w-full rounded-2xl"
@@ -58,10 +60,11 @@ const { Content, headings } = await Astro.props.render();
           src={coverImage}
           alt={coverAlt}
         />
-        {/* Remove backtick, reference: https://github.com/tailwindlabs/tailwindcss-typography/issues/135#issuecomment-991251524 */}
+        {
+          /* Remove backtick, reference: https://github.com/tailwindlabs/tailwindcss-typography/issues/135#issuecomment-991251524 */
+        }
         <div
-          class="prose prose-sm w-full break-words sm:prose-base lg:prose-lg dark:prose-invert
-                 prose-code:before:content-none prose-code:after:content-none"
+          class="prose prose-sm sm:prose-base lg:prose-lg dark:prose-invert prose-code:before:content-none prose-code:after:content-none w-full break-words"
         >
           <p class="text-center">
             Posted on: <FormattedDate date={publishedDate} />{

@@ -8,13 +8,13 @@ seoTitle: Semanticly crafting your code base
 seoDescription: What are semantic commits, HTML semantic elements, and semantic versioning? How to organize your software project with semantics?
 ---
 
-import BlogPicture from '../../components/BlogPicture.astro';
+import BlogPicture from "../../components/BlogPicture.astro";
 
 Have you ever spent hours creating conventions for your projects? After all, conventions become more important when there are multiple people working on a project. There needs to be common ground so the contributors can efficiently communicate. Besides, applying predefined rules will help the process of creating an automation pipeline down the road less of a trouble.
 
 > When I wrote this, only God and I understood what I was doing. Now, God only knows.
 >
->  <cite>Karl Weierstrass</cite>
+> <cite>Karl Weierstrass</cite>
 
 To solve this, we have semantics. In terms of computer science, it is an academic concept and covers a broad range of topics. However, in the scope of this article, we define semantics as a way to make your work logical to not just God, but also another human being. We will discuss some general ways to create a human-readable context in your contribution.
 
@@ -36,12 +36,11 @@ Imagine there is a cooking recipe application and a new pull request for letting
 4. cake.ts: Allow users to add customized recipes
 ```
 
-import image1 from '../../assets/blog/9/commit-example-1.webp';
+import image1 from "../../assets/blog/9/commit-example-1.webp";
 
-<BlogPicture imageMetadata={image1} alt='Conventional commit example.' />
+<BlogPicture imageMetadata={image1} alt="Conventional commit example." />
 
 By categorizing the commit messages with predefined rules as in example (2), (3), and (4), the contributors can quickly have a sense of what the commit is about, especially when the commit message is usually collapsed in code editors or IDEs.
-
 
 [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) should be a good place to start with semantic commits. Pull request titles or branch names can be adapted from the guide too.
 
@@ -53,16 +52,14 @@ These depend on languages and frameworks. There can be a common practice between
 <!-- Potentially ambiguous nested div hell -->
 <div class="">
   <div class="">
-    <div class="">
-    </div>
+    <div class=""></div>
   </div>
 </div>
 
 <!-- Using semantics element, readable to both human and web crawler-->
 <section class="">
   <article class="">
-    <div class="">
-    </div>
+    <div class=""></div>
   </article>
 </section>
 ```

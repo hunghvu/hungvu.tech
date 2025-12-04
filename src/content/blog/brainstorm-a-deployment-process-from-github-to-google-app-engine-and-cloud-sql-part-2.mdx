@@ -9,7 +9,7 @@ seoTitle: Deployment process from GitHub to GAE and Cloud SQL (P2)
 seoDescription: Running locally does not mean it will work in a cloud environment, even the purpose is only to get an application up and running on GAE.
 ---
 
-import BlogPicture from '../../components/BlogPicture.astro';
+import BlogPicture from "../../components/BlogPicture.astro";
 
 The post will include a series of questions that I asked and answered myself to approach the solution. This is more about describing my personal experience, not a full tutorial on the topic so many steps and concept explanations will be omitted. Correction to any of the errors is welcome!
 
@@ -23,12 +23,12 @@ Luckily, yes! However, it is not as clear as Heroku. I need to read [this offici
 
 App Engine itself has two variations: Standards and Flexible. Only the Standard version has a free offer. Meanwhile, the flexible version is more advanced and I do not need its features (e.g., Docker imaging, custom runtime, etc.), so the Standard version is my choice.
 
-import image1 from '../../assets/blog/3/google-cloud-1.webp';
+import image1 from "../../assets/blog/3/google-cloud-1.webp";
 
 <BlogPicture
   imageMetadata={image1}
-  alt='GCP free tier App Engine as of February 2022
-GCP free tier App Engine as of February 2022.'
+  alt="GCP free tier App Engine as of February 2022
+GCP free tier App Engine as of February 2022."
 />
 
 ### What does Instance Hours mean? 🤔
@@ -39,12 +39,11 @@ This metric is counted across projects. Let's say I have two projects with App E
 
 ### Are there some core GCP concepts that I need to know beforehand? 🤔
 
-import image2 from '../../assets/blog/3/google-cloud-2.webp';
+import image2 from "../../assets/blog/3/google-cloud-2.webp";
 
-<BlogPicture imageMetadata={image2} alt='Google Cloud IAM logo.' />
+<BlogPicture imageMetadata={image2} alt="Google Cloud IAM logo." />
 
 - [Identity Access Management (IAM)](https://cloud.google.com/iam/docs/overview): Essentially, this is used to control user permissions and access to resources. It contains 3 main parts:
-
   - **Principal**: Indicate an end-user, service account, or group of entities. The username is an email address.
   - **Roles**: It resembles a hierarchy in any organization. A manager will have more privileges compared to an intern and so on. In other words, a role itself contains a set of permission.
   - **Policy**: A collection of role binding, which binds one or more principals to individual roles.
@@ -120,17 +119,17 @@ automatic_scaling:
 
 After this point, the workflow should work, Now, I have a simple but runnable CI/CD pipeline.
 
-import image3 from '../../assets/blog/3/google-cloud-3.webp';
+import image3 from "../../assets/blog/3/google-cloud-3.webp";
 
-<BlogPicture imageMetadata={image3} alt='App Engine instance status.' />
+<BlogPicture imageMetadata={image3} alt="App Engine instance status." />
 
 ### We have an up and running App Engine now, but why do we have a 5xx error when reaching an endpoint? 🤔
 
 In Heroku, by default, everything is shown in the log section, even statements such as `console.log()`.
 
-import image4 from '../../assets/blog/3/google-cloud-4.webp';
+import image4 from "../../assets/blog/3/google-cloud-4.webp";
 
-<BlogPicture imageMetadata={image4} alt='GAE application logs.' />
+<BlogPicture imageMetadata={image4} alt="GAE application logs." />
 
 GCP is the same but requires a bit more configuration to show proper log levels and messages. Official documentation on this matter can be found [here](https://cloud.google.com/logging/docs/setup/nodejs).
 
@@ -166,9 +165,12 @@ In other words, some secrets such as `workload_identity_provider` which is requi
 
 In Heroku, we can manually configure the environment variables
 
-import image5 from '../../assets/blog/3/heroku-ui-1.webp';
+import image5 from "../../assets/blog/3/heroku-ui-1.webp";
 
-<BlogPicture imageMetadata={image5} alt='Heroku environment variables configuration.' />
+<BlogPicture
+  imageMetadata={image5}
+  alt="Heroku environment variables configuration."
+/>
 
 **Unfortunately, Google App Engine does not have an equivalent feature**. However, there are 2 ways that I am aware of to workaround.
 

@@ -9,7 +9,7 @@ seoDescription: Harvester HCI is an alternative to popular open-source hyperviso
 series: Homelab
 ---
 
-import BlogPicture from '../../components/BlogPicture.astro';
+import BlogPicture from "../../components/BlogPicture.astro";
 
 When I notice there are old computers collecting dust in my place, I ask about the possibility of repurposing them. With that in mind, I start building a homelab as a hobby. Each device can host one service, but I decide to virtualize my infrastructure to efficiently utilize every bit of hardware I have. There are popular solutions such as Proxmox, ESXI, and XCP-ng, but to make it more fun, I want to try out a more obscure solution. After looking around, Harvester, an open-source Hyperconverged Infrastructure, is the choice for my setup.
 
@@ -52,25 +52,34 @@ The Harvester team has excellent documentation on initial installation, but bein
 - **Create a bootable USB drive using Rufus:** There is not much about this step, because Rufus can burn the image without any issues.
 - **Install Harvester in the other Node 1 > Node 2 > Node 3:** Each node takes about 10 minutes to install. Perhaps there is a way to install them all at once (IaC?), if so, it will scale much better.
 
-import image1 from '../../assets/blog/31/harvester-1.webp';
+import image1 from "../../assets/blog/31/harvester-1.webp";
 
-<BlogPicture imageMetadata={image1} alt='Harvester HCI installation is finished.' />
+<BlogPicture
+  imageMetadata={image1}
+  alt="Harvester HCI installation is finished."
+/>
 
 ### The weird first-login issue?
 
-Here is a thing, although the image above shows the name, **Rancher**, I did not notice that, but bear with me and keep that in mind for a bit. When first installing Harvester, one step was to define a static *VIP (Virtual IP for management)*. Well, it only shows an acronym and not knowing what that is, I essentially left it at default (DHCP). When the installation finished, I logged into the first node using its static *node IP* and was greeted with a login screen ... **from Rancher?**
+Here is a thing, although the image above shows the name, **Rancher**, I did not notice that, but bear with me and keep that in mind for a bit. When first installing Harvester, one step was to define a static _VIP (Virtual IP for management)_. Well, it only shows an acronym and not knowing what that is, I essentially left it at default (DHCP). When the installation finished, I logged into the first node using its static _node IP_ and was greeted with a login screen ... **from Rancher?**
 
-I did not know about Rancher at that point, so here came another confusion. Later on, I also noticed that the branding of that page actually *randomly changes between Harvester and Rancher branding when refreshed (F5)*. Also, it asks for a **Bootstrap password** and that is not the one I chose during the Harvester setup.
+I did not know about Rancher at that point, so here came another confusion. Later on, I also noticed that the branding of that page actually _randomly changes between Harvester and Rancher branding when refreshed (F5)_. Also, it asks for a **Bootstrap password** and that is not the one I chose during the Harvester setup.
 
-import image2 from '../../assets/blog/31/harvester-2.webp';
+import image2 from "../../assets/blog/31/harvester-2.webp";
 
-<BlogPicture imageMetadata={image2} alt='Harvester login page unexpectedly asks for a boostrap password.' />
+<BlogPicture
+  imageMetadata={image2}
+  alt="Harvester login page unexpectedly asks for a boostrap password."
+/>
 
 With this being nowhere documented, I dived into GitHub issues and found [#1479](https://github.com/harvester/harvester/issues/1479). I learned the bootstrap password is `admin`, which then allowed me to log in.
 
-import image3 from '../../assets/blog/31/harvester-3.webp';
+import image3 from "../../assets/blog/31/harvester-3.webp";
 
-<BlogPicture imageMetadata={image3} alt='Unexpected access to the bundled Rancher dashboard.' />
+<BlogPicture
+  imageMetadata={image3}
+  alt="Unexpected access to the bundled Rancher dashboard."
+/>
 
 And ... here is the **Rancher** dashboard. The best part is that I was not supposed to be here in the first place. This happened because I did not set up VIP for my cluster, so the Rancher dashboard and this whole weird first login behavior manifested. That said, there is no trivial way to modify management IP after Harvester installation, so I needed to reinstall the whole node. At the time of writing, I have an idea of Rancher's role already (albeit limited), but still, I could not find an explanation for the login behavior.
 
@@ -85,29 +94,38 @@ Aside from the log-in issue that I mentioned, there were several pain points tha
 With my setup, I have 3 nodes. Initially, only Node 1 was a management node, but after the other two nodes joined the cluster, they were automatically promoted to a management one. Three nodes are required for the promotion to form a high-availability cluster. In a Harvester cluster of three, the fault tolerance is one. Well, the theory is that, but in practice, it is not as "high-availability" as I expected.
 
 - If node 1 is down, my cluster is effectively down (VIP - not ready; VMs, dashboard, and remaining nodes are not accessible).
-- From a power-off state, if only nodes 1 and 3 are turned on, then node 2 is *cordoned*. Nothing wrong there, but if I turn on node 2 afterward, then node 3 is *cordoned*. I have to reset node 3 so all are *ready* again. The same behavior applies when only nodes 1 and 2 are turned on.
-- From the power-off state, the nodes often cannot properly form a cluster after starting up (always *not ready*). This can be fixed with a few tries of rebooting the whole cluster (via console, F12).
-- When the cluster is working, but node 2 or 3 is cordoned, the whole cluster often becomes unstable. It takes ages to access the Harvester dashboard, VMs become unresponsive, and actions are stuck in *in-progress*. Resources (capacity) spike sky-high and are more or less stuck there. I guess this has something to do with live migration. If the node is online again, the resources will gradually decrease and the cluster will be usable again. To emphasize, this behavior often happens, but not always. The picture below was when one node just came back from being cordoned. And compared to after it got settled down.
+- From a power-off state, if only nodes 1 and 3 are turned on, then node 2 is _cordoned_. Nothing wrong there, but if I turn on node 2 afterward, then node 3 is _cordoned_. I have to reset node 3 so all are _ready_ again. The same behavior applies when only nodes 1 and 2 are turned on.
+- From the power-off state, the nodes often cannot properly form a cluster after starting up (always _not ready_). This can be fixed with a few tries of rebooting the whole cluster (via console, F12).
+- When the cluster is working, but node 2 or 3 is cordoned, the whole cluster often becomes unstable. It takes ages to access the Harvester dashboard, VMs become unresponsive, and actions are stuck in _in-progress_. Resources (capacity) spike sky-high and are more or less stuck there. I guess this has something to do with live migration. If the node is online again, the resources will gradually decrease and the cluster will be usable again. To emphasize, this behavior often happens, but not always. The picture below was when one node just came back from being cordoned. And compared to after it got settled down.
 
 The picture below was when one node just came back from being cordoned.
 
-import image4 from '../../assets/blog/31/harvester-4.webp';
+import image4 from "../../assets/blog/31/harvester-4.webp";
 
-<BlogPicture imageMetadata={image4} alt='Node consumes lots of resources in certain scenarios.' />
+<BlogPicture
+  imageMetadata={image4}
+  alt="Node consumes lots of resources in certain scenarios."
+/>
 
 And compared to after it got settled down.
 
-import image5 from '../../assets/blog/31/harvester-5.webp';
+import image5 from "../../assets/blog/31/harvester-5.webp";
 
-<BlogPicture imageMetadata={image5} alt="Harvester's node at a more idle state." />
+<BlogPicture
+  imageMetadata={image5}
+  alt="Harvester's node at a more idle state."
+/>
 
 ### Some essential processes are not trivial in Web UI, for example, the update process
 
-There does not seem to be a *Check for Update* button. Only when a new release arrives, a small button appears in the top right corner of the *Dashboard* tab that provides the update functionality. The update is also very slow even with my 1 gigabit connection and SSD in the nodes. It took me about 90 minutes to update nodes 1 and 2, but node 3 never got updated. My cluster has been working normally under this condition though (not considering the issues mentioned in this article).
+There does not seem to be a _Check for Update_ button. Only when a new release arrives, a small button appears in the top right corner of the _Dashboard_ tab that provides the update functionality. The update is also very slow even with my 1 gigabit connection and SSD in the nodes. It took me about 90 minutes to update nodes 1 and 2, but node 3 never got updated. My cluster has been working normally under this condition though (not considering the issues mentioned in this article).
 
-import image6 from '../../assets/blog/31/harvester-6.webp';
+import image6 from "../../assets/blog/31/harvester-6.webp";
 
-<BlogPicture imageMetadata={image6} alt='Some nodes in the cluster failed to upgrade.' />
+<BlogPicture
+  imageMetadata={image6}
+  alt="Some nodes in the cluster failed to upgrade."
+/>
 
 This issue can be generalized as a lack of essential UX components like an official way to power off or reboot the cluster, view SMART data for hosts, and more. They certainly can be done in a headless manner or directly using the node console, but those might not be user-friendly depending on your preference.
 
@@ -126,17 +144,23 @@ Templating init failed Couldn't find variable with id:instance
 502 Bad Gateway
 ```
 
-import image7 from '../../assets/blog/31/harvester-7.webp';
+import image7 from "../../assets/blog/31/harvester-7.webp";
 
-<BlogPicture imageMetadata={image7} alt='The bundled Grafana dashboard is frequently inaccessible.' />
+<BlogPicture
+  imageMetadata={image7}
+  alt="The bundled Grafana dashboard is frequently inaccessible."
+/>
 
 ### Harvester consumes a lot of resources
 
 This by itself is not necessarily an issue, but when compared to other solutions like Proxmox or XCP-ng, Harvester does require a beefy device to run on. Considering it reserves about 6 logical cores on a 4-core 8-thread node, I suppose an 8-core 16-thread node is a better starting point, which is in line with the Harvester team recommendation.
 
-import image8 from '../../assets/blog/31/harvester-8.webp';
+import image8 from "../../assets/blog/31/harvester-8.webp";
 
-<BlogPicture imageMetadata={image8} alt='Harvester consumes much more resources than other equivalent platforms.' />
+<BlogPicture
+  imageMetadata={image8}
+  alt="Harvester consumes much more resources than other equivalent platforms."
+/>
 
 Almost all my nodes are over-committed upon fresh installation (no VMs, or configuration changes), but the cluster is still fairly responsive under this condition. The downside is that it forces my devices to run at full power and inherently increases power consumption and heat dissipation. They are not deal breakers by any means though.
 
@@ -150,6 +174,7 @@ rancher@harvester:~> sudo zypper install smartmontoolsThe target filesystem is m
 rancher@harvester:~> sudo zypper install smartmontools
 The target filesystem is mounted as read-only. Please make sure the target filesystem is writable.
 ```
+
 However, there are a few possibilities to overcome this immutability:
 
 - The installation image can be customized.
@@ -187,9 +212,12 @@ In this article, I went over multiple issues I face when trying out Harvester.
 
 At default, Harvester is fairly straightforward, but it certainly can become complicated on an established infrastructure. Getting my hands dirty is how I learn things over time, so for homelab purposes, it is a good choice. In the next article, I will go over my experience virtualizing the firewall on Harvester. Spoiler, it can handle my Gigabit connection easily, but with some catches. Stay tuned for that!
 
-import image9 from '../../assets/blog/31/harvester-9.webp';
+import image9 from "../../assets/blog/31/harvester-9.webp";
 
-<BlogPicture imageMetadata={image9} alt='Running OpenWRT as a virtualized firewall in Harvester.' />
+<BlogPicture
+  imageMetadata={image9}
+  alt="Running OpenWRT as a virtualized firewall in Harvester."
+/>
 
 If you find this article to be helpful, I have some more for you!
 
@@ -202,4 +230,3 @@ And, let's connect!
 - [LinkedIn](https://www.linkedin.com/in/hunghvu/)
 - [GitHub](https://github.com/hunghvu)
 - [X (formerly Twitter)](https://x.com/hunghvu_dev)
-

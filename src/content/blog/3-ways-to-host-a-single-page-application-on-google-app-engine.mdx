@@ -9,7 +9,6 @@ seoTitle: Run a web app on Google Cloud App Engine
 seoDescription: With Google Cloud App Engine as a target deployment environment. Here are 3 ways to deploy and host my React app on GAE.
 ---
 
-
 This is more about describing my personal development and debugging experience, less of a step-by-step tutorial on the topic. Correction to any of the errors is welcome!
 
 ## Problem statement 🍀
@@ -45,7 +44,7 @@ It is a configuration file for **an App Engine** service. The term **service** h
 
 Assuming my front end is deployed to service react at `react.uc.r.appspot.com/`, while back end is deployed to service api at `api.uc.r.appspot.com/`.
 
-``` yaml showLineNumbers
+```yaml showLineNumbers
 # dispatch.yaml
 # Put this one in my 'front-end' folder
 # Assuming this is a configuration for service "react"
@@ -84,9 +83,9 @@ The instruction below applies to the NestJS framework. My application is deploye
 
 In my GitHub workflow, I copied the static React files to the back-end folder after React build process is finished.
 
-``` yaml showLineNumbers
+```yaml showLineNumbers
 # CI/CD pipeline
-steps: 
+steps:
   ...
   - name: Build front-end
       ...
@@ -99,7 +98,7 @@ steps:
 
 In `nest-cli.json`, use `compilerOptions` to copy React asset to NestJS dist build. Then, deploy only back-end folder to App Engine. React files are included and can be statically served.
 
-``` json showLineNumbers
+```json showLineNumbers
 {
   ...
   "soruceRoot": "src",
@@ -124,6 +123,7 @@ In `nest-cli.json`, use `compilerOptions` to copy React asset to NestJS dist bui
 - Cannot separately deploy back end and front end. A change in one place requires a whole new deployment. Inherently decrease redundancy and resiliency.
 
 ## Statically serve, but React files are hosted on another server 🔑
+
 A common strategy, using (e.g., Google Cloud Storage Buckets) which is optimized for hosting static files can greatly improve performance. You can further fine-tune the server to other aspects too.
 
 ### Usage
@@ -137,7 +137,7 @@ It's essentially the same as the second approach, but with different configurati
 - Better redundancy and resiliency.
 - Better performance and is easier to fine-tune.
 - Can separate the deployment of front-end and back-end (e.g., Creating a workflow that runs when only when files at a path are updated). Inherently increase redundancy and resiliency.
-    
+
 **Disadvantages**
 
 - Might face same-origin issues (e.g., CORS) because files are hosted on another domain.

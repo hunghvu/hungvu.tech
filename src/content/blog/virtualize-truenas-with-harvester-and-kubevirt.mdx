@@ -9,7 +9,7 @@ seoDescription: TrueNAS and Harvester HCI (with Kubevirt for VM management), wil
 series: Homelab
 ---
 
-import BlogPicture from '../../components/BlogPicture.astro';
+import BlogPicture from "../../components/BlogPicture.astro";
 
 Virtualizing TrueNAS has been a common theme in the homelab world for a long time. However, there are not many discussions on this topic with Harvester as a hypervisor, so I would like to go over my experience doing so in this article.
 
@@ -24,24 +24,30 @@ Harvester uses Kubevirt for its virtualization management, so the virtual machin
 - **Boot drives**: Modern versions of TrueNAS (both Scale and Core) require more than 8 GB for a boot drive, 16 GB is a good starting point. For my installation, I use a 32 GB boot drive to give the OS some overhead, and also, create a second virtual disk to later form a mirror boot drive during TrueNAS installation.
 - **Installer drive**: TrueNAS ISO ranges about 2 GB or less depending on the version, 5 GB is a good starting point for an installer drive. Make this one as `bootOrder: 1`so the virtual machine can boot into that right away. It actually does not need to be the first boot, but from my experience, sometimes this makes the virtual not able to detect the installer drive.
 - **Network**: For my use case, I bridge the virtual machine with a `L2VlanNetwork` so it can communicate with my infrastructure. TrueNAS works well with VirtIO, so use it to maximize the performance (usually 3 to 5 times better in throughput compared to emulation).
-- **Bind the virtual machine to a specific node**: TrueNAS, or more likely ZFS, does not like virtual IO (if at all). Therefore, PCI passthrough is required for all data drives. Enabling PCI passthrough in Harvester means your machine cannot perform a live migration, so you have to schedule the VM on a specific Harvester node.***Side note:*** *There might be a strategy for falling back or migration between multiple virtual machines if you have identical nodes with PCI passthrough enabled, I am not certain how that work at the moment.*
+- **Bind the virtual machine to a specific node**: TrueNAS, or more likely ZFS, does not like virtual IO (if at all). Therefore, PCI passthrough is required for all data drives. Enabling PCI passthrough in Harvester means your machine cannot perform a live migration, so you have to schedule the VM on a specific Harvester node.**_Side note:_** _There might be a strategy for falling back or migration between multiple virtual machines if you have identical nodes with PCI passthrough enabled, I am not certain how that work at the moment._
 - **Boot loader mode**: TrueNAS installation supports both Legacy BIOS and UEFI boot modes. By default, Harvester creates a virtual machine with Legacy BIOS with Secure Boot disabled. UEFI boot is an option but from what in my use case, it makes no difference, so use the Legacy BIOS option. Make sure to choose the correct installation type, or else, you will be greeted with `Booting to hard disk` stuck indefinitely.
 
-import image1 from '../../assets/blog/34/truenas-1.webp';
+import image1 from "../../assets/blog/34/truenas-1.webp";
 
-<BlogPicture imageMetadata={image1} alt='Choose boot loader mode during TrueNAS installation.' />
+<BlogPicture
+  imageMetadata={image1}
+  alt="Choose boot loader mode during TrueNAS installation."
+/>
 
-import image2 from '../../assets/blog/34/truenas-2.webp';
+import image2 from "../../assets/blog/34/truenas-2.webp";
 
-<BlogPicture imageMetadata={image2} alt='Misconfiguring boot loader mode makes the VM not bootable.' />
+<BlogPicture
+  imageMetadata={image2}
+  alt="Misconfiguring boot loader mode makes the VM not bootable."
+/>
 
 ### YAML configuration
 
 Configure the virtual machine via the Harvester web interface based on this specification, and the final result will resemble the following template.
 
-***Side note:*** *This is from* `Edit YAML`, not `Edit Config > Edit as YAML`*. I am not certain about the relationship between those two but changes in one might not reflect in the other, even if they look almost identical.*
+**_Side note:_** _This is from_ `Edit YAML`, not `Edit Config > Edit as YAML`_. I am not certain about the relationship between those two but changes in one might not reflect in the other, even if they look almost identical._
 
-``` yaml showLineNumbers
+```yaml showLineNumbers
 spec:
   affinity:
     nodeAffinity:
@@ -51,7 +57,7 @@ spec:
               - key: network.harvesterhci.io/mgmt
                 operator: In
                 values:
-                  - 'true'
+                  - "true"
   domain:
     cpu:
       cores: 2
@@ -97,7 +103,7 @@ spec:
       guest: 24476Mi
     resources:
       limits:
-        cpu: '2'
+        cpu: "2"
         memory: 24Gi
       requests:
         cpu: 125m
@@ -123,9 +129,12 @@ Actually, this template is after I finish setting up TrueNAS, so it is a bit dif
 
 **Missing** `installer` **, and** `cloudinit` **disks**When the TrueNAS installer runs, you will see 3 different disks: `vtbd1`, `vtbd2`, `vtbd3`. Aside from the installer, there should only be 2 drives for boot, which are `vtbd1: zfs-truenas-core-1`, and `vtbd2: zfs-truenas-core-2`. Meanwhile, the `vtbd3: cloudinit`, is hidden from Harvester web GUI but is visible in the YAML config. It is responsible for managing and applying a configuration in the first boot of the virtual machine.
 
-import image3 from '../../assets/blog/34/truenas-3.webp';
+import image3 from "../../assets/blog/34/truenas-3.webp";
 
-<BlogPicture imageMetadata={image3} alt='cloudinit appears as a drive to TrueNAS.' />
+<BlogPicture
+  imageMetadata={image3}
+  alt="cloudinit appears as a drive to TrueNAS."
+/>
 
 After using `vtbd1`, and `vtbd2` as boot drives, `installer` and `cloudinit` becomes redundant and can cause certain issues, so they are removed just in cases.
 
@@ -133,19 +142,25 @@ After using `vtbd1`, and `vtbd2` as boot drives, `installer` and `cloudinit` bec
 
 The boot drives are virtual, so by default, they do not have associated serial numbers. TrueNAS uses serial numbers as a way to keep track of drives, so without the identifier, certain operations such as creating a new pool are not possible (at least via the web GUI), even if your pool does not consist of the unidentified drive.
 
-import image4 from '../../assets/blog/34/truenas-4.webp';
+import image4 from "../../assets/blog/34/truenas-4.webp";
 
-<BlogPicture imageMetadata={image4} alt='Virtual drives does not have unique serial number, and TrueNAS does not like it.' />
+<BlogPicture
+  imageMetadata={image4}
+  alt="Virtual drives does not have unique serial number, and TrueNAS does not like it."
+/>
 
 For example, `vtbd2` here is the `cloudinit` (number changes due to different boot environments). Before it is unmounted, a warning is shown in TrueNAS and that prevents pool creation. The same applies to the boot drives. Even though they do not appear in the warning if they do not have a unique serial number, no operation can be completed.
 
-import image5 from '../../assets/blog/34/truenas-5.webp';
+import image5 from "../../assets/blog/34/truenas-5.webp";
 
-<BlogPicture imageMetadata={image5} alt='Boot pools have no serial number associated.' />
+<BlogPicture
+  imageMetadata={image5}
+  alt="Boot pools have no serial number associated."
+/>
 
 Harvester does not expose a mechanism to set a serial number for drives via web GUI, so I manually adjust the Kubevirt YAML config and add the `serial` property (with UUID). TrueNAS is perfectly happy with that.
 
-``` yaml showLineNumbers
+```yaml showLineNumbers
 disks:
   - bootOrder: 1
     disk:
@@ -160,17 +175,23 @@ disks:
     serial: ec0082c0-b2ec-4104-96d9-dec3562a6d06
 ```
 
-import image6 from '../../assets/blog/34/truenas-6.webp';
+import image6 from "../../assets/blog/34/truenas-6.webp";
 
-<BlogPicture imageMetadata={image6} alt='Manually assign a serial number to the boot drives.' />
+<BlogPicture
+  imageMetadata={image6}
+  alt="Manually assign a serial number to the boot drives."
+/>
 
 **PCI device devices are passed through.**
 
 Depending on your hardware, the PCI passthrough experience might differ. I did go over this a bit in [my previous article on deploying an OpenWRT firewall in Harvester](virtualize-truenas-firewall-in-harvester-hci-cluster). For my motherboard, which is MSI PRO B550M-VC WIFI, let's have a look at the block diagram below (from the motherboard manual).
 
-import image7 from '../../assets/blog/34/truenas-7.webp';
+import image7 from "../../assets/blog/34/truenas-7.webp";
 
-<BlogPicture imageMetadata={image7} alt='All SATA links are under the Chipset, with 4 links under an Asmedia controller.' />
+<BlogPicture
+  imageMetadata={image7}
+  alt="All SATA links are under the Chipset, with 4 links under an Asmedia controller."
+/>
 
 I have to pass through the section circled in green so TrueNAS can see the drives. There are some rules when passing through PCI devices.
 
@@ -180,13 +201,16 @@ I have to pass through the section circled in green so TrueNAS can see the drive
 
 So with that, I choose the following devices (all in IOMMU group 12).
 
-import image8 from '../../assets/blog/34/truenas-8.webp';
+import image8 from "../../assets/blog/34/truenas-8.webp";
 
-<BlogPicture imageMetadata={image8} alt='Pass through all PCIe device in IOMMU group 12.' />
+<BlogPicture
+  imageMetadata={image8}
+  alt="Pass through all PCIe device in IOMMU group 12."
+/>
 
 But only make 3 of them available to the virtual machine, because the other two PCI devices can make my node fail. The failure causes all sorts of issues like management address becoming unavailable, node not responding, and having to reboot, etc.
 
-``` yaml showLineNumbers
+```yaml showLineNumbers
 hostDevices:
   - deviceName: amd.com/500_SERIES_CHIPSET_USB_3_1_XHCI_CONTROLLER
     name: htpc-000016000
@@ -198,15 +222,21 @@ hostDevices:
 
 It may have been easier if I use my IBM M5110/LSI 9207-8i (SAS 2308, IT mode), but it makes no difference in the end for me. My disks eventually look like this, and the performance at default is very reasonable considering the overhead of virtualization. I guess it can still be further improved.
 
-import image9 from '../../assets/blog/34/truenas-9.webp';
+import image9 from "../../assets/blog/34/truenas-9.webp";
 
-<BlogPicture imageMetadata={image9} alt='Successfully passthough the Chipset and SATA drives to TrueNAS.' />
+<BlogPicture
+  imageMetadata={image9}
+  alt="Successfully passthough the Chipset and SATA drives to TrueNAS."
+/>
 
-import image10 from '../../assets/blog/34/truenas-10.webp';
+import image10 from "../../assets/blog/34/truenas-10.webp";
 
-<BlogPicture imageMetadata={image10} alt='Short bandwidth test to see if the drives are working.' />
+<BlogPicture
+  imageMetadata={image10}
+  alt="Short bandwidth test to see if the drives are working."
+/>
 
-***Side note****: The test runs only a few seconds, hence the skewness in its statistics. That said, the max throughput can reach close to 9 Gbps at one point on a 5 x 2 TB SSD pool, RAID-Z2.*
+**\*Side note\*\***: The test runs only a few seconds, hence the skewness in its statistics. That said, the max throughput can reach close to 9 Gbps at one point on a 5 x 2 TB SSD pool, RAID-Z2.\*
 
 ## Miscellaneous details about TrueNAS installation
 
@@ -241,9 +271,12 @@ At Harvester v1.1.2, it seems virtual machines on some AMD platforms cannot dete
 
 Up to this point in the article, I have been generalizing the TrueNAS version because both Core and Scale should be relatively the same. In fact, my first try is to migrate my bare metal TrueNAS Scale instance. It has some virtual machines and apps, but the migration to Harvester virtual machine is not without an issue. After the migration, TrueNAS Scale virtual machines are now nested virtualization, and they simply break the web GUI operations.
 
-import image11 from '../../assets/blog/34/truenas-11.webp';
+import image11 from "../../assets/blog/34/truenas-11.webp";
 
-<BlogPicture imageMetadata={image11} alt='TrueNAS errors out if the backup contains virtualization data, creating a nested scenario.' />
+<BlogPicture
+  imageMetadata={image11}
+  alt="TrueNAS errors out if the backup contains virtualization data, creating a nested scenario."
+/>
 
 Essentially, TrueNAS Scale virtual machines cannot work in my nested environment. When I want to do any operation via the web GUI, such as creating a new pool, or new data set, this error shows up and interrupts the operation. However, operations via shell are not affected, nor are any other underlying features. For example, I import the pool via shell, and network sharing performs without a hassle. Apps also start automatically and are accessible via LAN connection, but are not modifiable via TrueNAS Scale web GUI.
 
@@ -257,9 +290,12 @@ This labwork also makes me recognize one important thing: "Searching for Harvest
 
 That's all for now. I wonder what would be a fun topic to learn about next!
 
-import image12 from '../../assets/blog/34/truenas-12.webp';
+import image12 from "../../assets/blog/34/truenas-12.webp";
 
-<BlogPicture imageMetadata={image12} alt='My current list of virtual machine on a cluster of Harvester HCI.' />
+<BlogPicture
+  imageMetadata={image12}
+  alt="My current list of virtual machine on a cluster of Harvester HCI."
+/>
 
 If you find this article to be helpful, I have some more for you!
 

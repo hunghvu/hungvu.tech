@@ -9,9 +9,9 @@ seoDescription: How to pass through a PCI device or GPU to a Windows Virtual mac
 series: Homelab
 ---
 
-import BlogPicture from '../../components/BlogPicture.astro';
+import BlogPicture from "../../components/BlogPicture.astro";
 
-Recently, Harvester Hyperconvergred Infrastrucure (Harvester HCI) has reached version 1.3.0 with a stable PCI passthrough feature, so I want to give it a try with my GPUs. With Windows VM, GPU passthrough has always been a headache to me due to *the infamous code 43: "Windows has stopped this device because it has reported problems"*. This error code is generic, so it is not easy to troubleshoot the root cause behind it.
+Recently, Harvester Hyperconvergred Infrastrucure (Harvester HCI) has reached version 1.3.0 with a stable PCI passthrough feature, so I want to give it a try with my GPUs. With Windows VM, GPU passthrough has always been a headache to me due to _the infamous code 43: "Windows has stopped this device because it has reported problems"_. This error code is generic, so it is not easy to troubleshoot the root cause behind it.
 
 In the homelab scene, Proxmox has been a great free and open-source hypervisor of choice, and it became even more popular after the Broadcom-VMware acquisition licensing changes. If I search for GPU passthrough guide on Proxmox, aside from the official guide, there are hundreds of variants from people across online discussions that gear toward a specific add-in board (AIB), vBIOS, host and guest driver version modification, so on and so forth. After reading through many solutions, I noticed a pattern, in which the author simply tries out several ways and sees what hits, without being able to explain the root cause. There is nothing bad about it, and I do the same when facing something out of my knowledge domain, something that I just want a working solution. Inherently, this makes the GPU passthrough experience in Proxmox not very friendly.
 
@@ -23,27 +23,39 @@ To pass through a PCI device, a GPU in case, it is trivial in Harvester HCI (ass
 
 - In the left menu bar, expand **Advanced**, and go to **Addons**. Enable and deploy `pcidevices-controller`.
 
-import image1 from '../../assets/blog/38/gpu-1.png';
+import image1 from "../../assets/blog/38/gpu-1.png";
 
-<BlogPicture imageMetadata={image1} alt='Go to Addons, enable and deploy pcidevices-controller.' />
+<BlogPicture
+  imageMetadata={image1}
+  alt="Go to Addons, enable and deploy pcidevices-controller."
+/>
 
 - In the left menu bar, go to **PCI Devices**, and enable passthrough the GPU, along with any devices belonging to the same IOMMU group.
 
-import image2 from '../../assets/blog/38/gpu-2.png';
+import image2 from "../../assets/blog/38/gpu-2.png";
 
-<BlogPicture imageMetadata={image2} alt='Enable PCI passthrough for my Yeston RX6800 16GD6 GPU.' />
+<BlogPicture
+  imageMetadata={image2}
+  alt="Enable PCI passthrough for my Yeston RX6800 16GD6 GPU."
+/>
 
 - In the left menu bar, go to **Virtual Machines**, and enter the Edit mode of the chosen VM. There are two ways to edit, either via a GUI or via YAML config. I normally use GUI for convenience, that said, the YAML config will come in handy in certain situations which I will discuss later. Assign available PCI devices to the VM. In Harvester HCI, enabling a PCI device passthrough and assigning a PCI device to a specific VM are two different activities.
 
-import image3 from '../../assets/blog/38/gpu-3.png';
+import image3 from "../../assets/blog/38/gpu-3.png";
 
-<BlogPicture imageMetadata={image3} alt='Assign the RX6800 GPU and its audio device to my Windows 11 VM.' />
+<BlogPicture
+  imageMetadata={image3}
+  alt="Assign the RX6800 GPU and its audio device to my Windows 11 VM."
+/>
 
 - In the left config menu bar, go to **Node Scheduling**, and choose **Run VM on a specific node - Live migration is not supported**, then choose a node that physically installs a PCI device. In a cluster of Harvester nodes, the VM must live on a node that has the PCI device installed.
 
-import image4 from '../../assets/blog/38/gpu-4.png';
+import image4 from "../../assets/blog/38/gpu-4.png";
 
-<BlogPicture imageMetadata={image4} alt='Allow Windows 11 VM to only run on a specific node, and disable live migration capability.' />
+<BlogPicture
+  imageMetadata={image4}
+  alt="Allow Windows 11 VM to only run on a specific node, and disable live migration capability."
+/>
 
 And that is it, Harvester HCI will handle the rest of my GPU passthrough. The platform also has native support for Nvidia SR-IOV (GPU). That said, I do not own an Nvidia GPU with SR-IOV capability to test out the feature.
 
@@ -74,15 +86,21 @@ In my first attempt to pass through my Yeston Rx6800 16GD6 GPU, somehow it was s
 
 In the web GUI, the GPU was considered a successful passthrough and VM assignment. However, I cannot disable the passthrough from web GUI, albeit with a "success" API request. Notice the `kernelDriverToUnbind` field in network response? In the picture it was `amdgpu`, but sometimes it was `vfio-pci`.
 
-import image5 from '../../assets/blog/38/gpu-5.png';
+import image5 from "../../assets/blog/38/gpu-5.png";
 
-<BlogPicture imageMetadata={image5} alt='Fail to disable GPU passthrough via Harvester HCI web GUI, but shown as a successful API request.' />
+<BlogPicture
+  imageMetadata={image5}
+  alt="Fail to disable GPU passthrough via Harvester HCI web GUI, but shown as a successful API request."
+/>
 
 The GPU was stuck with the `amdgpu` kernel driver, but the screen could not display anything as if the GPU was used by `vfio-pci`.
 
-import image6 from '../../assets/blog/38/gpu-6.png';
+import image6 from "../../assets/blog/38/gpu-6.png";
 
-<BlogPicture imageMetadata={image6} alt='My RX6800 was bound to amdgpu the kernels driver, but its audio device utilizes vfio-pci successfully..' />
+<BlogPicture
+  imageMetadata={image6}
+  alt="My RX6800 was bound to amdgpu the kernels driver, but its audio device utilizes vfio-pci successfully.."
+/>
 
 - The passthrough was bound to a PCI address. My other GPU, which was also initialized with the same PCI address, also faced the same issue.
 - If the PCI address was changed (e.g., GPU was installed on a different PCIe slot, different GPU models, or devices), the issue disappeared. This had the side effect of shuffling the PCI address of multiple important devices such as the host NIC, which required me to change the `/oem/90_custom.yaml` to update the persistence config during the troubleshooting process.
@@ -92,16 +110,19 @@ As you may guess, I eventually was able to resolve this weird bug by piecing the
 
 - Removing the assignment via web GUI was not possible, so I modified the VM YAML config instead.
 
-import image7 from '../../assets/blog/38/gpu-7.png';
+import image7 from "../../assets/blog/38/gpu-7.png";
 
-<BlogPicture imageMetadata={image7} alt='Remove GPU device assignment via VM YAML config.' />
+<BlogPicture
+  imageMetadata={image7}
+  alt="Remove GPU device assignment via VM YAML config."
+/>
 
 - SSH to my Harvester HCI node with an admin account, then changed to root user and executed the following commands.
 
 ```
 # Change from an admin user (rancher@node_ip) to root user
 sudo -i
- 
+
 # Unbind from amdgpu kernel driver.
 # Syntax: echo "pci_address" > /sys/bus/pci/drivers/<kernel_driver_in_use_name>/unbind
 echo "0000:03:00.0" > /sys/bus/pci/drivers/amdgpu/unbind
@@ -119,9 +140,12 @@ echo "0000:03:00.0" > /sys/bus/pci/drivers/amdgpu/unbind
 echo "0000:03:00.0" > /sys/bus/pci/drivers/vfio-pci/bind
 ```
 
-import image8 from '../../assets/blog/38/gpu-8.png';
+import image8 from "../../assets/blog/38/gpu-8.png";
 
-<BlogPicture imageMetadata={image8} alt='GPU device used vfio-pci as shown from Harvester HCI API, which was similar to lspci -k.' />
+<BlogPicture
+  imageMetadata={image8}
+  alt="GPU device used vfio-pci as shown from Harvester HCI API, which was similar to lspci -k."
+/>
 
 - Then, I was able to disable the GPU passthrough from the web GUI and re-enable it accordingly. However, I still was not able to start the VM (unschedulable) due to the error `0/1 nodes are available: 1 insufficient amd.com/NAVI_21_RADEON_RX6800_6800XT__6900XT.preemption: 0/1 nodes are available: 1 No preemption victims found for incoming pod.`
 - Then, I restarted the node, and rerun the series of commands above. After that, my VM was able to start with the RX6800 GPU passed to it.
@@ -132,39 +156,54 @@ Unfortunately, the solution is not permanent. From time to time, I continue to f
 - Infinite loop of `amdgpu: trn=2 ACK should not assert! wait again!`.
 - An error message displays on the node's display output `[C14] Disabling IRQ #16`.
 
-import image9 from '../../assets/blog/38/gpu-9.png';
+import image9 from "../../assets/blog/38/gpu-9.png";
 
-<BlogPicture imageMetadata={image9} alt='An example of kernel panic, which happens when unbinding amdgu or binding vfio-pci kernel drivers.' />
+<BlogPicture
+  imageMetadata={image9}
+  alt="An example of kernel panic, which happens when unbinding amdgu or binding vfio-pci kernel drivers."
+/>
 
 This might be an anecdotal evidence, but I noticed when the unbinding of `amdgpu `resulted in a "white screen of death", it meant the process was going as expected, and `vfio-pci` will be bound properly afterward.
 
-import image10 from '../../assets/blog/38/gpu-10.png';
+import image10 from "../../assets/blog/38/gpu-10.png";
 
-<BlogPicture imageMetadata={image10} alt='Unbind amdpu resulted in a white screen of death, signaling a successful attempt.' />
+<BlogPicture
+  imageMetadata={image10}
+  alt="Unbind amdpu resulted in a white screen of death, signaling a successful attempt."
+/>
 
 ### I was unable to install the Windows driver for my RX6800 GPU
 
 When installing the AMD GPU driver on Windows, I always use the AMD Adrenalin auto-installer for convenience. At that point, my RX6800 GPU was properly recognized and displayed the image on my screen, however, a driver installation attempt will result in a BSOD dxgkrnl.sys fatal error. Even the use of the Display Driver Uninstaller utility had the same issue. I guess that anything that triggers areas related to the GPU driver, would cause the BSOD. With the verbiage logging system on Windows, I was not able to figure out the root cause. Even after Windows VM reinstallation, the BSOD issue remains. So, I decided to try another approach.
 
-import image11 from '../../assets/blog/38/gpu-11.png';
+import image11 from "../../assets/blog/38/gpu-11.png";
 
-<BlogPicture imageMetadata={image11} alt='SYSTEM_THREAD_EXCEPTION_NOT_HANDLED at dxgkrnl.sys when installing AMD GPU driver on Windows 11 VM.' />
+<BlogPicture
+  imageMetadata={image11}
+  alt="SYSTEM_THREAD_EXCEPTION_NOT_HANDLED at dxgkrnl.sys when installing AMD GPU driver on Windows 11 VM."
+/>
 
 Talking about modern drivers, most likely they can handle multiple different devices in the same family, or generation. Luckily, I have a spare RX6400 GPU, so I decided to try that with my Windows VM. As expected, the GPU was properly recognized, and the driver installation, along with uninstallation, went through smoothly. After that, I powered off my Harvester HCI host to replace the GPU, and voila, no more BSOD. There was a driver compatibility issue as reported by AMD Adrenalin, but after a few restarts, AMD Adrenalin finally picked up my RX6800.
 
-import image12 from '../../assets/blog/38/gpu-12.png';
+import image12 from "../../assets/blog/38/gpu-12.png";
 
-<BlogPicture imageMetadata={image12} alt='AMD Software: Adrenalin Edition cannot start due to driver compatibility issue.' />
+<BlogPicture
+  imageMetadata={image12}
+  alt="AMD Software: Adrenalin Edition cannot start due to driver compatibility issue."
+/>
 
 ### Virtual Network Computing (VNC), and graphic processing priority
 
-In Proxmox, I have never been able to use both the VNC and GPU passthrough functionality for remote gaming. If a GPU is passed through, Proxmox VNC has no display, even with different options like VMware compatible display. However, the VNC in Harvester HCI is treated as a dedicated display, with a fixed resolution of** **800 x 600. That was great, but the VNC display used a Microsoft Basic Display Adapter. As a software-based graphic processing solution, the performance is decent for basic desktop usage, but subpar in any graphics-related task such as YouTube video decoding, or gaming (1 FPS, no joke). The custom graphics option in Windows settings was also useless.
+In Proxmox, I have never been able to use both the VNC and GPU passthrough functionality for remote gaming. If a GPU is passed through, Proxmox VNC has no display, even with different options like VMware compatible display. However, the VNC in Harvester HCI is treated as a dedicated display, with a fixed resolution of\*\* \*\*800 x 600. That was great, but the VNC display used a Microsoft Basic Display Adapter. As a software-based graphic processing solution, the performance is decent for basic desktop usage, but subpar in any graphics-related task such as YouTube video decoding, or gaming (1 FPS, no joke). The custom graphics option in Windows settings was also useless.
 
 To make the AMD driver operate, I have to disable the Microsoft Basic Display Adapter in Device Manager. Oddly though, the VNC display still worked, and I think it utilized the AMD driver instead.
 
-import image13 from '../../assets/blog/38/gpu-13.png';
+import image13 from "../../assets/blog/38/gpu-13.png";
 
-<BlogPicture imageMetadata={image13} alt='Not the best picture, but this shows the GPU decoder was not utilized when playing 4K and 8K YouTube vp9 encoded video (based on the GPU graph at the bottom of Task Manager).' />
+<BlogPicture
+  imageMetadata={image13}
+  alt="Not the best picture, but this shows the GPU decoder was not utilized when playing 4K and 8K YouTube vp9 encoded video (based on the GPU graph at the bottom of Task Manager)."
+/>
 
 ### Is Intel UHD 770 of Intel 13th Gen supported under GPU passthrough?
 
@@ -185,23 +224,32 @@ In my case, I mostly daily drive Bluetooth devices, so I only need to have Bluet
 
 I think this is because, on the Intel 13th-generation platform, all USB controllers on the motherboard are connected back to the motherboard chipset, which is connected to the CPU via a PCIe connection. This means if I pass through my USB controller, all USB ports are disabled on the host.
 
-import image14 from '../../assets/blog/38/gpu-14.png';
+import image14 from "../../assets/blog/38/gpu-14.png";
 
-<BlogPicture imageMetadata={image14} alt='This diagram illustrates the USB connections on Intel B660 chipset, which supports 12th, 13th, and 14th generation Intel Core processors (Source: Intel Product Brief).' />
+<BlogPicture
+  imageMetadata={image14}
+  alt="This diagram illustrates the USB connections on Intel B660 chipset, which supports 12th, 13th, and 14th generation Intel Core processors (Source: Intel Product Brief)."
+/>
 
 In Proxmox, there is a functionality to pass through a single USB device, and I can simply choose just my Bluetooth PHY. All is good, but in Harvester HCI, this functionality is not available yet. [There is issue #1710 on Harvester HCI's GitHub](https://github.com/harvester/harvester/issues/1710), which has been open since 2021 on this feature request. At last, the Harvester HCI team decided to make this feature request into the version 1.4.0 milestone. Until then, I have to pass through my whole USB controller to have the Bluetooth functionality in my Windows VM.
 
-import image15 from '../../assets/blog/38/gpu-15.png';
+import image15 from "../../assets/blog/38/gpu-15.png";
 
-<BlogPicture imageMetadata={image15} alt='Proxmox supports USB device-specific passthrough, which detects my Bluetooth PHY.' />
+<BlogPicture
+  imageMetadata={image15}
+  alt="Proxmox supports USB device-specific passthrough, which detects my Bluetooth PHY."
+/>
 
 ## **Conclusion**
 
 The user experience on Harvester HCI has been improved version by version. Feature-wise, I do not think it is on parity with Proxmox yet, but that is hard to say because both target different audiences and goals, so they might not be comparable at all. From my perspective though, the PCI passthrough functionality, especially for GPU, is a much better experience on Harvester HCI. I call it a win, but your experience might be different. In any case, if you have not tried Harvester HCI yet, give it a try, and have fun homelabbing.
 
-import image16 from '../../assets/blog/38/gpu-1.png';
+import image16 from "../../assets/blog/38/gpu-1.png";
 
-<BlogPicture imageMetadata={image16} alt='Time to drive my AMD Yeston RX6800 16GD6 in a Windows 11 VM!!!' />
+<BlogPicture
+  imageMetadata={image16}
+  alt="Time to drive my AMD Yeston RX6800 16GD6 in a Windows 11 VM!!!"
+/>
 
 If you find this article to be helpful, I have some more for you!
 
@@ -215,4 +263,3 @@ And, let's connect!
 - [LinkedIn](https://www.linkedin.com/in/hunghvu/)
 - [GitHub](https://github.com/hunghvu)
 - [X (formerly Twitter)](https://x.com/hunghvu_dev)
-

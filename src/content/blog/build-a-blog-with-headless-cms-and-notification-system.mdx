@@ -8,7 +8,7 @@ seoTitle: How to build a blog website with a newsletter system?
 seoDescription: In this tutorial, you will learn how to develop a blog that notifies newsletter subscribers when a new article arrives using Next.js, Payload CMS, and Novu.
 ---
 
-import BlogPicture from '../../components/BlogPicture.astro';
+import BlogPicture from "../../components/BlogPicture.astro";
 
 ## TL;DR
 
@@ -18,7 +18,7 @@ In this tutorial, you will learn how to create a blog on your own that notifies 
 
 Just a quick background about us. Novu provides a unified API that makes it simple to send notifications through multiple channels, including In-App, Push, Email, SMS, and Chat. With Novu, you can create custom workflows and define conditions for each channel, ensuring that your notifications are delivered in the most effective way possible.
 
-*This article was my contribution to* [*the Novu blog*](https://novu.co/blog/build-a-notification-system-for-a-blog-site-with-react-nodejs-and-novu/)*.* I would be super happy if you could give them a star ❤️ [https://github.com/novuhq/novu](https://github.com/novuhq/novu)
+_This article was my contribution to_ [_the Novu blog_](https://novu.co/blog/build-a-notification-system-for-a-blog-site-with-react-nodejs-and-novu/)_._ I would be super happy if you could give them a star ❤️ [https://github.com/novuhq/novu](https://github.com/novuhq/novu)
 
 ## Introduction
 
@@ -60,9 +60,12 @@ So on and so forth. To create a full-fledged application, many concerns need to 
 - React is a popular UI library for creating a single-page application. With Next.js built on top of React, all toolings, configurations, and optimization are expanded and ready out-of-the-box.
 - Next.js has a vast array of features, making it capable of becoming a full-stack framework. However, this article mainly focuses on using Next.js for the front end. Meanwhile, Payload CMS handles the back end of the blog.
 
-import image1 from '../../assets/blog/28/novu-1.webp';
+import image1 from "../../assets/blog/28/novu-1.webp";
 
-<BlogPicture imageMetadata={image1} alt='Architectural Diagram: Relationship between Next.js, PayloadCMS, Novu, and Zoho Mail.' />
+<BlogPicture
+  imageMetadata={image1}
+  alt="Architectural Diagram: Relationship between Next.js, PayloadCMS, Novu, and Zoho Mail."
+/>
 
 ## How to set up Zoho Mail?
 
@@ -81,39 +84,54 @@ This is a rather trivial step. A Zoho Mail account can be created by filling in 
 
 After the registration, you can access the **Admin Console**. This is where a super administrator controls the whole domain. Navigate to the **Domains** tab, this is where you can add your email domain.
 
-import image2 from '../../assets/blog/28/novu-2.webp';
+import image2 from "../../assets/blog/28/novu-2.webp";
 
-<BlogPicture imageMetadata={image2} alt='The Domains tab of the Zoho Mail Admin Console.' />
+<BlogPicture
+  imageMetadata={image2}
+  alt="The Domains tab of the Zoho Mail Admin Console."
+/>
 
 After that, there are several ways to verify domain ownership and one of the traditional ones is using a DNS record. Zoho Mail provides a unique and public TXT record that is used during the verification process. Add that to your DNS configuration, and your domain is verified.
 
-import image3 from '../../assets/blog/28/novu-3.webp';
+import image3 from "../../assets/blog/28/novu-3.webp";
 
-<BlogPicture imageMetadata={image3} alt='Zoho Mail verification is done via TXT records on Cloudflare (DNS provider).' />
+<BlogPicture
+  imageMetadata={image3}
+  alt="Zoho Mail verification is done via TXT records on Cloudflare (DNS provider)."
+/>
 
 ### Configure email delivery, SPF, and DKIM
 
 Technically, after the domain verification process. Zoho Mail is capable of **sending emails out**, but for incoming emails, more steps are needed. Also, with no Sender Policy Framework (SPF) and Domain Keys Identified Mail (DKIM), your domain is susceptible to certain types of domain spoofing attacks. Certain email recipients do outright reject emails from domains without a proper SPF and DKIM configuration, hence affecting your deliverability. With that said, click on the domain you just added mine is [hungvu.tech](https://hungvu.tech/), and go to **Email Configuration.** In there, Zoho Mail provides several more records to add to your DNS configuration, and you are good to go after the addition is complete.
 
-import image4 from '../../assets/blog/28/novu-4.webp';
+import image4 from "../../assets/blog/28/novu-4.webp";
 
-<BlogPicture imageMetadata={image4} alt='The DNS records for hungvu.tech are properly set up in Cloudflare, as verified by Zoho Mail.' />
+<BlogPicture
+  imageMetadata={image4}
+  alt="The DNS records for hungvu.tech are properly set up in Cloudflare, as verified by Zoho Mail."
+/>
 
 ### Retrieve SMTP information and application-specific credentials
 
 To connect Novu with Zoho Mail, you need to have SMTP configuration and account credentials. SMTP configuration resides in **Mail Settings > Tools & Configurations > Configurations**. It is recommended to use TLS configuration for SMTP.
 
-import image5 from '../../assets/blog/28/novu-5.webp';
+import image5 from "../../assets/blog/28/novu-5.webp";
 
-<BlogPicture imageMetadata={image5} alt='Retrieve SMTP information via the Mail Settings tab in Zoho Mail.' />
+<BlogPicture
+  imageMetadata={image5}
+  alt="Retrieve SMTP information via the Mail Settings tab in Zoho Mail."
+/>
 
 For account credentials, you need **App Passwords** for the account. In a sense, this acts like an API key so Novu can bypass Zoho Mail's multi-factor authentication, and it is not recommended to create an App Password on the super administrator account due to security implications. For some reason, you cannot generate **App Passwords** via an Admin Console, so it is necessary to sign in with a regular user account.
 
 Within your regular user Zoho Mail dashboard, navigate to **My Account > Security** and scroll down to **App Passwords (Application-Specific Passwords)**. There, you can generate or revoke the application password (Novu in this case) but keep in mind that the password is only displayed once. If you lose the password, then it needs to be generated again. Although the password is named **Novu**, it is more of a label, so other applications can also use the password. Certainly, it is not a good practice to share a password like that.
 
-import image6 from '../../assets/blog/28/novu-6.webp';
+import image6 from "../../assets/blog/28/novu-6.webp";
 
-<BlogPicture imageMetadata={image6} alt='Creating Application-specific Passwords in User Profile/Security section.' />
+<BlogPicture
+  imageMetadata={image6}
+  alt="Creating Application-specific Passwords in User Profile/Security section."
+/>
 
 Now, your Zoho Mail account should be all set. It is time to see how we can send a Zoho email via Novu unified APIs.
 
@@ -121,23 +139,26 @@ Now, your Zoho Mail account should be all set. It is time to see how we can send
 
 As a reminder, Novu offers both self-hosted and cloud solutions. To simplify the process, the cloud version is a great choice here. Therefore, the first step is to register an account at Novu. When first signing in, Novu shows very pleasing and user-friendly instructions to get you started. Let's see what they are.
 
-import image7 from '../../assets/blog/28/novu-4.webp';
+import image7 from "../../assets/blog/28/novu-4.webp";
 
-<BlogPicture imageMetadata={image7} alt='Guidance for new users.' />
+<BlogPicture imageMetadata={image7} alt="Guidance for new users." />
 
 ### Connect your delivery provider
 
 Novu supports several providers across different channels including email, SMS, Chat, and Push notification. There is no integration for Zoho out of the box. However, Novu supports a custom SMTP integration, meaning you can connect with practically every email service as SMTP is a widely adopted protocol. Certainly, Zoho also supports SMTP (as shown in the previous section).
 
-import image8 from '../../assets/blog/28/novu-8.webp';
+import image8 from "../../assets/blog/28/novu-8.webp";
 
-<BlogPicture imageMetadata={image8} alt='Custom SMTP is possible via the Integration Store.' />
+<BlogPicture
+  imageMetadata={image8}
+  alt="Custom SMTP is possible via the Integration Store."
+/>
 
 Choosing the **Custom SMTP option**, you need to fill out the following information:
 
 - **User** - This is your Zoho Mail email address. In this case, it is [`hello@hungvu.tech`](mailto:hello@hungvu.tech).
-- **Password** - This is your *App Password* created in the previous section. Your master password can also be used, but it fails if multi-factor authentication is enabled on the Zoho side.
-- **Host** - This is an *Outgoing Server Name* retrieved in the previous section. In this case, it is `smtppro.zoho.com`.
+- **Password** - This is your _App Password_ created in the previous section. Your master password can also be used, but it fails if multi-factor authentication is enabled on the Zoho side.
+- **Host** - This is an _Outgoing Server Name_ retrieved in the previous section. In this case, it is `smtppro.zoho.com`.
 - **Port** - There are 2 options, SSL and TLS. As TLS is preferred in email transmission, port `587` is the choice.
 - **Secure** - This field is only applicable to SSL connections. Set to `true` for a secure connection. If it is set on a TLS connection, an error happens, as shown below. Leave it empty for the TLS connection.
 
@@ -148,14 +169,17 @@ Choosing the **Custom SMTP option**, you need to fill out the following informat
 - **DKIM: Domain name / DKIM: Private key / DKIM: Key selector** - Leave empty. It appears that these fields do not need to be set for Zoho Mail assuming your DKIM was properly configured in the DNS records. Later in the article, there is proof to show that DKIM works.
 - **From email address** - Enter your user's email address. In most cases, it is the same as the `User` field, which is [`hello@hungvu.tech`](mailto:hello@hungvu.tech) here.
 - **Sender name** - Enter your preferred name. In this case, it is `Hung Vu`.
-- **Active (button)** - Enable it so SMPT is included in *Novu Workflow***.**
+- **Active (button)** - Enable it so SMPT is included in \*Novu Workflow**\*.**
 - **Verify provider credentials (button)** - Enable it to get a confirmation that the SMTP configuration is working. If this button is disabled, you can only see a success message. However, when any of Novu's functions evoke an SMTP connection, an error might show up there.
 
 And you have just successfully set up Custom SMTP in Novu!
 
-import image9 from '../../assets/blog/28/novu-9.webp';
+import image9 from "../../assets/blog/28/novu-9.webp";
 
-<BlogPicture imageMetadata={image9} alt='Custom SMTP is successfully activated.' />
+<BlogPicture
+  imageMetadata={image9}
+  alt="Custom SMTP is successfully activated."
+/>
 
 ### Create your first notification template
 
@@ -166,9 +190,9 @@ Now is the time to create a new **Novu Notification Template.** This essentially
 
 With that said, let's navigate to **Notifications** and click on the **New** button on the top right to create a new Notification template.
 
-import image10 from '../../assets/blog/28/novu-10.webp';
+import image10 from "../../assets/blog/28/novu-10.webp";
 
-<BlogPicture imageMetadata={image10} alt='Notification Template section.' />
+<BlogPicture imageMetadata={image10} alt="Notification Template section." />
 
 There are three sections of the template: Notification Settings, Workflow Editor, and User Preference Editor. Let's fill them out as below.
 
@@ -187,10 +211,9 @@ There are three sections of the template: Notification Settings, Workflow Editor
 - Drag and drop an `Email` step to the workflow.
 - Hover your mouse over the `Email` step, and choose **Edit Template.**
 
+import image11 from "../../assets/blog/28/novu-11.webp";
 
-import image11 from '../../assets/blog/28/novu-11.webp';
-
-<BlogPicture imageMetadata={image11} alt='Workflow Editor section.' />
+<BlogPicture imageMetadata={image11} alt="Workflow Editor section." />
 
 **Set fields as follows:**
 
@@ -198,40 +221,55 @@ import image11 from '../../assets/blog/28/novu-11.webp';
 - Preheader: Leave empty
 - Email Layout: Leave empty
 
-``` markdown
+```markdown
 {{author}} just released a new article at {{article_url}}.
 Let's check it out. ❤️
 ```
 
 - Email Content: This accepts custom variables from the JSON request, and the variable is wrapped in double curly braces `{{variables}}`. With that said, the content is as below.
-- You should see the step variables `author` and `article_url` appear on the right panel.*A sign that variables to be used in the email template are successfully configured.*
+- You should see the step variables `author` and `article_url` appear on the right panel._A sign that variables to be used in the email template are successfully configured._
 - Press **Update** to save the workflow.
 
-import image12 from '../../assets/blog/28/novu-12.webp';
+import image12 from "../../assets/blog/28/novu-12.webp";
 
-<BlogPicture imageMetadata={image12} alt='A sign that variables to be used in the email template are successfully configured.' />
+<BlogPicture
+  imageMetadata={image12}
+  alt="A sign that variables to be used in the email template are successfully configured."
+/>
 
 Navigate back to either Edit Template or Workflow Editor dashboard, and here, **Test Workflow** is available on the top right of your screen. Click on it, and you can edit the payload to trigger this `Email - New Article` workflow.
 
-import image13 from '../../assets/blog/28/novu-13.webp';
+import image13 from "../../assets/blog/28/novu-13.webp";
 
-<BlogPicture imageMetadata={image13} alt='Information to test workflow. The information can be manually edited in the fields.' />
+<BlogPicture
+  imageMetadata={image13}
+  alt="Information to test workflow. The information can be manually edited in the fields."
+/>
 
-import image14 from '../../assets/blog/28/novu-14.webp';
+import image14 from "../../assets/blog/28/novu-14.webp";
 
-<BlogPicture imageMetadata={image14} alt='This a sign that Novu successfully sends a request to Zoho Mail.' />
+<BlogPicture
+  imageMetadata={image14}
+  alt="This a sign that Novu successfully sends a request to Zoho Mail."
+/>
 
 **Note: A success here only means Novu can craft and send an email via Zoho Mail. The status delivery status can only be checked via Zoho Mail's Sent box. As in the picture below, one of the emails is undeliverable because I typed in the wrong recipient name.**
 
-import image15 from '../../assets/blog/28/novu-15.webp';
+import image15 from "../../assets/blog/28/novu-15.webp";
 
-<BlogPicture imageMetadata={image15} alt='The real status of the test can only be checked in Zoho Mail, not via Novu.' />
+<BlogPicture
+  imageMetadata={image15}
+  alt="The real status of the test can only be checked in Zoho Mail, not via Novu."
+/>
 
 For a delivered email, it should reside in the recipient's mailbox as seen below. Certainly, SPF and DKIM are successfully validated for this email. At this point, you have successfully set up a unified Novu API.
 
-import image16 from '../../assets/blog/28/novu-16.webp';
+import image16 from "../../assets/blog/28/novu-16.webp";
 
-<BlogPicture imageMetadata={image16} alt='The emails from hungvu.tech reach their destination and pass SPF and DKIM tests, as verified by Gmail.' />
+<BlogPicture
+  imageMetadata={image16}
+  alt="The emails from hungvu.tech reach their destination and pass SPF and DKIM tests, as verified by Gmail."
+/>
 
 ## How to build a simple blog using Payload CMS and Next.js?
 
@@ -241,7 +279,7 @@ The admin dashboard of Payload CMS uses Next.js. That means you can use the same
 
 That said, as Payload CMS uses MongoDB, the database server must be configured first. It can be done easily by downloading the MongoDB Community edition. The MongoDB team provides a full installation package for many operating systems (OS), so the installation and server initiation is rather trivial.
 
-With MongoDB out of the way, first, *create a new repository* using a template at [payloadcms/nextjs-custom-server](https://github.com/payloadcms/nextjs-custom-server), and clone that to your local machine. Unlike forking, creating a new repository from a template resets the commit history and disassociates it from an original template repository.
+With MongoDB out of the way, first, _create a new repository_ using a template at [payloadcms/nextjs-custom-server](https://github.com/payloadcms/nextjs-custom-server), and clone that to your local machine. Unlike forking, creating a new repository from a template resets the commit history and disassociates it from an original template repository.
 
 ```
 git clone https://github.com/hunghvu/blog-website-with-novu.git
@@ -258,7 +296,7 @@ yarn install
 
 In the boilerplate repository (root folder), there is a `.env.example`, create a copy of that, and name the file `.env`. As Payload CMS uses `dotenv`, which looks for a `.env` file by default, any other similar names like `.env.local` can raise an exception.
 
-``` 
+```
 # Create a new .env file
 cp .env.example .env
 ```
@@ -287,11 +325,14 @@ MONGO_URL=mongodb://127.0.0.1/payload-nextjs-site
 
 Lastly, let's grab a Novu API key and put it in your environment file.
 
-import image17 from '../../assets/blog/28/novu-17.webp';
+import image17 from "../../assets/blog/28/novu-17.webp";
 
-<BlogPicture imageMetadata={image17} alt='API key resides in the Settings tab. You can ignore Application Identifier in this tutorial.' />
+<BlogPicture
+  imageMetadata={image17}
+  alt="API key resides in the Settings tab. You can ignore Application Identifier in this tutorial."
+/>
 
-``` 
+```
 # Add this key to .env
 NOVU_API_KEY=<Your API key>
 ```
@@ -300,9 +341,9 @@ NOVU_API_KEY=<Your API key>
 
 When the server successfully starts, go to `localhost:3000/admin `to register an account and access the admin dashboard. By default, there are three collections: Pages, Media, and Users. To create a new article, let's navigate to Pages.
 
-import image18 from '../../assets/blog/28/novu-18.webp';
+import image18 from "../../assets/blog/28/novu-18.webp";
 
-<BlogPicture imageMetadata={image18} alt='An admin dashboard of Payload CMS.' />
+<BlogPicture imageMetadata={image18} alt="An admin dashboard of Payload CMS." />
 
 Click on **Create new Page**, and fill out the following information.
 
@@ -310,8 +351,7 @@ Click on **Create new Page**, and fill out the following information.
 - Featured Image: Leave empty
 - Page Layout: Choose the **Content** option, and let the body of your article be
 
-
-``` 
+```
 This is the body of your article. I suppose this is where your writing journey begins!
 ```
 
@@ -322,9 +362,12 @@ This is the body of your article. I suppose this is where your writing journey b
 
 Now, save the page and navigate to `localhost:3000/this-is-your-first-article`.
 
-import image19 from '../../assets/blog/28/novu-19.webp';
+import image19 from "../../assets/blog/28/novu-19.webp";
 
-<BlogPicture imageMetadata={image19} alt='A new blog article successfully shows up on the front end.' />
+<BlogPicture
+  imageMetadata={image19}
+  alt="A new blog article successfully shows up on the front end."
+/>
 
 Still, Novu has not come into play yet, so now is the time to change it!
 
@@ -332,19 +375,18 @@ Still, Novu has not come into play yet, so now is the time to change it!
 
 Essentially, there are 2 goals to achieve:
 
-- Create a collection for newsletter subscribers in Payload CMS. Upon user registration, deletion, and similar operations, *Payload CMS makes a query to Novu and performs associated tasks.*
+- Create a collection for newsletter subscribers in Payload CMS. Upon user registration, deletion, and similar operations, _Payload CMS makes a query to Novu and performs associated tasks._
 - Create a UI element on the front end, so readers can register for your newsletter.
 
 With that said, first install Novu's SDK using.
 
-
-``` 
+```
 yarn add @novu/node
 ```
 
 Then, navigate to the `collections` folder, and create `NewsletterSubscriber.ts`. This file creates a collection in Payload CMS and generates a respective database schema.
 
-``` typescript showLineNumbers
+```typescript showLineNumbers
 // Author: Hung Vu
 // This collection represents a list of subscriber information.
 // The list is intended to be used for newsletter emails.
@@ -362,7 +404,7 @@ export const NewsletterSubscriber: CollectionConfig = {
     // Public user can subscribe.
     // By default, all other operations like "read", "update", etc. are restricted
     // to only authorized users.
-    create: () => true, 
+    create: () => true,
   },
   fields: [
     {
@@ -390,10 +432,10 @@ export const NewsletterSubscriber: CollectionConfig = {
               .identify(internal_id, { email })
               .catch((err) => console.error(err))
           : operation === "update"
-          ? novu.subscribers
-              .update(internal_id, { email })
-              .catch((err) => console.error(err))
-          : null;
+            ? novu.subscribers
+                .update(internal_id, { email })
+                .catch((err) => console.error(err))
+            : null;
       },
     ],
     afterDelete: [
@@ -411,7 +453,7 @@ export default NewsletterSubscriber;
 
 In `payload.config.ts`, modify it as follows.
 
-``` typescript showLineNumbers
+```typescript showLineNumbers
 // Author: Hung Vu
 import { buildConfig } from "payload/config";
 import dotenv from "dotenv";
@@ -434,7 +476,7 @@ export default buildConfig({
 
 On the front end, create a newsletter registration component in `components/NewsletterRegistration/index.tsx`.
 
-``` typescript showLineNumbers
+```typescript showLineNumbers
 // Author: Hung Vu
 // This component allows readers to subscribe to the newsletter.
 import React from "react";
@@ -487,15 +529,17 @@ export default NewsletterRegistration;
 
 And enable this component in the footer section at `pages/[...slug].tsx`
 
-``` typescript showLineNumbers
+```typescript showLineNumbers
 // Import, and add this to line 52.
 <NewsletterRegistration />
 ```
 
-import image20 from '../../assets/blog/28/novu-20.webp';
+import image20 from "../../assets/blog/28/novu-20.webp";
 
-<BlogPicture imageMetadata={image20} alt='A newsletter registration component is added to the article.' />
-
+<BlogPicture
+  imageMetadata={image20}
+  alt="A newsletter registration component is added to the article."
+/>
 
 ### How to send a newsletter to your subscribers?
 
@@ -503,8 +547,7 @@ At this stage, you have an article and a list of subscribers in hand already. Th
 
 Navigate to `collections/Page.ts` and modify it as follow.
 
-
-``` typescript showLineNumbers
+```typescript showLineNumbers
 // Author: Hung Vu
 // This blog article collections notifies newsletter
 // subscribers whenever a new article is released.
@@ -645,25 +688,30 @@ export const Page: CollectionConfig = {
 };
 
 export default Page;
-
 ```
 
 You may wonder why `novu` is re-initialized here. If it is created in `server/index.ts` and shared with other locations, an exception happens, as shown below.
 
-``` 
+```
 BREAKING CHANGE: webpack < 5 used to include polyfills for node.js core modules by default.
 This is no longer the case. Verify if you need this module and configure a polyfill for it.
 ```
 
 Novu perhaps is using a singleton pattern when initializing the instance, so it should be fine, and indeed, here are the results.
 
-import image21 from '../../assets/blog/28/novu-21.webp';
+import image21 from "../../assets/blog/28/novu-21.webp";
 
-<BlogPicture imageMetadata={image21} alt='Subscriber email shows up in the Subscribers dashboard.' />
+<BlogPicture
+  imageMetadata={image21}
+  alt="Subscriber email shows up in the Subscribers dashboard."
+/>
 
-import image22 from '../../assets/blog/28/novu-22.webp';
+import image22 from "../../assets/blog/28/novu-22.webp";
 
-<BlogPicture imageMetadata={image22} alt='The hungvu.tech newsletter successfully reaches the subscriber.' />
+<BlogPicture
+  imageMetadata={image22}
+  alt="The hungvu.tech newsletter successfully reaches the subscriber."
+/>
 
 ## Wrap up
 
