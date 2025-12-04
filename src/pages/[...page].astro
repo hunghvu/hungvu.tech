@@ -31,9 +31,11 @@ const { page } = Astro.props;
     <SeoHead seoTitle={BASE_SITE_NAME} seoDescription={BASE_SITE_DESCRIPTION} />
   </head>
 
-  <body class="flex w-full flex-col items-center bg-base-100">
+  <body class="bg-base-100 flex w-full flex-col items-center">
     <Header />
-    <main class="flex w-full max-w-(--breakpoint-xl) flex-col items-center px-6 py-12">
+    <main
+      class="flex w-full max-w-(--breakpoint-xl) flex-col items-center px-6 py-12"
+    >
       <section class="daisyui-card bg-base-300">
         <div class="daisyui-card-body">
           <h1 class="daisyui-card-title text-5xl">Hello, Tech Enthusiasts!</h1>
@@ -52,7 +54,7 @@ const { page } = Astro.props;
             page.data.map((post) => (
               <li class="col-span-1">
                 <a
-                  class="daisyui-card h-96 bg-base-100 shadow-xl"
+                  class="daisyui-card bg-base-100 h-96 shadow-xl"
                   href={`/${post.slug}/`}
                 >
                   <figure>

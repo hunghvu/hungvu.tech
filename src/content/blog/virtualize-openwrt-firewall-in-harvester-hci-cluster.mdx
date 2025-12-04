@@ -9,7 +9,7 @@ seoDescription: I decided to virtualize my infrastructure, and the first step wa
 series: Homelab
 ---
 
-import BlogPicture from '../../components/BlogPicture.astro';
+import BlogPicture from "../../components/BlogPicture.astro";
 
 In my previous article, [Is Harvester a good hypervisor for a beginner? My hands-on experience](is-harvester-a-good-hypervisor-for-a-beginner-my-hands-on-experience), I tried out Harvester as a virtualization platform for my multi-node homelab. The experience was not flawless, but that is to be expected in a homelab environment. In this article, I will go over my experience setting up an OpenWRT firewall for my 1-gigabit fiber connection in a virtual machine (VM) in Harvester. There are some guides for configuring OpenWRT, but they are not full-on tutorials (many details were omitted). In a sense, this is more about my findings on working with Harvester.
 
@@ -23,10 +23,10 @@ I had been using off-the-shelf OpenWRT-flashed routers for years. If the solutio
 
 The YAML snippet below is my configs. Unnecessary information is removed to make it more concise.
 
-``` yaml showLineNumbers
+```yaml showLineNumbers
 apiVersion: kubevirt.io/v1
 kind: VirtualMachine
-...  
+...
 spec:
     ...
     spec:
@@ -145,11 +145,14 @@ Although there are stories of people having terrible experiences using these NIC
 
 ### PCIe passthrough is straightforward but with caveats
 
-Harvester offers PCIe passthrough out-of-the-box, but at the time of writing, *this feature is still experimental*. PCIe passthrough is accessible via **Virtual machine config > PCI Devices** web GUI, and the feature just takes a few clicks to enable (assuming your hardware supports that, e.g., VT-d, IOMMU, etc.) There is a technical difference between PCI and PCIe terminologies, but I will use the term PCIe devices in the following sections.
+Harvester offers PCIe passthrough out-of-the-box, but at the time of writing, _this feature is still experimental_. PCIe passthrough is accessible via **Virtual machine config > PCI Devices** web GUI, and the feature just takes a few clicks to enable (assuming your hardware supports that, e.g., VT-d, IOMMU, etc.) There is a technical difference between PCI and PCIe terminologies, but I will use the term PCIe devices in the following sections.
 
-import image1 from '../../assets/blog/33/openwrt-1.webp';
+import image1 from "../../assets/blog/33/openwrt-1.webp";
 
-<BlogPicture imageMetadata={image1} alt='Harvester supports PCIe passthrough via GUI.' />
+<BlogPicture
+  imageMetadata={image1}
+  alt="Harvester supports PCIe passthrough via GUI."
+/>
 
 So, I went ahead and passed through my NICs without any issues, or at least, not yet...
 
@@ -165,10 +168,10 @@ Reason: Sync Failed
 Resource: VirtualMachineInstance openwrt - Server error.command SyncVMI failed: "LibvirtError(Code=1, Domain=0, Message="internal error: Unknown PCI header type '127' for device '0000:01:00.0")"
 ```
 
-A very cryptic error message, but in short, the VM was not bootable. This *usually* happens whenever I reboot the VM by any means (e.g., via OpenWRT GUI, power off and start in Harvester GUI, etc.) Alongside, there were all sorts of random problems when this error message appeared such as:
+A very cryptic error message, but in short, the VM was not bootable. This _usually_ happens whenever I reboot the VM by any means (e.g., via OpenWRT GUI, power off and start in Harvester GUI, etc.) Alongside, there were all sorts of random problems when this error message appeared such as:
 
 - VM became unresponsive to actions (via web GUI) like power off, restart, delete, edit-config, and so on.
-- VM was indefinitely stuck at the *Starting* state.
+- VM was indefinitely stuck at the _Starting_ state.
 - Node became unresponsive.
 
 I was not able to reliably reproduce the issue, and still do not know the reasons behind that. From the research I made, all I can say is it has something to do with the virtual machine type (q35), its virtual BIOS, and the NIC itself is stuck in a certain state.
@@ -204,25 +207,28 @@ Unable to retrieve container logs for containerd://...
 
 This is not an issue with Harvester but is more about how the platform handles it. When passing through a PCIe device, all in the same IOMMU group must be passed through unless Access Control Service is enabled (which I do not have). It is not necessary to activate all passed-through devices though. In Harvester, there is no clear indicator for which IOMMU group a PCIe device belongs, but it can be determined using the **Address** column on the **PCI Devices** page.
 
-import image2 from '../../assets/blog/33/openwrt-2.webp';
+import image2 from "../../assets/blog/33/openwrt-2.webp";
 
-<BlogPicture imageMetadata={image2} alt='Address of the PCIe devices.' />
+<BlogPicture imageMetadata={image2} alt="Address of the PCIe devices." />
 
 The addresses follow a Bus, Device, Function (BDF notation) for PCI Domain, which consists of 3 parts: Domain (0000), Bus (00), Device (02), and Function (0). All devices that have the same `Domain:Bus:Device` sections, they are in the same IOMMU group. Another way to check is to look at a device name because Harvester by default uses a format of `node name-address` as a convention. For example, in the picture below, I passed through all devices in the group`0000:00:1f` .
 
-import image3 from '../../assets/blog/33/openwrt-3.webp';
+import image3 from "../../assets/blog/33/openwrt-3.webp";
 
-<BlogPicture imageMetadata={image3} alt='Passthrough all PCIe devices in the same IOMMU group.' />
+<BlogPicture
+  imageMetadata={image3}
+  alt="Passthrough all PCIe devices in the same IOMMU group."
+/>
 
 Here is a thing, when a device is not passed through probably, there is no indicator. I faced three different scenarios that are related to this:
 
-- Devices stuck in *In Progress* state.
-- Devices are shown as *Enabled*, but in fact, are not visible in the VM.
+- Devices stuck in _In Progress_ state.
+- Devices are shown as _Enabled_, but in fact, are not visible in the VM.
 - And I simply forgot to pass through one device.
 
-In these cases, the VM could not boot up, or bootable but stuck in *Starting* state and became unresponsive. There were no indicators, no logs, nothing. Admittedly, I only used web GUI, so maybe something could be seen if using the terminal. This is not a good user experience in my opinion.
+In these cases, the VM could not boot up, or bootable but stuck in _Starting_ state and became unresponsive. There were no indicators, no logs, nothing. Admittedly, I only used web GUI, so maybe something could be seen if using the terminal. This is not a good user experience in my opinion.
 
-On a side note, although I passed through 5 devices in this IOMMU group as shown in the picture, I must not activate the *Power Management Controller (0000:00:1f.2).* Activating that device always makes my VM not bootable and throws the following error message.
+On a side note, although I passed through 5 devices in this IOMMU group as shown in the picture, I must not activate the _Power Management Controller (0000:00:1f.2)._ Activating that device always makes my VM not bootable and throws the following error message.
 
 ```
 1. 0/4 nodes are available: 1 Insufficient intel.com/200_SERIES_Z370_CHIPSET_FAMILY_PO.., 3 node(s) didn't match Pod's node affinity/selector.preemption: 0/4 nodes are available: 1 No preemption victims found for incoming pod, 3 Preemption is not helpful for scheduling
@@ -343,41 +349,59 @@ These packages can be configured via serial console or web GUI, but I will skip 
 
 There is a saying, a picture says a thousand words. Here are some tests I performed on the OpenWRT VM.
 
-import image4 from '../../assets/blog/33/openwrt-4.webp';
+import image4 from "../../assets/blog/33/openwrt-4.webp";
 
-<BlogPicture imageMetadata={image4} alt='Web GUI, notice the system information?' />
+<BlogPicture
+  imageMetadata={image4}
+  alt="Web GUI, notice the system information?"
+/>
 
-import image5 from '../../assets/blog/33/openwrt-5.webp';
+import image5 from "../../assets/blog/33/openwrt-5.webp";
 
-<BlogPicture imageMetadata={image5} alt='Waveform bufferbloat test result.' />
+<BlogPicture imageMetadata={image5} alt="Waveform bufferbloat test result." />
 
-import image6 from '../../assets/blog/33/openwrt-6.webp';
+import image6 from "../../assets/blog/33/openwrt-6.webp";
 
-<BlogPicture imageMetadata={image6} alt='Cloudflare network test result - Internet speed.' />
+<BlogPicture
+  imageMetadata={image6}
+  alt="Cloudflare network test result - Internet speed."
+/>
 
-import image7 from '../../assets/blog/33/openwrt-7.webp';
+import image7 from "../../assets/blog/33/openwrt-7.webp";
 
-<BlogPicture imageMetadata={image7} alt='Cloudflare network test result - Measurement under different conditions.' />
+<BlogPicture
+  imageMetadata={image7}
+  alt="Cloudflare network test result - Measurement under different conditions."
+/>
 
-import image8 from '../../assets/blog/33/openwrt-8.webp';
+import image8 from "../../assets/blog/33/openwrt-8.webp";
 
-<BlogPicture imageMetadata={image8} alt='OpenWRT system load during Waveform bufferbloat test.' />
+<BlogPicture
+  imageMetadata={image8}
+  alt="OpenWRT system load during Waveform bufferbloat test."
+/>
 
-import image9 from '../../assets/blog/33/openwrt-9.webp';
+import image9 from "../../assets/blog/33/openwrt-9.webp";
 
-<BlogPicture imageMetadata={image9} alt='iperf3 from client to OpenWRT result.' />
+<BlogPicture
+  imageMetadata={image9}
+  alt="iperf3 from client to OpenWRT result."
+/>
 
-import image10 from '../../assets/blog/33/openwrt-1.webp';
+import image10 from "../../assets/blog/33/openwrt-1.webp";
 
-<BlogPicture imageMetadata={image10} alt='iperf3 loopback result.' />
+<BlogPicture imageMetadata={image10} alt="iperf3 loopback result." />
 
 ## Conclusion
 
 It was a wild ride but at last, I have been able to use this VM firewall full-time. When it runs, the performance is miles ahead compared to off-the-shelf routers, the only hiccups that I still occasionally face are random errors when rebooting the machine.
 
-import image11 from '../../assets/blog/33/openwrt-1.webp';
+import image11 from "../../assets/blog/33/openwrt-1.webp";
 
-<BlogPicture imageMetadata={image11} alt='No major issue found after 45 days.' />
+<BlogPicture
+  imageMetadata={image11}
+  alt="No major issue found after 45 days."
+/>
 
 Again, this is not a huge deal breaker to me as I do not play around with networking that much in my homelab. Considering there is no measurable difference between a virtualized firewall and bare metal installation, it is certainly worth a try. Theoretically, there are security implications when virtualizing the firewall though, but I suppose I am not the best person to discuss that.
 

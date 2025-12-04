@@ -1,5 +1,4 @@
 ---
-
 coverImage: ../../assets/blog/27/cover-image.webp
 coverAlt: In this tutorial, you will learn more about the Bitwarden Enterprise plan and the steps to configure its SSO with Google as an identity provider.
 publishedDate: February 18, 2023
@@ -10,7 +9,7 @@ seoDescription: Google is a popular identity provider that can be integrated wit
 series: Google technologies
 ---
 
-import BlogPicture from '../../components/BlogPicture.astro';
+import BlogPicture from "../../components/BlogPicture.astro";
 
 In this digital age, people usually have tens if not hundreds of accounts for their online services. These accounts range from simple daily services like grocery, and entertainment, to sensitive ones like banking or health records. The same applies to corporation use cases, but there, all the credentials are considered highly sensitive. This leads to the concern of how to store and govern all these passwords, and it is when a password manager such as Bitwarden comes to play.
 
@@ -18,37 +17,49 @@ In this digital age, people usually have tens if not hundreds of accounts for th
 
 Using a password manager, a person can safely generate complex passwords and store them in a secure location. This helps avoid all potentially unsafe "homemade" methods like writing credentials down on paper or storing it in a plain text file. Bitwarden is a popular open-source password manager, meaning thousands of eyes look at the codebase to find and patch vulnerabilities. Along with that, Bitwarden complies with multiple industrial standards and passed several third-party audits. In a corporate environment, where security and compliance are critical matters, this makes Bitwarden become a strong password manager solution.
 
-import image1 from '../../assets/blog/27/bitwarden-1.webp';
+import image1 from "../../assets/blog/27/bitwarden-1.webp";
 
-<BlogPicture imageMetadata={image1} alt='Bitwarden is certified with many industrial standards.' />
+<BlogPicture
+  imageMetadata={image1}
+  alt="Bitwarden is certified with many industrial standards."
+/>
 
 Currently, Bitwarden has two public business plans, called Bitwarden Team and Bitwarden Enterprise. Between the two, Bitwarden Enterprise offers many more tenant governance features, making administrative tasks less of a hassle. Usually, corporations use an active directory as a way to manage their users. As Bitwarden Enterprise supports single sign-on (SSO), the number of credentials to remember is reduced, while helping users sign in to Bitwarden with their active directory account. Inherently, both the user and administrator experience are improved while potential failure points are reduced since management is centralized in the active directory.
 
-import image2 from '../../assets/blog/27/bitwarden-2.webp';
+import image2 from "../../assets/blog/27/bitwarden-2.webp";
 
-<BlogPicture imageMetadata={image2} alt='Bitwarden offers two paid plans as of February 2023.' />
+<BlogPicture
+  imageMetadata={image2}
+  alt="Bitwarden offers two paid plans as of February 2023."
+/>
 
 ## How to set up Google SSO using OIDC in Bitwarden Enterprise?
 
-Google is one of the big players in the business environment with its Google Workspace (formerly called G Suite), especially in the education and healthcare industry where several regulations and compliances are required. To set up Google SSO in Bitwarden Enterprise, there are two ways to do so: Security Assertion Markup Language (SAML) and OpenID Connect (OIDC). Each approach has its pros and cons, and for SAML, [Bitwarden has an official guide for the implementation](https://bitwarden.com/help/saml-google/). There is none for OIDC, so it becomes the focus of this tutorial. The setup will be performed using the Bitwarden Enterprise web portal and the Google Cloud Platform (GCP) dashboard. *All instructions are based on an assumption that you have a basic understanding of the GCP beforehand, so some details are omitted there.*
+Google is one of the big players in the business environment with its Google Workspace (formerly called G Suite), especially in the education and healthcare industry where several regulations and compliances are required. To set up Google SSO in Bitwarden Enterprise, there are two ways to do so: Security Assertion Markup Language (SAML) and OpenID Connect (OIDC). Each approach has its pros and cons, and for SAML, [Bitwarden has an official guide for the implementation](https://bitwarden.com/help/saml-google/). There is none for OIDC, so it becomes the focus of this tutorial. The setup will be performed using the Bitwarden Enterprise web portal and the Google Cloud Platform (GCP) dashboard. _All instructions are based on an assumption that you have a basic understanding of the GCP beforehand, so some details are omitted there._
 
 ### Step 1: Enforce a single sign-on policy in Bitwarden
 
-import image3 from '../../assets/blog/27/bitwarden-3.webp';
+import image3 from "../../assets/blog/27/bitwarden-3.webp";
 
-<BlogPicture imageMetadata={image3} alt='Single sign-on feature.' />
+<BlogPicture imageMetadata={image3} alt="Single sign-on feature." />
 
 Bitwarden requires the organization to enable both `Single organization` and `Require single sign-on authentication` to set up the SSO. Start by signing in to an organization administrator account, then navigate to **Organizations > Settings > Policies** and enable the two mentioned policies. The policy `Single organization` is enabled first because it is a prerequisite for `Require single sign-on authentication`.
 
-import image4 from '../../assets/blog/27/bitwarden-4.webp';
+import image4 from "../../assets/blog/27/bitwarden-4.webp";
 
-<BlogPicture imageMetadata={image4} alt='Enable Bitwarden single sign-on policy.' />
+<BlogPicture
+  imageMetadata={image4}
+  alt="Enable Bitwarden single sign-on policy."
+/>
 
 ### Step 2: Enable SSO settings in Bitwarden (no OpenID configuration yet)
 
-import image5 from '../../assets/blog/27/bitwarden-1.webp';
+import image5 from "../../assets/blog/27/bitwarden-1.webp";
 
-<BlogPicture imageMetadata={image5} alt='Allow SSO authentication in Bitwarden.' />
+<BlogPicture
+  imageMetadata={image5}
+  alt="Allow SSO authentication in Bitwarden."
+/>
 
 You are in the **Settings** panel at the moment. Now, navigate to the **Single sign-on** page and check **Allow SSO authentication**. With that, certain configurations now show up. Do the following:
 
@@ -57,64 +68,88 @@ You are in the **Settings** panel at the moment. Now, navigate to the **Single s
 - **Type:** `OpenID Connect`There are `OpenID Connect` and `SAML 2.0` options. Chose the `OpenID Connect` option for this tutorial.
 - **OpenID connect configuration:**Leave everything as is, you will revisit this section in the latter steps. For now, note down the **Callback path** and **Singed out callback path**, as they will be used soon.
 
-import image6 from '../../assets/blog/27/bitwarden-6.webp';
+import image6 from "../../assets/blog/27/bitwarden-6.webp";
 
-<BlogPicture imageMetadata={image6} alt='Leave the OpenID connect configuration empty for now.' />
+<BlogPicture
+  imageMetadata={image6}
+  alt="Leave the OpenID connect configuration empty for now."
+/>
 
 ### Step 3: Create a consent screen for your Bitwarden project in GCP
 
 The `OpenID connect configuration` requires `Client ID` and `Client secret`, these can be achieved via the GCP dashboard. To do so, the first step is to create an **OAuth consent screen** for your Bitwarden application.
 
-import image7 from '../../assets/blog/27/bitwarden-7.webp';
+import image7 from "../../assets/blog/27/bitwarden-7.webp";
 
-<BlogPicture imageMetadata={image7} alt='Create an internal OAuth consent screen in GCP.' />
+<BlogPicture
+  imageMetadata={image7}
+  alt="Create an internal OAuth consent screen in GCP."
+/>
 
 Use the search bar and look up the **OAuth consent screen** then navigate there. Because this is an SSO for internal users, choose an `Internal` **User Type** then press **Create**. This leads to the **Edit app registration** screen.
 
-import image8 from '../../assets/blog/27/bitwarden-1.webp';
+import image8 from "../../assets/blog/27/bitwarden-1.webp";
 
-<BlogPicture imageMetadata={image8} alt='Edit app registration screen.' />
+<BlogPicture imageMetadata={image8} alt="Edit app registration screen." />
 
 This is where you fill in trivial information for the SSO popup such as the application name, support contact, logo, and so on. Fill them out as per your organization's rules. In this tutorial, the **Scopes** section can be skipped, but in reality, your organization might have specific requirements to limit user access in this Bitwarden GCP project. [More detail about the scopes can be found in Google's official documentation](https://developers.google.com/workspace/guides/configure-oauth-consent).
 
 ### Step 4: Create an OAuth client ID and secret in GCP
 
-import image9 from '../../assets/blog/27/bitwarden-9.webp';
+import image9 from "../../assets/blog/27/bitwarden-9.webp";
 
-<BlogPicture imageMetadata={image9} alt='Navigate to OAuth Client ID dashboard.' />
+<BlogPicture
+  imageMetadata={image9}
+  alt="Navigate to OAuth Client ID dashboard."
+/>
 
 Use the search bar and look up for **Credentials** of your project and navigate there. Press **Create Credentials** button and pick the `OAuth Client ID` option. If the consent screen was not properly configured or is missing, you may not be able to move forward. There is an error message and shortcut button to create a consent screen when that happens, but if not, head back to step 3 of this tutorial and start from there.
 
-import image10 from '../../assets/blog/27/bitwarden-10.webp';
+import image10 from "../../assets/blog/27/bitwarden-10.webp";
 
-<BlogPicture imageMetadata={image10} alt='OAuth client ID requires a consent screen to be configured first.' />
+<BlogPicture
+  imageMetadata={image10}
+  alt="OAuth client ID requires a consent screen to be configured first."
+/>
 
 Vice versa, if the consent screen was successfully created, the **Application type** configuration will show up. Choose the `Web application` option from the drop-down then continue to the next screen.
 
-import image11 from '../../assets/blog/27/bitwarden-11.webp';
+import image11 from "../../assets/blog/27/bitwarden-11.webp";
 
-<BlogPicture imageMetadata={image11} alt='Select the "Web application" option.' />
+<BlogPicture
+  imageMetadata={image11}
+  alt='Select the "Web application" option.'
+/>
 
 Here, certain options need to be filled out in a specific way:
 
 - **Authorized JavaScript origins:** [`https://bitwarden.com`](https://hungvu.tech/)To sign in to the Bitwarden web portal, the user needs to visit `vault.bitwarden.com`, in other words, a subdomain of `bitwarden.com`. With that said, add [`https://bitwarden.com`](https://hungvu.tech/) to the **Authorized JavaScript origins** section. This covers all subdomains of `bitwarden.com`.
 - **Authorized redirect URIs:** [`https://sso.bitwarden.com/oidc-signin`](https://hungvu.tech/) and [`https://sso.bitwarden.com/oidc-signedout`](https://hungvu.tech/)Remember the two **Callback path** and **Singed out callback path** in step 2? In this case, they are [`https://sso.bitwarden.com/oidc-signin`](https://hungvu.tech/) and [`https://sso.bitwarden.com/oidc-signedout`](https://hungvu.tech/) respectively. Add both of them to the **Authorized redirect URIs** section, order does not matter.
 
-import image12 from '../../assets/blog/27/bitwarden-12.webp';
+import image12 from "../../assets/blog/27/bitwarden-12.webp";
 
-<BlogPicture imageMetadata={image12} alt='Configure OAuth client ID for Bitwarden endpoints.' />
+<BlogPicture
+  imageMetadata={image12}
+  alt="Configure OAuth client ID for Bitwarden endpoints."
+/>
 
 Press the **Save** button. If nothing goes haywire, the **Client ID** and **Client Secret** are then generated. Note them down, as they will be used in the **Bitwarden** dashboard when you return there.
 
-import image13 from '../../assets/blog/27/bitwarden-13.webp';
+import image13 from "../../assets/blog/27/bitwarden-13.webp";
 
-<BlogPicture imageMetadata={image13} alt='OAuth client ID and client secrete are created.' />
+<BlogPicture
+  imageMetadata={image13}
+  alt="OAuth client ID and client secrete are created."
+/>
 
 ### Step 5: Enable an Identity Platform API in GCP
 
-import image14 from '../../assets/blog/27/bitwarden-14.webp';
+import image14 from "../../assets/blog/27/bitwarden-14.webp";
 
-<BlogPicture imageMetadata={image14} alt='Enable Identity Platform API in GCP.' />
+<BlogPicture
+  imageMetadata={image14}
+  alt="Enable Identity Platform API in GCP."
+/>
 
 Use the search bar and look up **Identity Platform**. Navigate there and enable the API. If this step is not completed, you may face cryptic errors when attempting to SSO. This took me a little while to figure out. The two errors that I faced were:
 
@@ -130,13 +165,19 @@ There was an unexpected error during single sign-on
 IDX20803: Unable to obtain configuration from: 'System.String'
 ```
 
-import image15 from '../../assets/blog/27/bitwarden-15.webp';
+import image15 from "../../assets/blog/27/bitwarden-15.webp";
 
-<BlogPicture imageMetadata={image15} alt='Bitwarden SSO error due to having the Identity API disabled.' />
+<BlogPicture
+  imageMetadata={image15}
+  alt="Bitwarden SSO error due to having the Identity API disabled."
+/>
 
-import image16 from '../../assets/blog/27/bitwarden-16.webp';
+import image16 from "../../assets/blog/27/bitwarden-16.webp";
 
-<BlogPicture imageMetadata={image16} alt="Unable to obtain configuration from: 'System.String' error." />
+<BlogPicture
+  imageMetadata={image16}
+  alt="Unable to obtain configuration from: 'System.String' error."
+/>
 
 I suppose these can be tracked down using the GCP audit log, but if Bitwarden has some sort of debug interface (for the online web portal, not self-host), it would have been a tremendous help in a case like this.
 
@@ -149,15 +190,18 @@ In step 2 of this tutorial, you left the **OpenID connect configuration** empty,
 - **Client secret:**Use a client secret generated in step 4 of this tutorial.
 - **Metadata address:** [`https://accounts.google.com/.well-known/openid-configuration`](https://hungvu.tech/)Using the OpenID Connect Discovery mechanism, Google provides the metadata for its SSO configuration at [`https://accounts.google.com/.well-known/openid-configuration`](https://hungvu.tech/). This is a fallback URL so Bitwarden can go and look for an `issuer` when the **Authority** is invalid. The well-known address varies between identity providers, but they typically end in `/.well-known/openid-configuration`.
 
-import image17 from '../../assets/blog/27/bitwarden-17.webp';
+import image17 from "../../assets/blog/27/bitwarden-17.webp";
 
-<BlogPicture imageMetadata={image17} alt='Google OAuth Well-known URLs.' />
+<BlogPicture imageMetadata={image17} alt="Google OAuth Well-known URLs." />
 
 All other **OpenID connect configuration** options can be left as is. Press **Save** and now your Bitwarden Enterprise SSO has successfully been set up. Give organization users the **SSO identifier** and they now can sign in to Bitwarden using their Google account.
 
-import image18 from '../../assets/blog/27/bitwarden-18.webp';
+import image18 from "../../assets/blog/27/bitwarden-18.webp";
 
-<BlogPicture imageMetadata={image18} alt='Bitwarden SSO is successfully configured.' />
+<BlogPicture
+  imageMetadata={image18}
+  alt="Bitwarden SSO is successfully configured."
+/>
 
 If any errors come up, refer to step 5 of this tutorial to troubleshoot. If both `the `**Authority** and **Metadata address** are wrong, you will certainly see an error in step 5. As a Bitwarden administrator, do remember to approve users' join requests so they can see an organization vault. There should be a notification sent to an admin email address to notify about the user request.
 
@@ -176,5 +220,3 @@ And, let's connect!
 - [LinkedIn](https://www.linkedin.com/in/hunghvu/)
 - [GitHub](https://github.com/hunghvu)
 - [X (formerly Twitter)](https://x.com/hunghvu_dev)
-
-

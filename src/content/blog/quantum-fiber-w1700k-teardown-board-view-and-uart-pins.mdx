@@ -9,55 +9,82 @@ seoDescription: In this article, I will show the internal and boot environment o
 series: Homelab
 ---
 
-import BlogPicture from '../../components/BlogPicture.astro';
+import BlogPicture from "../../components/BlogPicture.astro";
 
 Recently, new Quantum Fiber customer (or existing customer, but migrated from CenturyLink) are eligible to receive a WIFI 7 access point up on service installation. In this article, I will show the internal and boot environment of Quantumm Fiber W1700K (also known as Gemtek MXF-W1700K).
 
 ## Board Images
 
-import image1 from '../../assets/blog/40/w1700k-openwrt-1.jpg';
+import image1 from "../../assets/blog/40/w1700k-openwrt-1.jpg";
 
-<BlogPicture imageMetadata={image1} alt='Top view of Quantum Fiber W1700K access point.' />
+<BlogPicture
+  imageMetadata={image1}
+  alt="Top view of Quantum Fiber W1700K access point."
+/>
 
-import image2 from '../../assets/blog/40/w1700k-openwrt-2.jpg';
+import image2 from "../../assets/blog/40/w1700k-openwrt-2.jpg";
 
-<BlogPicture imageMetadata={image2} alt='Bottom view of Quantum Fiber W1700K access point.' />
+<BlogPicture
+  imageMetadata={image2}
+  alt="Bottom view of Quantum Fiber W1700K access point."
+/>
 
-import image3 from '../../assets/blog/40/w1700k-openwrt-3.jpg';
+import image3 from "../../assets/blog/40/w1700k-openwrt-3.jpg";
 
-<BlogPicture imageMetadata={image3} alt='Wireless chipset view - Mediatek MT7996AV 2344-BHHSH BTTNWS54 (also known as Mediatek Filogic 680).' />
+<BlogPicture
+  imageMetadata={image3}
+  alt="Wireless chipset view - Mediatek MT7996AV 2344-BHHSH BTTNWS54 (also known as Mediatek Filogic 680)."
+/>
 
-import image4 from '../../assets/blog/40/w1700k-openwrt-4.jpg';
+import image4 from "../../assets/blog/40/w1700k-openwrt-4.jpg";
 
-<BlogPicture imageMetadata={image4} alt='Wireless chipset view - Mediatek MT 7977BN 2345-BHHAL DTTP2W50' />
+<BlogPicture
+  imageMetadata={image4}
+  alt="Wireless chipset view - Mediatek MT 7977BN 2345-BHHAL DTTP2W50"
+/>
 
-import image5 from '../../assets/blog/40/w1700k-openwrt-5.jpg';
+import image5 from "../../assets/blog/40/w1700k-openwrt-5.jpg";
 
-<BlogPicture imageMetadata={image5} alt='Wireless chipset view - Mediatek MT7977AN 2338-BHHAL DTTNUH56' />
+<BlogPicture
+  imageMetadata={image5}
+  alt="Wireless chipset view - Mediatek MT7977AN 2338-BHHAL DTTNUH56"
+/>
 
-import image6 from '../../assets/blog/40/w1700k-openwrt-6.jpg';
+import image6 from "../../assets/blog/40/w1700k-openwrt-6.jpg";
 
-<BlogPicture imageMetadata={image6} alt='Wireless chipset view - Mediatek MT7976GN 2343-CMSL BTP3HX76' />
+<BlogPicture
+  imageMetadata={image6}
+  alt="Wireless chipset view - Mediatek MT7976GN 2343-CMSL BTP3HX76"
+/>
 
-import image7 from '../../assets/blog/40/w1700k-openwrt-7.jpg';
+import image7 from "../../assets/blog/40/w1700k-openwrt-7.jpg";
 
-<BlogPicture imageMetadata={image7} alt='Switch chipset view - Two Realtek RTL8261N NGCH8H3 GN31' />
+<BlogPicture
+  imageMetadata={image7}
+  alt="Switch chipset view - Two Realtek RTL8261N NGCH8H3 GN31"
+/>
 
-import image8 from '../../assets/blog/40/w1700k-openwrt-8.jpg';
+import image8 from "../../assets/blog/40/w1700k-openwrt-8.jpg";
 
-<BlogPicture imageMetadata={image8} alt='CPU and memory view - Airoha AN7581GT 2333-ZAHHSH ATTNKK80 and two ESMT M16U8G16512A CSW1-NLB R20M001 333' />
+<BlogPicture
+  imageMetadata={image8}
+  alt="CPU and memory view - Airoha AN7581GT 2333-ZAHHSH ATTNKK80 and two ESMT M16U8G16512A CSW1-NLB R20M001 333"
+/>
 
-import image9 from '../../assets/blog/40/w1700k-openwrt-9.jpg';
+import image9 from "../../assets/blog/40/w1700k-openwrt-9.jpg";
 
-<BlogPicture imageMetadata={image9} alt='NAND flash view - Winbond 25N04KVZE1R 2339 6338M0018' />
+<BlogPicture
+  imageMetadata={image9}
+  alt="NAND flash view - Winbond 25N04KVZE1R 2339 6338M0018"
+/>
 
-import image10 from '../../assets/blog/40/w1700k-openwrt-10.jpg';
+import image10 from "../../assets/blog/40/w1700k-openwrt-10.jpg";
 
-<BlogPicture imageMetadata={image10} alt='Antenna view - 2.4 GHz and 5 GHz' />
+<BlogPicture imageMetadata={image10} alt="Antenna view - 2.4 GHz and 5 GHz" />
 
-import image11 from '../../assets/blog/40/w1700k-openwrt-11.jpg';
+import image11 from "../../assets/blog/40/w1700k-openwrt-11.jpg";
 
-<BlogPicture imageMetadata={image11} alt='Antenna view - 6 GHz' />
+<BlogPicture imageMetadata={image11} alt="Antenna view - 6 GHz" />
 
 ## My thoughts on Quantum Fiber W1700K
 
@@ -69,9 +96,12 @@ Since I brought up the topic of OpenWRT, you may already guess. Yes, the Quantum
 
 ## How to access the device
 
-import image12 from '../../assets/blog/40/w1700k-openwrt-12.png';
+import image12 from "../../assets/blog/40/w1700k-openwrt-12.png";
 
-<BlogPicture imageMetadata={image12} alt='Serial console pins at the bottom left of Quantum Fiber W1700K board.' />
+<BlogPicture
+  imageMetadata={image12}
+  alt="Serial console pins at the bottom left of Quantum Fiber W1700K board."
+/>
 
 Upon initial investigation, I notice there are exposed pins at the bottom left of this board. After testing the pins with multimeter, they are actually TTL serial console pins. From left to right, there are 5 pins:
 
@@ -91,7 +121,7 @@ Below is a snippet of me playing around with the uBoot commands. Some notable in
 - The vendor name is ECONET, which is a pre-Mediatek name of Airoha. There is a thread on OpenWRT about them ([link](https://forum.openwrt.org/t/openwrt-support-for-zyxel-pmg5617ga-first-gpon-support/144231/95)).
 - Some important commands are accessible, such as `editenv`, `flash`, `tftpboot`, `bootm`.
 
-``` showLineNumbers
+```showLineNumbers
 U-boot version: 2.0
 Hit any key to stop autoboot:  0
 ECNT> ?
@@ -382,7 +412,7 @@ ECNT> mtd
 0x04964750-0x07034750 : "rootfs_slave"
 0x04600000-0x08600000 : "tclinux_slave"
 0x08600000-0x1be00000 : "system"
-ECNT> 
+ECNT>
 ```
 
 ## Serial console access - Boot log
@@ -391,7 +421,7 @@ With stock firmware version WXK001-05.00.30.64, I have an unrestricted access to
 
 At the moment, this stock firmware is nowhere to be found online, so I was not able to download and play around with the binary. In any case, I will post a follow up if there is something new coming out of this interesting access point. Below is the boot log, I hope it becomes useful, somehow.
 
-``` showLineNumbers
+```showLineNumbers
 Secure key exist
 
 AN7581DRAMC V0.8

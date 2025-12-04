@@ -8,7 +8,7 @@ seoTitle: Best publish time for blog engagement'
 seoDescription: How to maximize the impression of your technology blog post? Published time and tags are important factors to increase user engagement in your article.
 ---
 
-import BlogPicture from '../../components/BlogPicture.astro';
+import BlogPicture from "../../components/BlogPicture.astro";
 
 In the past few years, [dev.to](https://dev.to/hunghvu) has become a big player in the international tech blogging community, with a focus on software development regardless of the industries. With audiences from all around the world, I find it to be an inclusive community with diverse user backgrounds and is surely a great place to visit during your dev journey.
 
@@ -21,9 +21,11 @@ Despite having my own blog page, dev.to is where I have conversations with other
 
 To learn about current trends, it is better to not include old articles (e.g., published years ago). Unfortunately, there is no API to get articles based on a date range. That said, I can get published articles sorted by published date. As of April 2022, dev.to has roughly 5000 new articles per month, the two-month worth of data is about 10000 articles, and so on.
 
-``` js
+```js
 // Total article = Number of pages x Number of articles per page
-fetch("https://dev.to/api/articles/latest?page=${i}&per_page=${articlesPerPage}")
+fetch(
+  "https://dev.to/api/articles/latest?page=${i}&per_page=${articlesPerPage}",
+);
 ```
 
 dev.to uses heart (❤️), unicorn (🦄), and save (🔖) as basic metrics to measure the popularity of an article. They are reactions, but let's not forget the comments (💬) too since it is essential to proof of user engagement. There is no downvote system, so for the mentioned metrics, the higher the counts the better. With that said, I grouped the metrics into three different categories.
@@ -34,9 +36,12 @@ dev.to uses heart (❤️), unicorn (🦄), and save (🔖) as basic metrics to 
 
 You can freely request as much data point as you want. At least up to now, I have not faced any request limit restriction.
 
-import image1 from '../../assets/blog/12/forem-analytics-1.webp';
+import image1 from "../../assets/blog/12/forem-analytics-1.webp";
 
-<BlogPicture imageMetadata={image1} alt='Choosing Forem-based communities to perform the analysis.' />
+<BlogPicture
+  imageMetadata={image1}
+  alt="Choosing Forem-based communities to perform the analysis."
+/>
 
 ## When should an article be published? 🔑
 
@@ -44,14 +49,16 @@ Finding out the most active time of the userbase is a good way to improve conten
 
 That said, considering dev.to is an international platform, its users are from different time zones so just judging with my own local time is not a good generalization. To present the relationship between user engagement and article published time, heatmap is a great choice because it shows density at a glance.
 
-import image2 from '../../assets/blog/12/forem-analytics-2.webp';
+import image2 from "../../assets/blog/12/forem-analytics-2.webp";
 
-<BlogPicture imageMetadata={image2} alt='Reactions summary by published time.' />
+<BlogPicture
+  imageMetadata={image2}
+  alt="Reactions summary by published time."
+/>
 
-import image3 from '../../assets/blog/12/forem-analytics-3.webp';
+import image3 from "../../assets/blog/12/forem-analytics-3.webp";
 
-<BlogPicture imageMetadata={image3} alt='Comments summary by published time.' />
-
+<BlogPicture imageMetadata={image3} alt="Comments summary by published time." />
 
 The graphs are displayed with my browser's local time zone, which is PST in this case. The date was manipulated with `date-fns`, so it should be in your local time too. With a sample size of 14850, I have roughly 3 months of data, and using a Z-score of 3, some top-performing articles are removed. Interestingly enough, it appears the articles perform better between midnight to noon from Monday to Friday PST, about midday and after that in GMT, or is it? 🤔
 
@@ -61,19 +68,28 @@ Let's change the calculation method to mean and try to increase a minimal number
 
 You can customize calculation method, Z-score, and minimal sample size per group in the panel below.
 
-import image4 from '../../assets/blog/12/forem-analytics-4.webp';
+import image4 from "../../assets/blog/12/forem-analytics-4.webp";
 
-<BlogPicture imageMetadata={image4} alt='Configuring analysis method using mean, z-score of 3, and minimum of 30 articles.' />
+<BlogPicture
+  imageMetadata={image4}
+  alt="Configuring analysis method using mean, z-score of 3, and minimum of 30 articles."
+/>
 
 And the results are:
 
-import image5 from '../../assets/blog/12/forem-analytics-5.webp';
+import image5 from "../../assets/blog/12/forem-analytics-5.webp";
 
-<BlogPicture imageMetadata={image4} alt='Reactions summary by published time, with adjusted calculation.' />
+<BlogPicture
+  imageMetadata={image4}
+  alt="Reactions summary by published time, with adjusted calculation."
+/>
 
-import image6 from '../../assets/blog/12/forem-analytics-6.webp';
+import image6 from "../../assets/blog/12/forem-analytics-6.webp";
 
-<BlogPicture imageMetadata={image6} alt='Comments summary by published time, with adjusted calculation.' />
+<BlogPicture
+  imageMetadata={image6}
+  alt="Comments summary by published time, with adjusted calculation."
+/>
 
 It seems there is no clear trend with the mean calculation, but is solely based on the reactions summary, I guess Monday - Friday, 6 AM to noon (PST) seems to have consistent performance across the boards. Meanwhile, the weekend, especially Saturday, seems to have a lower engagement rate overall.
 
@@ -81,26 +97,31 @@ It seems there is no clear trend with the mean calculation, but is solely based 
 
 This depends. If the audience is researching a solution to a complex problem, then a 15-minute article might not be long enough, but if they just want to know what JavaScript loop syntax is, maybe a less-than-1-minute article is more than sufficient. Let's see what the data says then.
 
-import image7 from '../../assets/blog/12/forem-analytics-7.webp';
+import image7 from "../../assets/blog/12/forem-analytics-7.webp";
 
-<BlogPicture imageMetadata={image7} alt='Reactions summary by reading time.' />
+<BlogPicture imageMetadata={image7} alt="Reactions summary by reading time." />
 
-import image8 from '../../assets/blog/12/forem-analytics-8.webp';
+import image8 from "../../assets/blog/12/forem-analytics-8.webp";
 
-<BlogPicture imageMetadata={image9} alt='Comments summary by reading time.' />
-
+<BlogPicture imageMetadata={image9} alt="Comments summary by reading time." />
 
 I'm not so surprised to see it is right-skewed. Long articles require much more effort so not many people are going to write one. Short listicles are more of a common thing on dev.to in my experience. Unless there is one specific topic to dive in, then it is unlikely to have an article longer than 7 minutes (>=1500 words). However, to know that the reading time goes up to 100+ minutes, well ..., that is something. 🥶️
 
 Anyway, let's calculate by mean and change minimal number of published articles per given reading time to 30.
 
-import image9 from '../../assets/blog/12/forem-analytics-9.webp';
+import image9 from "../../assets/blog/12/forem-analytics-9.webp";
 
-<BlogPicture imageMetadata={image9} alt='Reactions summary by reading time, with adjusted calculation.' />
+<BlogPicture
+  imageMetadata={image9}
+  alt="Reactions summary by reading time, with adjusted calculation."
+/>
 
-import image10 from '../../assets/blog/12/forem-analytics-10.webp';
+import image10 from "../../assets/blog/12/forem-analytics-10.webp";
 
-<BlogPicture imageMetadata={image10} alt='Comments summary by reading time, with adjusted calculation.' />
+<BlogPicture
+  imageMetadata={image10}
+  alt="Comments summary by reading time, with adjusted calculation."
+/>
 
 By increasing the minimal sample size per reading time group, I remove the statically insignificant data points. The reaction count seems to be increased along with reading time, which is to be expected. As said, long articles usually have their target audience in mind and are even SEO-optimized, so naturally, the engagement rate increases. This peaks at 13-minute with an average of 10.3 reactions, but I think 5-minute of reading time is a more reasonable length for most content creators out there.
 
@@ -112,23 +133,35 @@ Everyone can use up to 4 tags in an article, but first and foremost, they must b
 
 Using the same data set, here is what we have judging by summation.
 
-import image11 from '../../assets/blog/12/forem-analytics-11.webp';
+import image11 from "../../assets/blog/12/forem-analytics-11.webp";
 
-<BlogPicture imageMetadata={image11} alt='Reactions summary per tag name, by summation.' />
+<BlogPicture
+  imageMetadata={image11}
+  alt="Reactions summary per tag name, by summation."
+/>
 
-import image12 from '../../assets/blog/12/forem-analytics-12.webp';
+import image12 from "../../assets/blog/12/forem-analytics-12.webp";
 
-<BlogPicture imageMetadata={image12} alt='Comments summary per tag name, by summation.' />
+<BlogPicture
+  imageMetadata={image12}
+  alt="Comments summary per tag name, by summation."
+/>
 
 These are mostly generic web development and computer science tags. Undoubtedly, among the 4500+ tags, these are the most popular on dev.to. However, that creates the same problem as reading time (heavily skewed distribution). With that said, let's try finding the mean with at least 30 published articles per tag.
 
-import image13 from '../../assets/blog/12/forem-analytics-13.webp';
+import image13 from "../../assets/blog/12/forem-analytics-13.webp";
 
-<BlogPicture imageMetadata={image13} alt='Reactions summary per tag name, by mean.' />
+<BlogPicture
+  imageMetadata={image13}
+  alt="Reactions summary per tag name, by mean."
+/>
 
-import image14 from '../../assets/blog/12/forem-analytics-13.webp';
+import image14 from "../../assets/blog/12/forem-analytics-13.webp";
 
-<BlogPicture imageMetadata={image14} alt='Comments summary per tag name, by mean.' />
+<BlogPicture
+  imageMetadata={image14}
+  alt="Comments summary per tag name, by mean."
+/>
 
 Now we only have about 140 tags left. Interestingly the top three tags this time are:
 

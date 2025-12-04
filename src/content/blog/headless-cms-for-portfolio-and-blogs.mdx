@@ -9,7 +9,7 @@ seoDescription: This article is a beginner guide to the concept of headless CMS 
 series: Products that help bootstrap your website
 ---
 
-import BlogPicture from '../../components/BlogPicture.astro';
+import BlogPicture from "../../components/BlogPicture.astro";
 
 Why do I want to find a headless content management system (headless CMS) to build my website for portfolio and blogging purposes? The blogging platforms like Hashnode, Dev, Hackernoon are certainly great places to start. They helped me write and published articles in minutes. That said, I would like to own my data and further, customize the website completely. This is only achievable by creating everything from the ground up, and it would be a fun side project for me so why not!
 
@@ -21,7 +21,7 @@ Also, the follow-up article is available at [Strapi vs Directus vs Payload, Head
 
 ## What is a CMS?
 
-In software development, we can generally say there are three main components: a front end, a back end, and a database. The *front end* is a presentation layer so clients can interact with an application server, in other words, it is the user interface (e.g., static web page, mobile application interface). Meanwhile, business logic is processed on the back end (server), and the *database* is used to hold user data.
+In software development, we can generally say there are three main components: a front end, a back end, and a database. The _front end_ is a presentation layer so clients can interact with an application server, in other words, it is the user interface (e.g., static web page, mobile application interface). Meanwhile, business logic is processed on the back end (server), and the _database_ is used to hold user data.
 
 Traditional CMSs usually use a monolithic architecture, hence it contains all these three components, and the front end is considered the **head** of CMS. Instead of building your product, traditional CMSs take care of everything for you. They provide pre-defined templates, from the presentation layer to security, data storage, user transactions, and many more. From social media, employee management, and whatnot, there is a pre-built CMS that serves your use cases.
 
@@ -41,7 +41,7 @@ Generally, there are four different categories of CMSs:
 
 **Pure headless CMSs**
 
-- When talking about *headless*, this means there is no presentation layer in place (**no head**) and all of the content (e.g., blog article) is distributed via endpoints (APIs). By design, pure headless CMSs are front-end agnostic, so there is freedom in choosing a front-end technology stack of your own. If you are interested in front-end technologies, I had written an article about this topic before: [Which front-end frameworks and libraries should you learn in 2022?](https://hungvu.tech/front-end-tech-stack-components)
+- When talking about _headless_, this means there is no presentation layer in place (**no head**) and all of the content (e.g., blog article) is distributed via endpoints (APIs). By design, pure headless CMSs are front-end agnostic, so there is freedom in choosing a front-end technology stack of your own. If you are interested in front-end technologies, I had written an article about this topic before: [Which front-end frameworks and libraries should you learn in 2022?](https://hungvu.tech/front-end-tech-stack-components)
 - From this category onward, more pre-built, open-source and developer-friendly CMSs appear. Inherently, flexibility in development is increased. These headless CMSs are generic by default, that said, some can specialize and optimize in certain verticals such as eCommerce, marketing, and so on.
 
 **Customized MACH-based CMSs**
@@ -49,10 +49,12 @@ Generally, there are four different categories of CMSs:
 - MACH architecture stands for microservices, API first, cloud-native, and headless, and this category means you build up the whole CMS from the ground up.
 - This is the most powerful type of CMS but came at the cost of heavy development resources. For example, the social media that you are using right now are humongous CMSs composed of several different technologies and require different teams of experts to develop, deploy, and maintain.
 
+import image1 from "../../assets/blog/19/cms-1.webp";
 
-import image1 from '../../assets/blog/19/cms-1.webp';
-
-<BlogPicture imageMetadata={image1} alt='Catergories of content management systems.' />
+<BlogPicture
+  imageMetadata={image1}
+  alt="Catergories of content management systems."
+/>
 
 Each category offers self-host, managed-host, and software as a service (SaaS) approaches, but user-friendly solutions towards the right in the diagram are mainly SaaS and vice versa. However, the current trend of the market seems to move toward the middle (grey area), and hence a blurry line is there. The next-gen headless CMSs offer a better user experience and become more focused on a certain vertical, while still maintaining their scalability, open, and developer-friendly nature. On the other hand, traditional monolithic CMSs are trying to be more modular and decoupled as a way to mitigate their downsides and attract a new wave of customers.
 
@@ -60,7 +62,7 @@ As a web developer myself, a headless CMS would be a perfect choice for building
 
 ## Headless CMSs and decoupled CMSs are not entirely the same
 
-Headless may sound *decoupled* to you, and indeed it is, but a headless CMS is more of a subset of the decoupled system. Traditional CMSs can be used in a decoupled manner. For instance, WordPress can operate without the front end, or "headless", but there are two key distinctions:
+Headless may sound _decoupled_ to you, and indeed it is, but a headless CMS is more of a subset of the decoupled system. Traditional CMSs can be used in a decoupled manner. For instance, WordPress can operate without the front end, or "headless", but there are two key distinctions:
 
 - The decoupled CMS itself has a built-in presentation layer by design, so since its inception, WordPress has assumed principles for designing the front end and what it can work with.
 - The decoupled CMS itself has pre-defined business logic, object definition, and architecture. They are not supposed to be changed or are relatively unintuitive to modify.
@@ -190,7 +192,7 @@ You can check out Ghost at [ghost.org](https://ghost.org/).
 
 - Does Ghost have a free plan? Technically, yes.
 - Is Ghost open-source? Yes.
-- How can we host Ghost?  We can either freely self-host (fully featured) or use the Ghost Cloud service. There is no free plan for the cloud host though.
+- How can we host Ghost? We can either freely self-host (fully featured) or use the Ghost Cloud service. There is no free plan for the cloud host though.
 - What types of content-query APIs does Ghost support? Both GraphQL and REST are supported.
 - What types of text editor does Ghost provide by default? Both WYSIWYG and Markdown editors are supported.
 - Does Ghost have TypeScript support? Unknown.
@@ -207,7 +209,7 @@ You can check out Ghost at [ghost.org](https://ghost.org/).
 You can check out Storyblok at [storyblok.com/home](https://www.storyblok.com/home).
 
 - Does Storyblok have a free plan? Yes, but with limited features.
-- Is Storyblok open-source?  No.
+- Is Storyblok open-source? No.
 - How can we host Storyblok? Storyblok is a proprietary SaaS, so only cloud hosting is available.
 - What types of content-query APIs does Storyblok support? Both GraphQL and REST are supported.
 - What types of text editor does Storyblok provide by default? By default, only the WYSIWYG editor is available, but you can import Markdown content.
@@ -222,7 +224,7 @@ You can check out Storyblok at [storyblok.com/home](https://www.storyblok.com/ho
 
 ### Webiny
 
-*Note*: The detail has been updated based on feedback from the Webiny team.
+_Note_: The detail has been updated based on feedback from the Webiny team.
 
 You can check out Webiny at [webiny.com](https://www.webiny.com/).
 
@@ -242,7 +244,7 @@ You can check out Webiny at [webiny.com](https://www.webiny.com/).
 
 ### Contember
 
-*Note*: The detail has been updated based on feedback from the Contember team.
+_Note_: The detail has been updated based on feedback from the Contember team.
 
 You can check out Contember at [contember.com](https://www.contember.com/).
 
@@ -348,6 +350,3 @@ And, let's connect!
 - [LinkedIn](https://www.linkedin.com/in/hunghvu/)
 - [GitHub](https://github.com/hunghvu)
 - [X (formerly Twitter)](https://x.com/hunghvu_dev)
-
-
-

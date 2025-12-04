@@ -8,7 +8,7 @@ seoTitle: Create a webapp using Amplication, Novu, and Discord
 seoDescription: In this project, I'll be showing you a way to integrate Novu with Amplification, a BaaS platform to quickly develop a back end with user notification PoC.
 ---
 
-import BlogPicture from '../../components/BlogPicture.astro';
+import BlogPicture from "../../components/BlogPicture.astro";
 
 ## TL;DR
 
@@ -66,9 +66,9 @@ Imagine a startup that specializes in selling sustainable fashion products onlin
 
 That's where Amplication comes in. Using Amplication's visual editor, the startup's development team can quickly generate a custom backend infrastructure that meets their specific needs. They can easily create services for product management, order processing, payment processing, and customer management. The codebase for this service is then generated and can be version controlled and synced to GitHub so the team has a formal commit tree to follow through, thus enabling rolling back the development when breaking bugs happen.
 
-import image1 from '../../assets/blog/32/amplication-1.webp';
+import image1 from "../../assets/blog/32/amplication-1.webp";
 
-<BlogPicture imageMetadata={image1} alt='Amplication user interface.' />
+<BlogPicture imageMetadata={image1} alt="Amplication user interface." />
 
 With Amplication, the startup can focus on building its storefront or social media outreach effort, knowing that the backend infrastructure is secure, scalable, and customizable. One thing to note, Amplication can generate most of the core codebase, that said, its scope (at default) is limited to:
 
@@ -80,9 +80,9 @@ With Amplication, the startup can focus on building its storefront or social med
 
 Theoretically, the startup can leverage existing APIs (e.g., via plugins) to seamlessly integrate with popular shipping carriers, payment gateways, and inventory management systems. This integration saves the startup's development team time and resources while providing a seamless shopping experience for their customers. The thing is, not many plugins are available at the time of writing.
 
-import image2 from '../../assets/blog/32/amplication-2.webp';
+import image2 from "../../assets/blog/32/amplication-2.webp";
 
-<BlogPicture imageMetadata={image2} alt='Amplication integration store.' />
+<BlogPicture imageMetadata={image2} alt="Amplication integration store." />
 
 Considering the open-source nature of Amplication, more community plugins along with first-party solutions will become available over time. The startup needs a notification feature to let their customers know when new items arrive, but there is no notification plugin at the moment. Does it mean the startup has to wait for that specific plugin to come out? Not at all, for now, the startup can take advantage of the generated codebase and build a custom business logic using Novu, an open-source notification infrastructure.
 
@@ -114,13 +114,13 @@ One layer of abstraction is in the `base` folder, and this is for files that are
 
 Being customizable, many categories of code can be implemented, such as:
 
-- An *action* when a request hits an API.
-- A *query* in a GraphQL resolver.
-- *Business logic* in service and responses.
+- An _action_ when a request hits an API.
+- A _query_ in a GraphQL resolver.
+- _Business logic_ in service and responses.
 
 Business logic in this context is an operation performed when a database query is invoked (e.g., send a notification when a new item is added to the database). The following is a generic sample of implementing custom business logic in Amplication, but in the next section, you will dive into the practical usage of this feature.
 
-``` typescript showLineNumbers
+```typescript showLineNumbers
 // Author: Hung Vu
 
 // <entity-name>.service.ts
@@ -136,7 +136,7 @@ export class SneakerService extends SneakerServiceBase {
   }
   async create(data: any) {
     // Add your custom business logic here
-    notifyCustomersOnNewArrivals()
+    notifyCustomersOnNewArrivals();
 
     return this.prisma.myModel.create({
       data,
@@ -183,57 +183,66 @@ Coming back to the mentioned example, let's say you are a fashion store owner. Y
 There are two main ways to integrate service with Discord: Webhooks and Discord Bots. At the time of writing, Novu only supports a webhook approach. To create a webhook:
 
 - Go to your Discord server and choose your targeted announcement channel.
-- Hover your mouse over that channel, then go to the *Edit channel dashboard.*
+- Hover your mouse over that channel, then go to the _Edit channel dashboard._
 
-import image3 from '../../assets/blog/32/amplication-3.webp';
+import image3 from "../../assets/blog/32/amplication-3.webp";
 
-<BlogPicture imageMetadata={image3} alt='Edit channel in Discord.' />
+<BlogPicture imageMetadata={image3} alt="Edit channel in Discord." />
 
-- Navigate to *Integrations*, then choose *Create Webhooks.*
+- Navigate to _Integrations_, then choose _Create Webhooks._
 
-import image4 from '../../assets/blog/32/amplication-4.webp';
+import image4 from "../../assets/blog/32/amplication-4.webp";
 
-<BlogPicture imageMetadata={image4} alt='Integrate services with Discord via webhooks.' />
+<BlogPicture
+  imageMetadata={image4}
+  alt="Integrate services with Discord via webhooks."
+/>
 
-- Your first webhook is automatically created, click on that webhook and *Copy Webhook URL*. Remember, Discord webhooks do not require authentication, so it is sensitive. Do not share the URL publicly.
+- Your first webhook is automatically created, click on that webhook and _Copy Webhook URL_. Remember, Discord webhooks do not require authentication, so it is sensitive. Do not share the URL publicly.
 
-import image5 from '../../assets/blog/32/amplication-5.webp';
+import image5 from "../../assets/blog/32/amplication-5.webp";
 
-<BlogPicture imageMetadata={image5} alt='Discord webhook is sensitive, so do not share it publicly.' />
+<BlogPicture
+  imageMetadata={image5}
+  alt="Discord webhook is sensitive, so do not share it publicly."
+/>
 
 ### Configure Discord message channel in Novu
 
 Novu offers a variety of integrations in their store, and Discord is one of them.
 
-- Navigate to the *Integration Store* and activate Discord in the *Chat* section.
+- Navigate to the _Integration Store_ and activate Discord in the _Chat_ section.
 
-import image6 from '../../assets/blog/32/amplication-6.webp';
+import image6 from "../../assets/blog/32/amplication-6.webp";
 
-<BlogPicture imageMetadata={image6} alt='Novu supports integration with Discord.' />
+<BlogPicture
+  imageMetadata={image6}
+  alt="Novu supports integration with Discord."
+/>
 
-- Navigate to the *Notifications* tab, and create a new template.
-- In the *Edit Template* dashboard, go to the *Workflow* editor.
-- After *Trigger*, add the *Chat* step. In the *Edit Chat Template*, add the following:`A new product has just arrived, check it out at` [`store.example.com`](https://hungvu.tech/)`!`
+- Navigate to the _Notifications_ tab, and create a new template.
+- In the _Edit Template_ dashboard, go to the _Workflow_ editor.
+- After _Trigger_, add the _Chat_ step. In the _Edit Chat Template_, add the following:`A new product has just arrived, check it out at` [`store.example.com`](https://hungvu.tech/)`!`
 
-import image7 from '../../assets/blog/32/amplication-7.webp';
+import image7 from "../../assets/blog/32/amplication-7.webp";
 
-<BlogPicture imageMetadata={image7} alt='Create a workflow in Novu.' />
+<BlogPicture imageMetadata={image7} alt="Create a workflow in Novu." />
 
 ### Register a service user with Novu
 
 Normally, Novu is integrated using the flow below.
 
 - Create a user in your user database (e.g., Amplication database).
-- Upon user creation, create a Novu *subscriber* using your user id and contact information. This subscriber acts as a service user for the Discord notification functionality.
+- Upon user creation, create a Novu _subscriber_ using your user id and contact information. This subscriber acts as a service user for the Discord notification functionality.
 - Upon receiving a specific event on your backend, retrieve your targeted user(s) from the database.
-- Using the user id, *trigger* *notification templates* via Novu unified API. This whole step can be inside a loop.
+- Using the user id, _trigger_ _notification templates_ via Novu unified API. This whole step can be inside a loop.
 - Upon receiving a Trigger, Novu will use the provided user information, go over each workflow then send out a message dedicated to that user across different channels.
 
 Although Discord is more of a group, non-personalized channel, there still needs an associated user in each `trigger` request. This user does not need to be in your store user database, it can be a pre-configured service user that you create in Novu at the beginning. To do so, fire up a temporary Node.js application and call Novu API.
 
-``` typescript showLineNumbers
+```typescript showLineNumbers
 // Author: Hung Vu
-import { Novu } from '@novu/node';
+import { Novu } from "@novu/node";
 
 const novu = new Novu(process.env.NOVU_API_KEY);
 
@@ -250,7 +259,7 @@ For demonstration purposes, Amplication provides a sample service for the e-comm
 
 Then, navigate to `src`, create a `global` folder and put the following two files in there: `notification.service.ts` and `notification.module.ts`. In Nest.js, that is a way to define reusable modules which can then be imported across different services. In this case, we want to define a notification feature once and reuse it in different business logic.
 
-``` typescript showLineNumbers
+```typescript showLineNumbers
 /**
  * notification.service.ts
  *
@@ -268,10 +277,14 @@ export class NotificationService {
   notifyDiscordCommunity = async () => {
     try {
       // You may notice there is no credential configuration for Discord webhook in Novu dashboard, so this step is to assign a URL to your service user.
-      await this.novu.subscribers.setCredentials(process.env.NOVU_SERVICE_USER_ID!, ChatProviderIdEnum.Discord, {
-        // This is a Discord webhook URL retrieved in a very first step.
-        webhookUrl: process.env.DISCORD_WEBHOOK!,
-      });
+      await this.novu.subscribers.setCredentials(
+        process.env.NOVU_SERVICE_USER_ID!,
+        ChatProviderIdEnum.Discord,
+        {
+          // This is a Discord webhook URL retrieved in a very first step.
+          webhookUrl: process.env.DISCORD_WEBHOOK!,
+        },
+      );
 
       // Send Discord notification via a service user.
       await this.novu.trigger("discord", {
@@ -311,7 +324,7 @@ There are two parts to this statement:
 - **Multi-channel notification**: This is out of the scope of our tutorial, but with the unified API of Novu, you can continue to scale horizontally with the provided introductory codebase.
 - **Let customers know when new products arrive**: This means whenever you add a new `product` to the database, Novu is triggered and sends out a Discord notification. To implement this, you need to modify `product.module.ts` and `product.controller.ts`. The controller is only responsible for REST API requests. GraphQL-wise, `product.resolver.ts` needs to be modified, but the general concept is the same.
 
-``` typescript showLineNumbers
+```typescript showLineNumbers
 /**
  * product.module.ts
  *
@@ -359,7 +372,7 @@ export class ProductController extends ProductControllerBase {
     @nestAccessControl.InjectRolesBuilder()
     protected readonly rolesBuilder: nestAccessControl.RolesBuilder,
     // Gain access to NotificationService
-    protected notificationService: NotificationService
+    protected notificationService: NotificationService,
   ) {
     super(service, rolesBuilder);
   }
@@ -373,14 +386,16 @@ export class ProductController extends ProductControllerBase {
     this.notificationService.notifyDiscordCommunity();
   }
 }
-
 ```
 
 And that is it, you have successfully integrated Amplication with Novu. With this, whenever a new item arrives, your beloved Discord community will be the first one to learn about it.
 
-import image8 from '../../assets/blog/32/amplication-8.webp';
+import image8 from "../../assets/blog/32/amplication-8.webp";
 
-<BlogPicture imageMetadata={image8} alt='Amplication uses Novu as a microservice to distribute messages to Discord channels.' />
+<BlogPicture
+  imageMetadata={image8}
+  alt="Amplication uses Novu as a microservice to distribute messages to Discord channels."
+/>
 
 ## Wrap up
 
@@ -401,4 +416,3 @@ And, let's connect!
 - [LinkedIn](https://www.linkedin.com/in/hunghvu/)
 - [GitHub](https://github.com/hunghvu)
 - [X (formerly Twitter)](https://x.com/hunghvu_dev)
-

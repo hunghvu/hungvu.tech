@@ -9,7 +9,7 @@ seoDescription: Expanding your Proxmox storage and ZFS pool with external SSD en
 series: Homelab
 ---
 
-import BlogPicture from '../../components/BlogPicture.astro';
+import BlogPicture from "../../components/BlogPicture.astro";
 
 While experimenting with the storage configuration of my Proxmox node in my homelab, I wondered what the experience would be if I utilized my spare SSD-to-USB enclosures to expand storage. Normally, hypervisor products are appliances so the underlying OS is relatively locked down. Using external USB storage might not be possible with these appliances at all. However, Proxmox allows free root access to its Debian distro underneath, so I expect the drives to be mountable without any issues.
 
@@ -59,13 +59,19 @@ This outcome was surprising to me, especially since these specific enclosures wo
 
 If relevant, I also have a handy Windows To Go installation, which is only functional with the RTL9210 enclosure on the Intel system. Although the ASM236 enclosure is operational, the latency is extremely high—for example, it takes more than 10 minutes to boot and similarly over 10 minutes to reach the login screen. This behavior may be related to the USB errors observed in Proxmox, though I'm not certain.
 
-import image1 from '../../assets/blog/37/ssd-proxmox-1.png';
+import image1 from "../../assets/blog/37/ssd-proxmox-1.png";
 
-<BlogPicture imageMetadata={image1} alt='USB enumaration, power cycle, address acceptance, and timeout errors (code -62, -71).' />
+<BlogPicture
+  imageMetadata={image1}
+  alt="USB enumaration, power cycle, address acceptance, and timeout errors (code -62, -71)."
+/>
 
-import image2 from '../../assets/blog/37/ssd-proxmox-2.png';
+import image2 from "../../assets/blog/37/ssd-proxmox-2.png";
 
-<BlogPicture imageMetadata={image2} alt='Unable to read config index 0 descriptor/start: -61 error.' />
+<BlogPicture
+  imageMetadata={image2}
+  alt="Unable to read config index 0 descriptor/start: -61 error."
+/>
 
 ### Realtek RTL9210 enclosures were buggy but worked fine after a firmware change
 
@@ -73,13 +79,19 @@ Initially, my RTL9210 enclosures were operating on firmware version 4.30.23, bui
 
 In the future, I may write an article about the firmware upgrade process, as it took me an hour or two to sift through Station-Driver forum discussions to grasp the procedure.
 
-import image3 from '../../assets/blog/37/ssd-proxmox-3.png';
+import image3 from "../../assets/blog/37/ssd-proxmox-3.png";
 
-<BlogPicture imageMetadata={image3} alt='Error 5, type 2 with RTL9210 controller pre-firmware upgrade.' />
+<BlogPicture
+  imageMetadata={image3}
+  alt="Error 5, type 2 with RTL9210 controller pre-firmware upgrade."
+/>
 
-import image4 from '../../assets/blog/37/ssd-proxmox-4.png';
+import image4 from "../../assets/blog/37/ssd-proxmox-4.png";
 
-<BlogPicture imageMetadata={image4} alt='RTL 9210 enclosures experienced over-current condition error on firmware v4.30.23.' />
+<BlogPicture
+  imageMetadata={image4}
+  alt="RTL 9210 enclosures experienced over-current condition error on firmware v4.30.23."
+/>
 
 ### Genesys GL3590 USB hub controller (10 Gbps port) cannot handle any two external enclosures at once.
 
@@ -87,13 +99,19 @@ When using two RTL9210 enclosures, having one plugged into a 10 Gbps port and th
 
 Regarding the Windows To Go installation previously mentioned, performance was significantly better when using the 20 Gbps port. This port benefits from a dedicated PCIe lane that facilitates direct communication with the CPU. In contrast, disk performance is severely degraded when utilizing the 10 Gbps port. While it's unclear whether this is a hardware or software issue, I think it is a hardware limitation, correlating with my observation in the Proxmox environment. The following are some of the errors observed when connecting two RTL9210 enclosures to the 10 Gbps ports.
 
-import image5 from '../../assets/blog/37/ssd-proxmox-5.png';
+import image5 from "../../assets/blog/37/ssd-proxmox-5.png";
 
-<BlogPicture imageMetadata={image5} alt='Connect-debounced failed error on the Genesys GL3590 USB hub controller.' />
+<BlogPicture
+  imageMetadata={image5}
+  alt="Connect-debounced failed error on the Genesys GL3590 USB hub controller."
+/>
 
-import image6 from '../../assets/blog/37/ssd-proxmox-6.png';
+import image6 from "../../assets/blog/37/ssd-proxmox-6.png";
 
-<BlogPicture imageMetadata={image6} alt='Various types of device, I/O, buffer, timeout errors when using two 10 Gbps port at the same time.' />
+<BlogPicture
+  imageMetadata={image6}
+  alt="Various types of device, I/O, buffer, timeout errors when using two 10 Gbps port at the same time."
+/>
 
 ### If one external enclosure fails, it is best to have the failure happen on the 10 Gbps port
 
@@ -101,9 +119,12 @@ ZFS RaidZ1 can tolerate up to one drive failure. If a failure occurs, it is most
 
 The issues varied, but they resembled what was shown in other sections of this article. Interestingly, the likelihood of experiencing random issues when the enclosure is not plugged into the 20 Gbps port varies. If the enclosure is unplugged before booting, or during the shutdown/reboot process, the pool is likely to fail, leading to a system stuck in the shutdown/reboot/boot sequence. However, if the system is running and the enclosure is unplugged, sometimes my ZFS pool continues to operate, and sometimes it degrades immediately.
 
-import image7 from '../../assets/blog/37/ssd-proxmox-7.png';
+import image7 from "../../assets/blog/37/ssd-proxmox-7.png";
 
-<BlogPicture imageMetadata={image7} alt='Failed to start and import ZFS pool due to drive failure.' />
+<BlogPicture
+  imageMetadata={image7}
+  alt="Failed to start and import ZFS pool due to drive failure."
+/>
 
 ### Performance-wise, there was an inconsistency
 
@@ -111,17 +132,26 @@ Delving into storage performance is beyond my expertise, so drawing any definiti
 
 My OS drive offers around of usable space. When conducting tests with CrystalDiskMark at smaller test sizes (below 16 GB per run), performance appeared relatively stable. This stability is likely because Proxmox and ZFS were able to cache all the data, resulting in speeds of around 20 GB/s. However, when I increased the test size to 32 GB with 9 runs, performance inconsistencies began to emerge, occasionally causing the Windows 11 VM to freeze until the tests concluded. I believe these inconsistencies were due to a combination of factors, including hardware limitations (like the data access patterns to USB and bottlenecks) and software configurations (like storage tuning). Below are some images highlighting the observed inconsistencies. These runs were not consecutive, so will see differences in usable storage.
 
-import image8 from '../../assets/blog/37/ssd-proxmox-8.png';
+import image8 from "../../assets/blog/37/ssd-proxmox-8.png";
 
-<BlogPicture imageMetadata={image8} alt='High performance with small test size.' />
+<BlogPicture
+  imageMetadata={image8}
+  alt="High performance with small test size."
+/>
 
-import image9 from '../../assets/blog/37/ssd-proxmox-9.png';
+import image9 from "../../assets/blog/37/ssd-proxmox-9.png";
 
-<BlogPicture imageMetadata={image9} alt='Storage performance inconsistencies starts showing up at 32gb, 9 runs.' />
+<BlogPicture
+  imageMetadata={image9}
+  alt="Storage performance inconsistencies starts showing up at 32gb, 9 runs."
+/>
 
-import image10 from '../../assets/blog/37/ssd-proxmox-10.png';
+import image10 from "../../assets/blog/37/ssd-proxmox-10.png";
 
-<BlogPicture imageMetadata={image10} alt='Low measured performance, possibly due to cache saturation and external SSD enclosures access, leading to OS freeze during the run.' />
+<BlogPicture
+  imageMetadata={image10}
+  alt="Low measured performance, possibly due to cache saturation and external SSD enclosures access, leading to OS freeze during the run."
+/>
 
 ## Conclusion
 

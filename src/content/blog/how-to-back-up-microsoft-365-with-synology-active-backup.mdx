@@ -8,7 +8,7 @@ seoTitle: Backup and encrypt Microsoft 365 with Synology Active Backup
 seoDescription: In this article, I will go over the necessary steps to create the first backup of your Microsoft 365 cloud services on DiskStation Manager (DSM) 7.
 ---
 
-import BlogPicture from '../../components/BlogPicture.astro';
+import BlogPicture from "../../components/BlogPicture.astro";
 
 Synology has been a strong player in the Network-attached Storage (NAS) market for home users and small businesses due to their user-friendly solutions. As a mature platform, Synology NAS features can be greatly expanded via the Package Center. One of the popular packages is Active Backup for Microsoft 365. In this article, I will go over the necessary steps to create the first backup of your Microsoft 365 cloud services on DiskStation Manager 7 (DSM 7).
 
@@ -26,9 +26,12 @@ Synology has been a strong player in the Network-attached Storage (NAS) market f
 
 Active Backup for Microsoft 365 is a free add-on package, so it does not come by default on a freshly installed DSM. Download and install the package. An online Synology account is required to activate the package.
 
-import image1 from '../../assets/blog/23/synology-1.webp';
+import image1 from "../../assets/blog/23/synology-1.webp";
 
-<BlogPicture imageMetadata={image1} alt='Install Active Backup for Microsoft 365 from Synology Package Center.' />
+<BlogPicture
+  imageMetadata={image1}
+  alt="Install Active Backup for Microsoft 365 from Synology Package Center."
+/>
 
 ## Step 2: Create a backup destination
 
@@ -36,15 +39,18 @@ import image1 from '../../assets/blog/23/synology-1.webp';
 - Press **Create**, and enter the folder name. Set other checkboxes to your preference, then press **Next**.
 - Choose **Encrypted this shared folder** and provide your preferred key. This is sensitive information so store it securely, and you will need the key to decrypt and mount the Shared Folder for future uses. The key can be generated using a password generator or other key generator libraries.
 
-import image2 from '../../assets/blog/23/synology-2.webp';
+import image2 from "../../assets/blog/23/synology-2.webp";
 
-<BlogPicture imageMetadata={image2} alt='Generate a secret key using Python.' />
+<BlogPicture imageMetadata={image2} alt="Generate a secret key using Python." />
 
 - Press **Next** and enable **data checksum for advanced data integrity**. Do not enable **file compression** or else, encryption will be disabled.
 
-import image3 from '../../assets/blog/23/synology-3.webp';
+import image3 from "../../assets/blog/23/synology-3.webp";
 
-<BlogPicture imageMetadata={image3} alt='Enable shared folder compression will disable shared folder encryption.' />
+<BlogPicture
+  imageMetadata={image3}
+  alt="Enable shared folder compression will disable shared folder encryption."
+/>
 
 - Press **Next** to download the encryption key file (`.key`), and finish creating a Shared Folder.
 - Set user permission to the Shared Folder according to your preference.
@@ -53,57 +59,72 @@ import image3 from '../../assets/blog/23/synology-3.webp';
 
 Sensitive data must always be encrypted, so there is more protection against malicious actors (e.g., thieves, hackers, etc.) However, encrypting an Active Backup for Microsoft 365 (also applicable for Google Workspace) might be confusing due to the lack of official documentation from Synology. **File-level encryption** is introduced in Active Backup for Business's latest version (a different package, not for Microsoft 365 and Google Workspace). Therefore, encryption happens in a backup task, not a Shared Folder level.
 
-import image4 from '../../assets/blog/23/synology-4.webp';
+import image4 from "../../assets/blog/23/synology-4.webp";
 
-<BlogPicture imageMetadata={image4} alt='Create a virtual machine backup task.' />
+<BlogPicture
+  imageMetadata={image4}
+  alt="Create a virtual machine backup task."
+/>
 
 However, file-level encryption is still not presented in neither Active Backup for Microsoft 365 nor Active Backup for Google Workspace, so we can only rely on Shared Folder encryption.
 
 ### Why should you create an encrypted Shared Folder at the beginning?
 
-Here is an interesting point, Synology uses **eCryptFS** as an encryption mechanism for its Shared Folder, so there is 143 English characters or 47 Asian (CJK) characters limitation on a file or folder name (*not the whole path length*). Therefore, enabling encryption on a non-encrypted Shared Folder with long-name files will cause an error.
+Here is an interesting point, Synology uses **eCryptFS** as an encryption mechanism for its Shared Folder, so there is 143 English characters or 47 Asian (CJK) characters limitation on a file or folder name (_not the whole path length_). Therefore, enabling encryption on a non-encrypted Shared Folder with long-name files will cause an error.
 
-import image5 from '../../assets/blog/23/synology-5.webp';
+import image5 from "../../assets/blog/23/synology-5.webp";
 
-<BlogPicture imageMetadata={image5} alt='143 characters limitation of eCryptFS used by Synology.' />
+<BlogPicture
+  imageMetadata={image5}
+  alt="143 characters limitation of eCryptFS used by Synology."
+/>
 
 However, if the Shared Folder has been encrypted since the beginning, backup tasks can still run and store files to the destination normally. However, the long file name is appended with `(name too long)` at the end. This is not just a visual presentation in the Synology portal, as the downloaded-from-NAS file also has `(name too long)` at the end. The Shared Folder can be un-mounted (encrypted) and mounted (decrypted) without any trouble. I reached out to Synology support to ask about this behavior, and they confirmed it is normal.
 
-import image6 from '../../assets/blog/23/synology-6.webp';
+import image6 from "../../assets/blog/23/synology-6.webp";
 
-<BlogPicture imageMetadata={image6} alt='Name too long error message.' />
+<BlogPicture imageMetadata={image6} alt="Name too long error message." />
 
 ## Step 3: Create a backup task for Microsoft 365 services
 
-import image7 from '../../assets/blog/23/synology-7.webp';
+import image7 from "../../assets/blog/23/synology-7.webp";
 
-<BlogPicture imageMetadata={image7} alt='Active Backup task creation wizard.' />
+<BlogPicture imageMetadata={image7} alt="Active Backup task creation wizard." />
 
 - Open **Active Backup for Microsoft 365** package and go to **Task List**.
 - Choose **Create a backup task** then press **Next**.
-- Choose your preferred **Microsoft 365 Endpoint**. If your subscription is directly from the Microsoft website, then the choice is *Microsoft 365*.
+- Choose your preferred **Microsoft 365 Endpoint**. If your subscription is directly from the Microsoft website, then the choice is _Microsoft 365_.
 - Set up a certificate password, treat it as creating an encryption key in **step 2**, then press **Next**.
 - Synology will require you to sign in as a Microsoft tenant admin with enough privilege to provide consent on behalf of your organization. The picture below shows the permission granted to an application created by Synology on Azure to perform backup tasks.
 
-import image8 from '../../assets/blog/23/synology-8.webp';
+import image8 from "../../assets/blog/23/synology-8.webp";
 
-<BlogPicture imageMetadata={image8} alt='Permission granted to Synology Active Backup for Microsoft 365.' />
+<BlogPicture
+  imageMetadata={image8}
+  alt="Permission granted to Synology Active Backup for Microsoft 365."
+/>
 
 - You will be asked to confirm the NAS IP address. As a NAS, it should have a static IP address, but if that somehow changes down the road. Active Backup for Business allows connection edits, but that does not seem to be the case for Microsoft 365 and for Google Workspace, so you need to recreate a task.
 - Fill out **Task name**, **Backup destination** (encrypted Shared Folder you just created). Other settings are according to your preference. Active Backup for Microsoft 365 allows backup for tenant users, groups, sites, teams, auto-discovery, and more. You can selectively choose what to back up.
 - Microsoft Teams backup requires access to Protected APIs, so you have to request Microsoft for access. Instruction for the request can be found [here](https://learn.microsoft.com/en-us/graph/teams-protected-apis). If this is not satisfied, Microsoft Teams' backup will fail. That said, it is great that the Active Backup task can be partially failed without creating any blockage to the flow.
 
-import image9 from '../../assets/blog/23/synology-9.webp';
+import image9 from "../../assets/blog/23/synology-9.webp";
 
-<BlogPicture imageMetadata={image9} alt='The backup task can be partially failed, but that will not break the setup.' />
+<BlogPicture
+  imageMetadata={image9}
+  alt="The backup task can be partially failed, but that will not break the setup."
+/>
 
 - Press **Next** to select backup and retention policy. Personally, I preferred to have a physical air gap system, so my choice is to have **Manual backup** task and **Keep all versions** policies.
 - Confirm the summary, then press **Apply** to finish the task creation.
 - Now that the backup task is created, it should appear in Task List, and you can monitor its status or reconfigure certain settings along the line.
 
-import image10 from '../../assets/blog/23/synology-10.webp';
+import image10 from "../../assets/blog/23/synology-10.webp";
 
-<BlogPicture imageMetadata={image10} alt='Active Backup for Microsoft 365 is successfully configured.' />
+<BlogPicture
+  imageMetadata={image10}
+  alt="Active Backup for Microsoft 365 is successfully configured."
+/>
 
 ## Wrap up
 
@@ -120,6 +141,3 @@ And, let's connect!
 - [LinkedIn](https://www.linkedin.com/in/hunghvu/)
 - [GitHub](https://github.com/hunghvu)
 - [X (formerly Twitter)](https://x.com/hunghvu_dev)
-
-
-

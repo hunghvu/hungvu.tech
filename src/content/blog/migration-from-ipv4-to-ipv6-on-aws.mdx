@@ -46,7 +46,7 @@ I host both Next.js and Payload CMS (with Express.js underneath) on the same EC2
 
 ## Can Caddy via Caddy Docker Proxy route IPv6 traffic?
 
-Caddy as a reverse proxy works with IPv6 because the service simply binds to all interfaces by default, nothing to complain about** **here, but here comes the unexpected. Out of the box, Caddy automatically provisions TLS certificates from either Zero SSL (primary public ACME CA), or Let's Encrypt (fall-back public ACME CA). However, *Zero SSL does not support IPv6 so all requests will fail. *Technically, this is not an issue, because Let's Encrypt supports IPv6. However, somehow my deployment bugged out so it did not fall back to Let's Encrypt. It took a while for me to figure out what went wrong.
+Caddy as a reverse proxy works with IPv6 because the service simply binds to all interfaces by default, nothing to complain about\** \*\*here, but here comes the unexpected. Out of the box, Caddy automatically provisions TLS certificates from either Zero SSL (primary public ACME CA), or Let's Encrypt (fall-back public ACME CA). However, *Zero SSL does not support IPv6 so all requests will fail. \*Technically, this is not an issue, because Let's Encrypt supports IPv6. However, somehow my deployment bugged out so it did not fall back to Let's Encrypt. It took a while for me to figure out what went wrong.
 
 ```
 # AAAA records
@@ -63,9 +63,12 @@ In case you do not know, MongoDB Atlas is a managed MongoDB service, while ghcr.
 
 > "Atlas does not support connectivity via IPv6 addresses at this time."
 >
-> <cite>[MongoDB Atlas support's response to my question](https://www.mongodb.com/community/forums/t/does-mongodb-atlas-support-ipv6-only-client-for-m2-instance/276117)</cite>
+> <cite>
+>   [MongoDB Atlas support's response to my
+>   question](https://www.mongodb.com/community/forums/t/does-mongodb-atlas-support-ipv6-only-client-for-m2-instance/276117)
+> </cite>
 
-*They all do not support IPv6*. For my MongoDB cluster, I chose AWS `us-west` (the same as my other services), so clearly, the infrastructure is IPv6 compatible. This means the lack of IPv6 support is on the MongoDB Atlas side. Meanwhile, GitHub is the largest code collaboration platform as of 2024, and IPv6 is still not there yet... But hey, [ GitHub is working on IPv6 enablement now](https://www.githubstatus.com/incidents/5y8b8lsqbbyq), so maybe it will be ready by the end of this year.
+_They all do not support IPv6_. For my MongoDB cluster, I chose AWS `us-west` (the same as my other services), so clearly, the infrastructure is IPv6 compatible. This means the lack of IPv6 support is on the MongoDB Atlas side. Meanwhile, GitHub is the largest code collaboration platform as of 2024, and IPv6 is still not there yet... But hey, [ GitHub is working on IPv6 enablement now](https://www.githubstatus.com/incidents/5y8b8lsqbbyq), so maybe it will be ready by the end of this year.
 
 I do not want to move away from MongoDB Atlas right now, so I self-hosted the database solution instead. For the container registry though, I simply modified my GitHub Actions workflow and pointed the publish to Docker Hub, [which also just generally supported IPv6 in August 2023](https://www.docker.com/blog/docker-hub-registry-ipv6-support-now-generally-available/) (better late than never).
 

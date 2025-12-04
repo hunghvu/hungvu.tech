@@ -13,10 +13,11 @@ import { BASE_SITE_NAME, BASE_SITE_DESCRIPTION } from "../consts";
     <SeoHead seoTitle={BASE_SITE_NAME} seoDescription={BASE_SITE_DESCRIPTION} />
   </head>
 
-  <body class="flex w-full flex-col items-center bg-base-100">
+  <body class="bg-base-100 flex w-full flex-col items-center">
     <Header />
-    <main class="flex w-full max-w-(--breakpoint-xl) flex-col items-center px-6 py-12 prose prose-sm sm:prose-base lg:prose-lg dark:prose-invert
-                 prose-code:before:content-none prose-code:after:content-none">
+    <main
+      class="prose prose-sm sm:prose-base lg:prose-lg dark:prose-invert prose-code:before:content-none prose-code:after:content-none flex w-full max-w-(--breakpoint-xl) flex-col items-center px-6 py-12"
+    >
       <h1>404: Page not found</h1>
       <a href="/">Return to home page</a>
     </main>

@@ -2,11 +2,18 @@
 import { GITHUB_URL, LINKEDIN_URL, SITE_OWNER_NAME } from "../consts";
 ---
 
-<footer class="daisyui-footer daisyui-footer-vertical self-center sm:daisyui-footer-horizontal max-w-(--breakpoint-xl) px-6 py-16">
-  <aside class="flex flex-row w-full h-full justify-center items-center sm:justify-start">
-    <p class="text-center">Copyright &copy; {new Date().getFullYear()} {SITE_OWNER_NAME} - All right reserved</p>
+<footer
+  class="daisyui-footer daisyui-footer-vertical sm:daisyui-footer-horizontal max-w-(--breakpoint-xl) self-center px-6 py-16"
+>
+  <aside
+    class="flex h-full w-full flex-row items-center justify-center sm:justify-start"
+  >
+    <p class="text-center">
+      Copyright &copy; {new Date().getFullYear()}
+      {SITE_OWNER_NAME} - All right reserved
+    </p>
   </aside>
-  <nav class="flex flex-row gap-4 w-full justify-center sm:justify-end">
+  <nav class="flex w-full flex-row justify-center gap-4 sm:justify-end">
     <a href={LINKEDIN_URL} target="_blank">
       <span class="hidden">Visit LinkedIn page.</span>
       <svg class="fill-base-content" width="24" height="24" viewBox="0 0 24 24">

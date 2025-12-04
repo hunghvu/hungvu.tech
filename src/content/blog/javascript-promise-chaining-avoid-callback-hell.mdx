@@ -12,15 +12,15 @@ If you work in JavaScript web development, I guess you're already familiar with 
 
 ## What is a JavaScript `Promise`?
 
-In JavaScript (ES6 and above), a `Promise` is an object representing the state and result of asynchronous operations such as an API call, or IO read/write. The states include *pending*, *fulfilled*, and *rejected*.
+In JavaScript (ES6 and above), a `Promise` is an object representing the state and result of asynchronous operations such as an API call, or IO read/write. The states include _pending_, _fulfilled_, and _rejected_.
 
 - Pending: An operation is in progress, and no result has been returned.
 - Fulfilled: An operation was a success, and the result was returned.
 - Rejected: An operation was a failure, and the error was returned.
 
-A `Promise` has two methods: `then` and `catch`. The `then` method accepts a *callback* of an action to be initiated after a promise is fulfilled, meanwhile, the `catch` runs whenever a promise is rejected.
+A `Promise` has two methods: `then` and `catch`. The `then` method accepts a _callback_ of an action to be initiated after a promise is fulfilled, meanwhile, the `catch` runs whenever a promise is rejected.
 
-``` ts showLineNumbers
+```ts showLineNumbers
 // Asynchronous API call operation
 getWeatherTodayPromise
    .then((weatherForecast) => { // Fulfilled
@@ -34,9 +34,9 @@ getWeatherTodayPromise
 
 ## What is callback hell?
 
-In short, it is when your callbacks have been nested multiple levels to the point it becomes unmanageable. This can happen in any programming language and is more common in asynchronous operations. *A deeply nested promise and callback in JavaScript is just one flavor of callback hell*, and examples in the article are based on this callback hell variance.
+In short, it is when your callbacks have been nested multiple levels to the point it becomes unmanageable. This can happen in any programming language and is more common in asynchronous operations. _A deeply nested promise and callback in JavaScript is just one flavor of callback hell_, and examples in the article are based on this callback hell variance.
 
-``` ts showLineNumbers
+```ts showLineNumbers
 // A typical callback hell which involves multiple JavaScript promises
 firstPromise
    .then(secondPromise
@@ -48,7 +48,7 @@ firstPromise
 
 Readability is one thing, but callback hell can cause other scoping issues. A typical one is error hiding (swallowing) when an error raised by an inner promise was not caught.
 
-``` ts showLineNumbers
+```ts showLineNumbers
 // Asynchronous API call operation
 getWeatherTodayPromise
    .then((weatherForecast) => {
@@ -69,14 +69,13 @@ getWeatherTodayPromise
    })
 ```
 
-
 ## What is promise chaining in JavaScript?
 
 You just learned a callback hell indicates unmanageable nested levels of callbacks. With that said, one way to solve the issue is to **make the callbacks NOT nested** anymore. Make it shallow!
 
 **Promise chaining** in JavaScript is when multiple `then` and `catch` methods are called successively to completely removes the nested levels, while still maintaining the intended outputs. You can say it is one way to refactor your codebase.
 
-``` ts showLineNumbers
+```ts showLineNumbers
 // Promise chaining
 firstPromise
    .then(() => secondPromise)
@@ -102,7 +101,7 @@ If you are dealing with regular callback-based functions (NOT promises), you nee
 
 Both `then` and `catch` are methods of a `Promise` object, so to create a chain, a callback in the `then` method must return a new `Promise`.
 
-``` ts showLineNumbers
+```ts showLineNumbers
 // Correct implementation
 // "() => something" is a shorthand for "() => {return something})
 const secondPromise = firstPromise.then(() => newPromise)
@@ -114,7 +113,7 @@ firstPromise.then(() => null).then(...)
 
 The result of a promise is carried to the next `then`.
 
-``` ts showLineNumbers
+```ts showLineNumbers
 getWeatherTodayPromise
    .then(weatherForecastResult => writeWeatherForecastToLogFilePromise(weatherForecastResult))
    // writeWeatherForecastToLogFilePromise(weatherForecastResult) if fulfilled will provide "ioWriteResult"
@@ -127,7 +126,7 @@ getWeatherTodayPromise
 
 We can manually initiate and return a new `Promise` object to form promise chaining. Rather than doing tasks in one callback, you can apply this technique to segment the code base into smaller chunks.
 
-``` ts showLineNumbers
+```ts showLineNumbers
 firstPromise
    .then(() => {
        const isSuccess = synchronousOperation() // boolean
@@ -139,7 +138,7 @@ firstPromise
 
 A `then` method has a second and optional `onRejectedCallback` argument, but as we don't use it, whenever an exception is raised, the browser looks down the whole promise chain to find the first acceptable `catch` for a given error.By using promise chaining, you can have one outer "catch-all" solution like `try-catch`, so no more possibility of error swallowing. You can have a conditional statement in one `catch` for multiple errors, or you can segment them into multiple separated `catch` as shown below.
 
-``` ts showLineNumbers
+```ts showLineNumbers
 rejected5xxPromise
    .catch(HTTP 4xx) // Browser: "Not here"
    .catch(HTTP 5xx) // Browser: "Okay, this catches the 5xx error"
@@ -148,7 +147,7 @@ rejected5xxPromise
 
 You can chain a `then` after `catch`. This means "always operate no matter what".
 
-``` ts showLineNumbers
+```ts showLineNumbers
 rejected5xxPromise
    .catch(HTTP 5xx)
    .then(console.log("This line is always printed out"))

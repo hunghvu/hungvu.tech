@@ -9,7 +9,7 @@ seoDescription: AMD GPU driver installation on Linux is a rabbit hole with multi
 series: Homelab
 ---
 
-import BlogPicture from '../../components/BlogPicture.astro';
+import BlogPicture from "../../components/BlogPicture.astro";
 
 As a casual Nvidia-on-Linux user, I have had a fair share of problems with my GTX 1050 over the years. Nvidia's relationship with the Linux community is well known, so there is not much more to discuss. With that said, I decided to go with an AMD graphic card (GPU) for my new laptop, in the hope that it can better streamline my experience. However, that is not really the case at the moment, at least on Ubuntu-based distros, 22.04 and onwards.
 
@@ -35,7 +35,6 @@ lspci -k | grep -A 3 -E "(VGA|3D)"
 
 This results in:
 
-
 ```
 pop-os@pop-os:~$ lspci -k | grep -A 3 -E "(VGA|3D)"
 04:00.0 VGA compatible controller: Advanced Micro Devices, Inc. [AMD/ATI] Barcelo (rev c1)
@@ -46,9 +45,12 @@ pop-os@pop-os:~$ lspci -k | grep -A 3 -E "(VGA|3D)"
 
 Indeed, my GPU worked out of the box, but there was a catch. None of the "advanced" features such as Free Sync, 10-bit color, low latency, etc. could be enabled, at least not in a trivial way. In Windows, these features can be easily enabled using AMD Adrenalin.
 
-import image1 from '../../assets/blog/24/amdgpu-1.webp';
+import image1 from "../../assets/blog/24/amdgpu-1.webp";
 
-<BlogPicture imageMetadata={image1} alt='AMD Adrenalin is a central place to tweak AMD GPU features in Windows.' />
+<BlogPicture
+  imageMetadata={image1}
+  alt="AMD Adrenalin is a central place to tweak AMD GPU features in Windows."
+/>
 
 ### Xorg requires a vendor-specific Device Dependent X (DDX) for advanced GPU features
 
@@ -69,7 +71,6 @@ An attempt to enable these features (in `/etc/X11/xorg.conf.d/`) without a corre
 
 On a side note, using `apt list --installed` showed `xserver-xorg-video-<something>` on my system. I'm not certain about their relationship with `xf86-video-<something>`, so any explanation is appreciated.
 
-
 ```
 pop-os@pop-os:~$ apt list --installed
 ...
@@ -84,9 +85,12 @@ xserver-xorg-video-amdgpu/jammy,now 22.0.0-1build1 amd64 [installed,automatic]
 
 ## AMD GPU driver installer for PopOS 22.04 is broken (or any Ubuntu-based 22.04 distros)
 
-import image2 from '../../assets/blog/24/amdgpu-2.webp';
+import image2 from "../../assets/blog/24/amdgpu-2.webp";
 
-<BlogPicture imageMetadata={image2} alt='AMD provides official driver support for Ubuntu (with proprietary binaries).' />
+<BlogPicture
+  imageMetadata={image2}
+  alt="AMD provides official driver support for Ubuntu (with proprietary binaries)."
+/>
 
 On the AMD website, they have a selection of drivers for Linux distros. As PopOS is Ubuntu-based, I decided to use an AMD GPU driver for Ubuntu x86 64-Bit (22.04). It is a `deb` package, so installation should be easy enough, but no. AMD GPU driver installation process is no less of a rabbit hole compared to Nvidia counterpart (manual installation, not considering PopOS out-of-the-box support for Nvidia GPU).
 
@@ -106,7 +110,7 @@ The installation does not support PopOS by default. Fair enough, because this is
 # Run: sudo gedit amdgpu-install
 ...
 case "$ID" in
-ubuntu|linuxmint|debian|pop) # add pop at the end (line 293 at the time of writing, or Ctrl-F to find) 
+ubuntu|linuxmint|debian|pop) # add pop at the end (line 293 at the time of writing, or Ctrl-F to find)
     PKGUPDATE="apt-get update"
     PKGMAN=apt-get
     OS_CLASS=debian
@@ -127,7 +131,8 @@ is only available from another source
 
 E: Package 'linux-modules-extra-5.18.10-76051810-generic' has no installation candidate
 ```
-After a bit of lookup, it seems like an extra kernel content is included in a standard kernel in PopOS, meanwhile, `linux-modules-extra-...-generic` is only a virtual package, hence the error. I did try to play around with the kernel, but my machine ended up in a non-bootable state. After making my laptop bootable again, I decided if an installation script could be modified somehow. Therefore, I searched for references  `linux-modules-extra-...-generic` and commented on them.
+
+After a bit of lookup, it seems like an extra kernel content is included in a standard kernel in PopOS, meanwhile, `linux-modules-extra-...-generic` is only a virtual package, hence the error. I did try to play around with the kernel, but my machine ended up in a non-bootable state. After making my laptop bootable again, I decided if an installation script could be modified somehow. Therefore, I searched for references `linux-modules-extra-...-generic` and commented on them.
 
 ```
 # /usr/bin/amdgpu-install.sh
@@ -180,6 +185,3 @@ And, let's connect!
 - [LinkedIn](https://www.linkedin.com/in/hunghvu/)
 - [GitHub](https://github.com/hunghvu)
 - [X (formerly Twitter)](https://x.com/hunghvu_dev)
-
-
-

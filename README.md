@@ -42,6 +42,7 @@ hungvu.tech, server IP, localhost, 127.0.0.1 {
         encode zstd gzip
 }
 ```
+
 **Note**
 `skip_install_trust` to avoid sudo promt on startup. While `tls internal` is for locally trusted cert.
 
@@ -50,8 +51,6 @@ hungvu.tech, server IP, localhost, 127.0.0.1 {
 "msg":"warning: \"certutil\" is not available, install \"certutil\" with \"apt install libnss3-tools\" or \"yum install nss-tools\" and try again"
 "msg":"define JAVA_HOME environment variable to use the Java trust"
 ```
-
-
 
 ## Author
 

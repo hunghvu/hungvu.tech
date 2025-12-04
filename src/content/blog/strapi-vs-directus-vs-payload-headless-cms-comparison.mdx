@@ -9,7 +9,7 @@ seoDescription: This article presents a comparison between Strapi, Directus, and
 series: Products that help bootstrap your website
 ---
 
-import BlogPicture from '../../components/BlogPicture.astro';
+import BlogPicture from "../../components/BlogPicture.astro";
 
 After looking at a dozen headless content management systems (headless CMSs) for my upcoming blogfolio, I narrowed the choices to only **Strapi v4**, **Directus v9**, and **Payload v1**. This article presents a comparison between the three headless CMSs to figure out the most suitable solution. If you wonder why I chose these headless CMSs in the first place, my previous article [How to choose headless CMS for portfolio and blogs?](headless-cms-for-portfolio-and-blogs) is a walk-through of my initial research.
 
@@ -27,15 +27,15 @@ Do remember, that all three CMSs are open-source under a permissive license so y
 
 **Winner**: StrapiOne strong point of Strapi is its mature marketplace. It is accessible either via an admin interface or a website at [market.strapi.io](http://market.strapi.io). If you need an additional feature, there is a high chance it is already available as a plugin. That said, there is no one-click-install feature, installation is via `npm` only.
 
-import image1 from '../../assets/blog/20/comparison-1.webp';
+import image1 from "../../assets/blog/20/comparison-1.webp";
 
-<BlogPicture imageMetadata={image1} alt='Strapi marketplace.' />
+<BlogPicture imageMetadata={image1} alt="Strapi marketplace." />
 
 **Draw**: Directus and PayloadEven though both Directus and Payload support plugins/extensions in their modular architecture, none has a marketplace. Regarding Directus, there is an extension marketplace, but it is still under development. You can check it out at [directus.market](https://directus.market/).
 
-import image2 from '../../assets/blog/20/comparison-2.webp';
+import image2 from "../../assets/blog/20/comparison-2.webp";
 
-<BlogPicture imageMetadata={image2} alt='Directus Cloud is coming soon.' />
+<BlogPicture imageMetadata={image2} alt="Directus Cloud is coming soon." />
 
 Meanwhile, the Payload marketplace will probably not be available anytime soon, but it is on the roadmap.
 
@@ -46,9 +46,12 @@ Meanwhile, the Payload marketplace will probably not be available anytime soon, 
 
 **Winner**: DirectusDirectus supports several different flavors of SQL: PostgreSQL, MySQL, SQLite, OracleDB, CockroachDB, MariaDB, and MS-SQL. You can either use Directus as a wrapper on top of your existing database or use Directus to build a new database from the ground up. In a sense, Directus is an abstraction for your database (like an ORM, but with UI), and headless CMS is only one of its use cases. This [database introspection](https://docs.directus.io/getting-started/introduction/#how-it-works) nature gives you extreme flexibility when migrating with Directus, either in or out.
 
-import image3 from '../../assets/blog/20/comparison-3.webp';
+import image3 from "../../assets/blog/20/comparison-3.webp";
 
-<BlogPicture imageMetadata={image3} alt='Directus can stay on top of a SQL database.' />
+<BlogPicture
+  imageMetadata={image3}
+  alt="Directus can stay on top of a SQL database."
+/>
 
 **Second place**: StrapiCurrently, Strapi v4 supports SQLite, PostgreSQL, MySQL, and MariaDB. However, it is fairly cumbersome to perform migrations between databases, and environments. From my research, it boils down to different approaches between Strapi and Directus. Strapi follows a "closed" source control approach (opinionated database generation, developers have no control), while Directus is a database-first platform. If you have any experience in solving Strapi migration problems, please let me know in the comment section down below. It would be great to have a technical explanation of why migration and backup have always been a downside of Strapi.
 
@@ -62,15 +65,18 @@ Security is a highly specialized topic so I do not make a technical comparison o
 
 **Draw**: Directus and PayloadBoth Directus and Payload offer very respectable security control, at least one level above Strapi in my opinion. They have unlimited granular role-based access control, down to database field level. Permissions are configurable for both APIs and admin panel feature access. However, I think Payload is a bit better in this aspect as it also allows a wider range of configurations. If in Directus, you can use role-based access control to restrict permission of a user, then in Payload, you can even set permission from the perspective of an object. For example:In Directus, if you have an **editor role**, you can read an article with draft status (**field condition**): `if user.role == editor => read draft article`In Payload, every draft article (**field condition**) is only readable by users with **editor role**: `if article.status == draft => allow editor role to read`. This is the same permission as in the Directus example, just from a different perspective.
 
-import image4 from '../../assets/blog/20/comparison-4.webp';
+import image4 from "../../assets/blog/20/comparison-4.webp";
 
-<BlogPicture imageMetadata={image4} alt='Permission control in Directus.' />
+<BlogPicture imageMetadata={image4} alt="Permission control in Directus." />
 
 **Second place**: StrapiUnlike the other two solutions, Strapi only has API-level access control, so it is less granular. That is one thing, but Strapi also locks admin panel role addition and modification behind a paywall. With such an essential feature of a CMS being restricted like this, it is a huge downside in my opinion.
 
-import image5 from '../../assets/blog/20/comparison-5.webp';
+import image5 from "../../assets/blog/20/comparison-5.webp";
 
-<BlogPicture imageMetadata={image5} alt='Strapi features can be artificially limited.' />
+<BlogPicture
+  imageMetadata={image5}
+  alt="Strapi features can be artificially limited."
+/>
 
 ### Authentication
 
@@ -92,9 +98,12 @@ Unlike customizability and security, it is hard to give an objective review of d
 
 Out of the three, Directus is the most feature-packed out-of-the-box. If you are a no-code person, then Directus is certainly a great Vue-based option here. It even has a dedicated page for the user guide in the admin panel. That said, Strapi is still a good one if you are into a React ecosystem.
 
-import image6 from '../../assets/blog/20/comparison-6.webp';
+import image6 from "../../assets/blog/20/comparison-6.webp";
 
-<BlogPicture imageMetadata={image6} alt='Directus UI is full of features out of the box.' />
+<BlogPicture
+  imageMetadata={image6}
+  alt="Directus UI is full of features out of the box."
+/>
 
 In between the two, I much prefer Directus admin UI. It seems like Strapi is trying to be aesthetically pleasing to non-technical users but comes at the cost of having too much empty space and a lack of features, and I am not impressed by this.
 
