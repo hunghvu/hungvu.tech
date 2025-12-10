@@ -35,8 +35,8 @@ I needed to check whether the AWS services I utilized supported IPv6 or not. It 
 
 - **EC2:** I looked into [AWS specifications](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-types.html). My instance is t4g.micro and it supports IPv6. In any case, it seems all instance types support IPv6 at the time of writing, so it should not be a problem.
 - **VPC:** It supports IPv6 in my region (US West - Oregon). AWS also offers a /56 CIDR block for IPv6, which will be helpful down the road because a smaller subnet can complicate the setup. I heard some other cloud providers offer a CIDR smaller than /100, which becomes an issue down the road when segmenting network and routing traffic.
-- **EC2 Instance Connect: **There are 2 different options, either an SSH connection via public IP, or an internal VPC network. At the time of writing, Instance Connect via public IP only supports IPv4. I think that is also the case for internal VPC network connections. However, my VPC still offers a private IPv4 address, so Instance Connect via the internal VPC network is usable.
-- **API for IaaC: **At least for Pulumi, it appears not all IPv6 settings are configurable. For example, I could not retrieve IPv6 automatically in the same way as IPv4 via Elastic IP, or I could not configure ICMPv6 ACL ([a similar issue is reported in the Terraform repository](https://github.com/hashicorp/terraform-provider-aws/issues/35526)).
+- **EC2 Instance Connect:** There are 2 different options, either an SSH connection via public IP, or an internal VPC network. At the time of writing, Instance Connect via public IP only supports IPv4. I think that is also the case for internal VPC network connections. However, my VPC still offers a private IPv4 address, so Instance Connect via the internal VPC network is usable.
+- **API for IaaC:** At least for Pulumi, it appears not all IPv6 settings are configurable. For example, I could not retrieve IPv6 automatically in the same way as IPv4 via Elastic IP, or I could not configure ICMPv6 ACL ([a similar issue is reported in the Terraform repository](https://github.com/hashicorp/terraform-provider-aws/issues/35526)).
 
 If you are interested in how I implemented AWS IaaC via Pulumi, [check out the hungvu.tech's repository](https://github.com/hunghvu/hungvu.tech/tree/main/infras/iaac/aws).
 
@@ -61,12 +61,9 @@ TLS provisioning issue aside, it appears Caddy Docker Proxy does not support IPv
 
 In case you do not know, MongoDB Atlas is a managed MongoDB service, while ghcr.io is GitHub's container registry service. Guess what?
 
-> "Atlas does not support connectivity via IPv6 addresses at this time."
+> Atlas does not support connectivity via IPv6 addresses at this time.
 >
-> <cite>
->   [MongoDB Atlas support's response to my
->   question](https://www.mongodb.com/community/forums/t/does-mongodb-atlas-support-ipv6-only-client-for-m2-instance/276117)
-> </cite>
+> <cite> [MongoDB Atlas support's response to my question](https://www.mongodb.com/community/forums/t/does-mongodb-atlas-support-ipv6-only-client-for-m2-instance/276117) </cite>
 
 _They all do not support IPv6_. For my MongoDB cluster, I chose AWS `us-west` (the same as my other services), so clearly, the infrastructure is IPv6 compatible. This means the lack of IPv6 support is on the MongoDB Atlas side. Meanwhile, GitHub is the largest code collaboration platform as of 2024, and IPv6 is still not there yet... But hey, [ GitHub is working on IPv6 enablement now](https://www.githubstatus.com/incidents/5y8b8lsqbbyq), so maybe it will be ready by the end of this year.
 
