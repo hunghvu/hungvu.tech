@@ -183,10 +183,11 @@ How about now after updating to NVM version 2.32? Installing the NIC makes my sy
 [   22.283426] pcieport 0000:00:1c.4: AER: Uncorrectable (Non-Fatal) error message received from 0000:0a:00.0
 [   22.2937641] igc 0000:0a:00.0: PCIe Bus Error: severity=Uncorrectable (Non-Fatal), type=Transaction Layer, (Requester ID)
 [   22.3051211] igc 0000:0a:00.0: device [8086:125c] error status/mask=00004000/00000000
+[   22.3129971] igc 0000:0a:00.0:    [14] CmpltTO
 [   22.421718] genirq: Flags mismatch irq 145. 00200000 (eth2) us. 00200000 (eth2)
 [   22.4297171] ------------[ cut here ]------------
 [   22.434546] remove_proc_entry: removing non-empty directory 'irq/145', leaking at least 'eth2'
-[   22.443341] WARNING: CPU: PID: 128 at
+[   22.443341] WARNING: CPU: PID: 128 at Oxffffffff812b701a
 
 ... (truncated for brevity) ...
 
