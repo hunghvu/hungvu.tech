@@ -64,7 +64,7 @@ const { Content, headings } = await Astro.props.render();
           /* Remove backtick, reference: https://github.com/tailwindlabs/tailwindcss-typography/issues/135#issuecomment-991251524 */
         }
         <div
-          class="prose prose-sm sm:prose-base lg:prose-lg dark:prose-invert prose-code:before:content-none prose-code:after:content-none w-full break-words"
+          class="prose prose-sm sm:prose-base lg:prose-lg dark:prose-invert prose-code:before:content-none prose-code:after:content-none w-full wrap-break-word"
         >
           <p class="text-center">
             Posted on: <FormattedDate date={publishedDate} />{

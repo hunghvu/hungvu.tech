@@ -7,7 +7,7 @@ import pluginPrettier from "eslint-config-prettier";
 
 export default [
   {
-    ignores: [".github", "node_modules", "dist/**"],
+    ignores: [".github", "node_modules", "dist/**", "pnpm-lock.yaml"],
   },
   ...pluginAstro.configs["jsx-a11y-strict"],
   pluginPrettier,
