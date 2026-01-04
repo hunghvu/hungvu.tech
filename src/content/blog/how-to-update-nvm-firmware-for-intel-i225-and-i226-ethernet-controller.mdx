@@ -16,13 +16,13 @@ The Intel i225 and i226 Ethernet controllers and their variants are widely known
 
 In this article, I want to talk about the NVM firmware part. As of early 2026, the Intel i225 and i226 controllers are still widely used in many consumer devices, but Intel opted to not release the Intel i226 NVM firmware update tool for public download on their official website, while the Intel i225 counterpart is available. Instead, they only provide the firmware update tool to OEMs and system integrators. With that said, most users are stuck with the outdated NVM firmware that came with their devices. Still, there is a way to update the NVM firmware for these controllers, and I will show you how.
 
-**DISCLAIMER**: Performing NVM firmware update carries inherent risks, including the possibility of bricking your device. *Proceed with caution and at your own risk*. Ensure you have a backup of important data and configurations before proceeding.
+**DISCLAIMER**: Performing NVM firmware update carries inherent risks, including the possibility of bricking your device. _Proceed with caution and at your own risk_. Ensure you have a backup of important data and configurations before proceeding.
 
 ## Prerequisites
 
 Before we begin, make sure you have the following prerequisites:
 
-- A computer with an Intel i225-V or i226-V Lan on Motherboard (LOM) or PCIe Network Interface Card (NIC). **Note**, only the *V* variants are discussed in this article. Performing the NVM firmware update on non-V variants may brick your device.
+- A computer with an Intel i225-V or i226-V Lan on Motherboard (LOM) or PCIe Network Interface Card (NIC). **Note**, only the _V_ variants are discussed in this article. Performing the NVM firmware update on non-V variants may brick your device.
 - A Windows operatiing system installed on the computer. **Note**, other operating systems should work too, but this guide focuses on Windows.
 - Administrative privileges on the Windows operating system.
 
@@ -35,17 +35,19 @@ Download and extract the NVM firmware binary from [here](https://github.com/hung
 ### Step 2: Download Intel driver and NVM update Tool
 
 Download Intel Driver and NVM Update Tool from [here](https://www.intel.com/content/www/us/en/download/15084/intel-Ethernet-adapter-complete-driver-pack.html). As of this writing, the package version is 30.6.
-  - This package contains both the Intel Ethernet drivers and the NVM Update Tool. I recommend updating the Ethernet drivers to the latest version before proceeding with the NVM firmware update, unless you have a reason not to. This is to ensure you are not running an outdated driver or OEM customized driver that may interfere with the NVM update process.
-  - The driver for i225-V and i226-V locates in `~\Release_30.6\PRO2500\Winx64\W11` folder inside the downloaded package.
-  - There is no `setup.exe` file in the package, so you will need to manually update the driver via Device Manager.
-  - To do this, open Device Manager, locate your Intel i225-V or i226-V Ethernet controller under "Network adapters", right-click on it, and select "Update driver". Then, choose "Browse my computer for drivers" and navigate to the folder mentioned above. Follow the prompts to complete the driver update.
-  - If you have multiple *Network Adapters* showing up, make sure to update all of them.
+
+- This package contains both the Intel Ethernet drivers and the NVM Update Tool. I recommend updating the Ethernet drivers to the latest version before proceeding with the NVM firmware update, unless you have a reason not to. This is to ensure you are not running an outdated driver or OEM customized driver that may interfere with the NVM update process.
+- The driver for i225-V and i226-V locates in `~\Release_30.6\PRO2500\Winx64\W11` folder inside the downloaded package.
+- There is no `setup.exe` file in the package, so you will need to manually update the driver via Device Manager.
+- To do this, open Device Manager, locate your Intel i225-V or i226-V Ethernet controller under "Network adapters", right-click on it, and select "Update driver". Then, choose "Browse my computer for drivers" and navigate to the folder mentioned above. Follow the prompts to complete the driver update.
+- If you have multiple _Network Adapters_ showing up, make sure to update all of them.
 
 ### Step 3: Understand NVM update tool structure
 
-Extract the NVM Update Tool from the downloaded package. The tool is located in `~\Release_30.6\NVMUpdatePackage` folder. 
-  - **If you use Intel i225-V**, navigate to `~\I225\I225_NVMUpdatePackage_v1_00_Windows` folder. Intel provide a convenient `exe` file to perform the update. Run the file as Administrator and follow the prompts to update the NVM firmware.
-  - **If you use Intel i226-V**, instead of running an `exe` file, you will extract it to find packaged binaries and a command line tool to perform the update. I personally use 7-Zip to extract the `exe` file. Continue to the next step.
+Extract the NVM Update Tool from the downloaded package. The tool is located in `~\Release_30.6\NVMUpdatePackage` folder.
+
+- **If you use Intel i225-V**, navigate to `~\I225\I225_NVMUpdatePackage_v1_00_Windows` folder. Intel provide a convenient `exe` file to perform the update. Run the file as Administrator and follow the prompts to update the NVM firmware.
+- **If you use Intel i226-V**, instead of running an `exe` file, you will extract it to find packaged binaries and a command line tool to perform the update. I personally use 7-Zip to extract the `exe` file. Continue to the next step.
 
 ### Step 4: Confirm Ethernet controller details
 
@@ -63,7 +65,7 @@ Run the following command `nvmupdatew64e.exe -i -l inventory.txt` to list specif
 ```plaintext
 # Detail of each line may vary from device to device, but the structure remains the same.
 [00:008:00:00]: Intel(R) Ethernet Controller I226-V
-	Vendor                 : 8086 
+	Vendor                 : 8086
 	Device                 : 125C  ===> Intel(R) Ethernet Controller I226-V
 	Subvendor              : 8086
 	Subdevice              : 0000
@@ -83,6 +85,7 @@ Run the following command `nvmupdatew64e.exe -i -l inventory.txt` to list specif
 	  CIVD                 : 0.0.0
 	  EFI                  : 0.1.1, checksum None
 ```
+
 This helps me confirm the NVM Update Tool is functioning correctly and can communicate with the Ethernet controllers. Also, my NIC is using an outdated version 2.14 firmware, and it is a 2MB variant as indicated by the ETrackId.
 
 ### Step 5: Configure NVM update settings
@@ -183,7 +186,7 @@ How about now after updating to NVM version 2.32? Installing the NIC makes my sy
 [   22.421718] genirq: Flags mismatch irq 145. 00200000 (eth2) us. 00200000 (eth2)
 [   22.4297171] ------------[ cut here ]------------
 [   22.434546] remove_proc_entry: removing non-empty directory 'irq/145', leaking at least 'eth2'
-[   22.443341] WARNING: CPU: PID: 128 at 
+[   22.443341] WARNING: CPU: PID: 128 at
 
 ... (truncated for brevity) ...
 
