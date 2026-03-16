@@ -13,16 +13,24 @@ test.describe("Accessibility Audits", () => {
   });
 
   test("blog post page should be accessible", async ({ page }) => {
-    // Assuming at least one post exists. We can use the first post from the main page.
     await page.goto("/");
-    const firstPost = page.locator('a[href^="/"]').first();
-    const href = await firstPost.getAttribute("href");
+    // Target the first post link in the grid specifically
+    const firstPostLink = page.locator("ul.grid a.daisyui-card").first();
+    const href = await firstPostLink.getAttribute("href");
 
     if (href) {
       await page.goto(href);
+      // Wait for the reading progress bar or other dynamic elements if any
       const accessibilityScanResults = await new AxeBuilder({ page })
         .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
         .analyze();
+
+      if (accessibilityScanResults.violations.length > 0) {
+        console.log(
+          "ACCESSIBILITY_VIOLATIONS_POST:",
+          JSON.stringify(accessibilityScanResults.violations, null, 2),
+        );
+      }
 
       expect(accessibilityScanResults.violations).toEqual([]);
     }
