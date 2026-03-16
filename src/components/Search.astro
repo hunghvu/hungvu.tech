@@ -2,7 +2,7 @@
 import "@pagefind/default-ui/css/ui.css";
 ---
 
-<div id="search-modal" class="daisyui-modal" aria-labelledby="search-modal-title">
+<dialog id="search-modal" class="daisyui-modal" aria-labelledby="search-modal-title">
   <div class="daisyui-modal-box bg-base-200 max-w-2xl">
     <h3 id="search-modal-title" class="mb-4 text-lg font-bold">Search</h3>
     <div id="search"></div>
@@ -15,21 +15,36 @@ import "@pagefind/default-ui/css/ui.css";
   <form method="dialog" class="daisyui-modal-backdrop">
     <button>close</button>
   </form>
-</div>
+</dialog>
 
 <script>
-  // @ts-expect-error - Pagefind UI is generated at build time
-  import { PagefindUI } from "@pagefind/default-ui";
+  window.addEventListener("DOMContentLoaded", async () => {
+    const searchElement = document.querySelector("#search");
+    if (!searchElement) return;
 
-  window.addEventListener("DOMContentLoaded", () => {
-    new PagefindUI({
-      element: "#search",
-      showSubResults: true,
-      pageSize: 5,
-      translations: {
-        placeholder: "Search posts...",
-      },
-    });
+    try {
+      // @ts-expect-error - Pagefind UI is generated at build time
+      const { PagefindUI } = await import("@pagefind/default-ui");
+      new PagefindUI({
+        element: "#search",
+        showSubResults: true,
+        pageSize: 5,
+        translations: {
+          placeholder: "Search posts...",
+        },
+        bundlePath: "/pagefind/",
+      });
+    } catch {
+      console.warn(
+        "Pagefind UI failed to load. This is expected in dev mode unless a search index has been built.",
+      );
+      searchElement.innerHTML = `
+        <div class="p-4 text-center opacity-70">
+          <p class="mb-2">Search is indexing...</p>
+          <p class="text-xs">Note: Search requires a production build to function. Run <code>pnpm run build && pnpm run preview</code> to test search locally.</p>
+        </div>
+      `;
+    }
   });
 </script>
 
