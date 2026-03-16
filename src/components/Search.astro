@@ -1,0 +1,50 @@
+---
+import "@pagefind/default-ui/css/ui.css";
+---
+
+<div id="search-modal" class="daisyui-modal" aria-labelledby="search-modal-title">
+  <div class="daisyui-modal-box bg-base-200 max-w-2xl">
+    <h3 id="search-modal-title" class="mb-4 text-lg font-bold">Search</h3>
+    <div id="search"></div>
+    <div class="daisyui-modal-action">
+      <form method="dialog">
+        <button class="daisyui-btn">Close</button>
+      </form>
+    </div>
+  </div>
+  <form method="dialog" class="daisyui-modal-backdrop">
+    <button>close</button>
+  </form>
+</div>
+
+<script>
+  // @ts-expect-error - Pagefind UI is generated at build time
+  import { PagefindUI } from "@pagefind/default-ui";
+
+  window.addEventListener("DOMContentLoaded", () => {
+    new PagefindUI({
+      element: "#search",
+      showSubResults: true,
+      pageSize: 5,
+      translations: {
+        placeholder: "Search posts...",
+      },
+    });
+  });
+</script>
+
+<style is:global>
+  /* Customize Pagefind UI to match theme */
+  :root {
+    --pagefind-ui-primary: var(--p);
+    --pagefind-ui-text: var(--bc);
+    --pagefind-ui-background: var(--b2);
+    --pagefind-ui-border: var(--b3);
+    --pagefind-ui-tag: var(--b3);
+  }
+
+  .pagefind-ui__search-input:focus {
+    outline: none !important;
+    box-shadow: 0 0 0 2px var(--p) !important;
+  }
+</style>

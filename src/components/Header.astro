@@ -1,14 +1,16 @@
 ---
 import { BASE_SITE_NAME, GITHUB_URL, LINKEDIN_URL } from "../consts";
 import Icon from "./Icon.astro";
+import Search from "./Search.astro";
 ---
 
 <header class="daisyui-navbar bg-base-100 max-w-(--breakpoint-xl)">
   <nav class="daisyui-navbar-start">
-    <div class="daisyui-dropdown">
-      <div tabindex="0" role="button" class="daisyui-btn daisyui-btn-ghost lg:hidden">
+    <div class="daisyui-dropdown lg:hidden">
+      <button class="daisyui-btn daisyui-btn-ghost daisyui-btn-circle" aria-label="Open menu">
+        <span class="daisyui-sr-only">Open navigation menu</span>
         <Icon name="hamburger" class="h-5 w-5" />
-      </div>
+      </button>
       <ul
         class="daisyui-menu daisyui-dropdown-content daisyui-menu-sm rounded-box bg-base-100 z-1 mt-3 w-52 p-2 shadow-sm"
       >
@@ -24,22 +26,30 @@ import Icon from "./Icon.astro";
   </nav>
   <div class="daisyui-navbar-end gap-4">
     <a href={LINKEDIN_URL} target="_blank">
-      <span class="hidden">Visit LinkedIn page.</span>
+      <span class="sr-only">Visit LinkedIn page.</span>
       <Icon name="linkedin" class="fill-base-content" width="24" height="24" />
     </a>
     <a href={GITHUB_URL} target="_blank">
-      <span class="hidden">Visit GitHub profile.</span>
+      <span class="sr-only">Visit GitHub profile.</span>
       <Icon name="github" class="fill-base-content" width="24" height="24" />
     </a>
     <a href={`${Astro.site}/rss.xml`}>
-      <span class="hidden">Visit RSS feed.</span>
+      <span class="sr-only">Visit RSS feed.</span>
       <Icon name="rss" class="fill-base-content" width="24" height="24" />
     </a>
+    <button
+      class="daisyui-btn daisyui-btn-ghost daisyui-btn-circle"
+      onclick="document.getElementById('search-modal').showModal()"
+      aria-label="Open search"
+    >
+      <Icon name="search" class="h-5 w-5" />
+    </button>
     <label class="daisyui-swap daisyui-swap-rotate">
-      <span class="hidden">Choose theme preference: Light or dark mode.</span>
+      <span class="sr-only">Choose theme preference: Light or dark mode.</span>
       <input type="checkbox" data-toggle-theme="dark" />
       <Icon name="sun" class="daisyui-swap-off fill-base-content" width="24" height="24" />
       <Icon name="moon" class="daisyui-swap-on fill-base-content" width="24" height="24" />
     </label>
   </div>
+  <Search />
 </header>
