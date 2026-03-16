@@ -23,9 +23,7 @@ To learn about current trends, it is better to not include old articles (e.g., p
 
 ```js
 // Total article = Number of pages x Number of articles per page
-fetch(
-  "https://dev.to/api/articles/latest?page=${i}&per_page=${articlesPerPage}",
-);
+fetch("https://dev.to/api/articles/latest?page=${i}&per_page=${articlesPerPage}");
 ```
 
 dev.to uses heart (❤️), unicorn (🦄), and save (🔖) as basic metrics to measure the popularity of an article. They are reactions, but let's not forget the comments (💬) too since it is essential to proof of user engagement. There is no downvote system, so for the mentioned metrics, the higher the counts the better. With that said, I grouped the metrics into three different categories.
@@ -51,10 +49,7 @@ That said, considering dev.to is an international platform, its users are from d
 
 import image2 from "./forem-analytics-2.webp";
 
-<BlogPicture
-  imageMetadata={image2}
-  alt="Reactions summary by published time."
-/>
+<BlogPicture imageMetadata={image2} alt="Reactions summary by published time." />
 
 import image3 from "./forem-analytics-3.webp";
 
@@ -135,33 +130,21 @@ Using the same data set, here is what we have judging by summation.
 
 import image11 from "./forem-analytics-11.webp";
 
-<BlogPicture
-  imageMetadata={image11}
-  alt="Reactions summary per tag name, by summation."
-/>
+<BlogPicture imageMetadata={image11} alt="Reactions summary per tag name, by summation." />
 
 import image12 from "./forem-analytics-12.webp";
 
-<BlogPicture
-  imageMetadata={image12}
-  alt="Comments summary per tag name, by summation."
-/>
+<BlogPicture imageMetadata={image12} alt="Comments summary per tag name, by summation." />
 
 These are mostly generic web development and computer science tags. Undoubtedly, among the 4500+ tags, these are the most popular on dev.to. However, that creates the same problem as reading time (heavily skewed distribution). With that said, let's try finding the mean with at least 30 published articles per tag.
 
 import image13 from "./forem-analytics-13.webp";
 
-<BlogPicture
-  imageMetadata={image13}
-  alt="Reactions summary per tag name, by mean."
-/>
+<BlogPicture imageMetadata={image13} alt="Reactions summary per tag name, by mean." />
 
 import image14 from "./forem-analytics-13.webp";
 
-<BlogPicture
-  imageMetadata={image14}
-  alt="Comments summary per tag name, by mean."
-/>
+<BlogPicture imageMetadata={image14} alt="Comments summary per tag name, by mean." />
 
 Now we only have about 140 tags left. Interestingly the top three tags this time are:
 

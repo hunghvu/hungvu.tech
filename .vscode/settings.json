@@ -2,14 +2,12 @@
   "editor.quickSuggestions": {
     "strings": true
   },
-  // Reference: https://github.com/ota-meshi/eslint-plugin-astro?tab=readme-ov-file#-editor-integrations
-  "eslint.validate": [
-    "javascript",
-    "astro", // Enable .astro
-    "typescript" // Enable .ts
-  ],
-  "prettier.documentSelectors": ["**/*.astro"],
+  "eslint.probe": ["javascript", "astro", "typescript", "typescriptreact", "javascriptreact"],
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
   "[astro]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "astro-build.astro-vscode"
   }
 }

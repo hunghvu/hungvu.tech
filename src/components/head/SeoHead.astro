@@ -30,18 +30,9 @@ const {
 } = Astro.props;
 // href is implicitly used in string context, but just put it here
 // explicitly for clarity
-const siteUrl = new URL(slug, Astro.site).href.replace(
-  TRAILING_SLASH_REGEX,
-  "",
-);
-const coverImageUrl = new URL(coverImageSlug, Astro.site).href.replace(
-  TRAILING_SLASH_REGEX,
-  "",
-);
-const rssUrl = new URL("rss.xml", Astro.site).href.replace(
-  TRAILING_SLASH_REGEX,
-  "",
-);
+const siteUrl = new URL(slug, Astro.site).href.replace(TRAILING_SLASH_REGEX, "");
+const coverImageUrl = new URL(coverImageSlug, Astro.site).href.replace(TRAILING_SLASH_REGEX, "");
+const rssUrl = new URL("rss.xml", Astro.site).href.replace(TRAILING_SLASH_REGEX, "");
 
 const homeUrl = new URL("/", Astro.site).href.replace(TRAILING_SLASH_REGEX, "");
 const isHome = siteUrl === homeUrl;
@@ -93,12 +84,7 @@ if (!isHome) {
 <meta property="twitter:image:alt" content={seoDescription} />
 
 <link rel="sitemap" href="/sitemap-index.xml" />
-<link
-  rel="alternate"
-  type="application/rss+xml"
-  title={BASE_SITE_NAME}
-  href={rssUrl}
-/>
+<link rel="alternate" type="application/rss+xml" title={BASE_SITE_NAME} href={rssUrl} />
 
 <script
   is:inline
@@ -146,6 +132,6 @@ if (!isHome) {
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
       itemListElement: breadcrumbs,
-    }
+    },
   ])}
 />

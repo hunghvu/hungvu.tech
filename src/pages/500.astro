@@ -16,9 +16,9 @@ const { error } = Astro.props;
     <!-- An open-source static page, no worry about leaking sensitive information. -->
     <h1>500: {error instanceof Error ? error.message : "Unknown error"}</h1>
     <p>
-      <a href="https://github.com/hunghvu/hungvu.tech/issues"
-        >Report bug on Github</a
-      > or <a href="/">Return to home page</a>
+      <a href="https://github.com/hunghvu/hungvu.tech/issues">Report bug on Github</a> or <a
+        href="/">Return to home page</a
+      >
     </p>
   </div>
 </BaseLayout>

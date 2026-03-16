@@ -61,10 +61,7 @@ Sensitive data must always be encrypted, so there is more protection against mal
 
 import image4 from "./synology-4.webp";
 
-<BlogPicture
-  imageMetadata={image4}
-  alt="Create a virtual machine backup task."
-/>
+<BlogPicture imageMetadata={image4} alt="Create a virtual machine backup task." />
 
 However, file-level encryption is still not presented in neither Active Backup for Microsoft 365 nor Active Backup for Google Workspace, so we can only rely on Shared Folder encryption.
 
@@ -74,10 +71,7 @@ Here is an interesting point, Synology uses **eCryptFS** as an encryption mechan
 
 import image5 from "./synology-5.webp";
 
-<BlogPicture
-  imageMetadata={image5}
-  alt="143 characters limitation of eCryptFS used by Synology."
-/>
+<BlogPicture imageMetadata={image5} alt="143 characters limitation of eCryptFS used by Synology." />
 
 However, if the Shared Folder has been encrypted since the beginning, backup tasks can still run and store files to the destination normally. However, the long file name is appended with `(name too long)` at the end. This is not just a visual presentation in the Synology portal, as the downloaded-from-NAS file also has `(name too long)` at the end. The Shared Folder can be un-mounted (encrypted) and mounted (decrypted) without any trouble. I reached out to Synology support to ask about this behavior, and they confirmed it is normal.
 

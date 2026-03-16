@@ -1,6 +1,5 @@
 ---
 import type { MarkdownHeading } from "astro";
-import { Fragment } from "astro/jsx-runtime";
 
 type Props = { headings: MarkdownHeading[]; currentDepth: number };
 const { headings, currentDepth = 2 } = Astro.props;
@@ -16,17 +15,14 @@ const headingsOfCurrentDepth = headingsWithIndex
 {
   headingsOfCurrentDepth.map((currentDepthHeading, index) => {
     // Find nested items for the current item
-    const nextHeadingOfCurrentDepth =
-      headingsOfCurrentDepth[index + 1] ?? false;
+    const nextHeadingOfCurrentDepth = headingsOfCurrentDepth[index + 1] ?? false;
     const nestedHeadings = headingsWithIndex.filter((subHeading) => {
       return (
         subHeading.depth > currentDepthHeading.depth &&
         // Maximum is H6, but Astro compiler does not allow <= operator, so use < instead
         subHeading.depth < 7 &&
         subHeading.index > currentDepthHeading.index &&
-        (nextHeadingOfCurrentDepth
-          ? subHeading.index < nextHeadingOfCurrentDepth.index
-          : true)
+        (nextHeadingOfCurrentDepth ? subHeading.index < nextHeadingOfCurrentDepth.index : true)
       );
     });
     // Prefer not to have collapsible submenu
@@ -36,20 +32,13 @@ const headingsOfCurrentDepth = headingsWithIndex
       <li class="not-prose">
         {nestedHeadings.length > 0 ? (
           <>
-            <a href={`#${currentDepthHeading.slug}`}>
-              {currentDepthHeading.text}
-            </a>
+            <a href={`#${currentDepthHeading.slug}`}>{currentDepthHeading.text}</a>
             <ul>
-              <Astro.self
-                headings={nestedHeadings}
-                currentDepth={currentDepth + 1}
-              />
+              <Astro.self headings={nestedHeadings} currentDepth={currentDepth + 1} />
             </ul>
           </>
         ) : (
-          <a href={`#${currentDepthHeading.slug}`}>
-            {currentDepthHeading.text}
-          </a>
+          <a href={`#${currentDepthHeading.slug}`}>{currentDepthHeading.text}</a>
         )}
       </li>
     );

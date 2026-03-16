@@ -6,11 +6,7 @@ import Icon from "./Icon.astro";
 <header class="daisyui-navbar bg-base-100 max-w-(--breakpoint-xl)">
   <nav class="daisyui-navbar-start">
     <div class="daisyui-dropdown">
-      <div
-        tabindex="0"
-        role="button"
-        class="daisyui-btn daisyui-btn-ghost lg:hidden"
-      >
+      <div tabindex="0" role="button" class="daisyui-btn daisyui-btn-ghost lg:hidden">
         <Icon name="hamburger" class="h-5 w-5" />
       </div>
       <ul
@@ -19,9 +15,7 @@ import Icon from "./Icon.astro";
         <li><a href="/">Home</a></li>
       </ul>
     </div>
-    <a href="/" class="daisyui-btn daisyui-btn-ghost text-xl"
-      >{BASE_SITE_NAME}</a
-    >
+    <a href="/" class="daisyui-btn daisyui-btn-ghost text-xl">{BASE_SITE_NAME}</a>
   </nav>
   <nav class="daisyui-navbar-center hidden lg:flex">
     <ul class="daisyui-menu daisyui-menu-horizontal px-1">
@@ -44,18 +38,8 @@ import Icon from "./Icon.astro";
     <label class="daisyui-swap daisyui-swap-rotate">
       <span class="hidden">Choose theme preference: Light or dark mode.</span>
       <input type="checkbox" data-toggle-theme="dark" />
-      <Icon
-        name="sun"
-        class="daisyui-swap-off fill-base-content"
-        width="24"
-        height="24"
-      />
-      <Icon
-        name="moon"
-        class="daisyui-swap-on fill-base-content"
-        width="24"
-        height="24"
-      />
+      <Icon name="sun" class="daisyui-swap-off fill-base-content" width="24" height="24" />
+      <Icon name="moon" class="daisyui-swap-on fill-base-content" width="24" height="24" />
     </label>
   </div>
 </header>

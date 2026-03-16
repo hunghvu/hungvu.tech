@@ -149,10 +149,7 @@ Harvester offers PCIe passthrough out-of-the-box, but at the time of writing, _t
 
 import image1 from "./openwrt-1.webp";
 
-<BlogPicture
-  imageMetadata={image1}
-  alt="Harvester supports PCIe passthrough via GUI."
-/>
+<BlogPicture imageMetadata={image1} alt="Harvester supports PCIe passthrough via GUI." />
 
 So, I went ahead and passed through my NICs without any issues, or at least, not yet...
 
@@ -215,10 +212,7 @@ The addresses follow a Bus, Device, Function (BDF notation) for PCI Domain, whic
 
 import image3 from "./openwrt-3.webp";
 
-<BlogPicture
-  imageMetadata={image3}
-  alt="Passthrough all PCIe devices in the same IOMMU group."
-/>
+<BlogPicture imageMetadata={image3} alt="Passthrough all PCIe devices in the same IOMMU group." />
 
 Here is a thing, when a device is not passed through probably, there is no indicator. I faced three different scenarios that are related to this:
 
@@ -351,10 +345,7 @@ There is a saying, a picture says a thousand words. Here are some tests I perfor
 
 import image4 from "./openwrt-4.webp";
 
-<BlogPicture
-  imageMetadata={image4}
-  alt="Web GUI, notice the system information?"
-/>
+<BlogPicture imageMetadata={image4} alt="Web GUI, notice the system information?" />
 
 import image5 from "./openwrt-5.webp";
 
@@ -362,10 +353,7 @@ import image5 from "./openwrt-5.webp";
 
 import image6 from "./openwrt-6.webp";
 
-<BlogPicture
-  imageMetadata={image6}
-  alt="Cloudflare network test result - Internet speed."
-/>
+<BlogPicture imageMetadata={image6} alt="Cloudflare network test result - Internet speed." />
 
 import image7 from "./openwrt-7.webp";
 
@@ -376,17 +364,11 @@ import image7 from "./openwrt-7.webp";
 
 import image8 from "./openwrt-8.webp";
 
-<BlogPicture
-  imageMetadata={image8}
-  alt="OpenWRT system load during Waveform bufferbloat test."
-/>
+<BlogPicture imageMetadata={image8} alt="OpenWRT system load during Waveform bufferbloat test." />
 
 import image9 from "./openwrt-9.webp";
 
-<BlogPicture
-  imageMetadata={image9}
-  alt="iperf3 from client to OpenWRT result."
-/>
+<BlogPicture imageMetadata={image9} alt="iperf3 from client to OpenWRT result." />
 
 import image10 from "./openwrt-1.webp";
 
@@ -398,10 +380,7 @@ It was a wild ride but at last, I have been able to use this VM firewall full-ti
 
 import image11 from "./openwrt-1.webp";
 
-<BlogPicture
-  imageMetadata={image11}
-  alt="No major issue found after 45 days."
-/>
+<BlogPicture imageMetadata={image11} alt="No major issue found after 45 days." />
 
 Again, this is not a huge deal breaker to me as I do not play around with networking that much in my homelab. Considering there is no measurable difference between a virtualized firewall and bare metal installation, it is certainly worth a try. Theoretically, there are security implications when virtualizing the firewall though, but I suppose I am not the best person to discuss that.
 

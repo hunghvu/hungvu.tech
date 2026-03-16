@@ -170,10 +170,7 @@ Well, hard to tell, but in a sense it got worse. Back in 2024, I was testing the
 
 import image1 from "./i226v-openwrt-1.png";
 
-<BlogPicture
-  imageMetadata={image1}
-  alt="Intel i226-V Ethernet controller is buggy under ASPM."
-/>
+<BlogPicture imageMetadata={image1} alt="Intel i226-V Ethernet controller is buggy under ASPM." />
 
 How about now after updating to NVM version 2.32? Installing the NIC makes my system experience a kernel panic and boot loop. I attached part of the kernel panic log below for reference. Looking at it, it seems the `igc` driver crashes. Is it a firmware issue? Driver issue (null pointer reference)? Hardware issue (PCIe Bus)? Not sure yet, but possibly a combination of all these factors again.
 

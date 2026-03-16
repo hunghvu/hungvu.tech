@@ -26,9 +26,9 @@ const { page } = Astro.props;
     <div class="daisyui-card-body">
       <h1 class="daisyui-card-title text-5xl">Hello, Tech Enthusiasts!</h1>
       <p>
-        Welcome to my digital repository. This is where I log my own learning
-        experience. The topics range from software development, configuration,
-        review, to homelab setup. I hope you find something useful here!
+        Welcome to my digital repository. This is where I log my own learning experience. The topics
+        range from software development, configuration, review, to homelab setup. I hope you find
+        something useful here!
       </p>
     </div>
   </section>
@@ -38,10 +38,7 @@ const { page } = Astro.props;
       {
         page.data.map((post) => (
           <li class="col-span-1">
-            <a
-              class="daisyui-card bg-base-100 h-96 shadow-xl"
-              href={`/${post.id}/`}
-            >
+            <a class="daisyui-card bg-base-100 h-96 shadow-xl" href={`/${post.id}/`}>
               <figure>
                 <Picture
                   class="max-h-51"
@@ -66,10 +63,7 @@ const { page } = Astro.props;
   <section class="daisyui-join grid grid-cols-5">
     {
       page.currentPage === 1 ? (
-        <a
-          href={page.url.first}
-          class="daisyui-btn daisyui-btn-disabled daisyui-join-item"
-        >
+        <a href={page.url.first} class="daisyui-btn daisyui-btn-disabled daisyui-join-item">
           First
         </a>
       ) : (
@@ -80,10 +74,7 @@ const { page } = Astro.props;
     }
     {
       page.currentPage === 1 ? (
-        <a
-          href={page.url.prev}
-          class="daisyui-btn daisyui-btn-disabled daisyui-join-item"
-        >
+        <a href={page.url.prev} class="daisyui-btn daisyui-btn-disabled daisyui-join-item">
           Prev
         </a>
       ) : (
@@ -93,15 +84,10 @@ const { page } = Astro.props;
       )
     }
 
-    <button class="daisyui-btn daisyui-join-item"
-      >{page.currentPage}/{page.lastPage}</button
-    >
+    <button class="daisyui-btn daisyui-join-item">{page.currentPage}/{page.lastPage}</button>
     {
       page.currentPage === page.lastPage ? (
-        <a
-          href={page.url.next}
-          class="daisyui-btn daisyui-btn-disabled daisyui-join-item"
-        >
+        <a href={page.url.next} class="daisyui-btn daisyui-btn-disabled daisyui-join-item">
           Next
         </a>
       ) : (
@@ -112,10 +98,7 @@ const { page } = Astro.props;
     }
     {
       page.currentPage === page.lastPage ? (
-        <a
-          href={page.url.last}
-          class="daisyui-btn daisyui-btn-disabled daisyui-join-item"
-        >
+        <a href={page.url.last} class="daisyui-btn daisyui-btn-disabled daisyui-join-item">
           Last
         </a>
       ) : (

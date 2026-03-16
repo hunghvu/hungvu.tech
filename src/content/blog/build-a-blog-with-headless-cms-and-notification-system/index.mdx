@@ -86,10 +86,7 @@ After the registration, you can access the **Admin Console**. This is where a su
 
 import image2 from "./novu-2.webp";
 
-<BlogPicture
-  imageMetadata={image2}
-  alt="The Domains tab of the Zoho Mail Admin Console."
-/>
+<BlogPicture imageMetadata={image2} alt="The Domains tab of the Zoho Mail Admin Console." />
 
 After that, there are several ways to verify domain ownership and one of the traditional ones is using a DNS record. Zoho Mail provides a unique and public TXT record that is used during the verification process. Add that to your DNS configuration, and your domain is verified.
 
@@ -149,10 +146,7 @@ Novu supports several providers across different channels including email, SMS, 
 
 import image8 from "./novu-8.webp";
 
-<BlogPicture
-  imageMetadata={image8}
-  alt="Custom SMTP is possible via the Integration Store."
-/>
+<BlogPicture imageMetadata={image8} alt="Custom SMTP is possible via the Integration Store." />
 
 Choosing the **Custom SMTP option**, you need to fill out the following information:
 
@@ -176,10 +170,7 @@ And you have just successfully set up Custom SMTP in Novu!
 
 import image9 from "./novu-9.webp";
 
-<BlogPicture
-  imageMetadata={image9}
-  alt="Custom SMTP is successfully activated."
-/>
+<BlogPicture imageMetadata={image9} alt="Custom SMTP is successfully activated." />
 
 ### Create your first notification template
 
@@ -428,13 +419,9 @@ export const NewsletterSubscriber: CollectionConfig = {
         // Create and update subscriber, Novu recommends the use of internal id.
         // Source: https://docs.novu.co/platform/subscribers
         operation === "create"
-          ? novu.subscribers
-              .identify(internal_id, { email })
-              .catch((err) => console.error(err))
+          ? novu.subscribers.identify(internal_id, { email }).catch((err) => console.error(err))
           : operation === "update"
-            ? novu.subscribers
-                .update(internal_id, { email })
-                .catch((err) => console.error(err))
+            ? novu.subscribers.update(internal_id, { email }).catch((err) => console.error(err))
             : null;
       },
     ],

@@ -61,4 +61,4 @@ Hung Vu:
 
 ## License
 
-Copyright &copy; 2025 Huu Hung Vu, All Rights Reserved.
+Copyright &copy; 2026 Huu Hung Vu, All Rights Reserved.

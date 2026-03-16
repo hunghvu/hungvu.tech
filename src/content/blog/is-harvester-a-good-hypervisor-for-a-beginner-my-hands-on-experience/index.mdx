@@ -54,10 +54,7 @@ The Harvester team has excellent documentation on initial installation, but bein
 
 import image1 from "./harvester-1.webp";
 
-<BlogPicture
-  imageMetadata={image1}
-  alt="Harvester HCI installation is finished."
-/>
+<BlogPicture imageMetadata={image1} alt="Harvester HCI installation is finished." />
 
 ### The weird first-login issue?
 
@@ -76,10 +73,7 @@ With this being nowhere documented, I dived into GitHub issues and found [#1479]
 
 import image3 from "./harvester-3.webp";
 
-<BlogPicture
-  imageMetadata={image3}
-  alt="Unexpected access to the bundled Rancher dashboard."
-/>
+<BlogPicture imageMetadata={image3} alt="Unexpected access to the bundled Rancher dashboard." />
 
 And ... here is the **Rancher** dashboard. The best part is that I was not supposed to be here in the first place. This happened because I did not set up VIP for my cluster, so the Rancher dashboard and this whole weird first login behavior manifested. That said, there is no trivial way to modify management IP after Harvester installation, so I needed to reinstall the whole node. At the time of writing, I have an idea of Rancher's role already (albeit limited), but still, I could not find an explanation for the login behavior.
 
@@ -102,19 +96,13 @@ The picture below was when one node just came back from being cordoned.
 
 import image4 from "./harvester-4.webp";
 
-<BlogPicture
-  imageMetadata={image4}
-  alt="Node consumes lots of resources in certain scenarios."
-/>
+<BlogPicture imageMetadata={image4} alt="Node consumes lots of resources in certain scenarios." />
 
 And compared to after it got settled down.
 
 import image5 from "./harvester-5.webp";
 
-<BlogPicture
-  imageMetadata={image5}
-  alt="Harvester's node at a more idle state."
-/>
+<BlogPicture imageMetadata={image5} alt="Harvester's node at a more idle state." />
 
 ### Some essential processes are not trivial in Web UI, for example, the update process
 
@@ -122,10 +110,7 @@ There does not seem to be a _Check for Update_ button. Only when a new release a
 
 import image6 from "./harvester-6.webp";
 
-<BlogPicture
-  imageMetadata={image6}
-  alt="Some nodes in the cluster failed to upgrade."
-/>
+<BlogPicture imageMetadata={image6} alt="Some nodes in the cluster failed to upgrade." />
 
 This issue can be generalized as a lack of essential UX components like an official way to power off or reboot the cluster, view SMART data for hosts, and more. They certainly can be done in a headless manner or directly using the node console, but those might not be user-friendly depending on your preference.
 
@@ -214,10 +199,7 @@ At default, Harvester is fairly straightforward, but it certainly can become com
 
 import image9 from "./harvester-9.webp";
 
-<BlogPicture
-  imageMetadata={image9}
-  alt="Running OpenWRT as a virtualized firewall in Harvester."
-/>
+<BlogPicture imageMetadata={image9} alt="Running OpenWRT as a virtualized firewall in Harvester." />
 
 If you find this article to be helpful, I have some more for you!
 

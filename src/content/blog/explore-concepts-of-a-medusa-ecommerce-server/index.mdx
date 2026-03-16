@@ -20,10 +20,7 @@ _This article was my contribution to _[_the Medusa blog._](https://medusajs.com/
 
 import image1 from "./medusa-1.webp";
 
-<BlogPicture
-  imageMetadata={image1}
-  alt="Three main components of a Medusa project."
-/>
+<BlogPicture imageMetadata={image1} alt="Three main components of a Medusa project." />
 
 Medusa's complete architecture consists of three main components: Headless Node.js eCommerce Server, Admin Dashboard, and Storefront. The modular and headless architecture makes all three components completely separated and deployable to different environments without any restriction.To understand more what each component is:
 
@@ -233,9 +230,7 @@ Services can be accessed anywhere on your Medusa server. For example, to use `Pr
 // is a camel-cased version: "privateInventoryAccessService"
 //
 // The service is accessible via req.scope.resolve(serviceRegistrationName)
-const privateInventoryAccessService = req.scope.resolve(
-  "privateInventoryAccessService",
-);
+const privateInventoryAccessService = req.scope.resolve("privateInventoryAccessService");
 
 res.json({
   unreleasedProducts: privateInventoryAccessService.getUnreleasedProducts(),

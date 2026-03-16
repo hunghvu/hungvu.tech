@@ -25,19 +25,13 @@ To pass through a PCI device, a GPU in case, it is trivial in Harvester HCI (ass
 
 import image1 from "./gpu-1.png";
 
-<BlogPicture
-  imageMetadata={image1}
-  alt="Go to Addons, enable and deploy pcidevices-controller."
-/>
+<BlogPicture imageMetadata={image1} alt="Go to Addons, enable and deploy pcidevices-controller." />
 
 - In the left menu bar, go to **PCI Devices**, and enable passthrough the GPU, along with any devices belonging to the same IOMMU group.
 
 import image2 from "./gpu-2.png";
 
-<BlogPicture
-  imageMetadata={image2}
-  alt="Enable PCI passthrough for my Yeston RX6800 16GD6 GPU."
-/>
+<BlogPicture imageMetadata={image2} alt="Enable PCI passthrough for my Yeston RX6800 16GD6 GPU." />
 
 - In the left menu bar, go to **Virtual Machines**, and enter the Edit mode of the chosen VM. There are two ways to edit, either via a GUI or via YAML config. I normally use GUI for convenience, that said, the YAML config will come in handy in certain situations which I will discuss later. Assign available PCI devices to the VM. In Harvester HCI, enabling a PCI device passthrough and assigning a PCI device to a specific VM are two different activities.
 
@@ -112,10 +106,7 @@ As you may guess, I eventually was able to resolve this weird bug by piecing the
 
 import image7 from "./gpu-7.png";
 
-<BlogPicture
-  imageMetadata={image7}
-  alt="Remove GPU device assignment via VM YAML config."
-/>
+<BlogPicture imageMetadata={image7} alt="Remove GPU device assignment via VM YAML config." />
 
 - SSH to my Harvester HCI node with an admin account, then changed to root user and executed the following commands.
 

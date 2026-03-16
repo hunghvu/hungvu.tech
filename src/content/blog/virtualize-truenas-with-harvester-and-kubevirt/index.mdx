@@ -29,10 +29,7 @@ Harvester uses Kubevirt for its virtualization management, so the virtual machin
 
 import image1 from "./truenas-1.webp";
 
-<BlogPicture
-  imageMetadata={image1}
-  alt="Choose boot loader mode during TrueNAS installation."
-/>
+<BlogPicture imageMetadata={image1} alt="Choose boot loader mode during TrueNAS installation." />
 
 import image2 from "./truenas-2.webp";
 
@@ -131,10 +128,7 @@ Actually, this template is after I finish setting up TrueNAS, so it is a bit dif
 
 import image3 from "./truenas-3.webp";
 
-<BlogPicture
-  imageMetadata={image3}
-  alt="cloudinit appears as a drive to TrueNAS."
-/>
+<BlogPicture imageMetadata={image3} alt="cloudinit appears as a drive to TrueNAS." />
 
 After using `vtbd1`, and `vtbd2` as boot drives, `installer` and `cloudinit` becomes redundant and can cause certain issues, so they are removed just in cases.
 
@@ -153,10 +147,7 @@ For example, `vtbd2` here is the `cloudinit` (number changes due to different bo
 
 import image5 from "./truenas-5.webp";
 
-<BlogPicture
-  imageMetadata={image5}
-  alt="Boot pools have no serial number associated."
-/>
+<BlogPicture imageMetadata={image5} alt="Boot pools have no serial number associated." />
 
 Harvester does not expose a mechanism to set a serial number for drives via web GUI, so I manually adjust the Kubevirt YAML config and add the `serial` property (with UUID). TrueNAS is perfectly happy with that.
 
@@ -177,10 +168,7 @@ disks:
 
 import image6 from "./truenas-6.webp";
 
-<BlogPicture
-  imageMetadata={image6}
-  alt="Manually assign a serial number to the boot drives."
-/>
+<BlogPicture imageMetadata={image6} alt="Manually assign a serial number to the boot drives." />
 
 **PCI device devices are passed through.**
 
@@ -203,10 +191,7 @@ So with that, I choose the following devices (all in IOMMU group 12).
 
 import image8 from "./truenas-8.webp";
 
-<BlogPicture
-  imageMetadata={image8}
-  alt="Pass through all PCIe device in IOMMU group 12."
-/>
+<BlogPicture imageMetadata={image8} alt="Pass through all PCIe device in IOMMU group 12." />
 
 But only make 3 of them available to the virtual machine, because the other two PCI devices can make my node fail. The failure causes all sorts of issues like management address becoming unavailable, node not responding, and having to reboot, etc.
 
@@ -231,10 +216,7 @@ import image9 from "./truenas-9.webp";
 
 import image10 from "./truenas-10.webp";
 
-<BlogPicture
-  imageMetadata={image10}
-  alt="Short bandwidth test to see if the drives are working."
-/>
+<BlogPicture imageMetadata={image10} alt="Short bandwidth test to see if the drives are working." />
 
 **\*Side note\*\***: The test runs only a few seconds, hence the skewness in its statistics. That said, the max throughput can reach close to 9 Gbps at one point on a 5 x 2 TB SSD pool, RAID-Z2.\*
 
