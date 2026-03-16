@@ -1,14 +1,13 @@
-import pluginAstro from "eslint-plugin-astro";
-// eslint-plugin-tailwindcss does not support astro yet
-// typescript-eslint is not intended for astro files
-
-// eslint-config-prettier is for turning rules that conflict with prettier
 import pluginPrettier from "eslint-config-prettier";
+import pluginAstro from "eslint-plugin-astro";
+import tseslint from "typescript-eslint";
 
-export default [
+export default tseslint.config(
   {
     ignores: [".github", "node_modules", "dist/**", "pnpm-lock.yaml"],
   },
+  tseslint.configs.recommended,
+  ...pluginAstro.configs.recommended,
   ...pluginAstro.configs["jsx-a11y-strict"],
   pluginPrettier,
   {
@@ -17,4 +16,10 @@ export default [
       // "astro/no-set-html-directive": "error",
     },
   },
-];
+  {
+    files: ["**/*.d.ts"],
+    rules: {
+      "@typescript-eslint/triple-slash-reference": "off",
+    },
+  },
+);
