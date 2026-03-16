@@ -1,0 +1,37 @@
+---
+import "../styles/global.css";
+import BaseHead from "../components/head/BaseHead.astro";
+import SeoHead from "../components/head/SeoHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+
+interface Props {
+  seoTitle: string;
+  seoDescription: string;
+  readerTitle?: string;
+  coverImageSlug?: string;
+  slug?: string;
+  jsonLdType?: "Blog" | "BlogPosting";
+  jsonLdDatePublished?: string;
+  jsonLdDateModified?: string;
+}
+
+const props = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <BaseHead />
+    <SeoHead {...props} />
+  </head>
+
+  <body class="bg-base-100 flex w-full flex-col items-center">
+    <Header />
+    <main
+      class="flex w-full max-w-(--breakpoint-xl) flex-col items-center px-6 py-12"
+    >
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>
