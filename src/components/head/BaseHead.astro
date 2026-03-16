@@ -5,10 +5,7 @@ import "@fontsource/geist-sans";
 {/* Global Metadata */}
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<meta
-  name="google-site-verification"
-  content="EGTdZytY_C05esF562wX0i-fpIShKgfypgbhQV3bPzU"
-/>
+<meta name="google-site-verification" content="EGTdZytY_C05esF562wX0i-fpIShKgfypgbhQV3bPzU" />
 
 <script
   is:inline
@@ -25,20 +22,14 @@ import "@fontsource/geist-sans";
   // ☝️ This script prevent the FART effect.
   if (localStorage.getItem("theme") === null) {
     document.documentElement.setAttribute("data-theme", "light");
-  } else
-    document.documentElement.setAttribute(
-      "data-theme",
-      localStorage.getItem("theme"),
-    );
+  } else document.documentElement.setAttribute("data-theme", localStorage.getItem("theme"));
 </script>
 <script>
   import { themeChange } from "theme-change";
   themeChange();
 </script>
 
-{
-  /* Must be a global style to activate rehype plugin pretty code line counter */
-}
+{/* Must be a global style to activate rehype plugin pretty code line counter */}
 <style is:global>
   code[data-line-numbers] {
     counter-reset: line;
