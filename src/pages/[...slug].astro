@@ -1,6 +1,6 @@
 ---
 import "../styles/global.css";
-import { getCollection } from "astro:content";
+import { getCollection, render } from "astro:content";
 import BaseHead from "../components/head/BaseHead.astro";
 import Footer from "../components/Footer.astro";
 import FormattedDate from "../components/FormattedDate.astro";
@@ -14,7 +14,7 @@ import SeoHead from "../components/head/SeoHead.astro";
 export const getStaticPaths = (async () => {
   const posts = await getCollection("blog");
   return posts.map((post) => ({
-    params: { slug: post.slug },
+    params: { slug: post.id },
     props: post,
   }));
 }) satisfies GetStaticPaths;
@@ -30,7 +30,7 @@ const {
   updatedDate,
   series,
 } = Astro.props.data;
-const { Content, headings } = await Astro.props.render();
+const { Content, headings } = await render(Astro.props);
 ---
 
 <html lang="en">
