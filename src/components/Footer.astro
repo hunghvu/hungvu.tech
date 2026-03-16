@@ -14,19 +14,19 @@ import Icon from "./Icon.astro";
   </aside>
   <nav class="flex w-full flex-row justify-center gap-4 sm:justify-end">
     <a href={LINKEDIN_URL} target="_blank">
-      <span class="hidden">Visit LinkedIn page.</span>
+      <span class="sr-only">Visit LinkedIn page.</span>
       <Icon name="linkedin" class="fill-base-content" width="24" height="24" />
     </a>
     <a href={GITHUB_URL} target="_blank">
-      <span class="hidden">Visit GitHub profile.</span>
+      <span class="sr-only">Visit GitHub profile.</span>
       <Icon name="github" class="fill-base-content" width="24" height="24" />
     </a>
     <a href={`${Astro.site}/rss.xml`}>
-      <span class="hidden">Visit RSS feed.</span>
+      <span class="sr-only">Visit RSS feed.</span>
       <Icon name="rss" class="fill-base-content" width="24" height="24" />
     </a>
     <a href={`${Astro.site}/sitemap-index.xml`}>
-      <span class="hidden">Visit sitemap.</span>
+      <span class="sr-only">Visit sitemap.</span>
       <Icon name="sitemap" class="fill-base-content" width="24" height="24" />
     </a>
   </nav>

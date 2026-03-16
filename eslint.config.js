@@ -1,12 +1,13 @@
 import pluginPrettier from "eslint-config-prettier";
 import pluginAstro from "eslint-plugin-astro";
+import { defineConfig } from "eslint/config";
 import tseslint from "typescript-eslint";
 
-export default tseslint.config(
+export default defineConfig([
   {
     ignores: [".github", "node_modules", "dist/**", "pnpm-lock.yaml"],
   },
-  tseslint.configs.recommended,
+  ...tseslint.configs.recommended,
   ...pluginAstro.configs.recommended,
   ...pluginAstro.configs["jsx-a11y-strict"],
   pluginPrettier,
@@ -22,4 +23,4 @@ export default tseslint.config(
       "@typescript-eslint/triple-slash-reference": "off",
     },
   },
-);
+]);

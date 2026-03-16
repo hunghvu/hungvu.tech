@@ -1,0 +1,65 @@
+---
+import "@pagefind/default-ui/css/ui.css";
+---
+
+<dialog id="search-modal" class="daisyui-modal" aria-labelledby="search-modal-title">
+  <div class="daisyui-modal-box bg-base-200 max-w-2xl">
+    <h3 id="search-modal-title" class="mb-4 text-lg font-bold">Search</h3>
+    <div id="search"></div>
+    <div class="daisyui-modal-action">
+      <form method="dialog">
+        <button class="daisyui-btn">Close</button>
+      </form>
+    </div>
+  </div>
+  <form method="dialog" class="daisyui-modal-backdrop">
+    <button>close</button>
+  </form>
+</dialog>
+
+<script>
+  window.addEventListener("DOMContentLoaded", async () => {
+    const searchElement = document.querySelector("#search");
+    if (!searchElement) return;
+
+    try {
+      // @ts-expect-error - Pagefind UI is generated at build time
+      const { PagefindUI } = await import("@pagefind/default-ui");
+      new PagefindUI({
+        element: "#search",
+        showSubResults: true,
+        pageSize: 5,
+        translations: {
+          placeholder: "Search posts...",
+        },
+        bundlePath: "/pagefind/",
+      });
+    } catch {
+      console.warn(
+        "Pagefind UI failed to load. This is expected in dev mode unless a search index has been built.",
+      );
+      searchElement.innerHTML = `
+        <div class="p-4 text-center opacity-70">
+          <p class="mb-2">Search is indexing...</p>
+          <p class="text-xs">Note: Search requires a production build to function. Run <code>pnpm run build && pnpm run preview</code> to test search locally.</p>
+        </div>
+      `;
+    }
+  });
+</script>
+
+<style is:global>
+  /* Customize Pagefind UI to match theme */
+  :root {
+    --pagefind-ui-primary: var(--p);
+    --pagefind-ui-text: var(--bc);
+    --pagefind-ui-background: var(--b2);
+    --pagefind-ui-border: var(--b3);
+    --pagefind-ui-tag: var(--b3);
+  }
+
+  .pagefind-ui__search-input:focus {
+    outline: none !important;
+    box-shadow: 0 0 0 2px var(--p) !important;
+  }
+</style>

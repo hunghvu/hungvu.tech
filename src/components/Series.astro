@@ -12,22 +12,23 @@ const postsInTheSameSeries = posts
   );
 ---
 
-<ul class="daisyui-menu rounded-box bg-base-300 w-full">
-  <li>
-    <h2 class="daisyui-menu-title my-0!">Series: {series}</h2>
-  </li>
-  <div class="daisyui-divider"></div>
-  <div class="h-64 overflow-y-scroll">
-    {
-      postsInTheSameSeries.map((post, index) => (
-        <li>
-          <span class="flex flex-row gap-4">
-            {" "}
-            {postsInTheSameSeries.length - index}.
-            <a href={`/${post.id}`}>{post.data.readerTitle}</a>
-          </span>
-        </li>
-      ))
-    }
+<div class="daisyui-card bg-base-300 rounded-box w-full">
+  <div class="p-4 pb-2">
+    <h2 class="text-sm font-bold tracking-wider uppercase opacity-60">Series: {series}</h2>
   </div>
-</ul>
+  <div class="daisyui-divider my-0 h-px px-4"></div>
+  <div class="h-64 overflow-y-scroll p-2">
+    <ul class="daisyui-menu daisyui-menu-sm">
+      {
+        postsInTheSameSeries.map((post, index) => (
+          <li>
+            <a href={`/${post.id}`} class="flex items-start gap-3">
+              <span class="tabular-nums opacity-70">{postsInTheSameSeries.length - index}.</span>
+              <span>{post.data.readerTitle}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</div>

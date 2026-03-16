@@ -6,6 +6,7 @@ import TableOfContents from "@components/toc/TableOfContents.astro";
 import Series from "@components/Series.astro";
 import type { InferGetStaticPropsType, GetStaticPaths } from "astro";
 import BaseLayout from "@layouts/BaseLayout.astro";
+import ReadingProgress from "@components/ReadingProgress.astro";
 
 export const getStaticPaths = (async () => {
   const posts = await getCollection("blog");
@@ -39,6 +40,7 @@ const { Content, headings } = await render(Astro.props);
   jsonLdDatePublished={publishedDate.toISOString()}
   jsonLdDateModified={updatedDate?.toISOString() ?? ""}
 >
+  <ReadingProgress />
   <article class="flex w-full flex-col items-center">
     <Picture
       class="mb-6 h-auto w-full max-w-full rounded-2xl"
