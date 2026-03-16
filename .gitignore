@@ -187,9 +187,9 @@ dist
 
 # End of https://www.toptal.com/developers/gitignore/api/node,visualstudiocode
 
-# Ignore files/folders intended for experiment
-*Test*
-*test*
-
 # generated types
 .astro/
+
+# Playwright
+playwright-report/
+test-results/
