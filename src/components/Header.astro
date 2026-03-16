@@ -4,17 +4,21 @@ import Icon from "./Icon.astro";
 import Search from "./Search.astro";
 ---
 
-<header class="daisyui-navbar bg-base-100 max-w-(--breakpoint-xl)">
+<header class="daisyui-navbar bg-base-100 max-w-(--breakpoint-xl) mx-auto px-4">
   <nav class="daisyui-navbar-start">
     <div class="daisyui-dropdown lg:hidden">
       <button class="daisyui-btn daisyui-btn-ghost daisyui-btn-circle" aria-label="Open menu">
-        <span class="daisyui-sr-only">Open navigation menu</span>
         <Icon name="hamburger" class="h-5 w-5" />
       </button>
       <ul
         class="daisyui-menu daisyui-dropdown-content daisyui-menu-sm rounded-box bg-base-100 z-1 mt-3 w-52 p-2 shadow-sm"
       >
         <li><a href="/">Home</a></li>
+        <div class="daisyui-divider my-2"></div>
+        <li class="daisyui-menu-title text-xs opacity-50">Connect</li>
+        <li><a href={LINKEDIN_URL} target="_blank">LinkedIn</a></li>
+        <li><a href={GITHUB_URL} target="_blank">GitHub</a></li>
+        <li><a href={`${Astro.site}/rss.xml`}>RSS Feed</a></li>
       </ul>
     </div>
     <a href="/" class="daisyui-btn daisyui-btn-ghost text-xl">{BASE_SITE_NAME}</a>
@@ -24,16 +28,16 @@ import Search from "./Search.astro";
       <li><a href="/">Home</a></li>
     </ul>
   </nav>
-  <div class="daisyui-navbar-end gap-4">
-    <a href={LINKEDIN_URL} target="_blank">
+  <div class="daisyui-navbar-end gap-2 sm:gap-4">
+    <a href={LINKEDIN_URL} target="_blank" class="hidden sm:flex">
       <span class="sr-only">Visit LinkedIn page.</span>
       <Icon name="linkedin" class="fill-base-content" width="24" height="24" />
     </a>
-    <a href={GITHUB_URL} target="_blank">
+    <a href={GITHUB_URL} target="_blank" class="hidden sm:flex">
       <span class="sr-only">Visit GitHub profile.</span>
       <Icon name="github" class="fill-base-content" width="24" height="24" />
     </a>
-    <a href={`${Astro.site}/rss.xml`}>
+    <a href={`${Astro.site}/rss.xml`} class="hidden sm:flex">
       <span class="sr-only">Visit RSS feed.</span>
       <Icon name="rss" class="fill-base-content" width="24" height="24" />
     </a>
