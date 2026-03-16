@@ -10,6 +10,10 @@ import { rehypePrettyCode } from "rehype-pretty-code";
 export default defineConfig({
   site: "https://hungvu.tech",
   integrations: [embeds(), mdx(), sitemap()],
+  prefetch: {
+    prefetchAll: true,
+  },
+  compressHTML: true,
   markdown: {
     syntaxHighlight: false,
     rehypePlugins: [

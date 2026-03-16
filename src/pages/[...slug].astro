@@ -1,11 +1,11 @@
 ---
 import { getCollection, render } from "astro:content";
-import FormattedDate from "../components/FormattedDate.astro";
+import FormattedDate from "@components/FormattedDate.astro";
 import { Picture } from "astro:assets";
-import TableOfContents from "../components/toc/TableOfContents.astro";
-import Series from "../components/Series.astro";
+import TableOfContents from "@components/toc/TableOfContents.astro";
+import Series from "@components/Series.astro";
 import type { InferGetStaticPropsType, GetStaticPaths } from "astro";
-import BaseLayout from "../layouts/BaseLayout.astro";
+import BaseLayout from "@layouts/BaseLayout.astro";
 
 export const getStaticPaths = (async () => {
   const posts = await getCollection("blog");

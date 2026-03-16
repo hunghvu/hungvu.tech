@@ -1,4 +1,6 @@
 ---
+import { getImage } from "astro:assets";
+import defaultCoverImage from "@assets/logo-cover.png";
 import {
   BASE_SITE_NAME,
   LINKEDIN_URL,
@@ -22,16 +24,23 @@ const {
   seoTitle,
   seoDescription,
   readerTitle = "",
-  coverImageSlug = "/hungvu-tech-cover-image-1200x630.png",
+  coverImageSlug = "",
   slug = "",
   jsonLdType = "Blog",
   jsonLdDatePublished = new Date(),
   jsonLdDateModified = new Date(),
 } = Astro.props;
+
+const optimizedDefaultCover = await getImage({ src: defaultCoverImage, format: "webp" });
+const finalCoverImageSlug = coverImageSlug || optimizedDefaultCover.src;
+
 // href is implicitly used in string context, but just put it here
 // explicitly for clarity
 const siteUrl = new URL(slug, Astro.site).href.replace(TRAILING_SLASH_REGEX, "");
-const coverImageUrl = new URL(coverImageSlug, Astro.site).href.replace(TRAILING_SLASH_REGEX, "");
+const coverImageUrl = new URL(finalCoverImageSlug, Astro.site).href.replace(
+  TRAILING_SLASH_REGEX,
+  "",
+);
 const rssUrl = new URL("rss.xml", Astro.site).href.replace(TRAILING_SLASH_REGEX, "");
 
 const homeUrl = new URL("/", Astro.site).href.replace(TRAILING_SLASH_REGEX, "");
