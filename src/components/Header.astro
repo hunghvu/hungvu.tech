@@ -28,18 +28,29 @@ import Search from "./Search.astro";
       <li><a href="/">Home</a></li>
     </ul>
   </nav>
-  <div class="daisyui-navbar-end gap-2 sm:gap-4">
-    <a href={LINKEDIN_URL} target="_blank" class="hidden sm:flex">
+  <div class="daisyui-navbar-end gap-1">
+    <a
+      href={LINKEDIN_URL}
+      target="_blank"
+      class="daisyui-btn daisyui-btn-ghost daisyui-btn-circle hidden sm:inline-flex"
+    >
       <span class="sr-only">Visit LinkedIn page.</span>
-      <Icon name="linkedin" class="fill-base-content" width="24" height="24" />
+      <Icon name="linkedin" class="fill-base-content" width="20" height="20" />
     </a>
-    <a href={GITHUB_URL} target="_blank" class="hidden sm:flex">
+    <a
+      href={GITHUB_URL}
+      target="_blank"
+      class="daisyui-btn daisyui-btn-ghost daisyui-btn-circle hidden sm:inline-flex"
+    >
       <span class="sr-only">Visit GitHub profile.</span>
-      <Icon name="github" class="fill-base-content" width="24" height="24" />
+      <Icon name="github" class="fill-base-content" width="20" height="20" />
     </a>
-    <a href={`${Astro.site}/rss.xml`} class="hidden sm:flex">
+    <a
+      href={`${Astro.site}/rss.xml`}
+      class="daisyui-btn daisyui-btn-ghost daisyui-btn-circle hidden sm:inline-flex"
+    >
       <span class="sr-only">Visit RSS feed.</span>
-      <Icon name="rss" class="fill-base-content" width="24" height="24" />
+      <Icon name="rss" class="fill-base-content" width="20" height="20" />
     </a>
     <button
       class="daisyui-btn daisyui-btn-ghost daisyui-btn-circle"
@@ -48,11 +59,11 @@ import Search from "./Search.astro";
     >
       <Icon name="search" class="h-5 w-5" />
     </button>
-    <label class="daisyui-swap daisyui-swap-rotate">
+    <label class="daisyui-btn daisyui-btn-ghost daisyui-btn-circle daisyui-swap daisyui-swap-rotate">
       <span class="sr-only">Choose theme preference: Light or dark mode.</span>
       <input type="checkbox" data-toggle-theme="dark" aria-label="Toggle theme" />
-      <Icon name="sun" class="daisyui-swap-off fill-base-content" width="24" height="24" />
-      <Icon name="moon" class="daisyui-swap-on fill-base-content" width="24" height="24" />
+      <Icon name="sun" class="daisyui-swap-off fill-base-content" width="20" height="20" />
+      <Icon name="moon" class="daisyui-swap-on fill-base-content" width="20" height="20" />
     </label>
   </div>
   <Search />
