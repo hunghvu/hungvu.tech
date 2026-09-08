@@ -13,9 +13,9 @@ You are working in an Astro web project (`hungvu.tech`). Follow these convention
 - **Layouts**: Use `src/layouts/` for page wrappers that provide common HTML structure (e.g., `<head>`, main navigation, footer).
 - **Components**: Reusable UI elements go in `src/components/`.
 - **Path Aliases**: Always use the tsconfig path aliases instead of brittle relative paths:
-  - `@components/*` &rarr; `src/components/*`
-  - `@layouts/*` &rarr; `src/layouts/*`
-  - `@assets/*` &rarr; `src/assets/*`
+  - `@components/*` -> `src/components/*`
+  - `@layouts/*` -> `src/layouts/*`
+  - `@assets/*` -> `src/assets/*`
 
 ## 2. Component Structure
 
@@ -54,8 +54,5 @@ const { title, description } = Astro.props;
 
 When generating, debugging, or modifying Astro code in this project, consult Astro's official documentation:
 
-- **Primary (Fastest)**: Use the `search_astro_docs` tool from the **`astro-docs` MCP server**. This queries the live Astro v7 documentation directly and returns concise, relevant sections.
-- **Secondary (Raw text)**: If you need broad context, use `read_url_content` on:
-  - `https://docs.astro.build/llms.txt`
-  - `https://docs.astro.build/_llms-txt/api-reference.txt`
-  - `https://docs.astro.build/_llms-txt/how-to-recipes.txt`
+- **Primary**: Use the `search_astro_docs` tool from the **`astro-docs` MCP server**. This queries the live Astro documentation directly and returns concise, relevant sections.
+- **Secondary**: Query the **`context7` MCP server** or consult the web docs at `https://docs.astro.build/en/`. (Note: Astro's legacy `llms.txt` has been retired in favor of the official MCP server).

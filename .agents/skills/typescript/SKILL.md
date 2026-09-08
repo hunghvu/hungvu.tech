@@ -21,9 +21,9 @@ This project relies on **TypeScript** to ensure type safety across Astro and sta
 
 Always use the configured path aliases rather than deeply nested relative paths (e.g. `../../components`):
 
-- `@components/*` &rarr; `src/components/*`
-- `@layouts/*` &rarr; `src/layouts/*`
-- `@assets/*` &rarr; `src/assets/*`
+- `@components/*` -> `src/components/*`
+- `@layouts/*` -> `src/layouts/*`
+- `@assets/*` -> `src/assets/*`
 
 ## 4. DOM Interactions
 
