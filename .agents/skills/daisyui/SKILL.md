@@ -35,6 +35,6 @@ Do NOT use unprefixed DaisyUI classes (like `btn` or `card`), as they will not b
 
 When looking up DaisyUI components or utilities:
 
+- **Context7 MCP**: Use the Context7 tools (`resolve-library-id` or `query-docs` directly with `libraryId: "/saadeghi/daisyui"` or `libraryId: "/websites/daisyui"`) to search DaisyUI component syntax, props, and examples.
 - **Free LLM Docs**: `https://daisyui.com/llms.txt` (use `read_url_content` if needed).
-- **Context7 MCP**: Query Context7 for DaisyUI and Tailwind CSS component structures.
 - Remember to always prepend `daisyui-` to classes found in official documentation!

@@ -28,8 +28,7 @@ This project uses **Tailwind CSS v4** via the `@tailwindcss/vite` plugin.
 
 ## 5. Documentation References
 
-When generating layouts, components, or resolving styling issues, use the official documentation to fetch accurate utility class definitions and guidelines:
+When generating layouts, components, or resolving styling issues, use the official documentation or MCP to fetch accurate utility class definitions and guidelines:
 
+- **Context7 MCP**: Use the Context7 tools (`resolve-library-id` or `query-docs` directly with `libraryId: "/tailwindlabs/tailwindcss.com"` or `libraryId: "/websites/tailwindcss"`) to look up Tailwind v4 syntax, utility classes, and theme directives.
 - **Tailwind Utility Classes Guide**: `https://tailwindcss.com/docs/styling-with-utility-classes`
-
-If encountering an issue with configuring or using specific utilities, read the contents of this URL for the required context.

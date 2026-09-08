@@ -38,4 +38,4 @@ Always use the configured path aliases rather than deeply nested relative paths 
 When handling complex type definitions or TypeScript utility types:
 
 - **TypeScript Official Docs**: `https://www.typescriptlang.org/docs/`
-- **Context7 MCP**: Query Context7 for TypeScript syntax and library typings.
+- **Context7 MCP**: Use `query-docs` directly with `libraryId: "/microsoft/typescript"` (or `/websites/typescriptlang`) for TypeScript syntax, compiler options, and utility types.
