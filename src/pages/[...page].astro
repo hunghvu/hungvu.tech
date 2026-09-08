@@ -63,7 +63,11 @@ const { page } = Astro.props;
   <section class="daisyui-join grid grid-cols-5">
     {
       page.currentPage === 1 ? (
-        <a href={page.url.first} class="daisyui-btn daisyui-btn-disabled daisyui-join-item">
+        <a
+          class="daisyui-btn daisyui-btn-disabled daisyui-join-item"
+          aria-disabled="true"
+          tabindex="-1"
+        >
           First
         </a>
       ) : (
@@ -74,7 +78,11 @@ const { page } = Astro.props;
     }
     {
       page.currentPage === 1 ? (
-        <a href={page.url.prev} class="daisyui-btn daisyui-btn-disabled daisyui-join-item">
+        <a
+          class="daisyui-btn daisyui-btn-disabled daisyui-join-item"
+          aria-disabled="true"
+          tabindex="-1"
+        >
           Prev
         </a>
       ) : (
@@ -87,7 +95,11 @@ const { page } = Astro.props;
     <button class="daisyui-btn daisyui-join-item">{page.currentPage}/{page.lastPage}</button>
     {
       page.currentPage === page.lastPage ? (
-        <a href={page.url.next} class="daisyui-btn daisyui-btn-disabled daisyui-join-item">
+        <a
+          class="daisyui-btn daisyui-btn-disabled daisyui-join-item"
+          aria-disabled="true"
+          tabindex="-1"
+        >
           Next
         </a>
       ) : (
@@ -98,7 +110,11 @@ const { page } = Astro.props;
     }
     {
       page.currentPage === page.lastPage ? (
-        <a href={page.url.last} class="daisyui-btn daisyui-btn-disabled daisyui-join-item">
+        <a
+          class="daisyui-btn daisyui-btn-disabled daisyui-join-item"
+          aria-disabled="true"
+          tabindex="-1"
+        >
           Last
         </a>
       ) : (
