@@ -2,11 +2,8 @@
   "editor.quickSuggestions": {
     "strings": true
   },
-  "eslint.probe": ["javascript", "astro", "typescript", "typescriptreact", "javascriptreact"],
   "editor.formatOnSave": true,
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit"
-  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
   "[astro]": {
     "editor.defaultFormatter": "astro-build.astro-vscode"
   }
