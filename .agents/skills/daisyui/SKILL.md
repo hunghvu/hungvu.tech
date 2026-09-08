@@ -7,24 +7,34 @@ description: Instructions on leveraging DaisyUI predefined components and handli
 
 This project incorporates **DaisyUI** on top of Tailwind CSS for its component library.
 
-## 1. Component Usage
+## 1. CRITICAL: Required `daisyui-` Prefix
 
-- Prefer using built-in DaisyUI component classes (e.g., `btn`, `card`, `alert`, `modal`, `drawer`) over building complex custom components from scratch using primitive Tailwind utilities.
-- When creating buttons, always use the `btn` base class combined with variants like `btn-primary`, `btn-outline`, or `btn-ghost`.
+In `src/styles/global.css`, DaisyUI is configured with a custom prefix:
+
+```css
+@plugin "daisyui" {
+  prefix: "daisyui-";
+}
+```
+
+**ALL DaisyUI component, layout, and modifier classes MUST be prefixed with `daisyui-`**:
+
+- Buttons: `daisyui-btn`, `daisyui-btn-primary`, `daisyui-btn-outline`, `daisyui-btn-ghost`, `daisyui-btn-circle`
+- Layout & Navigation: `daisyui-navbar`, `daisyui-navbar-start`, `daisyui-navbar-center`, `daisyui-navbar-end`, `daisyui-menu`, `daisyui-menu-horizontal`, `daisyui-menu-title`
+- Cards & Content: `daisyui-card`, `daisyui-card-body`, `daisyui-card-title`, `daisyui-divider`
+- Overlays & Interactivity: `daisyui-dropdown`, `daisyui-dropdown-content`, `daisyui-modal`, `daisyui-drawer`, `daisyui-swap`, `daisyui-swap-rotate`, `daisyui-swap-on`, `daisyui-swap-off`
+
+Do NOT use unprefixed DaisyUI classes (like `btn` or `card`), as they will not be styled.
 
 ## 2. Theming and Colors
 
-- Use DaisyUI semantic colors (`primary`, `secondary`, `accent`, `neutral`, `base-100`, `info`, `success`, `warning`, `error`) via Tailwind utilities (e.g., `text-primary`, `bg-base-200`) to ensure compatibility with different themes.
-- The project uses `theme-change` to handle theme switching. When adding new elements, make sure they adapt properly to dark/light modes relying on DaisyUI's CSS variables.
+- Use DaisyUI semantic colors (`primary`, `secondary`, `accent`, `neutral`, `base-100`, `base-200`, `base-content`, `info`, `success`, `warning`, `error`) via Tailwind utilities (e.g., `text-primary`, `bg-base-100`, `fill-base-content`).
+- The project uses `theme-change` to handle theme switching via `data-theme` and `data-toggle-theme="dark"`. Ensure elements adapt properly to dark/light modes.
 
-## 3. Layouts
+## 3. Documentation References
 
-- Use DaisyUI layout components like `navbar`, `footer`, and `hero` for standard page sections to speed up development and maintain visual consistency.
+When looking up DaisyUI components or utilities:
 
-## 4. Official DaisyUI LLM Documentation
-
-When generating or modifying components, relying on exact class names is critical. You **MUST** fetch and utilize the official DaisyUI LLM documentation for accurate utility class structures and layout setups.
-
-- **DaisyUI LLM Docs**: `https://daisyui.com/llms.txt`
-
-If encountering an issue with configuring or using a specific component, read the contents of this URL to retrieve the most up-to-date documentation.
+- **Free LLM Docs**: `https://daisyui.com/llms.txt` (use `read_url_content` if needed).
+- **Context7 MCP**: Query Context7 for DaisyUI and Tailwind CSS component structures.
+- Remember to always prepend `daisyui-` to classes found in official documentation!

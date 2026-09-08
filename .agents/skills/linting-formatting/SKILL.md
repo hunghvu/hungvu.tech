@@ -1,30 +1,24 @@
 ---
 name: linting-formatting
-description: Instructions on how to run and fix formatting/linting using prettier and eslint.
+description: Instructions on how to run formatting and code quality checks using Prettier and astro check.
 ---
 
-# Linting & Formatting Skill Guidelines
+# Formatting & Code Quality Guidelines
 
-The codebase employs automated linting and formatting workflows using Eslint and Prettier.
+The codebase relies on **Prettier** for deterministic formatting and Tailwind class sorting, and **Astro Check** for TypeScript and template diagnostics.
 
-## 1. Running Format & Lint
+## 1. Running Format & Checks
 
-- Use the package script `pnpm run format` (or `npm run format`) to automatically write Prettier format fixes to the codebase.
-- Use the package script `pnpm run lint` (or `npm run lint`) to identify any TypeScript, JSX, or Astro-related lint issues in `src/`.
+- **Format files**: Run `pnpm run format` (`prettier . --write`) to automatically format all files and sort Tailwind CSS classes.
+- **Check formatting**: Run `pnpm run lint` (`prettier . --check`) to verify that all files conform to code style rules.
+- **Type & Template Diagnostics**: Run `pnpm astro check` (or `pnpm run build`) to detect any TypeScript errors or broken props across `.astro`, `.ts`, and `.mdx` files.
 
 ## 2. Best Practices
 
-- Before completing a task or submitting significant code modifications, run the formatting to ensure alignment with `.prettierrc.ts`.
-- Address Eslint warnings and avoid disabling rules inline (`// eslint-disable-next-line`) unless absolutely necessary with a verified justification comment.
+- Run `pnpm run format` before concluding work or submitting changes.
+- Always verify that `pnpm astro check` passes with 0 errors and 0 warnings.
+- Keep Tailwind/DaisyUI utility classes clean; `prettier-plugin-tailwindcss` will automatically organize them when formatting.
 
-## 3. Configurations
+## 3. Configuration
 
-- The exact configs are stored in `eslint.config.js` and `.prettierrc.ts`. Do not modify these configuration files without explicit user instruction.
-
-## 4. Documentation References
-
-When resolving complex formatting or linting rules, refer to this documentation for ESLint core concepts and glossary definitions:
-
-- **ESLint Glossary**: `https://eslint.org/docs/latest/use/core-concepts/glossary`
-
-You can use the `read_url_content` tool to look up ESLint concepts if needed.
+- Formatting configuration is stored in `prettier.config.mjs`. Do not modify this file without explicit user instruction.

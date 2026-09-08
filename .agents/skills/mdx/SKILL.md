@@ -5,30 +5,42 @@ description: Rules for structuring content, using frontmatter, and handling rich
 
 # MDX Skill Guidelines
 
-The project uses `@astrojs/mdx` for content authoring, allowing the integration of components inside Markdown.
+The project uses `@astrojs/mdx` for blog content authoring in `src/content/blog/`.
 
-## 1. Content Structure
+## 1. Frontmatter Schema (`src/content.config.ts`)
 
-- Write clear, concise Markdown.
-- Use properly structured YAML Frontmatter at the top of the file to declare metadata like title, date, layout, and tags.
+Blog post frontmatter is strictly validated with Zod. Every blog post MUST include:
+
+```yaml
+---
+readerTitle: "My Article Title"
+readerDescription: "A concise summary for readers."
+coverImage: "/public/my-image.png"
+coverAlt: "Description of the cover image"
+publishedDate: 2026-09-07
+updatedDate: 2026-09-08 # optional
+series: "My Series Name" # optional
+seoTitle: "SEO Optimized Title"
+seoDescription: "Search engine description under 160 characters."
+---
+```
+
+> [!WARNING]
+> Do NOT use generic fields like `layout`, `title`, or `tags` in frontmatter. They are not in the schema and will trigger validation errors during `astro check` and `astro build`.
 
 ## 2. Code Blocks & Syntax Highlighting
 
-- Code blocks are parsed using `rehype-pretty-code` and `transformerCopyButton` is enabled.
+- Code blocks are parsed using `rehype-pretty-code` with `transformerCopyButton` enabled.
 - Always provide a language hint for fenced code blocks (e.g., ```typescript).
-- Be aware that copy buttons and syntax highlighting are automatically handled by the rehype plugins, so you don't need to manually inject them into the MDX content.
+- Line numbers and copy buttons are styled automatically by global CSS and rehype plugins.
 
 ## 3. Component Injection
 
 - You can import and use `.astro` components inside `.mdx` files.
-- Keep the imports grouped and organized at the beginning of the MDX file, right after the frontmatter block.
-- Use explicit component usage for complex interactive UI elements that Markdown alone cannot support.
+- Place imports right after the frontmatter closing `---`.
+- Prefer path aliases: `@components/*`, `@layouts/*`, `@assets/*`.
 
-## 4. Official MDX Documentation
+## 4. Documentation References
 
-The project uses the Astro MDX integration. When generating or modifying `.mdx` files, fetch and utilize the official documentation. Because MDX files frequently interact with core Astro features (Layouts, Components, Routing), you should consult both the overarching Astro LLM docs and the specific MDX guide:
-
-- **Astro Overview (LLM Docs)**: `https://docs.astro.build/llms.txt`
-- **Astro MDX Integration Guide**: `https://docs.astro.build/en/guides/integrations-guide/mdx/`
-
-If encountering an issue with configuring or using `.mdx` inside this Astro project, read the contents of these URLs for accurate context.
+- **Astro Docs MCP**: Use `search_astro_docs` for quick lookups on MDX integration and syntax.
+- **Astro MDX Guide**: `https://docs.astro.build/en/guides/integrations-guide/mdx/`

@@ -17,14 +17,25 @@ This project relies on **TypeScript** to ensure type safety across Astro and sta
 
 - Prefer `interface` over `type` for defining object shapes (like component Props or API responses) as they provide better error messages and are more easily extensible.
 
-## 3. DOM Interactions
+## 3. Path Aliases (`tsconfig.json`)
+
+Always use the configured path aliases rather than deeply nested relative paths (e.g. `../../components`):
+
+- `@components/*` &rarr; `src/components/*`
+- `@layouts/*` &rarr; `src/layouts/*`
+- `@assets/*` &rarr; `src/assets/*`
+
+## 4. DOM Interactions
 
 - When interacting with the DOM in client-side scripts, cast elements gracefully, verifying they exist before accessing properties (e.g., `const btn = document.querySelector<HTMLButtonElement>('#my-btn'); if (btn) { ... }`).
 
-## 4. Documentation References
+## 5. Type Checking
 
-When handling complex type definitions or TypeScript utility types, utilize the official TypeScript documentation to fetch accurate guidelines:
+- Run `pnpm astro check` to validate types across the entire project including Astro frontmatter and template expressions.
+
+## 6. Documentation References
+
+When handling complex type definitions or TypeScript utility types:
 
 - **TypeScript Official Docs**: `https://www.typescriptlang.org/docs/`
-
-If encountering an issue with specific compiler checks or required patterns, read the contents of this URL for the necessary context.
+- **Context7 MCP**: Query Context7 for TypeScript syntax and library typings.
