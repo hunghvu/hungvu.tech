@@ -1,5 +1,47 @@
 # Changelog
 
+## [2.2] - 2026-09-08
+
+### Major Highlights & Upgrades
+
+- **Astro 7 Migration**: Migrated to Astro 7 with `@astrojs/markdown-remark` unified pipeline for rehype syntax processing.
+- **Tailwind CSS v4 & DaisyUI 5**: Fully migrated to the pure-CSS plugin architecture (`@plugin "daisyui"` with required `daisyui-` prefix).
+- **pnpm 12 Support**: Modernized workspace configuration, cleaned obsolete flags, and removed deprecated `.npmrc`.
+- **Toolchain Streamlining**: Switched to a lightweight, deterministic Prettier-only workflow (`prettier . --check` / `--write`) and relied on `astro check` for template and TypeScript validation, eliminating ESLint overhead.
+- **Automated Agent Capabilities**: Configured live documentation integration via MCP servers (`astro-docs` and `context7`), added GitHub CLI (`gh`) skill, and updated agent standards with tsconfig path aliases and Content Layer API practices.
+
+### Accessibility & Tests
+
+- **WCAG Accessibility Fixes**: Added `aria-disabled="true"` and `tabindex="-1"` to disabled pagination buttons in `[...page].astro` to resolve Axe-core color contrast false positives.
+- **Playwright Suite Drift**: Fixed DaisyUI 5 hidden toggle checkbox interaction by targeting label containers; configured non-interactive Playwright test reporter.
+- **TypeScript Alignment**: Added Astro-recommended `include` and `exclude` boundaries in `tsconfig.json`.
+
+---
+
+## [2.1] - 2026-03-16
+
+### Features
+
+- **Client-Side Search**: Implemented fast, static search powered by Pagefind with interactive modal dialog and keyboard navigation.
+- **Reading Progress Bar**: Added a responsive reading progress indicator for long-form blog articles.
+- **Structured Data & SEO**: Implemented Breadcrumb JSON-LD schema support and dynamic Open Graph image generation using Satori.
+- **Custom Error Pages**: Designed custom, branded `404` (Not Found) and `500` (Server Error) routes.
+- **Content Expansion**: Added new blog articles #13 through #41 covering cloud architecture, virtualization, homelab setups, and web technologies.
+- **Cloudflare Web Analytics**: Integrated privacy-friendly web analytics beacon.
+
+### Performance & Refactoring
+
+- **Astro 6 & Content Layer**: Migrated to Astro 6 and adopted modern content collections (`src/content.config.ts`).
+- **Component Abstractions**: Extracted reusable `BaseLayout` and unified SVG `Icon` components.
+- **Image Optimization**: Migrated to `astro:assets` `<Picture />` with AVIF and WebP fallback generation and native lazy loading.
+- **HTML Compression & Prefetching**: Enabled static HTML compression and aggressive prefetching on internal links.
+
+### Testing & Verification
+
+- **Automated Testing Suite**: Introduced **Vitest** for component testing (via Astro Container API) and **Playwright** with **@axe-core/playwright** for end-to-end and accessibility regression prevention.
+
+---
+
 ## [2.0] - 2025-01-04
 
 - Simplify and migrate from Payload v2 + NextJS + Turborepo to just Astro as a static site generator (zero JS).

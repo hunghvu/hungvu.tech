@@ -80,7 +80,7 @@ gh pr merge <pr-number> --squash --delete-branch
 To publish a new tagged release:
 
 ```powershell
-gh release create v3.0 --title "v3.0 - Generational Modernization" --notes-file CHANGELOG.md
+gh release create v2.2 --title "v2.2 - Modernization & Maintenance" --notes-file CHANGELOG.md
 ```
 
 ## 5. Best Practices
