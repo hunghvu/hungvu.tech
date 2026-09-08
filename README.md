@@ -1,16 +1,42 @@
 # Blogfolio @hungvu.tech
 
-## Core services
+## Tech Stack & Core Services
 
 Powered by:
 
-- Astro: Static site generator supporting Markdown format.
-- Ubuntu: Host operating system.
-- Proxmox: Hypervisor.
-- Cloudflare tunnel: Reverse proxy with dynamic DNS.
-- Caddy: Web server
+- **Framework**: [Astro 7](https://astro.build/) (Static Site Generation, Content Layer API, zero-JS navigation by default).
+- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/) and [DaisyUI 5](https://daisyui.com/).
+- **Search**: [Pagefind](https://pagefind.app/) (client-side, static search indexing).
+- **Testing**: [Vitest](https://vitest.dev/) (unit & component tests) and [Playwright](https://playwright.dev/) with [Axe-core](https://www.deque.com/axe/) (E2E and accessibility audits).
+- **Hosting & Infrastructure**: Ubuntu VM on Proxmox, Cloudflare Tunnel (dynamic DNS and reverse proxy), and Caddy web server.
 
-## Setup instruction
+## Local Development & Quality Checks
+
+Prerequisites: [Node.js](https://nodejs.org/) (LTS) and [pnpm](https://pnpm.io/) (v12+).
+
+```powershell
+# Install dependencies
+pnpm install
+
+# Start local dev server (http://localhost:4321)
+pnpm run dev
+
+# Code style checking & formatting
+pnpm run lint
+pnpm run format
+
+# TypeScript & Astro template diagnostics
+pnpm astro check
+
+# Automated testing
+pnpm run test:unit       # Vitest unit & component tests
+pnpm run test:e2e        # Playwright E2E & WCAG accessibility tests
+
+# Production build and search indexing
+pnpm run build
+```
+
+## Setup Instruction (Self-Hosting with Caddy)
 
 1. Clone repository to web server VM.
 2. Install [nvm](https://github.com/nvm-sh/nvm), then the latest Node LTS, and `pnpm`.

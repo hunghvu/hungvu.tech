@@ -20,13 +20,13 @@ test.describe("Extended UI & SEO Features", () => {
 
     // Wait for the hydration of `theme-change`
     await page.waitForLoadState("networkidle");
-    const themeToggle = page.locator('input[data-toggle-theme="dark"]').first();
+    const themeToggleLabel = page.locator('label:has(input[data-toggle-theme="dark"])').first();
 
     // Check initial state
     const initialTheme = (await html.getAttribute("data-theme")) ?? "";
 
-    // Force click
-    await themeToggle.click({ force: true });
+    // Click the toggle button
+    await themeToggleLabel.click();
 
     // LocalStorage should update, and the html tag should flip to the opposite
     await expect(html).not.toHaveAttribute("data-theme", initialTheme);

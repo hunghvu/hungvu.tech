@@ -7,11 +7,15 @@ description: Guidelines for writing and structuring Astro components, pages, lay
 
 You are working in an Astro web project (`hungvu.tech`). Follow these conventions when creating or modifying Astro files (`.astro`):
 
-## 1. File Structure
+## 1. File Structure & Path Aliases
 
 - **Pages**: Store route entry points in `src/pages/`.
 - **Layouts**: Use `src/layouts/` for page wrappers that provide common HTML structure (e.g., `<head>`, main navigation, footer).
 - **Components**: Reusable UI elements go in `src/components/`.
+- **Path Aliases**: Always use the tsconfig path aliases instead of brittle relative paths:
+  - `@components/*` -> `src/components/*`
+  - `@layouts/*` -> `src/layouts/*`
+  - `@assets/*` -> `src/assets/*`
 
 ## 2. Component Structure
 
@@ -34,24 +38,21 @@ const { title, description } = Astro.props;
 </div>
 ```
 
-## 3. Routing & Data Fetching
+## 3. Content Layer & Data Fetching
 
 - Use Astro's file-based routing.
-- Prefer fetching data at build time inside the Astro frontmatter `---` using standard `fetch` or local content collections (`src/content/`).
+- Content is managed via Astro's **Content Layer API** in `src/content.config.ts` using `defineCollection` and `glob()` loaders.
+- Query collections using `getCollection("blog")` or `getEntry("blog", id)` from `astro:content`.
+- Markdown processing in `astro.config.ts` uses `markdown.processor: unified(...)` from `@astrojs/markdown-remark`.
 
 ## 4. Script and Style Tags
 
-- Avoid client-side `<script>` tags unless interactive behavior is strictly required. If needed, prefer scoping them or using framework components if any are integrated.
-- Rely on Tailwind CSS / DaisyUI for styling rather than writing custom `<style>` blocks in Astro components.
+- Avoid client-side `<script>` tags unless interactive behavior is strictly required. Prefer standard scoped `<script>` blocks when needed.
+- Rely on Tailwind CSS / DaisyUI (always using the `daisyui-` prefix for component classes) rather than custom `<style>` blocks in Astro components.
 
-## 5. Official Astro LLM Documentation
+## 5. Official Astro Documentation & MCP Server
 
-When generating, debugging, or modifying Astro code in this project, you **MUST** fetch and utilize the official Astro LLM documentation sets for context if you have doubts about specific APIs or Astro capabilities:
+When generating, debugging, or modifying Astro code in this project, consult Astro's official documentation:
 
-- **Astro Overview**: `https://docs.astro.build/llms.txt`
-- **Complete Documentation**: `https://docs.astro.build/llms-full.txt`
-- **Abridged Documentation**: `https://docs.astro.build/llms-small.txt`
-- **API Reference**: `https://docs.astro.build/_llms-txt/api-reference.txt`
-- **How-to Recipes**: `https://docs.astro.build/_llms-txt/how-to-recipes.txt`
-
-If encountering an error with Astro components, config, or features, use the `read_url_content` tool on these URLs for accurate ground truth instead of solely relying on pre-existing knowledge.
+- **Primary**: Use the `search_astro_docs` tool from the **`astro-docs` MCP server**. This queries the live Astro documentation directly and returns concise, relevant sections.
+- **Secondary**: Query the **`context7` MCP server** or consult the web docs at `https://docs.astro.build/en/`. (Note: Astro's legacy `llms.txt` has been retired in favor of the official MCP server).

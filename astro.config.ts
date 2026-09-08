@@ -1,3 +1,4 @@
+import { unified } from "@astrojs/markdown-remark";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 import { transformerCopyButton } from "@rehype-pretty/transformers";
@@ -16,19 +17,21 @@ export default defineConfig({
   compressHTML: true,
   markdown: {
     syntaxHighlight: false,
-    rehypePlugins: [
-      [
-        rehypePrettyCode,
-        {
-          transformers: [
-            transformerCopyButton({
-              visibility: "always",
-              feedbackDuration: 2_500,
-            }),
-          ],
-        },
+    processor: unified({
+      rehypePlugins: [
+        [
+          rehypePrettyCode,
+          {
+            transformers: [
+              transformerCopyButton({
+                visibility: "always",
+                feedbackDuration: 2_500,
+              }),
+            ],
+          },
+        ],
       ],
-    ],
+    }),
   },
   vite: {
     plugins: [tailwindcss()],
