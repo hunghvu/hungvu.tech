@@ -1,41 +1,19 @@
 ---
 name: typescript
-description: TypeScript conventions, strictness rules, and interface/type definitions.
+description: TypeScript strictness and typing conventions for .ts and .astro files in this repo. Use when writing or fixing types.
 ---
 
-# TypeScript Skill Guidelines
+# TypeScript
 
-This project relies on **TypeScript** to ensure type safety across Astro and standard script files.
+- `tsconfig.json` extends `astro/tsconfigs/strictest` with `verbatimModuleSyntax`: use `import type` / `import { type X }` for type-only imports.
+- No `any`; use `unknown` or exact types. Type params and return values; use Astro's utility types (`GetStaticPaths`, `InferGetStaticPropsType`, `MarkdownHeading`).
+- Component props: `type Props = { ... }` (the repo convention). Use `interface` for other object shapes that may be extended.
+- Use the path aliases (`@components/*`, `@layouts/*`, `@assets/*`).
+- Client scripts: query with a generic and null-check, e.g. `const btn = document.querySelector<HTMLButtonElement>("#my-btn"); if (btn) { ... }`.
+- Validate with `pnpm astro check` (covers `.astro` frontmatter, templates and `.mdx` frontmatter). Target: 0 errors, 0 warnings, 0 hints.
 
-## 1. Strict Typing
+## Upgrade note
 
-- Do not use `any`. Use `unknown` or specify exact types.
-- Ensure all function parameters, return types, and interface properties are properly typed.
-- Rely on Astro's built-in utility types when applicable (e.g., `GetStaticPaths`, `AstroGlobal`).
+TypeScript is pinned at 5.9. TS 7 is available but not adopted. `tsconfig.json` uses `baseUrl`, which newer TypeScript deprecates, so a TS upgrade will need `paths` reworked first. Check `astro check` compatibility before bumping.
 
-## 2. Interfaces over Types
-
-- Prefer `interface` over `type` for defining object shapes (like component Props or API responses) as they provide better error messages and are more easily extensible.
-
-## 3. Path Aliases (`tsconfig.json`)
-
-Always use the configured path aliases rather than deeply nested relative paths (e.g. `../../components`):
-
-- `@components/*` -> `src/components/*`
-- `@layouts/*` -> `src/layouts/*`
-- `@assets/*` -> `src/assets/*`
-
-## 4. DOM Interactions
-
-- When interacting with the DOM in client-side scripts, cast elements gracefully, verifying they exist before accessing properties (e.g., `const btn = document.querySelector<HTMLButtonElement>('#my-btn'); if (btn) { ... }`).
-
-## 5. Type Checking
-
-- Run `pnpm astro check` to validate types across the entire project including Astro frontmatter and template expressions.
-
-## 6. Documentation References
-
-When handling complex type definitions or TypeScript utility types:
-
-- **TypeScript Official Docs**: `https://www.typescriptlang.org/docs/`
-- **Context7 MCP**: Use `query-docs` directly with `libraryId: "/microsoft/typescript"` (or `/websites/typescriptlang`) for TypeScript syntax, compiler options, and utility types.
+Docs: `https://www.typescriptlang.org/docs/`

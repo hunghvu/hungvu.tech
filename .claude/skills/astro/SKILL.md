@@ -1,58 +1,18 @@
 ---
 name: astro
-description: Guidelines for writing and structuring Astro components, pages, layouts, routing, and data fetching in this project.
+description: Conventions for Astro components, pages, layouts, routing, content collections and markdown config in this repo. Use when creating or modifying .astro files, routes, or astro.config.ts.
 ---
 
-# Astro Skill Guidelines
+# Astro conventions (Astro 7)
 
-You are working in an Astro web project (`hungvu.tech`). Follow these conventions when creating or modifying Astro files (`.astro`):
+- **Where things go**: routes in `src/pages/`, page wrappers in `src/layouts/` (always `BaseLayout.astro`, never raw `<html>`/`<head>` in a route), reusable UI in `src/components/`.
+- **Aliases**: `@components/*`, `@layouts/*`, `@assets/*` (see `tsconfig.json`); no deep relative imports.
+- **Props**: declare `type Props = { ... }` in the frontmatter. This repo uses `type Props` throughout, which also lets pages use `InferGetStaticPropsType<typeof getStaticPaths>`. Keep the frontmatter script separate from the template.
+- **Content**: Content Layer API in `src/content.config.ts` (`defineCollection` + `glob()` loader, `z` from `astro/zod`). Query with `getCollection("blog")` / `getEntry("blog", id)` from `astro:content`.
+- **Markdown**: `astro.config.ts` uses `markdown.processor: unified({ rehypePlugins })` from `@astrojs/markdown-remark`, with `syntaxHighlight: false` because `rehype-pretty-code` does highlighting. Don't re-enable Shiki.
+- **Scripts/styles**: avoid client JS unless needed (theme-change, Pagefind search and reading progress are the existing exceptions). Style with Tailwind/DaisyUI utilities; the two existing scoped `<style>` blocks (`BaseHead.astro`, `Search.astro`) are the exception, not the pattern.
+- **Prefetch** is on globally (`prefetchAll`), so don't add per-link prefetch attributes.
 
-## 1. File Structure & Path Aliases
+## Docs
 
-- **Pages**: Store route entry points in `src/pages/`.
-- **Layouts**: Use `src/layouts/` for page wrappers that provide common HTML structure (e.g., `<head>`, main navigation, footer).
-- **Components**: Reusable UI elements go in `src/components/`.
-- **Path Aliases**: Always use the tsconfig path aliases instead of brittle relative paths:
-  - `@components/*` -> `src/components/*`
-  - `@layouts/*` -> `src/layouts/*`
-  - `@assets/*` -> `src/assets/*`
-
-## 2. Component Structure
-
-- Keep the frontmatter script cleanly separated from the HTML template.
-- Use explicit TypeScript interfaces for component `Props`.
-
-```astro
----
-interface Props {
-  title: string;
-  description?: string;
-}
-
-const { title, description } = Astro.props;
----
-
-<div class="...">
-  <h1>{title}</h1>
-  {description && <p>{description}</p>}
-</div>
-```
-
-## 3. Content Layer & Data Fetching
-
-- Use Astro's file-based routing.
-- Content is managed via Astro's **Content Layer API** in `src/content.config.ts` using `defineCollection` and `glob()` loaders.
-- Query collections using `getCollection("blog")` or `getEntry("blog", id)` from `astro:content`.
-- Markdown processing in `astro.config.ts` uses `markdown.processor: unified(...)` from `@astrojs/markdown-remark`.
-
-## 4. Script and Style Tags
-
-- Avoid client-side `<script>` tags unless interactive behavior is strictly required. Prefer standard scoped `<script>` blocks when needed.
-- Rely on Tailwind CSS / DaisyUI (always using the `daisyui-` prefix for component classes) rather than custom `<style>` blocks in Astro components.
-
-## 5. Official Astro Documentation & MCP Server
-
-When generating, debugging, or modifying Astro code in this project, consult Astro's official documentation:
-
-- **Primary**: Use the `search_astro_docs` tool from the **`astro-docs` MCP server**. This queries the live Astro documentation directly and returns concise, relevant sections.
-- **Secondary**: Query the **`context7` MCP server** or consult the web docs at `https://docs.astro.build/en/`. (Note: Astro's legacy `llms.txt` has been retired in favor of the official MCP server).
+Astro 7 is recent and moves fast. Check the docs rather than recalling from memory: fetch `https://docs.astro.build/en/` pages (e.g. the MDX integration guide `https://docs.astro.build/en/guides/integrations-guide/mdx/`) or use Context7 if available. `docs.astro.build/llms.txt` no longer exists (404).

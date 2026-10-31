@@ -1,15 +1,11 @@
 ---
 name: daisyui
-description: Instructions on leveraging DaisyUI predefined components and handling theming.
+description: DaisyUI 5 usage in this repo, including the mandatory daisyui- class prefix and theming. Use when adding or changing UI components or theme colors.
 ---
 
-# DaisyUI Skill Guidelines
+# DaisyUI 5
 
-This project incorporates **DaisyUI** on top of Tailwind CSS for its component library.
-
-## 1. CRITICAL: Required `daisyui-` Prefix
-
-In `src/styles/global.css`, DaisyUI is configured with a custom prefix:
+`src/styles/global.css` loads DaisyUI with a custom prefix:
 
 ```css
 @plugin "daisyui" {
@@ -17,24 +13,14 @@ In `src/styles/global.css`, DaisyUI is configured with a custom prefix:
 }
 ```
 
-**ALL DaisyUI component, layout, and modifier classes MUST be prefixed with `daisyui-`**:
+**Every DaisyUI component/modifier class must be prefixed**: `daisyui-btn`, `daisyui-btn-ghost`, `daisyui-card-body`, `daisyui-navbar-start`, `daisyui-modal-box`, `daisyui-join-item`, etc. Unprefixed `btn`/`card` silently render unstyled. Translate every class from the official docs. Classes already in use are discoverable with `grep -rhoE "daisyui-[a-z0-9-]+" src | sort -u`.
 
-- Buttons: `daisyui-btn`, `daisyui-btn-primary`, `daisyui-btn-outline`, `daisyui-btn-ghost`, `daisyui-btn-circle`
-- Layout & Navigation: `daisyui-navbar`, `daisyui-navbar-start`, `daisyui-navbar-center`, `daisyui-navbar-end`, `daisyui-menu`, `daisyui-menu-horizontal`, `daisyui-menu-title`
-- Cards & Content: `daisyui-card`, `daisyui-card-body`, `daisyui-card-title`, `daisyui-divider`
-- Overlays & Interactivity: `daisyui-dropdown`, `daisyui-dropdown-content`, `daisyui-modal`, `daisyui-drawer`, `daisyui-swap`, `daisyui-swap-rotate`, `daisyui-swap-on`, `daisyui-swap-off`
+## Theming
 
-Do NOT use unprefixed DaisyUI classes (like `btn` or `card`), as they will not be styled.
+- Use semantic colors through Tailwind utilities: `bg-base-100`, `text-base-content`, `text-primary`, `fill-base-content`, etc.
+- Theme switching uses `theme-change` with `data-theme` on `<html>` and `data-toggle-theme="dark"` on the toggle input. The toggle's input is visually hidden in DaisyUI 5, so E2E tests click its `label` container.
+- Tailwind's `dark:` variant is remapped in `global.css` via `@custom-variant dark` to `[data-theme="dark"]`, not the OS preference.
 
-## 2. Theming and Colors
+## Docs
 
-- Use DaisyUI semantic colors (`primary`, `secondary`, `accent`, `neutral`, `base-100`, `base-200`, `base-content`, `info`, `success`, `warning`, `error`) via Tailwind utilities (e.g., `text-primary`, `bg-base-100`, `fill-base-content`).
-- The project uses `theme-change` to handle theme switching via `data-theme` and `data-toggle-theme="dark"`. Ensure elements adapt properly to dark/light modes.
-
-## 3. Documentation References
-
-When looking up DaisyUI components or utilities:
-
-- **Context7 MCP**: Use the Context7 tools (`resolve-library-id` or `query-docs` directly with `libraryId: "/saadeghi/daisyui"` or `libraryId: "/websites/daisyui"`) to search DaisyUI component syntax, props, and examples.
-- **Free LLM Docs**: `https://daisyui.com/llms.txt` (use `read_url_content` if needed).
-- Remember to always prepend `daisyui-` to classes found in official documentation!
+DaisyUI changes between releases. Look classes up in `https://daisyui.com/llms.txt` (reachable, verified) or the component pages on `daisyui.com`; do not rely on memory or on v4 examples.

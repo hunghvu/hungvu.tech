@@ -1,34 +1,17 @@
 ---
 name: tailwindcss
-description: Best practices and conventions for styling the project using Tailwind CSS v4.
+description: Tailwind CSS v4 conventions for this repo (CSS-first config, typography plugin, mobile-first). Use when styling components or editing global.css.
 ---
 
-# Tailwind CSS v4 Skill Guidelines
+# Tailwind CSS v4
 
-This project uses **Tailwind CSS v4** via the `@tailwindcss/vite` plugin.
+- Loaded via `@tailwindcss/vite` (registered in `astro.config.ts`); there is **no `tailwind.config.js`**. All config is CSS in `src/styles/global.css` (`@import "tailwindcss"`, `@plugin`, `@theme`, `@custom-variant`).
+- Customize the theme with `@theme` in CSS, not JS config. Avoid piling on `@apply`; prefer utilities in markup or a reusable Astro component.
+- Mobile-first: unprefixed classes are mobile, then `sm:` `md:` `lg:` `xl:` `2xl:`.
+- Rendered markdown uses `@tailwindcss/typography` (`prose`).
+- Don't hand-sort classes: `prettier-plugin-tailwindcss` sorts them on `pnpm run format`.
+- `global.css` has a v3 border-color compatibility layer (v4 defaults to `currentColor`). Elements that rely on it will change look if you remove it.
 
-## 1. Class Organization
+## Docs
 
-- Order utility classes consistently.
-- Prefer grouping related utilities (e.g., layout, typography, colors, spacing).
-
-## 2. Using Tailwind v4 Features
-
-- Take advantage of the new Tailwind v4 syntax, CSS variables, and native `@theme` directives in the global stylesheet if modifications to the standard theme are required.
-- Do not use `@apply` excessively. Instead, rely on utility classes within markup or reusable Astro components to keep stylesheets lean.
-
-## 3. Responsive Design
-
-- Design mobile-first. Default classes apply to mobile screens.
-- Use standard breakpoints (`sm:`, `md:`, `lg:`, `xl:`, `2xl:`) to enhance the layout for larger viewports.
-
-## 4. Typography
-
-- The project includes `@tailwindcss/typography`. Use the `prose` class for styling rendered Markdown or block-level rich text.
-
-## 5. Documentation References
-
-When generating layouts, components, or resolving styling issues, use the official documentation or MCP to fetch accurate utility class definitions and guidelines:
-
-- **Context7 MCP**: Use the Context7 tools (`resolve-library-id` or `query-docs` directly with `libraryId: "/tailwindlabs/tailwindcss.com"` or `libraryId: "/websites/tailwindcss"`) to look up Tailwind v4 syntax, utility classes, and theme directives.
-- **Tailwind Utility Classes Guide**: `https://tailwindcss.com/docs/styling-with-utility-classes`
+v4 differs a lot from v3 (renamed utilities, CSS-first config). Verify syntax at `https://tailwindcss.com/docs` instead of using memory.
