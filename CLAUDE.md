@@ -41,7 +41,9 @@ After a Playwright version bump, run `pnpm exec playwright install chromium`.
 - Meta tags always via `BaseHead.astro` + `SeoHead.astro` (canonical, Open Graph, Twitter, RSS link). JSON-LD (`copyrightHolder`, `creator`, `author`, breadcrumbs) must stay valid per Google's schemas.
 - New public routes must appear in the sitemap; check `public/robots.txt`.
 
-## Skills
+## Claude setup (`.claude/`, `.mcp.json`)
 
-Project skills in `.claude/skills/`: `astro`, `daisyui`, `tailwindcss`, `typescript`, `mdx`, `new-blog-post`, `verify`, `github-cli`.
-Astro 7, Tailwind 4 and DaisyUI 5 are recent and differ from older versions: check the live docs (WebFetch / Context7) rather than recalling from memory.
+- `rules/` load only when matching files are touched: `daisyui.md` (the `daisyui-` prefix, theming) and `content.md` (blog frontmatter), `tests.md`.
+- `skills/`: `astro`, `tailwindcss`, `typescript`, `new-blog-post`, `verify`, `github-cli`.
+- `.mcp.json`: `astro-docs` (official Astro docs search), `daisyui` (GitMCP), `context7`. Approve them on first use.
+- Astro 7, Tailwind 4 and DaisyUI 5 are recent and differ from older versions: look things up through those servers or WebFetch (`daisyui.com/llms.txt`, `tailwindcss.com/docs`) instead of recalling from memory.

@@ -15,4 +15,4 @@ description: Conventions for Astro components, pages, layouts, routing, content 
 
 ## Docs
 
-Astro 7 is recent and moves fast. Check the docs rather than recalling from memory: fetch `https://docs.astro.build/en/` pages (e.g. the MDX integration guide `https://docs.astro.build/en/guides/integrations-guide/mdx/`) or use Context7 if available. `docs.astro.build/llms.txt` no longer exists (404).
+Astro 7 moves fast; check the docs rather than recalling from memory. Use the official hosted `astro-docs` MCP server (configured in `.mcp.json`; tool `search_astro_docs`, backed by the live docs index). Fallbacks: WebFetch on `https://docs.astro.build/en/...` pages, or Context7. `docs.astro.build/llms.txt` no longer exists (404).
