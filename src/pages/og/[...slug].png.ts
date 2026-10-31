@@ -35,6 +35,7 @@ export const GET: APIRoute = async ({ props }) => {
         style: {
           height: "100%",
           width: "100%",
+          boxSizing: "border-box",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -54,6 +55,7 @@ export const GET: APIRoute = async ({ props }) => {
                 backgroundColor: "#191e24",
                 width: "100%",
                 height: "100%",
+                boxSizing: "border-box",
                 borderRadius: "24px",
                 border: "2px solid #383f47",
                 padding: "60px",
