@@ -4,21 +4,16 @@ description: Installation instructions for daisyUI 5
 ---
 
 ## Install daisyUI 5
-
 [Installation guide](https://daisyui.com/docs/install/)
-
 1. You must use Tailwind CSS 4 with daisyUI 5.
 2. The `tailwind.config.js` file is deprecated in Tailwind CSS v4. Do not use `tailwind.config.js`. If Tailwind CSS v4 is a Node.js dependency, add only `@import "tailwindcss";` to the CSS file.
 3. To install daisyUI 5, run `npm i -D daisyui@latest`. Then, add `@plugin "daisyui";` to the CSS file.
 4. Install daisyUI as a dependency when possible. If you have a specific reason to use a CDN instead, use the Tailwind CSS and daisyUI CDN files:
-
 ```html
 <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
 <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 ```
-
 5. If Tailwind CSS and daisyUI are Node.js dependencies, use this CSS file:
-
 ```css
 @import "tailwindcss";
 @plugin "daisyui";

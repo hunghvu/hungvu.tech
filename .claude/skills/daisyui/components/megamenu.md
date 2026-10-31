@@ -1,11 +1,9 @@
 ### Megamenu
-
 A megamenu is a large horizontal menu. Each item opens a popover that shows a large group of navigation links. Use one megamenu at the top of the page. Each popover can contain a daisyUI menu or custom content. Use a megamenu on large screens. On small screens, hide it and show its content in a dropdown or drawer.
 
 [Megamenu documentation](https://daisyui.com/components/megamenu/)
 
 #### Class names
-
 - component: `megamenu`
 - part: `megamenu-active`
 - modifier: `megamenu-wide`, `megamenu-full`
@@ -13,69 +11,53 @@ A megamenu is a large horizontal menu. Each item opens a popover that shows a la
 - size: `megamenu-xs`, `megamenu-sm`, `megamenu-md`, `megamenu-lg`, `megamenu-xl`
 
 #### Syntax
-
 ```html
 <button class="btn sm:hidden" popovertarget="my-megamenu-1">Menu</button>
-<div
-  class="megamenu max-sm:megamenu-vertical {MODIFIER} border-base-300 border p-2"
-  id="my-megamenu-1"
-  popover
->
+<div class="megamenu max-sm:megamenu-vertical {MODIFIER} p-2 border border-base-300" id="my-megamenu-1" popover>
   <span class="megamenu-active"></span>
 
   <button popovertarget="item-1">button 1</button>
-  <div id="item-1" popover>{CONTENT}</div>
+  <div id="item-1" popover>
+    {CONTENT}
+  </div>
 
   <button popovertarget="item-2">button 2</button>
-  <div id="item-2" popover>{CONTENT}</div>
+  <div id="item-2" popover>
+    {CONTENT}
+  </div>
+
 </div>
 ```
-
 Example of `megamenu-wide` with many menu items:
-
 ```html
 <button class="btn sm:hidden" popovertarget="my-megamenu-2">Menu</button>
-<div
-  class="megamenu max-sm:megamenu-vertical megamenu-wide border-base-300 w-full border p-2"
-  id="my-megamenu-2"
-  popover
->
+<div class="megamenu max-sm:megamenu-vertical megamenu-wide w-full p-2 border border-base-300" id="my-megamenu-2" popover>
   <span class="megamenu-active"></span>
   <button popovertarget="c1">One</button>
   <div id="c1" popover>
-    <div class="flex items-start max-sm:flex-col">
-      <ul class="menu md:menu-horizontal w-full">
+    <div class="flex max-sm:flex-col items-start">
+      <ul class="menu w-full md:menu-horizontal">
         <li>
           <a>first column menu item</a>
-          <ul>
-            <li><a>sub menu item</a></li>
-          </ul>
+          <ul><li><a>sub menu item</a></li></ul>
         </li>
         <li>
           <a>second column menu item</a>
-          <ul>
-            <li><a>sub menu item</a></li>
-          </ul>
+          <ul><li><a>sub menu item</a></li></ul>
         </li>
         <li>
           <a>third column menu item</a>
-          <ul>
-            <li><a>sub menu item</a></li>
-          </ul>
+          <ul><li><a>sub menu item</a></li></ul>
         </li>
       </ul>
-      <img
-        src="{image-url}"
-        class="max-md:w-auto md:max-w-sm"
-        alt="sample image at the end of the megamenu"
-      />
+      <img src="{image-url}" class="md:max-w-sm max-md:w-auto" alt="sample image at the end of the megamenu">
     </div>
   </div>
 </div>
 ```
 
-#### Rules
 
+#### Rules
 - `{MODIFIER}` is optional. It can include one modifier class name and one size class name.
 - You must include the `megamenu-active` span. It is the indicator that moves below the active item.
 - Each button must have a related popover. Its ID must be the same as the `popovertarget` value. Do not use an HTML ID more than once.

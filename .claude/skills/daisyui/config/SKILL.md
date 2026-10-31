@@ -25,62 +25,23 @@ daisyUI with all default settings:
 
 ```css
 @plugin "daisyui" {
-  themes:
-    light --default,
-    dark --prefersdark;
+  themes: light --default, dark --prefersdark;
   root: ":root";
-  include:;
-  exclude:;
-  prefix:;
+  include: ;
+  exclude: ;
+  prefix: ;
   logs: true;
 }
 ```
-
 Example configuration:
 This configuration enables all built-in themes. The `bumblebee` theme is the default theme. The `synthwave` theme is the `prefersdark` theme, which is the default dark mode.
 To use another enabled theme, add `data-theme="THEME_NAME"` to the `<html>` element.
 The configuration excludes the root scrollbar gutter. It uses the `daisy-` prefix for all daisyUI classes and disables console logs.
-
 ```css
 @plugin "daisyui" {
-  themes:
-    light,
-    dark,
-    cupcake,
-    bumblebee --default,
-    emerald,
-    corporate,
-    synthwave --prefersdark,
-    retro,
-    cyberpunk,
-    valentine,
-    halloween,
-    garden,
-    forest,
-    aqua,
-    lofi,
-    pastel,
-    fantasy,
-    wireframe,
-    black,
-    luxury,
-    dracula,
-    cmyk,
-    autumn,
-    business,
-    acid,
-    lemonade,
-    night,
-    coffee,
-    winter,
-    dim,
-    nord,
-    sunset,
-    caramellatte,
-    abyss,
-    silk;
+  themes: light, dark, cupcake, bumblebee --default, emerald, corporate, synthwave --prefersdark, retro, cyberpunk, valentine, halloween, garden, forest, aqua, lofi, pastel, fantasy, wireframe, black, luxury, dracula, cmyk, autumn, business, acid, lemonade, night, coffee, winter, dim, nord, sunset, caramellatte, abyss, silk;
   root: ":root";
-  include:;
+  include: ;
   exclude: rootscrollgutter, checkbox;
   prefix: daisy-;
   logs: false;

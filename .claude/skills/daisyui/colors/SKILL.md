@@ -6,7 +6,6 @@ description: Color rules that you must use with daisyUI 5
 ## daisyUI 5 colors
 
 ### daisyUI color names
-
 - `primary`: The main brand color.
 - `primary-content`: Foreground content color for use on `primary`.
 - `secondary`: An optional secondary brand color.
@@ -29,7 +28,6 @@ description: Color rules that you must use with daisyUI 5
 - `error-content`: Foreground content color for use on `error`.
 
 ### daisyUI color rules
-
 1. daisyUI adds semantic color names to the Tailwind CSS colors.
 2. Use daisyUI color names in utility classes as you use other Tailwind CSS color names. For example, `bg-primary` uses the primary color for the background.
 3. The value of each daisyUI color name is a variable. Thus, the color can change with the theme.
@@ -48,10 +46,7 @@ The default configuration enables `light` and `dark`. In the daisyUI plugin, sel
 
 ```css
 @plugin "daisyui" {
-  themes:
-    light --default,
-    dark --prefersdark,
-    cupcake;
+  themes: light --default, dark --prefersdark, cupcake;
 }
 ```
 
@@ -68,9 +63,7 @@ The default configuration enables `light` and `dark`. In the daisyUI plugin, sel
 ```
 
 ### daisyUI custom theme with custom colors
-
 A CSS file that contains Tailwind CSS, daisyUI, and a custom daisyUI theme has this structure:
-
 ```css
 @import "tailwindcss";
 @plugin "daisyui";
@@ -115,9 +108,7 @@ A CSS file that contains Tailwind CSS, daisyUI, and a custom daisyUI theme has t
   --noise: 0; /* only 0 or 1 - Adds a subtle noise (grain) effect to components */
 }
 ```
-
 #### Rules
-
 - You must include all CSS variables in the example.
 - Colors can use OKLCH, hex, or another format.
 - If you generate a custom theme, do not include the comments from the example. Give only the code.
@@ -140,7 +131,7 @@ Use the built-in theme name. Change only the necessary values. daisyUI inherits 
 For a custom CDN theme, define the same variables in a selector. The selector must match the selected `data-theme` and theme controller:
 
 ```css
-:root:has(input.theme-controller[value="mytheme"]:checked),
+:root:has(input.theme-controller[value=mytheme]:checked),
 [data-theme="mytheme"] {
   color-scheme: light;
   --color-primary: oklch(55% 0.3 240);

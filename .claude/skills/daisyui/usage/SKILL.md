@@ -4,7 +4,6 @@ description: Usage rules that you must use with daisyUI 5
 ---
 
 ## daisyUI 5 usage rules
-
 1. To style an HTML element, add daisyUI class names to it. Add the necessary component class name. Also add the applicable part and modifier class names.
 2. If the current daisyUI classes cannot make a necessary change, use Tailwind CSS utility classes. For example, `btn px-10` sets custom horizontal padding on a `btn`.
 3. If CSS specificity prevents a change to a daisyUI style, add `!` to the end of the Tailwind utility. For example, `btn bg-red-500!` overrides the background color of a `btn`. Use this method only if other methods do not work. Do not use it frequently.
@@ -19,7 +18,6 @@ description: Usage rules that you must use with daisyUI 5
 12. If the user does not request a variant or color, use the default variant. For example, use `btn` for a button. If the user does not request that variant, do not use `btn btn-primary`.
 
 Each daisyUI 5 class name is in one of these categories. These category names are for reference only. Do not use them in code.
-
 - `component`: The necessary component class.
 - `part`: A child part of a component.
 - `style`: Sets a specified style on a component or part.
