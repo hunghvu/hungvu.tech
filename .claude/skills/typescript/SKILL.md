@@ -12,8 +12,8 @@ description: TypeScript strictness and typing conventions for .ts and .astro fil
 - Client scripts: query with a generic and null-check, e.g. `const btn = document.querySelector<HTMLButtonElement>("#my-btn"); if (btn) { ... }`.
 - Validate with `pnpm astro check` (covers `.astro` frontmatter, templates and `.mdx` frontmatter). Target: 0 errors, 0 warnings, 0 hints.
 
-## Upgrade note
+## Version note
 
-TypeScript is pinned at 5.9. TS 7 is available but not adopted. `tsconfig.json` uses `baseUrl`, which newer TypeScript deprecates, so a TS upgrade will need `paths` reworked first. Check `astro check` compatibility before bumping.
+TypeScript is on 6.x. **Do not move to 7 yet**: `astro check` refuses to run on TS 7 ("does not currently support TypeScript 7.0"). Astro offers experimental TS 7.1+ type-checking via `@astrojs/ts-content-mapper`; revisit when that is stable. `baseUrl` was removed from `tsconfig.json` (deprecated in TS 6), so `paths` entries are `./`-relative. Plain `tsc` cannot resolve `.astro` imports, so use `pnpm astro check` as the type checker.
 
 Docs: `https://www.typescriptlang.org/docs/`
