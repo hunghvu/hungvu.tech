@@ -12,27 +12,23 @@ test.describe("Accessibility Audits", () => {
     expect(accessibilityScanResults.violations).toEqual([]);
   });
 
-  test("blog post page should be accessible", async ({ page }) => {
+  test("blog post pages should be accessible", async ({ page }) => {
     await page.goto("/");
-    // Target the first post link in the grid specifically
-    const firstPostLink = page.locator("ul.grid a.daisyui-card").first();
-    const href = await firstPostLink.getAttribute("href");
+    // Target the first few post links in the grid; fail loudly if the selector stops matching
+    const postLinks = page.locator("ul.grid a.daisyui-card");
+    expect(await postLinks.count()).toBeGreaterThan(0);
+    const hrefs = await postLinks.evaluateAll((links) =>
+      links.slice(0, 3).map((link) => link.getAttribute("href") ?? ""),
+    );
 
-    if (href) {
+    for (const href of hrefs) {
+      expect(href).not.toBe("");
       await page.goto(href);
-      // Wait for the reading progress bar or other dynamic elements if any
       const accessibilityScanResults = await new AxeBuilder({ page })
         .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
         .analyze();
 
-      if (accessibilityScanResults.violations.length > 0) {
-        console.log(
-          "ACCESSIBILITY_VIOLATIONS_POST:",
-          JSON.stringify(accessibilityScanResults.violations, null, 2),
-        );
-      }
-
-      expect(accessibilityScanResults.violations).toEqual([]);
+      expect(accessibilityScanResults.violations, `Axe violations on ${href}`).toEqual([]);
     }
   });
 

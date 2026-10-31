@@ -1,0 +1,5 @@
+# Vendor-installed skill (npx skills add); keep byte-identical to upstream
+.claude/skills/daisyui
+skills-lock.json
+# Generated
+pnpm-lock.yaml

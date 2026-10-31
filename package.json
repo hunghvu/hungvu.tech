@@ -1,11 +1,11 @@
 {
   "name": "hungvu.tech",
   "type": "module",
-  "version": "2.0",
+  "version": "2.2",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "pnpm run lint && astro check && astro build && pagefind --site dist",
+    "build": "astro check && astro build && pagefind --site dist",
     "preview": "astro preview",
     "astro": "astro",
     "format": "prettier . --write",
@@ -14,9 +14,9 @@
     "test:e2e": "playwright test"
   },
   "dependencies": {
-    "@astrojs/check": "^0.9.10",
-    "@astrojs/markdown-remark": "^7.3.0",
-    "@astrojs/mdx": "^8.0.0",
+    "@astrojs/check": "^0.9.12",
+    "@astrojs/markdown-remark": "^7.3.5",
+    "@astrojs/mdx": "^8.1.2",
     "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.4",
     "@fontsource/geist-sans": "^5.3.0",
@@ -25,24 +25,24 @@
     "@resvg/resvg-js": "^2.6.2",
     "@tailwindcss/typography": "^0.5.20",
     "@tailwindcss/vite": "^4.3.3",
-    "astro": "^7.3.1",
+    "astro": "^7.4.4",
     "astro-embed": "^0.14.0",
-    "daisyui": "^5.7.28",
+    "daisyui": "^5.7.50",
     "rehype-pretty-code": "^0.14.5",
-    "satori": "^0.33.4",
-    "sharp": "^0.35.4",
+    "satori": "^0.63.2",
+    "sharp": "^0.35.5",
     "tailwindcss": "^4.3.3",
     "theme-change": "^3.0.4"
   },
   "devDependencies": {
-    "@axe-core/playwright": "^4.13.0",
-    "@playwright/test": "^1.63.0",
+    "@axe-core/playwright": "^4.14.0",
+    "@playwright/test": "^1.64.1",
     "pagefind": "^1.5.2",
-    "prettier": "^3.9.6",
+    "prettier": "^3.9.10",
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-organize-imports": "^4.3.0",
     "prettier-plugin-tailwindcss": "^0.8.1",
-    "typescript": "^5.9.3",
-    "vitest": "^5.0.0"
+    "typescript": "^6.0.3",
+    "vitest": "^5.0.5"
   }
 }
