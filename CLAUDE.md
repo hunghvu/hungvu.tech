@@ -9,7 +9,7 @@ Personal blogfolio: Astro 7 (static), Tailwind CSS v4 + DaisyUI 5, MDX content, 
 - `pnpm astro check` — types + template diagnostics; must be 0 errors, 0 warnings, 0 hints
 - `pnpm test:unit` — Vitest (Astro Container API for components)
 - `pnpm test:e2e` — Playwright + axe; runs against `pnpm preview`, so **`dist` must be built first** (`pnpm astro build && pnpm exec pagefind --site dist`)
-- `pnpm build` — lint + check + build + pagefind (what deploy runs)
+- `pnpm build` — check + build + pagefind (what deploy runs). Formatting is enforced by CI (`pnpm run lint`) and, while working with Claude, by a `PostToolUse` Prettier hook, not by the build.
 
 After a Playwright version bump, run `pnpm exec playwright install chromium`.
 
@@ -43,7 +43,9 @@ After a Playwright version bump, run `pnpm exec playwright install chromium`.
 
 ## Claude setup (`.claude/`, `.mcp.json`)
 
+- `settings.json` has a `PostToolUse` hook (`hooks/format.mjs`) that runs Prettier on every file Claude edits or writes.
+- CI (`.github/workflows/ci.yml`) runs format check, `astro check`, unit tests, build and E2E on Linux for pushes to `main`/`development` and PRs into `main`.
 - `rules/` load only when matching files are touched: `daisyui.md` (the `daisyui-` prefix, theming) and `content.md` (blog frontmatter), `tests.md`.
-- `skills/`: `astro`, `tailwindcss`, `typescript`, `new-blog-post`, `verify`, `github-cli`.
+- `skills/`: `astro`, `tailwindcss`, `typescript`, `new-blog-post`, `verify`, `github-cli`, and the vendor-installed `daisyui` (from `saadeghi/daisyui`; pinned in `skills-lock.json`, update with `npx skills add saadeghi/daisyui --agent claude-code --yes`).
 - `.mcp.json`: `astro-docs` (official Astro docs search), `daisyui` (GitMCP), `context7`. Approve them on first use.
 - Astro 7, Tailwind 4 and DaisyUI 5 are recent and differ from older versions: look things up through those servers or WebFetch (`daisyui.com/llms.txt`, `tailwindcss.com/docs`) instead of recalling from memory.
