@@ -6,6 +6,8 @@ allowBuilds:
 minimumReleaseAge: 20160
 # Only direct dependencies may come from git or tarball URLs.
 blockExoticSubdeps: true
+# Refuse versions whose publish trust (trusted publisher / provenance) is lower than earlier releases.
+trustPolicy: no-downgrade
 
 # Grandfathered: versions already in the lockfile when minimumReleaseAge was enabled
 # (2026-10-31). All were published on or before 2026-10-28, so they are older than 14 days
