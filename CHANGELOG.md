@@ -1,5 +1,16 @@
 # Changelog
 
+## [Unreleased]
+
+### Tooling & Maintenance
+
+- **Claude Code**: Replaced the Gemini agent setup (`.agents/`) with `CLAUDE.md`, path-scoped `.claude/rules/`, project skills (including the official daisyUI skill), a Prettier format hook, and `.mcp.json` for the Astro, daisyUI, and Context7 documentation servers.
+- **CI**: Added GitHub Actions running format check, `astro check`, unit tests, build, and E2E/accessibility tests on Linux.
+- **Dependencies**: Updated in-range packages; upgraded `satori` to 0.63 (with an OG card box-sizing fix) and `typescript` to 6 (removed deprecated `baseUrl`). TypeScript 7 is not yet supported by `astro check`; `prettier-plugin-astro` 1.x is deferred (reformats 13 files).
+- **Supply chain**: `minimumReleaseAge` of 14 days, `trustPolicy: no-downgrade`, and pnpm pinned through `packageManager`.
+- **Build**: `pnpm build` no longer runs the Prettier check (CI does). `.vscode` formats `.astro` files with the Prettier extension to match CI.
+- **Tests**: The blog-post accessibility test now fails if no post links are found and scans three posts instead of one.
+
 ## [2.2] - 2026-09-08
 
 ### Major Highlights & Upgrades

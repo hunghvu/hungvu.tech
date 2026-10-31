@@ -1,6 +1,7 @@
 {
   "name": "hungvu.tech",
   "type": "module",
+  "packageManager": "pnpm@12.14.0",
   "version": "2.2",
   "scripts": {
     "dev": "astro dev",
