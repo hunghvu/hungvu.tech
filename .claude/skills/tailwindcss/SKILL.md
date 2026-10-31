@@ -14,4 +14,4 @@ description: Tailwind CSS v4 conventions for this repo (CSS-first config, typogr
 
 ## Docs
 
-v4 differs a lot from v3 (renamed utilities, CSS-first config). Tailwind publishes no official MCP server or `llms.txt` (checked), so use WebFetch on `https://tailwindcss.com/docs/<topic>` or Context7. Avoid third-party Tailwind MCPs and v3 examples.
+v4 differs a lot from v3 (renamed utilities, CSS-first config). Tailwind publishes no official MCP server or `llms.txt` (checked), so use WebFetch on `https://tailwindcss.com/docs/<topic>` or Context7. In Context7 use `/tailwindlabs/tailwindcss.com` (v4 docs); `/websites/tailwindcss` only has v2/v3. Avoid third-party Tailwind MCPs and v3 examples.
