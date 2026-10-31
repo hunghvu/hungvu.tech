@@ -35,6 +35,8 @@ After a Playwright version bump, run `pnpm exec playwright install chromium`.
 
 - Windows checkout has `core.autocrlf=true`, so `pnpm run lint` reports most files as CRLF-dirty locally. That is not a real failure; don't "fix" it by reformatting the repo.
 - Branch flow: work on `development`, PR into `main`.
+- Supply chain (`pnpm-workspace.yaml`): `minimumReleaseAge` is 14 days, so `pnpm add`/`update` rejects newer versions; wait or ask before adding `minimumReleaseAgeExclude`. The exact-version exclude list there is a temporary grandfather list: delete it after 2026-11-11. pnpm is pinned via `packageManager` (12.14.0, the newest past the age gate); bump it on or after 2026-11-13.
+- TypeScript stays on 6.x until `astro check` supports 7. Hold `prettier-plugin-astro` at 0.14.x (1.x reformats 13 files).
 
 ## SEO
 
